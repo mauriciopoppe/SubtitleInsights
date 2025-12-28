@@ -11,7 +11,7 @@ This plan outlines the steps to create a foundational YouTube subtitle overlay p
     - Register a content script for `https://www.youtube.com/watch*`.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding' (Protocol in workflow.md)**
 
-## Phase 2: Content Script & Detection
+## Phase 2: Content Script & Detection [checkpoint: 5e31ac4]
 - [x] **Task: Create Content Script Entrypoint**
     - Create `src/content/index.ts`.
     - Implement a basic logger to verify injection.
