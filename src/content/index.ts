@@ -27,32 +27,107 @@ const waitForElement = (selector: string): Promise<HTMLElement> => {
   });
 };
 
-const createOverlay = (): HTMLElement => {
+interface OverlayElements {
+  container: HTMLElement;
+  translation: HTMLElement;
+  original: HTMLElement;
+}
+
+const createOverlay = (): OverlayElements => {
   const overlay = document.createElement('div');
   overlay.id = 'lle-overlay';
   
   const translationText = document.createElement('div');
   translationText.className = 'lle-translation';
-  translationText.innerText = "I'm going to the store.";
   
   const originalText = document.createElement('div');
   originalText.className = 'lle-original';
-  originalText.innerText = 'お店に行きます。';
   
   overlay.appendChild(translationText);
   overlay.appendChild(originalText);
   
-  return overlay;
+  return {
+    container: overlay,
+    translation: translationText,
+    original: originalText
+  };
+};
+
+const createTooltip = (): HTMLElement => {
+  const tooltip = document.createElement('div');
+  tooltip.className = 'lle-tooltip';
+  document.body.appendChild(tooltip);
+  return tooltip;
 };
 
 const init = async () => {
   console.log('[Language Learning Extension] Waiting for video player...');
   const player = await waitForElement('#movie_player');
-  console.log('[Language Learning Extension] Video player found:', player);
+  const video = await waitForElement('video') as HTMLVideoElement;
+  console.log('[Language Learning Extension] Video player and element found.');
 
   const overlay = createOverlay();
-  player.appendChild(overlay);
-  console.log('[Language Learning Extension] Overlay injected.');
+  player.appendChild(overlay.container);
+  const tooltip = createTooltip();
+  console.log('[Language Learning Extension] Overlay and tooltip injected.');
+
+  let lastSegmentText = '';
+
+  // Sync Engine
+  video.addEventListener('timeupdate', () => {
+    const currentTimeMs = video.currentTime * 1000;
+    const activeSegment = store.getSegmentAt(currentTimeMs);
+
+    if (activeSegment) {
+      overlay.container.style.display = 'flex'; // Show overlay
+      if (activeSegment.text !== lastSegmentText) {
+          overlay.original.innerHTML = '';
+          // Simple split for Japanese (needs improved tokenizer later)
+          const words = activeSegment.text.split(''); 
+          words.forEach(char => {
+              const span = document.createElement('span');
+              span.className = 'lle-word';
+              span.innerText = char;
+              overlay.original.appendChild(span);
+          });
+          lastSegmentText = activeSegment.text;
+      }
+      overlay.translation.innerText = activeSegment.translation || 'Translating...';
+    } else {
+      overlay.container.style.display = 'none'; // Hide overlay
+      overlay.original.innerText = '';
+      overlay.translation.innerText = '';
+      lastSegmentText = '';
+    }
+  });
+
+  // Hover Tooltip Logic
+  overlay.container.addEventListener('mouseover', async (e) => {
+    const target = e.target as HTMLElement;
+    if (target.className === 'lle-word') {
+      const word = target.innerText;
+      tooltip.style.display = 'block';
+      tooltip.innerText = 'Loading definition...';
+      
+      const rect = target.getBoundingClientRect();
+      tooltip.style.left = `${rect.left}px`;
+      tooltip.style.top = `${rect.top - 40}px`;
+
+      try {
+        const definition = await aiClient.translate(word, 'literal');
+        tooltip.innerText = definition;
+      } catch (err) {
+        tooltip.innerText = 'Failed to load definition';
+      }
+    }
+  });
+
+  overlay.container.addEventListener('mouseout', (e) => {
+    const target = e.target as HTMLElement;
+    if (target.className === 'lle-word') {
+      tooltip.style.display = 'none';
+    }
+  });
 
   aiClient.testPromptAPI();
 
