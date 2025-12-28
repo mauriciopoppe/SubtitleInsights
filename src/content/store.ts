@@ -1,10 +1,11 @@
-import { aiClient } from './ai';
+import { aiClient, AISegment } from './ai';
 
 export interface SubtitleSegment {
   start: number;
   end: number;
   text: string;
   translation?: string;
+  segmentedData?: AISegment[];
 }
 
 export class SubtitleStore {
@@ -20,21 +21,30 @@ export class SubtitleStore {
   async translateNextBatch() {
     if (this.isTranslating) return;
     
-    const untranslated = this.segments.filter(s => !s.translation);
-    if (untranslated.length === 0) return;
+    // Filter segments that need either translation or segmentation
+    const pending = this.segments.filter(s => !s.translation || !s.segmentedData);
+    if (pending.length === 0) return;
 
     this.isTranslating = true;
-    const batchSize = 5;
-    const batch = untranslated.slice(0, batchSize);
+    const batchSize = 3; // Reduced batch size as we do 2 calls per segment
+    const batch = pending.slice(0, batchSize);
 
-    console.log(`[SubtitleStore] Translating batch of ${batch.length} segments...`);
+    console.log(`[SubtitleStore] Processing batch of ${batch.length} segments...`);
 
     for (const segment of batch) {
       try {
-        segment.translation = await aiClient.translate(segment.text);
+        const [translation, segmentedData] = await Promise.all([
+             segment.translation ? Promise.resolve(segment.translation) : aiClient.translate(segment.text),
+             segment.segmentedData ? Promise.resolve(segment.segmentedData) : aiClient.segment(segment.text)
+        ]);
+        
+        segment.translation = translation;
+        segment.segmentedData = segmentedData;
+
       } catch (e) {
-        console.error('[SubtitleStore] Failed to translate segment', segment.text, e);
-        segment.translation = 'Error'; // Avoid infinite loop
+        console.error('[SubtitleStore] Failed to process segment', segment.text, e);
+        if (!segment.translation) segment.translation = 'Error';
+        if (!segment.segmentedData) segment.segmentedData = [{ word: segment.text }];
       }
     }
 

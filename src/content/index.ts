@@ -1,6 +1,7 @@
 import './styles.css';
 import { store, SubtitleStore } from './store';
 import { aiClient } from './ai';
+import { renderSegmentedText } from './render';
 
 console.log('[Language Learning Extension] Content script injected.');
 
@@ -114,15 +115,23 @@ const init = async () => {
       overlay.container.style.display = 'flex'; // Show overlay
       if (activeSegment.text !== lastSegmentText) {
           overlay.original.innerHTML = '';
-          // Simple split for Japanese (needs improved tokenizer later)
-          const words = activeSegment.text.split(''); 
-          words.forEach(char => {
-              const span = document.createElement('span');
-              span.className = 'lle-word';
-              span.innerText = char;
-              overlay.original.appendChild(span);
-          });
+          
+          if (activeSegment.segmentedData) {
+              overlay.original.innerHTML = renderSegmentedText(activeSegment.segmentedData);
+          } else {
+            // Fallback while processing or if failed
+            const words = activeSegment.text.split(''); 
+            words.forEach(char => {
+                const span = document.createElement('span');
+                span.className = 'lle-word';
+                span.innerText = char;
+                overlay.original.appendChild(span);
+            });
+          }
           lastSegmentText = activeSegment.text;
+      } else if (activeSegment.segmentedData && overlay.original.innerHTML.indexOf('ruby') === -1) {
+          // Re-render if segmentation arrived after initial render
+           overlay.original.innerHTML = renderSegmentedText(activeSegment.segmentedData);
       }
 
       if (aiClient.isDownloading) {

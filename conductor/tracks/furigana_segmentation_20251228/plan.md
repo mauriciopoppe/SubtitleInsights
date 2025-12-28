@@ -13,6 +13,6 @@ Implement Furigana and word segmentation for Japanese subtitles using the Chrome
 - [x] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
 ## Phase 3: Integration with Subtitle Pipeline
-- [ ] Task: Modify the existing subtitle processing logic (likely in `src/content/index.ts` or `ai.ts`) to intercept raw text and pass it through the Prompt API.
-- [ ] Task: Update the overlay update logic to use the new `renderSegmentedText` output instead of raw text.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
+- [x] Task: Modify the existing subtitle processing logic (likely in `src/content/index.ts` or `ai.ts`) to intercept raw text and pass it through the Prompt API.
+- [x] Task: Update the overlay update logic to use the new `renderSegmentedText` output instead of raw text.
+- [x] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
