@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Language Learning Extension",
+  "version": "1.0.0",
+  "description": "YouTube Language Learning Overlay",
+  "content_scripts": [
+    {
+      "js": ["src/content/index.ts"],
+      "matches": ["https://www.youtube.com/watch*"]
+    }
+  ],
+  "host_permissions": ["https://www.youtube.com/*"]
+}

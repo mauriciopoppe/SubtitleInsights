@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Language Learning Extension",
+  "version": "1.0.0",
+  "description": "YouTube Language Learning Overlay",
+  "content_scripts": [
+    {
+      "js": [
+        "src/content/index.ts-loader.js"
+      ],
+      "matches": [
+        "https://www.youtube.com/watch*"
+      ]
+    }
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*"
+  ],
+  "background": {
+    "service_worker": "service-worker-loader.js",
+    "type": "module"
+  },
+  "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "**/*",
+        "*"
+      ],
+      "use_dynamic_url": false
+    }
+  ]
+}
