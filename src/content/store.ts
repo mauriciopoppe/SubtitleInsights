@@ -202,26 +202,21 @@ export class SubtitleStore {
 
   /**
    * Parses a timestamp string into seconds.
-   * Supports:
-   * - Raw seconds (e.g. "6.38")
-   * - HH:MM:SS (e.g. "00:00:18")
-   * - HH:MM:SS,mmm or HH:MM:SS.mmm (e.g. "00:00:06,380")
+   * Strictly supports HH:MM:SS.SSS format.
    */
   private parseTimestamp(ts: string): number {
     if (!ts) return 0;
 
-    // Check for HH:MM:SS and optionally [,.]mmm
-    const match = ts.match(/(\d{1,2}):(\d{1,2}):(\d{1,2})(?:[,.](\d{1,3}))?/);
+    const match = ts.match(/(\d{2}):(\d{2}):(\d{2})\.(\d{3})/);
     if (match) {
       const h = parseInt(match[1], 10);
       const m = parseInt(match[2], 10);
       const s = parseInt(match[3], 10);
-      const ms = match[4] ? parseInt(match[4], 10) : 0;
+      const ms = parseInt(match[4], 10);
       return h * 3600 + m * 60 + s + ms / 1000;
     }
 
-    // Fallback to float parsing (seconds)
-    return parseFloat(ts) || 0;
+    return 0;
   }
 
   private parseFurigana(token: string): AISegment[] {
