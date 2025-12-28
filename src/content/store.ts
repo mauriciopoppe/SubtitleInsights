@@ -217,14 +217,15 @@ export class SubtitleStore {
 
   /**
    * Parses a timestamp string into seconds.
-   * Strictly supports HH:MM:SS.SSS format.
+   * Supports HH:MM:SS.SSS and MM:SS.SSS formats.
    */
   private parseTimestamp(ts: string): number {
     if (!ts) return 0;
 
-    const match = ts.match(/(\d{2}):(\d{2}):(\d{2})\.(\d{3})/);
+    // Matches optional HH:, mandatory MM:SS.SSS
+    const match = ts.match(/^(?:(\d{2}):)?(\d{2}):(\d{2})\.(\d{3})$/);
     if (match) {
-      const h = parseInt(match[1], 10);
+      const h = match[1] ? parseInt(match[1], 10) : 0;
       const m = parseInt(match[2], 10);
       const s = parseInt(match[3], 10);
       const ms = parseInt(match[4], 10);
