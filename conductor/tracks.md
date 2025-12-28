@@ -1,3 +1,12 @@
-# Project Tracks
+---
 
-This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
+## [x] Track: Integrate Real Chrome Prompt API
+*Link: [./conductor/tracks/real_prompt_api_20251228/](./conductor/tracks/real_prompt_api_20251228/)*
+
+---
+
+
+
+## [~] Track: Furigana and Word Segmentation
+
+*Link: [./conductor/tracks/furigana_segmentation_20251228/](./conductor/tracks/furigana_segmentation_20251228/)*

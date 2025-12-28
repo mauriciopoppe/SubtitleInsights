@@ -31,6 +31,7 @@ interface OverlayElements {
   container: HTMLElement;
   translation: HTMLElement;
   original: HTMLElement;
+  enableButton: HTMLButtonElement;
 }
 
 const createOverlay = (): OverlayElements => {
@@ -43,13 +44,20 @@ const createOverlay = (): OverlayElements => {
   const originalText = document.createElement('div');
   originalText.className = 'lle-original';
   
+  const enableButton = document.createElement('button');
+  enableButton.className = 'lle-enable-btn';
+  enableButton.innerText = 'Enable AI Translation (Download Model)';
+  enableButton.style.display = 'none'; // Hidden by default
+  
+  overlay.appendChild(enableButton);
   overlay.appendChild(translationText);
   overlay.appendChild(originalText);
   
   return {
     container: overlay,
     translation: translationText,
-    original: originalText
+    original: originalText,
+    enableButton
   };
 };
 
@@ -71,6 +79,29 @@ const init = async () => {
   const tooltip = createTooltip();
   console.log('[Language Learning Extension] Overlay and tooltip injected.');
 
+  // Check availability and setup enable button
+  const availability = await aiClient.getAvailability();
+  if (availability === 'after-download') {
+      overlay.enableButton.style.display = 'block';
+      overlay.translation.style.display = 'none';
+      overlay.original.style.display = 'none';
+      
+      overlay.enableButton.onclick = async () => {
+          overlay.enableButton.innerText = 'Downloading Model...';
+          overlay.enableButton.disabled = true;
+          try {
+              await aiClient.getSession("System Prompt Placeholder"); // Trigger download
+              overlay.enableButton.style.display = 'none';
+              overlay.translation.style.display = 'block';
+              overlay.original.style.display = 'block';
+          } catch (e) {
+              console.error('Failed to download model', e);
+              overlay.enableButton.innerText = 'Download Failed. Retry?';
+              overlay.enableButton.disabled = false;
+          }
+      };
+  }
+
   let lastSegmentText = '';
 
   // Sync Engine
@@ -78,7 +109,8 @@ const init = async () => {
     const currentTimeMs = video.currentTime * 1000;
     const activeSegment = store.getSegmentAt(currentTimeMs);
 
-    if (activeSegment) {
+    // Only update if not waiting for download interaction
+    if (activeSegment && overlay.enableButton.style.display === 'none') {
       overlay.container.style.display = 'flex'; // Show overlay
       if (activeSegment.text !== lastSegmentText) {
           overlay.original.innerHTML = '';
@@ -92,12 +124,20 @@ const init = async () => {
           });
           lastSegmentText = activeSegment.text;
       }
-      overlay.translation.innerText = activeSegment.translation || 'Translating...';
-    } else {
+
+      if (aiClient.isDownloading) {
+        overlay.translation.innerText = "AI Model downloading... please wait";
+      } else {
+        overlay.translation.innerText = activeSegment.translation || 'Translating...';
+      }
+    } else if (!activeSegment && overlay.enableButton.style.display === 'none') {
       overlay.container.style.display = 'none'; // Hide overlay
       overlay.original.innerText = '';
       overlay.translation.innerText = '';
       lastSegmentText = '';
+    } else if (activeSegment && overlay.enableButton.style.display !== 'none') {
+        // Show overlay container even if button is visible, so button can be clicked
+        overlay.container.style.display = 'flex';
     }
   });
 
