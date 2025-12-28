@@ -7,17 +7,43 @@ export interface AISegment {
 
 const FORCE_MOCK = false; // Set to true for development on non-compatible browsers
 
-const SEGMENTATION_SYSTEM_PROMPT = `You are a Japanese linguistic expert. Segment the following Japanese sentence into words and provide furigana for Kanji.
+const SEGMENTATION_SYSTEM_PROMPT = `
+You are a Japanese linguistic expert. Segment the following Japanese sentence into words and provide the reading for every single unit.
 Format: JSON array of objects.
-Object schema: { "word": string, "reading"?: string }
+Object schema: { "word": string, "reading": string }
+
 RULES:
-1. 'reading' property is MANDATORY for any word containing Kanji.
-2. 'reading' must be in Hiragana.
-3. Omit 'reading' ONLY if the word is purely Hiragana/Katakana/Punctuation.
-Example:
+1. **Segmentation**: Segment the input text into semantic word units (morphemes).
+2. **Mandatory Reading**: The 'reading' property is MANDATORY for EVERY word object.
+3. **Hiragana Only**: The 'reading' must always be normalized to **Hiragana**.
+    - If the word is Kanji, provide the Hiragana reading.
+    - If the word is Katakana, convert it to Hiragana (e.g., コーヒー → こーひー).
+    - If the word is Punctuation/Symbol, repeat the symbol in the 'reading' field.
+4. **Output Format**: Return ONLY the raw JSON array. Do not use Markdown formatting.
+5. **Double Check**: Double check that the reading doesn't have Kanji caracters. If it has then
+   rerun the algorithm.
+6. **Reocurrence**: It's possible that the message has a segment with words that you have seen
+   before or the segment itself was seen before. You must always process it and always return
+   results for segmentes or words that you have seen before.
+
+Examples:
+
+[Case where a word doesn't have any Kanji]
+Input: あります
+Output: [{"word": "あります", "reading": "あります"}]
+
+[Case for a sentence that has multiple words]
 Input: 日本語を勉強します
-Output: [{"word": "日本語", "reading": "にほんご"}, {"word": "を"}, {"word": "勉強", "reading": "べんきょう"}, {"word": "します"}]
-Return ONLY the JSON array.`;
+Output: [{"word": "日本語", "reading": "にほんご"}, {"word": "を", "reading": "を"}, {"word": "勉強", "reading": "べんきょう"}, {"word": "します", "reading": "します"}]
+
+[Case involving Katakana, Adjectives, and Verbs]
+Input: 熱いコーヒーを飲みます
+Output: [{"word": "熱い", "reading": "あつい"}, {"word": "コーヒー", "reading": "こーひー"}, {"word": "を", "reading": "を"}, {"word": "飲み", "reading": "のみ"}, {"word": "ます", "reading": "ます"}]
+
+[Case involving Numbers]
+Input: ３つください
+Output: [{"word": "３つ", "reading": "みっつ"}, {"word": "ください", "reading": "ください"}]
+`;
 
 export class AIClient {
   private session: any = null;
@@ -68,8 +94,12 @@ export class AIClient {
 
     try {
       // @ts-ignore
+      const params = await window.LanguageModel.params();
+      // @ts-ignore
       const session = await window.LanguageModel.create({
         initialPrompts: [{ role: "system", content: systemPrompt }],
+        temperature: 0.2,
+        topK: params.defaultTopK,
         monitor(m: any) {
           m.addEventListener("downloadprogress", (e: any) => {
             console.log(

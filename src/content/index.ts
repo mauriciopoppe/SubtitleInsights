@@ -146,11 +146,11 @@ const init = async () => {
   }
 
   let currentActiveSegment: SubtitleSegment | undefined = undefined;
-  let lastTranslationText = '';
-  let lastOriginalHTML = '';
+  let lastTranslationText = "";
+  let lastOriginalHTML = "";
 
   // Sync Engine
-  video.addEventListener('timeupdate', () => {
+  video.addEventListener("timeupdate", () => {
     if (!isEnabled) return;
 
     const currentTimeMs = video.currentTime * 1000;
@@ -160,31 +160,34 @@ const init = async () => {
     // Case 1: No active segment
     if (!activeSegment) {
       if (currentActiveSegment !== undefined) {
-        overlay.container.style.display = 'none';
-        overlay.original.innerHTML = '';
-        overlay.translation.innerText = '';
+        overlay.container.style.display = "none";
+        overlay.original.innerHTML = "";
+        overlay.translation.innerText = "";
         currentActiveSegment = undefined;
-        lastTranslationText = '';
-        lastOriginalHTML = '';
+        lastTranslationText = "";
+        lastOriginalHTML = "";
       }
       return;
     }
 
     // Case 2: Active segment exists
     // Ensure overlay is visible
-    if (overlay.container.style.display !== 'flex') {
-      overlay.container.style.display = 'flex';
+    if (overlay.container.style.display !== "flex") {
+      overlay.container.style.display = "flex";
     }
 
     // Only update content if not waiting for download interaction
-    if (overlay.enableButton.style.display === 'none') {
+    if (overlay.enableButton.style.display === "none") {
       // Update Original Text if changed
-      let newOriginalHTML = '';
+      let newOriginalHTML = "";
       if (activeSegment.segmentedData) {
         newOriginalHTML = renderSegmentedText(activeSegment.segmentedData);
       } else {
         // Fallback while processing or if failed
-        newOriginalHTML = activeSegment.text.split('').map(char => `<span class="lle-word">${char}</span>`).join('');
+        newOriginalHTML = activeSegment.text
+          .split("")
+          .map((char) => `<span class="lle-word">${char}</span>`)
+          .join("");
       }
 
       if (newOriginalHTML !== lastOriginalHTML) {
@@ -193,11 +196,11 @@ const init = async () => {
       }
 
       // Update Translation Text if changed
-      let newTranslationText = '';
+      let newTranslationText = "";
       if (aiClient.isDownloading) {
         newTranslationText = "AI Model downloading... please wait";
       } else {
-        newTranslationText = activeSegment.translation || 'Translating...';
+        newTranslationText = activeSegment.translation || "Translating...";
       }
 
       if (newTranslationText !== lastTranslationText) {
@@ -211,9 +214,27 @@ const init = async () => {
 
   aiClient.testPromptAPI();
 
+  let currentVideoId = new URLSearchParams(window.location.search).get("v");
+
+  // Listen for YouTube navigation events to clear the store
+  window.addEventListener("yt-navigate-finish", () => {
+    const newVideoId = new URLSearchParams(window.location.search).get("v");
+    if (newVideoId !== currentVideoId) {
+      console.log(`[LLE] YouTube navigation detected (${currentVideoId} -> ${newVideoId}). Clearing store.`);
+      currentVideoId = newVideoId;
+      store.clear();
+      overlay.original.innerHTML = "";
+      overlay.translation.innerText = "";
+      currentActiveSegment = undefined;
+      lastTranslationText = "";
+      lastOriginalHTML = "";
+    }
+  });
+
+  // @ts-ignore
   chrome.runtime.onMessage.addListener((message) => {
-    if (message.type === 'LLE_SUBTITLES_CAPTURED') {
-      console.log('[LLE] Received subtitles from background:', message.payload);
+    if (message.type === "LLE_SUBTITLES_CAPTURED") {
+      console.log("[LLE] Received subtitles from background:", message.payload);
       const segments = SubtitleStore.parseYouTubeJSON(message.payload);
       store.addSegments(segments);
     }
@@ -221,4 +242,3 @@ const init = async () => {
 };
 
 init();
-

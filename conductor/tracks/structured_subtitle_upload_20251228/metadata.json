@@ -1,0 +1,8 @@
+{
+  "track_id": "structured_subtitle_upload_20251228",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2025-12-28T12:00:00Z",
+  "updated_at": "2025-12-28T12:00:00Z",
+  "description": "I want to have the ability to upload structured subtitle files to the extension, the extension will use some fiels from the structured subtitle file to decide the words to show. This is done because the in-device API is unreliable and sometimes produces unexpected readings, so I hope that with a structured input (the subtitle file) what a user sees is better. The structured subtitle files will be an array of objects each corresponding to a line or a few concatenated lines from the subtitles corresponding to a video. Each object will have: (1) expression which is the subtitle line itself, (2) If the word has kanji characters there will be a furigana reading, (3) a natural translation (4) a literal translation (5) a component breakdown (6) a contextual analysis breakdown (7) a section for gramatical gotchas."
+}
