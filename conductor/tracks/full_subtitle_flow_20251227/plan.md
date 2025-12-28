@@ -11,7 +11,15 @@ This plan outlines the implementation of the core subtitle interception, AI tran
 - [x] **Task: Conductor - User Manual Verification 'Phase 1: Subtitle Interception' (Protocol in workflow.md)**
 
 ## Phase 2: Chrome Prompt API Integration [checkpoint: 1df1fa6]
-...
+- [x] **Task: Setup Prompt API Client**
+    - Implement checks for `window.ai` or `window.model` availability.
+    - Create a wrapper class to manage sessions and system prompts (Natural vs Literal).
+- [x] **Task: Implement Batch Translator**
+    - Create a logic to take the next N segments from the Subtitle Store and process them through the API.
+    - Handle rate limits or sequential processing to avoid model crashes.
+- [x] **Task: Conductor - User Manual Verification 'Phase 2: Prompt API Integration' (Protocol in workflow.md)**
+
+## Phase 3: Synchronization & UI Updates [checkpoint: b50a16e]
 - [x] **Task: Implement Sync Engine**
     - Listen to `timeupdate` events on the `<video>` element.
     - Efficiently lookup the active segment from the store based on `video.currentTime`.
