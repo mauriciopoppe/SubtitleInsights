@@ -19,7 +19,7 @@ This plan outlines the steps to create a foundational YouTube subtitle overlay p
     - Implement a function to wait for and find the YouTube video player element (`#movie_player`).
 - [ ] **Task: Conductor - User Manual Verification 'Phase 2: Content Script & Detection' (Protocol in workflow.md)**
 
-## Phase 3: UI Overlay Implementation
+## Phase 3: UI Overlay Implementation [checkpoint: e8a8042]
 - [x] **Task: Create Overlay Component**
     - Implement a TypeScript function to create and inject the subtitle overlay DOM.
     - Use absolute positioning to place it over the video player.
