@@ -3,7 +3,7 @@ import { store, SubtitleStore } from './store';
 import { aiClient } from './ai';
 import { renderSegmentedText } from './render';
 
-console.log('[Language Learning Extension] Content script injected.');
+console.log('[LLE] Content script injected.');
 
 const waitForElement = (selector: string): Promise<HTMLElement> => {
   return new Promise((resolve) => {
@@ -70,15 +70,15 @@ const createTooltip = (): HTMLElement => {
 };
 
 const init = async () => {
-  console.log('[Language Learning Extension] Waiting for video player...');
+  console.log('[LLE] Waiting for video player...');
   const player = await waitForElement('#movie_player');
   const video = await waitForElement('video') as HTMLVideoElement;
-  console.log('[Language Learning Extension] Video player and element found.');
+  console.log('[LLE] Video player and element found.');
 
   const overlay = createOverlay();
   player.appendChild(overlay.container);
   const tooltip = createTooltip();
-  console.log('[Language Learning Extension] Overlay and tooltip injected.');
+  console.log('[LLE] Overlay and tooltip injected.');
 
   // Check availability and setup enable button
   const availability = await aiClient.getAvailability();
@@ -108,6 +108,7 @@ const init = async () => {
   // Sync Engine
   video.addEventListener('timeupdate', () => {
     const currentTimeMs = video.currentTime * 1000;
+    store.updatePlaybackTime(currentTimeMs); // Trigger lazy loading
     const activeSegment = store.getSegmentAt(currentTimeMs);
 
     // Only update if not waiting for download interaction
@@ -184,7 +185,7 @@ const init = async () => {
     if (event.source !== window) return;
     
     if (event.data.type === 'LLE_SUBTITLES_CAPTURED') {
-      console.log('[Language Learning Extension] Received subtitles:', event.data.payload);
+      console.log('[LLE] Received subtitles:', event.data.payload);
       const segments = SubtitleStore.parseYouTubeJSON(event.data.payload);
       store.addSegments(segments);
     }

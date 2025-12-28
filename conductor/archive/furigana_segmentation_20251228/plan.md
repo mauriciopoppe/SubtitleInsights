@@ -12,7 +12,7 @@ Implement Furigana and word segmentation for Japanese subtitles using the Chrome
 - [x] Task: Add basic CSS styles to `src/content/styles.css` to ensure `<ruby>` tags and spaces are legible within the YouTube overlay.
 - [x] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
-## Phase 3: Integration with Subtitle Pipeline
+## Phase 3: Integration with Subtitle Pipeline [checkpoint: 358307a]
 - [x] Task: Modify the existing subtitle processing logic (likely in `src/content/index.ts` or `ai.ts`) to intercept raw text and pass it through the Prompt API.
 - [x] Task: Update the overlay update logic to use the new `renderSegmentedText` output instead of raw text.
 - [x] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)

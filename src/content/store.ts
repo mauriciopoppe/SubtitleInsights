@@ -14,25 +14,41 @@ export class SubtitleStore {
 
   addSegments(segments: SubtitleSegment[]) {
     this.segments = [...this.segments, ...segments].sort((a, b) => a.start - b.start);
-    console.log(`[SubtitleStore] Added ${segments.length} segments. Total: ${this.segments.length}`);
-    this.translateNextBatch();
+    console.log(`[LLE][SubtitleStore] Added ${segments.length} segments. Total: ${this.segments.length}`);
+    // Removed automatic translation trigger
   }
 
-  async translateNextBatch() {
+  async updatePlaybackTime(currentTimeMs: number) {
     if (this.isTranslating) return;
+
+    // Find current and next few segments that need processing
+    // 1. Find index of current segment (or the next one if between segments)
+    const currentIndex = this.segments.findIndex(s => s.end >= currentTimeMs);
+    if (currentIndex === -1) return;
+
+    // 2. Look ahead N segments
+    const LOOKAHEAD = 5;
+    const candidates = this.segments.slice(currentIndex, currentIndex + LOOKAHEAD);
     
-    // Filter segments that need either translation or segmentation
-    const pending = this.segments.filter(s => !s.translation || !s.segmentedData);
-    if (pending.length === 0) return;
+    // 3. Filter for pending ones
+    const pending = candidates.filter(s => !s.translation || !s.segmentedData);
 
+    if (pending.length > 0) {
+      await this.processBatch(pending);
+    }
+  }
+
+  async processBatch(batch: SubtitleSegment[]) {
+    if (this.isTranslating) return;
     this.isTranslating = true;
-    const batchSize = 3; // Reduced batch size as we do 2 calls per segment
-    const batch = pending.slice(0, batchSize);
 
-    console.log(`[SubtitleStore] Processing batch of ${batch.length} segments...`);
+    console.log(`[LLE][SubtitleStore] Processing lazy batch of ${batch.length} segments...`);
 
     for (const segment of batch) {
       try {
+        // Double check if processed in race condition
+        if (segment.translation && segment.segmentedData) continue;
+
         const [translation, segmentedData] = await Promise.all([
              segment.translation ? Promise.resolve(segment.translation) : aiClient.translate(segment.text),
              segment.segmentedData ? Promise.resolve(segment.segmentedData) : aiClient.segment(segment.text)
@@ -42,15 +58,13 @@ export class SubtitleStore {
         segment.segmentedData = segmentedData;
 
       } catch (e) {
-        console.error('[SubtitleStore] Failed to process segment', segment.text, e);
+        console.error('[LLE][SubtitleStore] Failed to process segment', segment.text, e);
         if (!segment.translation) segment.translation = 'Error';
         if (!segment.segmentedData) segment.segmentedData = [{ word: segment.text }];
       }
     }
 
     this.isTranslating = false;
-    // Recursively call to process next batch if any
-    this.translateNextBatch();
   }
 
   getSegmentAt(timeMs: number): SubtitleSegment | undefined {

@@ -10,7 +10,10 @@ const FORCE_MOCK = false; // Set to true for development on non-compatible brows
 const SEGMENTATION_SYSTEM_PROMPT = `You are a Japanese linguistic expert. Segment the following Japanese sentence into words and provide furigana for Kanji.
 Format: JSON array of objects.
 Object schema: { "word": string, "reading"?: string }
-'reading' should be Hiragana. Omit 'reading' if the word has no Kanji.
+RULES:
+1. 'reading' property is MANDATORY for any word containing Kanji.
+2. 'reading' must be in Hiragana.
+3. Omit 'reading' ONLY if the word is purely Hiragana/Katakana/Punctuation.
 Example:
 Input: 日本語を勉強します
 Output: [{"word": "日本語", "reading": "にほんご"}, {"word": "を"}, {"word": "勉強", "reading": "べんきょう"}, {"word": "します"}]
@@ -36,7 +39,7 @@ export class AIClient {
       this.availability = status as AIAvailability;
       return this.availability!;
     } catch (e) {
-      console.error("[AIClient] Availability check failed", e);
+      console.error("[LLE][AIClient] Availability check failed", e);
       return "no";
     }
   }
@@ -46,9 +49,13 @@ export class AIClient {
     return availability !== "no";
   }
 
-  async getSession(systemPrompt: string, type: "translation" | "segmentation" = "translation") {
+  async getSession(
+    systemPrompt: string,
+    type: "translation" | "segmentation" = "translation",
+  ) {
     if (type === "translation" && this.session) return this.session;
-    if (type === "segmentation" && this.segmentationSession) return this.segmentationSession;
+    if (type === "segmentation" && this.segmentationSession)
+      return this.segmentationSession;
 
     const availability = await this.getAvailability();
     if (availability === "no") {
@@ -62,12 +69,12 @@ export class AIClient {
     try {
       // @ts-ignore
       const session = await window.LanguageModel.create({
-        initialPrompts: [
-            { role: "system", content: systemPrompt }
-        ],
+        initialPrompts: [{ role: "system", content: systemPrompt }],
         monitor(m: any) {
           m.addEventListener("downloadprogress", (e: any) => {
-            console.log(`[AIClient] Download progress: ${e.loaded}/${e.total}`);
+            console.log(
+              `[LLE][AIClient] Download progress: ${e.loaded}/${e.total}`,
+            );
           });
         },
       });
@@ -88,29 +95,40 @@ export class AIClient {
     }
 
     try {
-      const session = await this.getSession(SEGMENTATION_SYSTEM_PROMPT, "segmentation");
-      const result = await session.prompt([
-        { role: "user", content: text }
-      ]);
+      const session = await this.getSession(
+        SEGMENTATION_SYSTEM_PROMPT,
+        "segmentation",
+      );
+      const result = await session.prompt([{ role: "user", content: text }]);
       return this.parseAISubtitleResponse(result.trim(), text);
     } catch (e) {
-      console.error("[AIClient] Segmentation failed", e);
+      console.error("[LLE][AIClient] Segmentation failed", e);
       this.segmentationSession = null;
       return [{ word: text }];
     }
   }
 
-  private parseAISubtitleResponse(response: string, originalText: string): AISegment[] {
+  private parseAISubtitleResponse(
+    response: string,
+    originalText: string,
+  ): AISegment[] {
     try {
       // Remove any markdown code block markers if present
-      const cleaned = response.replace(/^```json\n?/, "").replace(/\n?```$/, "").trim();
+      const cleaned = response
+        .replace(/^```json\n?/, "")
+        .replace(/\n?```$/, "")
+        .trim();
       const parsed = JSON.parse(cleaned);
       if (Array.isArray(parsed)) {
         return parsed;
       }
       return [{ word: originalText }];
     } catch (e) {
-      console.error("[AIClient] Failed to parse AI response as JSON", response, e);
+      console.error(
+        "[LLE][AIClient] Failed to parse AI response as JSON",
+        response,
+        e,
+      );
       return [{ word: originalText }];
     }
   }
@@ -122,7 +140,7 @@ export class AIClient {
     const availability = await this.getAvailability();
     if (availability === "no") {
       console.warn(
-        "[AIClient] Prompt API not available. Using MOCK translation.",
+        "[LLE][AIClient] Prompt API not available. Using MOCK translation.",
       );
       return `[MOCK] ${text} (Translated)`;
     }
@@ -134,12 +152,10 @@ export class AIClient {
 
     try {
       const session = await this.getSession(systemPrompt);
-      const result = await session.prompt([
-        { role: "user", content: text }
-      ]);
+      const result = await session.prompt([{ role: "user", content: text }]);
       return result.trim();
     } catch (e) {
-      console.error("[AIClient] Translation failed", e);
+      console.error("[LLE][AIClient] Translation failed", e);
       // Reset session on error as it might be corrupted
       this.session = null;
       throw e;
