@@ -2,7 +2,7 @@
 
 This plan outlines the implementation of the core subtitle interception, AI translation, and synchronization logic.
 
-## Phase 1: Subtitle Interception & Data Management
+## Phase 1: Subtitle Interception & Data Management [checkpoint: 26f72ab]
 - [x] **Task: Implement Request Interceptor**
     - Use `chrome.declarativeNetRequest` or a monkey-patch on `fetch`/`XMLHttpRequest` to capture `/api/timedtext` URLs.
     - Implement a background script or content script utility to fetch and parse the captured XML/JSON subtitle format.
