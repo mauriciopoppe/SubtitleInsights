@@ -74,3 +74,14 @@
   background-color: #555;
   cursor: default;
 }
+
+ruby {
+  ruby-position: over;
+  ruby-align: center;
+}
+
+rt {
+  font-size: 0.5em;
+  color: #aaa;
+  user-select: none;
+}
