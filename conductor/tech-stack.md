@@ -18,6 +18,7 @@
 - **Testing:** Vitest (for utility logic)
 
 ## Architecture
-- **Content Scripts:** Primary logic for YouTube DOM injection and subtitle synchronization.
+- **Content Scripts (ISOLATED):** Main extension logic, DOM injection, and subtitle synchronization.
+- **Interceptor (MAIN):** Runs in the main page context to monkey-patch `fetch` and `XHR` for subtitle interception, communicating with the isolated script via `window.postMessage`.
 - **Background Service Worker:** Manages the lifecycle of the Chrome Prompt API session if persistence is needed across tab changes.
 - **Offscreen Documents:** (Optional) If the Prompt API requires a DOM context not available in the worker.
