@@ -18,6 +18,7 @@ A Chrome extension designed for language learners who use YouTube as their prima
 - **Furigana & Segmentation:** Adds Hiragana readings above Kanji (using `<ruby>`) and segments sentences with visible spaces for easier reading.
 - **AI-Powered Context:** Uses the Chrome Prompt API to provide definitions, grammar explanations, and Kanji breakdowns on hover.
 - **Pre-fetch Translation:** Optimizes speed by fetching and translating subtitle tracks ahead of playback.
+- **Player Integration:** Adds a seamless enable/disable toggle directly into the YouTube player controls.
 - **In-Page Overlay:** Injects directly into the YouTube player for a seamless, "Language Reactor"-style experience.
 
 ## User Experience

@@ -13,7 +13,7 @@ Implement a native-looking toggle in the YouTube player to enable or disable the
 - [x] Task: Bind click events to the toggle to update the state and UI appearance.
 - [x] Task: Conductor - User Manual Verification 'Phase 2' (Protocol in workflow.md)
 
-## Phase 3: Extension Integration
+## Phase 3: Extension Integration [checkpoint: 4c7a80f]
 - [x] Task: Update the `timeupdate` sync engine in `index.ts` to respect the `isEnabled` state.
 - [x] Task: Ensure the overlay visibility is correctly initialized and updated when the toggle is clicked.
 - [x] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)

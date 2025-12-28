@@ -27,33 +27,6 @@
   font-weight: bold;
 }
 
-.lle-word {
-  cursor: help;
-  display: inline-block;
-  padding: 0 2px;
-  pointer-events: auto;
-}
-
-.lle-word:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-}
-
-.lle-tooltip {
-  position: fixed;
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  z-index: 10001;
-  pointer-events: none;
-  max-width: 250px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.1);
-  display: none;
-}
-
 .lle-enable-btn {
   background-color: #065fd4;
   color: white;
