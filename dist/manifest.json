@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "js": [
-        "src/content/index.ts-loader.js"
+        "assets/index.ts-l0sNRNKZ.js"
       ],
       "matches": [
         "https://www.youtube.com/watch*"
@@ -16,18 +16,13 @@
   "host_permissions": [
     "https://www.youtube.com/*"
   ],
-  "background": {
-    "service_worker": "service-worker-loader.js",
-    "type": "module"
-  },
   "web_accessible_resources": [
     {
       "matches": [
-        "<all_urls>"
+        "https://www.youtube.com/*"
       ],
       "resources": [
-        "**/*",
-        "*"
+        "assets/index.ts-l0sNRNKZ.js"
       ],
       "use_dynamic_url": false
     }
