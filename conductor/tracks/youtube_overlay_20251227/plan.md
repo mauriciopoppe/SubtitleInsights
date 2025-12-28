@@ -2,7 +2,7 @@
 
 This plan outlines the steps to create a foundational YouTube subtitle overlay prototype using mock data.
 
-## Phase 1: Project Scaffolding
+## Phase 1: Project Scaffolding [checkpoint: 330110b]
 - [x] **Task: Initialize Vite Project**
     - Setup a new project with `vite` and `typescript`.
     - Install `@crxjs/vite-plugin` and configure `vite.config.ts`.
