@@ -1,4 +1,5 @@
 import './styles.css';
+import { store, SubtitleStore } from './store';
 
 console.log('[Language Learning Extension] Content script injected.');
 
@@ -51,6 +52,16 @@ const init = async () => {
   const overlay = createOverlay();
   player.appendChild(overlay);
   console.log('[Language Learning Extension] Overlay injected.');
+
+  window.addEventListener('message', (event) => {
+    if (event.source !== window) return;
+    
+    if (event.data.type === 'LLE_SUBTITLES_CAPTURED') {
+      console.log('[Language Learning Extension] Received subtitles:', event.data.payload);
+      const segments = SubtitleStore.parseYouTubeJSON(event.data.payload);
+      store.addSegments(segments);
+    }
+  });
 };
 
 init();

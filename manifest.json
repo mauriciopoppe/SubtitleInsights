@@ -7,6 +7,12 @@
     {
       "js": ["src/content/index.ts"],
       "matches": ["https://www.youtube.com/watch*"]
+    },
+    {
+      "js": ["src/content/interceptor.ts"],
+      "matches": ["https://www.youtube.com/watch*"],
+      "run_at": "document_start",
+      "world": "MAIN"
     }
   ],
   "host_permissions": ["https://www.youtube.com/*"]
