@@ -1,5 +1,6 @@
 import './styles.css';
 import { store, SubtitleStore } from './store';
+import { aiClient } from './ai';
 
 console.log('[Language Learning Extension] Content script injected.');
 
@@ -52,6 +53,8 @@ const init = async () => {
   const overlay = createOverlay();
   player.appendChild(overlay);
   console.log('[Language Learning Extension] Overlay injected.');
+
+  aiClient.testPromptAPI();
 
   window.addEventListener('message', (event) => {
     if (event.source !== window) return;
