@@ -12,10 +12,10 @@ This plan outlines the steps to create a foundational YouTube subtitle overlay p
 - [ ] **Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding' (Protocol in workflow.md)**
 
 ## Phase 2: Content Script & Detection
-- [ ] **Task: Create Content Script Entrypoint**
+- [x] **Task: Create Content Script Entrypoint**
     - Create `src/content/index.ts`.
     - Implement a basic logger to verify injection.
-- [ ] **Task: Video Player Detection Logic**
+- [x] **Task: Video Player Detection Logic**
     - Implement a function to wait for and find the YouTube video player element (`#movie_player`).
 - [ ] **Task: Conductor - User Manual Verification 'Phase 2: Content Script & Detection' (Protocol in workflow.md)**
 
