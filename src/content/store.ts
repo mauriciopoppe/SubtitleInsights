@@ -145,6 +145,51 @@ export class SubtitleStore {
       const lines = section.split("\n");
       const text = lines[0].trim();
 
+      const getMultilineValue = (key: string) => {
+        const pattern = `**${key}**:`;
+        const headerIndex = lines.findIndex((l) => l.includes(pattern));
+        if (headerIndex === -1) return "";
+
+        const headerLine = lines[headerIndex];
+        const sameLineContent = headerLine
+          .split(pattern)
+          .slice(1)
+          .join(pattern)
+          .trim();
+
+        const valueLines = [];
+        if (sameLineContent) {
+          valueLines.push(sameLineContent);
+        }
+
+        // Look at subsequent lines until we hit another key or the end
+        for (let i = headerIndex + 1; i < lines.length; i++) {
+          const line = lines[i];
+          // Check if the line starts a new key (e.g., "* **Key**:")
+          if (line.trim().startsWith("* **") && line.includes("**:")) {
+            break;
+          }
+          // Only add if it's not empty or if we already have some content
+          if (line.trim() !== "" || valueLines.length > 0) {
+            // If it's a list item, we keep it as is, otherwise we might want to trim it
+            // but for markdown rendering, whitespace can be important (e.g. indentation)
+            // however, usually these are within a bullet point, so we trim leading "* " or "- " if it's there?
+            // Actually, let's just trim the line and keep it if it's not starting a new property.
+            valueLines.push(line.trim());
+          }
+        }
+
+        // Remove trailing empty lines
+        while (
+          valueLines.length > 0 &&
+          valueLines[valueLines.length - 1] === ""
+        ) {
+          valueLines.pop();
+        }
+
+        return valueLines.join("\n");
+      };
+
       const getValue = (key: string) => {
         const pattern = `**${key}**:`;
         const line = lines.find((l) => l.includes(pattern));
@@ -152,36 +197,6 @@ export class SubtitleStore {
         const parts = line.split(pattern);
         return parts.slice(1).join(pattern).trim();
       };
-
-      // Special handling for Grammatical Gotchas (can be on same line or multiline list)
-      const gotchasHeader = "**Grammatical Gotchas**:";
-      const gotchasLine = lines.find((l) => l.includes(gotchasHeader));
-      let grammatical_gotchas = "";
-
-      if (gotchasLine) {
-        const sameLineContent = gotchasLine.split(gotchasHeader).slice(1).join(gotchasHeader).trim();
-        if (sameLineContent) {
-          grammatical_gotchas = sameLineContent;
-        } else {
-          const gotchasIndex = lines.indexOf(gotchasLine);
-          const gotchasLines = [];
-          for (let i = gotchasIndex + 1; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (
-              line.startsWith("-") ||
-              line.startsWith("*") ||
-              /^\d+\./.test(line)
-            ) {
-              gotchasLines.push(line);
-            } else if (line === "" && gotchasLines.length > 0) {
-              continue;
-            } else if (line !== "") {
-              break;
-            }
-          }
-          grammatical_gotchas = gotchasLines.join("\n");
-        }
-      }
 
       const segmentationStr = getValue("Segmentation");
 
@@ -192,8 +207,8 @@ export class SubtitleStore {
         translation: getValue("Translation"),
         literal_translation: getValue("Literal Translation"),
         segmentation: segmentationStr ? segmentationStr.split(/\s+/) : [],
-        contextual_analysis: getValue("Contextual Analysis"),
-        grammatical_gotchas,
+        contextual_analysis: getMultilineValue("Contextual Analysis"),
+        grammatical_gotchas: getMultilineValue("Grammatical Gotchas"),
       });
     }
 
