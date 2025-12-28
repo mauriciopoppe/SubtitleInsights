@@ -13,7 +13,7 @@
     "service_worker": "src/background/index.ts",
     "type": "module"
   },
-  "host_permissions": ["https://www.youtube.com/*"],
+  "host_permissions": ["*://*.youtube.com/*"],
   "permissions": ["storage", "webRequest"]
 }
-  
+

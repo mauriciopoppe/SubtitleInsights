@@ -18,6 +18,7 @@ A Chrome extension designed for language learners who use YouTube as their prima
 - **Furigana & Segmentation:** Adds Hiragana readings above Kanji (using `<ruby>`) and segments sentences with visible spaces for easier reading.
 - **Pre-fetch Translation:** Optimizes speed by fetching and translating subtitle tracks ahead of playback.
 - **Player Integration:** Adds a seamless enable/disable toggle directly into the YouTube player controls.
+- **Structured Subtitle Upload:** Allows uploading pre-processed Markdown files for high-quality, curated translations and analysis, bypassing AI generation when available.
 - **In-Page Overlay:** Injects directly into the YouTube player for a seamless, "Language Reactor"-style experience.
 
 ## User Experience
@@ -25,3 +26,4 @@ A Chrome extension designed for language learners who use YouTube as their prima
 2. The extension activates, pre-fetching the subtitle track.
 3. The Chrome Prompt API processes the segments.
 4. An overlay appears on the player, showing the dual-translation.
+5. (Optional) User uploads a structured Markdown file to upgrade the experience to expert-curated content.

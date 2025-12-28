@@ -6,20 +6,18 @@ This feature allows users to upload a pre-processed JSON file containing high-qu
 ## Functional Requirements
 
 ### 1. Data Structure
-The uploaded JSON file must be an array of objects with the following schema:
-- `start`: number (milliseconds)
-- `end`: number (milliseconds)
-- `expression`: string (the original Japanese text)
-- `furigana`: string (reading for Kanji characters)
-- `natural_translation`: string (fluid translation)
-- `literal_translation`: string (word-for-word breakdown)
-- `components`: array/string (breakdown of individual words/parts)
-- `contextual_analysis`: string (nuance and context)
-- `grammatical_gotchas`: string (difficult grammar points)
+The uploaded file must be a Markdown file (`.md`) where each subtitle segment is defined as a section starting with `## [Expression]`. Each section contains a bulleted list with the following keys:
+- `**Timestamp Start**`: number (seconds)
+- `**Timestamp End**`: number (seconds)
+- `**Translation**`: string (natural translation)
+- `**Literal Translation**`: string (word-for-word breakdown)
+- `**Segmentation**`: space-separated string of tokens, where tokens can be `Word(Reading)`
+- `**Contextual Analysis**`: string (nuance and context)
+- `**Grammatical Gotchas**`: string (multiline markdown list of difficult grammar points)
 
 ### 2. UI - Upload Button
 - Add an "Upload" icon or button to the YouTube player controls, positioned next to the "LLE" toggle.
-- Clicking the button opens a standard file picker (accepting `.json`).
+- Clicking the button opens a standard file picker (accepting `.md`).
 
 ### 3. Processing & Sync Logic
 - Once a file is uploaded, the extension should parse it and populate the `SubtitleStore`.

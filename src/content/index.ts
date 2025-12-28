@@ -1,4 +1,5 @@
 import "./styles.css";
+import snarkdown from "snarkdown";
 import { store, SubtitleStore, SubtitleSegment } from "./store";
 import { aiClient } from "./ai";
 import { renderSegmentedText } from "./render";
@@ -33,6 +34,9 @@ interface OverlayElements {
   container: HTMLElement;
   translation: HTMLElement;
   original: HTMLElement;
+  literal: HTMLElement;
+  analysis: HTMLElement;
+  gotchas: HTMLElement;
   enableButton: HTMLButtonElement;
 }
 
@@ -46,6 +50,15 @@ const createOverlay = (): OverlayElements => {
   const originalText = document.createElement("div");
   originalText.className = "lle-original";
 
+  const literalText = document.createElement("div");
+  literalText.className = "lle-literal";
+
+  const analysisText = document.createElement("div");
+  analysisText.className = "lle-analysis";
+
+  const gotchasText = document.createElement("div");
+  gotchasText.className = "lle-gotchas";
+
   const enableButton = document.createElement("button");
   enableButton.className = "lle-enable-btn";
   enableButton.innerText = "Enable AI Translation (Download Model)";
@@ -54,11 +67,17 @@ const createOverlay = (): OverlayElements => {
   overlay.appendChild(enableButton);
   overlay.appendChild(translationText);
   overlay.appendChild(originalText);
+  overlay.appendChild(literalText);
+  overlay.appendChild(analysisText);
+  overlay.appendChild(gotchasText);
 
   return {
     container: overlay,
     translation: translationText,
     original: originalText,
+    literal: literalText,
+    analysis: analysisText,
+    gotchas: gotchasText,
     enableButton,
   };
 };
@@ -78,7 +97,20 @@ const setupToggle = async () => {
   toggle.innerText = "LLE";
   toggle.title = "Toggle Language Learning Extension";
 
+  const uploadBtn = document.createElement("span");
+  uploadBtn.className = "lle-upload-btn";
+  uploadBtn.innerText = "UP";
+  uploadBtn.title = "Upload Structured Subtitles (Markdown)";
+
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = ".md";
+  fileInput.style.display = "none";
+  fileInput.id = "lle-upload-input";
+
   container.appendChild(toggle);
+  container.appendChild(uploadBtn);
+  container.appendChild(fileInput);
 
   const updateUI = (enabled: boolean) => {
     toggle.className = `lle-toggle-btn ${enabled ? "enabled" : "disabled"}`;
@@ -86,6 +118,38 @@ const setupToggle = async () => {
 
   const isEnabled = await Config.getIsEnabled();
   updateUI(isEnabled);
+
+  uploadBtn.onclick = () => {
+    fileInput.click();
+  };
+
+  fileInput.onchange = (e) => {
+    const target = e.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const content = event.target?.result as string;
+        const segments = store.parseMarkdownStructuredData(content);
+
+        if (segments && segments.length > 0) {
+          store.loadStructuredData(segments);
+          uploadBtn.classList.add("active");
+          uploadBtn.title = `Loaded: ${file.name}`;
+          console.log(`[LLE] Successfully loaded ${segments.length} segments from ${file.name}`);
+        } else {
+          console.warn("[LLE] No valid segments found in file:", file.name);
+          alert("No valid segments found in the Markdown file. Please check the format.");
+        }
+      } catch (err) {
+        console.error("[LLE] Failed to parse Markdown file", err);
+        alert("Failed to parse Markdown file. Make sure it follows the required format.");
+      }
+    };
+    reader.readAsText(file);
+  };
 
   toggle.onclick = async () => {
     const currentState = await Config.getIsEnabled();
@@ -100,6 +164,8 @@ const setupToggle = async () => {
 
   // Insert container after time display
   timeDisplay.after(container);
+
+  return { uploadBtn };
 };
 
 const init = async () => {
@@ -108,7 +174,7 @@ const init = async () => {
   const video = (await waitForElement("video")) as HTMLVideoElement;
   console.log("[LLE] Video player and element found.");
 
-  await setupToggle();
+  const { uploadBtn } = await setupToggle();
 
   const overlay = createOverlay();
   player.appendChild(overlay.container);
@@ -163,6 +229,9 @@ const init = async () => {
         overlay.container.style.display = "none";
         overlay.original.innerHTML = "";
         overlay.translation.innerText = "";
+        overlay.literal.innerText = "";
+        overlay.analysis.innerText = "";
+        overlay.gotchas.innerText = "";
         currentActiveSegment = undefined;
         lastTranslationText = "";
         lastOriginalHTML = "";
@@ -207,6 +276,11 @@ const init = async () => {
         overlay.translation.innerText = newTranslationText;
         lastTranslationText = newTranslationText;
       }
+
+      // Update Additional Fields (only for structured data)
+      overlay.literal.innerText = activeSegment.literal_translation || "";
+      overlay.analysis.innerHTML = activeSegment.contextual_analysis ? snarkdown(activeSegment.contextual_analysis) : "";
+      overlay.gotchas.innerHTML = activeSegment.grammatical_gotchas ? snarkdown(activeSegment.grammatical_gotchas) : "";
     }
 
     currentActiveSegment = activeSegment;
@@ -220,11 +294,18 @@ const init = async () => {
   window.addEventListener("yt-navigate-finish", () => {
     const newVideoId = new URLSearchParams(window.location.search).get("v");
     if (newVideoId !== currentVideoId) {
-      console.log(`[LLE] YouTube navigation detected (${currentVideoId} -> ${newVideoId}). Clearing store.`);
+      console.log(
+        `[LLE] YouTube navigation detected (${currentVideoId} -> ${newVideoId}). Clearing store.`,
+      );
       currentVideoId = newVideoId;
       store.clear();
+      uploadBtn.classList.remove("active");
+      uploadBtn.title = "Upload Structured Subtitles (Markdown)";
       overlay.original.innerHTML = "";
       overlay.translation.innerText = "";
+      overlay.literal.innerText = "";
+      overlay.analysis.innerHTML = "";
+      overlay.gotchas.innerHTML = "";
       currentActiveSegment = undefined;
       lastTranslationText = "";
       lastOriginalHTML = "";

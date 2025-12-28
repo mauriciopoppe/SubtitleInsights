@@ -27,6 +27,43 @@
   font-weight: bold;
 }
 
+.lle-literal {
+  font-size: 0.85em;
+  color: #aaa;
+  font-style: italic;
+}
+
+.lle-analysis, .lle-gotchas {
+  font-size: 0.75em;
+  color: #ccc;
+  max-width: 600px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 4px;
+  white-space: normal; /* snarkdown handles block structure */
+  text-align: left;
+}
+
+.lle-analysis ul, .lle-gotchas ul, .lle-analysis ol, .lle-gotchas ol {
+  padding-left: 20px;
+  margin: 4px 0;
+}
+
+.lle-analysis li, .lle-gotchas li {
+  margin-bottom: 2px;
+}
+
+.lle-analysis code, .lle-gotchas code {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.lle-analysis:empty, .lle-gotchas:empty, .lle-literal:empty {
+  display: none;
+}
+
 .lle-enable-btn {
   background-color: #065fd4;
   color: white;
@@ -93,4 +130,30 @@ rt {
 
 .lle-toggle-btn.disabled {
   color: #aaa;
+}
+
+.lle-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  margin: 0 2px;
+  cursor: pointer;
+  font-family: "YouTube Noto", Roboto, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background-color 0.1s;
+  user-select: none;
+  background-color: transparent;
+  color: #aaa;
+}
+
+.lle-upload-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.lle-upload-btn.active {
+  color: #065fd4;
 }

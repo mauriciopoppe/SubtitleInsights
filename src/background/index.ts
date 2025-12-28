@@ -1,27 +1,33 @@
-chrome.webRequest.onCompleted.addListener(
-  async (details) => {
-    const { url, tabId } = details;
+console.log('[LLE] Background script loading...');
 
-    if (url.includes('/api/timedtext') && !url.includes('&lle_ignore=true')) {
-      console.log('[LLE] Detected subtitle URL:', url);
+if (typeof chrome !== 'undefined' && chrome.webRequest) {
+  chrome.webRequest.onCompleted.addListener(
+    async (details) => {
+      const { url, tabId } = details;
 
-      try {
-        // We add a param to avoid intercepting our own fetch if it were to trigger webRequest again
-        // though usually background fetches don't trigger webRequest for the same extension in a loop
-        const fetchUrl = url + (url.includes('?') ? '&' : '?') + 'lle_ignore=true';
-        const response = await fetch(fetchUrl);
-        const data = await response.json();
+      if (url.includes('/api/timedtext') && !url.includes('lle_ignore=true')) {
+        console.log('[LLE] Detected subtitle URL:', url);
 
-        if (tabId !== -1) {
-          chrome.tabs.sendMessage(tabId, {
-            type: 'LLE_SUBTITLES_CAPTURED',
-            payload: data
-          });
+        try {
+          // We add a param to avoid intercepting our own fetch
+          const fetchUrl = url + (url.includes('?') ? '&' : '?') + 'lle_ignore=true';
+          const response = await fetch(fetchUrl);
+          const data = await response.json();
+
+          if (tabId !== -1) {
+            chrome.tabs.sendMessage(tabId, {
+              type: 'LLE_SUBTITLES_CAPTURED',
+              payload: data
+            });
+          }
+        } catch (e) {
+          console.error('[LLE] Background fetch failed', e);
         }
-      } catch (e) {
-        console.error('[LLE] Background fetch failed', e);
       }
-    }
-  },
-  { urls: ['*://*.youtube.com/api/timedtext*'] }
-);
+    },
+    { urls: ['*://*.youtube.com/api/timedtext*'] }
+  );
+  console.log('[LLE] webRequest listener registered.');
+} else {
+  console.error('[LLE] chrome.webRequest is not available. Check permissions in manifest.json.');
+}

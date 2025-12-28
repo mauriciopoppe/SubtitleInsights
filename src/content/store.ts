@@ -5,12 +5,10 @@ export interface SubtitleSegment {
   end: number;
   text: string;
   translation?: string;
-  segmentedData?: AISegment[];
+  segmentedData?: AISegment[][]; // Outer = visual blocks, Inner = parts of the block
   // Structured data fields
-  furigana?: string;
-  natural_translation?: string;
+  segmentation?: string[];
   literal_translation?: string;
-  components?: any;
   contextual_analysis?: string;
   grammatical_gotchas?: string;
 }
@@ -88,7 +86,9 @@ export class SubtitleStore {
         ]);
 
         segment.translation = translation;
-        segment.segmentedData = segmentedData;
+        // AI segments are flat, each is its own visual block
+        // @ts-ignore (AIClient returns AISegment[])
+        segment.segmentedData = segmentedData.map((s) => [s]);
       } catch (e) {
         console.error(
           "[LLE][SubtitleStore] Failed to process segment",
@@ -97,27 +97,162 @@ export class SubtitleStore {
         );
         if (!segment.translation) segment.translation = "Error";
         if (!segment.segmentedData)
-          segment.segmentedData = [{ word: segment.text }];
+          segment.segmentedData = [[{ word: segment.text }]];
       }
     }
 
     this.isTranslating = false;
   }
 
-  loadStructuredData(data: SubtitleSegment[]) {
+  loadStructuredData(data: any[]) {
     this.clear();
-    this.segments = [...data].sort((a, b) => a.start - b.start);
+    this.segments = data
+      .map((s) => {
+        const segment: SubtitleSegment = {
+          start: s.start * 1000,
+          end: s.end * 1000,
+          text: s.text,
+          translation: s.translation,
+          segmentation: s.segmentation,
+          literal_translation: s.literal_translation,
+          contextual_analysis: s.contextual_analysis,
+          grammatical_gotchas: s.grammatical_gotchas,
+        };
+
+        if (Array.isArray(s.segmentation)) {
+          segment.segmentedData = s.segmentation.map((token) =>
+            this.parseFurigana(token),
+          );
+        }
+        return segment;
+      })
+      .sort((a, b) => a.start - b.start);
     this._isStructured = true;
-    console.log(`[LLE][SubtitleStore] Loaded ${this.segments.length} structured segments.`);
+    console.log(
+      `[LLE][SubtitleStore] Loaded ${this.segments.length} structured segments.`,
+    );
+  }
+
+  /**
+   * Parses a Markdown file content into SubtitleSegment objects.
+   */
+  parseMarkdownStructuredData(content: string): SubtitleSegment[] {
+    const segments: SubtitleSegment[] = [];
+    // Split by "## [Text]" but keep the text
+    const sections = content.split(/^##\s+/m).slice(1);
+
+    for (const section of sections) {
+      const lines = section.split("\n");
+      const text = lines[0].trim();
+
+      const getValue = (key: string) => {
+        const pattern = `**${key}**:`;
+        const line = lines.find((l) => l.includes(pattern));
+        if (!line) return "";
+        const parts = line.split(pattern);
+        return parts.slice(1).join(pattern).trim();
+      };
+
+      // Special handling for Grammatical Gotchas (can be on same line or multiline list)
+      const gotchasHeader = "**Grammatical Gotchas**:";
+      const gotchasLine = lines.find((l) => l.includes(gotchasHeader));
+      let grammatical_gotchas = "";
+
+      if (gotchasLine) {
+        const sameLineContent = gotchasLine.split(gotchasHeader).slice(1).join(gotchasHeader).trim();
+        if (sameLineContent) {
+          grammatical_gotchas = sameLineContent;
+        } else {
+          const gotchasIndex = lines.indexOf(gotchasLine);
+          const gotchasLines = [];
+          for (let i = gotchasIndex + 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (
+              line.startsWith("-") ||
+              line.startsWith("*") ||
+              /^\d+\./.test(line)
+            ) {
+              gotchasLines.push(line);
+            } else if (line === "" && gotchasLines.length > 0) {
+              continue;
+            } else if (line !== "") {
+              break;
+            }
+          }
+          grammatical_gotchas = gotchasLines.join("\n");
+        }
+      }
+
+      const segmentationStr = getValue("Segmentation");
+
+      segments.push({
+        text,
+        start: this.parseTimestamp(getValue("Timestamp Start")),
+        end: this.parseTimestamp(getValue("Timestamp End")),
+        translation: getValue("Translation"),
+        literal_translation: getValue("Literal Translation"),
+        segmentation: segmentationStr ? segmentationStr.split(/\s+/) : [],
+        contextual_analysis: getValue("Contextual Analysis"),
+        grammatical_gotchas,
+      });
+    }
+
+    return segments;
+  }
+
+  /**
+   * Parses a timestamp string into seconds.
+   * Supports both raw seconds (e.g. "6.38") and HH:MM:SS,mmm (e.g. "00:00:06,380")
+   */
+  private parseTimestamp(ts: string): number {
+    if (!ts) return 0;
+    
+    // Check for HH:MM:SS,mmm or HH:MM:SS.mmm
+    const match = ts.match(/(\d{1,2}):(\d{1,2}):(\d{1,2})[,.](\d{1,3})/);
+    if (match) {
+      const h = parseInt(match[1], 10);
+      const m = parseInt(match[2], 10);
+      const s = parseInt(match[3], 10);
+      const ms = parseInt(match[4], 10);
+      return h * 3600 + m * 60 + s + ms / 1000;
+    }
+
+    // Fallback to float parsing (seconds)
+    return parseFloat(ts) || 0;
+  }
+
+  private parseFurigana(token: string): AISegment[] {
+    const parts: AISegment[] = [];
+    let lastIndex = 0;
+    // Matches "KanjiBlock(Reading)"
+    // Using Unicode property escape \p{Ideographic} to catch all Kanji.
+    // The 'u' flag is required for Unicode property escapes.
+    const regex = /([\p{Ideographic}\u3005]+)\(([^()]+)\)/gu;
+    let match;
+
+    while ((match = regex.exec(token)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push({ word: token.slice(lastIndex, match.index) });
+      }
+      parts.push({ word: match[1], reading: match[2] });
+      lastIndex = regex.lastIndex;
+    }
+
+    if (lastIndex < token.length) {
+      parts.push({ word: token.slice(lastIndex) });
+    }
+    return parts;
   }
 
   getSegmentAt(timeMs: number): SubtitleSegment | undefined {
     // simple linear search for MVP, can optimize with binary search later
-    return this.segments.find(seg => timeMs >= seg.start && timeMs <= seg.end);
+    return this.segments.find(
+      (seg) => timeMs >= seg.start && timeMs <= seg.end,
+    );
   }
-  
+
   getAllSegments(): SubtitleSegment[] {
-      return this.segments;
+    return this.segments;
   }
 
   clear() {

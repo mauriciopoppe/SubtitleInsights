@@ -16,5 +16,8 @@
     "@crxjs/vite-plugin": "^2.0.0-beta.33",
     "typescript": "^5.9.3",
     "vite": "^7.3.0"
+  },
+  "dependencies": {
+    "snarkdown": "^2.0.0"
   }
 }
