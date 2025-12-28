@@ -14,6 +14,8 @@
       "run_at": "document_start",
       "world": "MAIN"
     }
-  ],
-  "host_permissions": ["https://www.youtube.com/*"]
-}
+    ],
+    "host_permissions": ["https://www.youtube.com/*"],
+    "permissions": ["storage"]
+  }
+  

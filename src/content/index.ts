@@ -2,6 +2,7 @@ import './styles.css';
 import { store, SubtitleStore } from './store';
 import { aiClient } from './ai';
 import { renderSegmentedText } from './render';
+import { Config } from './config';
 
 console.log('[LLE] Content script injected.');
 
@@ -69,16 +70,65 @@ const createTooltip = (): HTMLElement => {
   return tooltip;
 };
 
+const setupToggle = async () => {
+  console.log('[LLE] Setting up toggle...');
+  const leftControls = await waitForElement('.ytp-left-controls');
+  console.log('[LLE] Found left controls:', leftControls);
+  const timeDisplay = await waitForElement('.ytp-time-display');
+  console.log('[LLE] Found time display:', timeDisplay);
+  
+  const container = document.createElement('div');
+  container.className = 'lle-toggle-container';
+
+  const toggle = document.createElement('span');
+  toggle.className = 'lle-toggle-btn';
+  toggle.innerText = 'LLE';
+  toggle.title = 'Toggle Language Learning Extension';
+  
+  container.appendChild(toggle);
+
+  const updateUI = (enabled: boolean) => {
+    toggle.className = `lle-toggle-btn ${enabled ? 'enabled' : 'disabled'}`;
+  };
+  
+  const isEnabled = await Config.getIsEnabled();
+  updateUI(isEnabled);
+  
+  toggle.onclick = async () => {
+    const currentState = await Config.getIsEnabled();
+    const newState = !currentState;
+    await Config.setIsEnabled(newState);
+    updateUI(newState);
+  };
+  
+  Config.addChangeListener((enabled) => {
+    updateUI(enabled);
+  });
+  
+  // Insert container after time display
+  timeDisplay.after(container);
+};
+
 const init = async () => {
   console.log('[LLE] Waiting for video player...');
   const player = await waitForElement('#movie_player');
   const video = await waitForElement('video') as HTMLVideoElement;
   console.log('[LLE] Video player and element found.');
 
+  await setupToggle();
+
   const overlay = createOverlay();
   player.appendChild(overlay.container);
   const tooltip = createTooltip();
   console.log('[LLE] Overlay and tooltip injected.');
+
+  let isEnabled = await Config.getIsEnabled();
+  Config.addChangeListener((enabled) => {
+    isEnabled = enabled;
+    if (!isEnabled) {
+      overlay.container.style.display = 'none';
+    }
+  });
 
   // Check availability and setup enable button
   const availability = await aiClient.getAvailability();
@@ -107,6 +157,8 @@ const init = async () => {
 
   // Sync Engine
   video.addEventListener('timeupdate', () => {
+    if (!isEnabled) return;
+
     const currentTimeMs = video.currentTime * 1000;
     store.updatePlaybackTime(currentTimeMs); // Trigger lazy loading
     const activeSegment = store.getSegmentAt(currentTimeMs);

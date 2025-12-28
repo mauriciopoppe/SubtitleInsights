@@ -85,3 +85,39 @@ rt {
   color: #aaa;
   user-select: none;
 }
+
+.lle-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--yt-delhi-pill-top-height, 12px) 8px;
+  vertical-align: top;
+}
+
+.lle-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  margin: 0 2px;
+  cursor: pointer;
+  font-family: "YouTube Noto", Roboto, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background-color 0.1s;
+  user-select: none;
+  background-color: transparent;
+}
+
+.lle-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.lle-toggle-btn.enabled {
+  color: #fff;
+}
+
+.lle-toggle-btn.disabled {
+  color: #aaa;
+}

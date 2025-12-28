@@ -15,7 +15,6 @@ export class SubtitleStore {
   addSegments(segments: SubtitleSegment[]) {
     this.segments = [...this.segments, ...segments].sort((a, b) => a.start - b.start);
     console.log(`[LLE][SubtitleStore] Added ${segments.length} segments. Total: ${this.segments.length}`);
-    // Removed automatic translation trigger
   }
 
   async updatePlaybackTime(currentTimeMs: number) {
