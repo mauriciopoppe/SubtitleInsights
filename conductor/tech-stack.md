@@ -19,6 +19,5 @@
 
 ## Architecture
 - **Content Scripts (ISOLATED):** Main extension logic, DOM injection, and subtitle synchronization.
-- **Interceptor (MAIN):** Runs in the main page context to monkey-patch `fetch` and `XHR` for subtitle interception, communicating with the isolated script via `window.postMessage`.
-- **Background Service Worker:** Manages the lifecycle of the Chrome Prompt API session if persistence is needed across tab changes.
+- **Background Service Worker:** Intercepts YouTube subtitle requests via `chrome.webRequest`, re-fetches data, and broadcasts to content scripts. Also manages Prompt API sessions.
 - **Offscreen Documents:** (Optional) If the Prompt API requires a DOM context not available in the worker.

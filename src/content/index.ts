@@ -1,5 +1,5 @@
 import "./styles.css";
-import { store, SubtitleStore } from "./store";
+import { store, SubtitleStore, SubtitleSegment } from "./store";
 import { aiClient } from "./ai";
 import { renderSegmentedText } from "./render";
 import { Config } from "./config";
@@ -145,75 +145,76 @@ const init = async () => {
     };
   }
 
-  let lastSegmentText = "";
+  let currentActiveSegment: SubtitleSegment | undefined = undefined;
+  let lastTranslationText = '';
+  let lastOriginalHTML = '';
 
   // Sync Engine
-  video.addEventListener("timeupdate", () => {
+  video.addEventListener('timeupdate', () => {
     if (!isEnabled) return;
 
     const currentTimeMs = video.currentTime * 1000;
     store.updatePlaybackTime(currentTimeMs); // Trigger lazy loading
     const activeSegment = store.getSegmentAt(currentTimeMs);
 
-    // Only update if not waiting for download interaction
-    if (activeSegment && overlay.enableButton.style.display === "none") {
-      overlay.container.style.display = "flex"; // Show overlay
-      if (activeSegment.text !== lastSegmentText) {
-        overlay.original.innerHTML = "";
-
-        if (activeSegment.segmentedData) {
-          overlay.original.innerHTML = renderSegmentedText(
-            activeSegment.segmentedData,
-          );
-        } else {
-          // Fallback while processing or if failed
-          const words = activeSegment.text.split("");
-          words.forEach((char) => {
-            const span = document.createElement("span");
-            span.className = "lle-word";
-            span.innerText = char;
-            overlay.original.appendChild(span);
-          });
-        }
-        lastSegmentText = activeSegment.text;
-      } else if (
-        activeSegment.segmentedData &&
-        overlay.original.innerHTML.indexOf("ruby") === -1
-      ) {
-        // Re-render if segmentation arrived after initial render
-        overlay.original.innerHTML = renderSegmentedText(
-          activeSegment.segmentedData,
-        );
+    // Case 1: No active segment
+    if (!activeSegment) {
+      if (currentActiveSegment !== undefined) {
+        overlay.container.style.display = 'none';
+        overlay.original.innerHTML = '';
+        overlay.translation.innerText = '';
+        currentActiveSegment = undefined;
+        lastTranslationText = '';
+        lastOriginalHTML = '';
       }
-
-      if (aiClient.isDownloading) {
-        overlay.translation.innerText = "AI Model downloading... please wait";
-      } else {
-        overlay.translation.innerText =
-          activeSegment.translation || "Translating...";
-      }
-    } else if (
-      !activeSegment &&
-      overlay.enableButton.style.display === "none"
-    ) {
-      overlay.container.style.display = "none"; // Hide overlay
-      overlay.original.innerText = "";
-      overlay.translation.innerText = "";
-      lastSegmentText = "";
-    } else if (activeSegment && overlay.enableButton.style.display !== "none") {
-      // Show overlay container even if button is visible, so button can be clicked
-      overlay.container.style.display = "flex";
+      return;
     }
+
+    // Case 2: Active segment exists
+    // Ensure overlay is visible
+    if (overlay.container.style.display !== 'flex') {
+      overlay.container.style.display = 'flex';
+    }
+
+    // Only update content if not waiting for download interaction
+    if (overlay.enableButton.style.display === 'none') {
+      // Update Original Text if changed
+      let newOriginalHTML = '';
+      if (activeSegment.segmentedData) {
+        newOriginalHTML = renderSegmentedText(activeSegment.segmentedData);
+      } else {
+        // Fallback while processing or if failed
+        newOriginalHTML = activeSegment.text.split('').map(char => `<span class="lle-word">${char}</span>`).join('');
+      }
+
+      if (newOriginalHTML !== lastOriginalHTML) {
+        overlay.original.innerHTML = newOriginalHTML;
+        lastOriginalHTML = newOriginalHTML;
+      }
+
+      // Update Translation Text if changed
+      let newTranslationText = '';
+      if (aiClient.isDownloading) {
+        newTranslationText = "AI Model downloading... please wait";
+      } else {
+        newTranslationText = activeSegment.translation || 'Translating...';
+      }
+
+      if (newTranslationText !== lastTranslationText) {
+        overlay.translation.innerText = newTranslationText;
+        lastTranslationText = newTranslationText;
+      }
+    }
+
+    currentActiveSegment = activeSegment;
   });
 
   aiClient.testPromptAPI();
 
-  window.addEventListener("message", (event) => {
-    if (event.source !== window) return;
-
-    if (event.data.type === "LLE_SUBTITLES_CAPTURED") {
-      console.log("[LLE] Received subtitles:", event.data.payload);
-      const segments = SubtitleStore.parseYouTubeJSON(event.data.payload);
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === 'LLE_SUBTITLES_CAPTURED') {
+      console.log('[LLE] Received subtitles from background:', message.payload);
+      const segments = SubtitleStore.parseYouTubeJSON(message.payload);
       store.addSegments(segments);
     }
   });
