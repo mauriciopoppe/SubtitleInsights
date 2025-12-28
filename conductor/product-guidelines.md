@@ -3,7 +3,6 @@
 ## Visual Identity
 - **Integrated Look:** UI elements should mimic the YouTube native style (Roboto font, semi-transparent black backgrounds, rounded corners).
 - **Subtitle Contrast:** Subtitles must remain legible over any video content. Use a subtle text shadow or high-transparency dark background bar.
-- **Hover States:** Interactive elements (like words for breakdown) should have a clear but subtle highlight (e.g., underline or slight background change) when hovered.
 
 ## Content & Tone
 - **Functional Brevity:** AI-generated explanations should be direct and concise. Avoid "Sure, I can help with that" or other conversational filler.
