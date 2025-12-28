@@ -20,12 +20,12 @@ This plan outlines the steps to create a foundational YouTube subtitle overlay p
 - [ ] **Task: Conductor - User Manual Verification 'Phase 2: Content Script & Detection' (Protocol in workflow.md)**
 
 ## Phase 3: UI Overlay Implementation
-- [ ] **Task: Create Overlay Component**
+- [x] **Task: Create Overlay Component**
     - Implement a TypeScript function to create and inject the subtitle overlay DOM.
     - Use absolute positioning to place it over the video player.
-- [ ] **Task: Style the Overlay**
+- [x] **Task: Style the Overlay**
     - Create `src/content/styles.css`.
     - Add styles for semi-transparent background, text alignment, and font (Roboto).
-- [ ] **Task: Render Mock Subtitles**
+- [x] **Task: Render Mock Subtitles**
     - Populate the overlay with a hardcoded Japanese sentence and its English translation.
 - [ ] **Task: Conductor - User Manual Verification 'Phase 3: UI Overlay Implementation' (Protocol in workflow.md)**

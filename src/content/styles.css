@@ -1,0 +1,29 @@
+#lle-overlay {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  font-family: Roboto, Arial, sans-serif;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.lle-translation {
+  font-size: 0.8em;
+  color: #ddd;
+}
+
+.lle-original {
+  font-size: 1.2em;
+  font-weight: bold;
+}
