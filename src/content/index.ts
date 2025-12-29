@@ -193,8 +193,6 @@ const init = async () => {
   });
 
   let currentActiveSegment: SubtitleSegment | undefined = undefined;
-  let lastTranslationText = "";
-  let lastOriginalHTML = "";
 
   // Sync Engine
   video.addEventListener("timeupdate", () => {
@@ -214,8 +212,6 @@ const init = async () => {
         overlay.analysis.innerText = "";
         overlay.gotchas.innerText = "";
         currentActiveSegment = undefined;
-        lastTranslationText = "";
-        lastOriginalHTML = "";
       }
       return;
     }
@@ -226,30 +222,21 @@ const init = async () => {
       overlay.container.style.display = "flex";
     }
 
-    // Update Original Text if changed
-    let newOriginalHTML = "";
+    // Update Original Text
     if (activeSegment.segmentedData) {
-      newOriginalHTML = renderSegmentedText(activeSegment.segmentedData);
+      overlay.original.innerHTML = renderSegmentedText(
+        activeSegment.segmentedData,
+      );
     } else {
-      // Fallback while processing or if failed
-      newOriginalHTML = activeSegment.text
+      // Fallback
+      overlay.original.innerHTML = activeSegment.text
         .split("")
         .map((char) => `<span class="lle-word">${char}</span>`)
         .join("");
     }
 
-    if (newOriginalHTML !== lastOriginalHTML) {
-      overlay.original.innerHTML = newOriginalHTML;
-      lastOriginalHTML = newOriginalHTML;
-    }
-
-    // Update Translation Text if changed
-    const newTranslationText = activeSegment.translation || "Translating...";
-
-    if (newTranslationText !== lastTranslationText) {
-      overlay.translation.innerText = newTranslationText;
-      lastTranslationText = newTranslationText;
-    }
+    // Update Translation Text
+    overlay.translation.innerText = activeSegment.translation || "";
 
     // Update Additional Fields (only for structured data)
     overlay.literal.innerText = activeSegment.literal_translation || "";
@@ -283,8 +270,6 @@ const init = async () => {
       overlay.analysis.innerHTML = "";
       overlay.gotchas.innerHTML = "";
       currentActiveSegment = undefined;
-      lastTranslationText = "";
-      lastOriginalHTML = "";
     }
   });
 
