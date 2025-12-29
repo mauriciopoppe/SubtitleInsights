@@ -1,25 +1,83 @@
 import { SubtitleSegment } from "./store";
 import { renderSegmentedText } from "./render";
 import snarkdown from "snarkdown";
+import { Config } from "./config";
 
 export class Sidebar {
   private container: HTMLElement;
   private listContainer: HTMLElement;
+  private overlayToggle: HTMLElement | null = null;
+  private uploadBtn: HTMLElement | null = null;
 
-  constructor() {
+  constructor(onUploadClick?: () => void) {
     this.container = document.createElement("div");
     this.container.id = "lle-sidebar";
     this.container.style.display = "none"; // Hidden by default
 
     const header = document.createElement("div");
     header.className = "lle-sidebar-header";
-    header.innerText = "LLE Transcript";
+
+    const title = document.createElement("div");
+    title.className = "lle-sidebar-title";
+    title.innerText = "LLE Transcript";
+
+    const controls = document.createElement("div");
+    controls.className = "lle-sidebar-controls";
+
+    // Upload Button
+    this.uploadBtn = document.createElement("span");
+    this.uploadBtn.className = "lle-sidebar-upload-btn";
+    this.uploadBtn.innerText = "UP";
+    this.uploadBtn.title = "Upload Structured Subtitles (Markdown)";
+    if (onUploadClick) {
+      this.uploadBtn.onclick = onUploadClick;
+    }
+
+    // Overlay Toggle
+    this.overlayToggle = document.createElement("span");
+    this.overlayToggle.className = "lle-sidebar-overlay-btn";
+    this.overlayToggle.innerText = "Overlay";
+    this.overlayToggle.title = "Toggle On-Video Overlay";
+
+    this.initOverlayToggle();
+
+    controls.appendChild(this.uploadBtn);
+    controls.appendChild(this.overlayToggle);
+
+    header.appendChild(title);
+    header.appendChild(controls);
 
     this.listContainer = document.createElement("div");
     this.listContainer.className = "lle-sidebar-list";
 
     this.container.appendChild(header);
     this.container.appendChild(this.listContainer);
+  }
+
+  private async initOverlayToggle() {
+    if (!this.overlayToggle) return;
+
+    const updateUI = (enabled: boolean) => {
+      this.overlayToggle!.className = `lle-sidebar-overlay-btn ${enabled ? "enabled" : "disabled"}`;
+    };
+
+    const isEnabled = await Config.getIsOverlayEnabled();
+    updateUI(isEnabled);
+
+    this.overlayToggle.onclick = async () => {
+      const current = await Config.getIsOverlayEnabled();
+      const newState = !current;
+      await Config.setIsOverlayEnabled(newState);
+      updateUI(newState);
+    };
+
+    Config.addOverlayChangeListener((enabled) => {
+      updateUI(enabled);
+    });
+  }
+
+  public getUploadBtn(): HTMLElement | null {
+    return this.uploadBtn;
   }
 
   public getElement(): HTMLElement {
@@ -119,5 +177,3 @@ export class Sidebar {
     }
   }
 }
-
-export const sidebar = new Sidebar();
