@@ -1,0 +1,41 @@
+# Plan: AI Subtitle Analysis & Translation Overlay
+
+## Phase 1: API Integration & Service Wrapper
+- [ ] Task: Create `src/content/ai/translator.ts` to wrap the `window.Translation` API.
+    - [ ] Implement `checkAvailability()` method handling `available`, `after-download`, and `unavailable`.
+    - [ ] Implement `initialize()` method to create the translator instance.
+    - [ ] Implement `translate(text: string)` method.
+- [ ] Task: Integrate `Translator` service into `src/content/index.ts`.
+    - [ ] Call `checkAvailability()` on init.
+    - [ ] Handle `after-download` status by showing UI indicators (to be implemented in Phase 2/3).
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: API Integration & Service Wrapper' (Protocol in workflow.md)
+
+## Phase 2: UI Updates (Overlay & Sidebar)
+- [ ] Task: Update `Overlay` class in `src/content/overlay.ts`.
+    - [ ] Add support for displaying a "System Message" (e.g., "Downloading AI models...").
+    - [ ] Ensure translation text is rendered *above* the original text.
+- [ ] Task: Update `Sidebar` class in `src/content/sidebar.ts`.
+    - [ ] Add a status icon area in the header for AI Model states (Downloading, Ready, Error).
+    - [ ] Add method `setAIStatus(status: 'downloading' | 'ready' | 'error', message?: string)`.
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Updates (Overlay & Sidebar)' (Protocol in workflow.md)
+
+## Phase 3: Subtitle Capture & Translation Logic
+- [ ] Task: Re-enable Subtitle Capture in `src/content/index.ts`.
+    - [ ] Uncomment the `chrome.runtime.onMessage.addListener` block.
+    - [ ] Verify that `LLE_SUBTITLES_CAPTURED` messages from the background script are correctly parsed by `SubtitleStore.parseYouTubeJSON` and added to the store.
+- [ ] Task: Implement Translation Manager.
+    - [ ] Upon capturing subtitles (and if no manual file is loaded), trigger the translation flow.
+- [ ] Task: Implement Pre-fetching Buffer.
+    - [ ] Create a buffer queue that maintains translations for the current + next 20 segments.
+    - [ ] On `timeupdate`, check if upcoming segments need translation and trigger them.
+    - [ ] Update `SubtitleStore` with the translated text as it becomes available.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Subtitle Capture & Translation Logic' (Protocol in workflow.md)
+
+## Phase 4: Integration & Polish
+- [ ] Task: Wire up `Sidebar` updates.
+    - [ ] Ensure `Sidebar.render()` reflects the new translations in real-time (or optimistically update specific rows).
+- [ ] Task: Verify Auto-Activation.
+    - [ ] Ensure it only runs for Japanese videos (check `sourceLanguage: 'ja'` in availability check).
+- [ ] Task: Handle Upload Override.
+    - [ ] Ensure uploading a Markdown file cancels/overwrites any AI translation state.
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Integration & Polish' (Protocol in workflow.md)

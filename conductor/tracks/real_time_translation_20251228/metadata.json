@@ -1,0 +1,8 @@
+{
+  "track_id": "real_time_translation_20251228",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2025-12-28T21:49:00Z",
+  "updated_at": "2025-12-28T21:49:00Z",
+  "description": "Bring back the feature that analyzed the video subtitles and wrote them in an overlay."
+}
