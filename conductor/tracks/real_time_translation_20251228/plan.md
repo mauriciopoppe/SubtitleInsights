@@ -1,14 +1,14 @@
 # Plan: AI Subtitle Analysis & Translation Overlay
 
 ## Phase 1: API Integration & Service Wrapper
-- [ ] Task: Create `src/content/ai/translator.ts` to wrap the `window.Translation` API.
-    - [ ] Implement `checkAvailability()` method handling `available`, `after-download`, and `unavailable`.
-    - [ ] Implement `initialize()` method to create the translator instance.
-    - [ ] Implement `translate(text: string)` method.
-- [ ] Task: Integrate `Translator` service into `src/content/index.ts`.
-    - [ ] Call `checkAvailability()` on init.
-    - [ ] Handle `after-download` status by showing UI indicators (to be implemented in Phase 2/3).
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: API Integration & Service Wrapper' (Protocol in workflow.md)
+- [x] Task: Create `src/content/ai/translator.ts` to wrap the `window.Translation` API.
+    - [x] Implement `checkAvailability()` method handling `available`, `after-download`, and `unavailable`.
+    - [x] Implement `initialize()` method to create the translator instance.
+    - [x] Implement `translate(text: string)` method.
+- [x] Task: Integrate `Translator` service into `src/content/index.ts`.
+    - [x] Call `checkAvailability()` on init.
+    - [x] Handle `after-download` status by showing UI indicators (to be implemented in Phase 2/3).
+- [x] Task: Conductor - User Manual Verification 'Phase 1: API Integration & Service Wrapper' (Protocol in workflow.md)
 
 ## Phase 2: UI Updates (Overlay & Sidebar)
 - [ ] Task: Update `Overlay` class in `src/content/overlay.ts`.

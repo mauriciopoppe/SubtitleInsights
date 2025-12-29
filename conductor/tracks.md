@@ -10,5 +10,5 @@
 
 ---
 
-## [ ] Track: AI Subtitle Analysis & Translation Overlay
+## [~] Track: AI Subtitle Analysis & Translation Overlay
 *Link: [./conductor/tracks/real_time_translation_20251228/](./conductor/tracks/real_time_translation_20251228/)*

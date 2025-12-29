@@ -3,6 +3,7 @@ import { store, SubtitleSegment, SubtitleStore } from "./store";
 import { Config } from "./config";
 import { Sidebar } from "./sidebar";
 import { Overlay } from "./overlay";
+import { translatorService } from "./ai/translator";
 
 console.log("[LLE] Content script injected.");
 
@@ -148,6 +149,57 @@ const init = async () => {
   player.appendChild(overlay.getElement());
   secondaryInner.prepend(sidebar.getElement());
   console.log("[LLE] Overlay and Sidebar injected.");
+
+  // AI Translation Setup
+  const setupAI = async () => {
+    const availability = await translatorService.checkAvailability();
+    console.log("[LLE] AI Translation availability:", availability);
+
+    if (availability === "available") {
+      await translatorService.initialize();
+      console.log("[LLE] AI Translator initialized.");
+    } else if (availability === "downloadable") {
+      console.log("[LLE] AI models need download.");
+      
+      const initDownload = async () => {
+         const success = await translatorService.initialize((loaded, total) => {
+          console.log(`[LLE] AI Download progress: ${Math.round((loaded / total) * 100)}%`);
+        });
+        if (success) {
+           console.log("[LLE] AI Translator initialized after download.");
+        }
+      };
+
+      if (navigator.userActivation?.isActive) {
+        console.log("[LLE] User activation active. Starting download immediately.");
+        await initDownload();
+      } else {
+        console.log("[LLE] Waiting for user interaction to start download...");
+        const onUserInteraction = async (e: Event) => {
+           // Filter invalid keydown events (Escape or browser shortcuts check would be complex, simplistic check for now)
+           if (e.type === 'keydown' && (e as KeyboardEvent).key === 'Escape') return;
+
+           // Remove all listeners
+           document.removeEventListener('mousedown', onUserInteraction);
+           document.removeEventListener('pointerdown', onUserInteraction);
+           document.removeEventListener('pointerup', onUserInteraction);
+           document.removeEventListener('touchend', onUserInteraction);
+           document.removeEventListener('keydown', onUserInteraction);
+           
+           console.log(`[LLE] User interaction detected (${e.type}). Starting download...`);
+           await initDownload();
+        };
+        
+        document.addEventListener('mousedown', onUserInteraction);
+        document.addEventListener('pointerdown', onUserInteraction);
+        document.addEventListener('pointerup', onUserInteraction);
+        document.addEventListener('touchend', onUserInteraction);
+        document.addEventListener('keydown', onUserInteraction);
+      }
+    }
+  };
+
+  setupAI();
 
   store.addChangeListener(() => {
     sidebar.render(store.getAllSegments());
