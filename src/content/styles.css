@@ -17,6 +17,13 @@
   gap: 4px;
 }
 
+.lle-system-message {
+  font-size: 0.9em;
+  color: #fb0;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
 .lle-translation {
   font-size: 0.8em;
   color: #ddd;

@@ -11,13 +11,13 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: API Integration & Service Wrapper' (Protocol in workflow.md)
 
 ## Phase 2: UI Updates (Overlay & Sidebar)
-- [ ] Task: Update `Overlay` class in `src/content/overlay.ts`.
-    - [ ] Add support for displaying a "System Message" (e.g., "Downloading AI models...").
-    - [ ] Ensure translation text is rendered *above* the original text.
-- [ ] Task: Update `Sidebar` class in `src/content/sidebar.ts`.
-    - [ ] Add a status icon area in the header for AI Model states (Downloading, Ready, Error).
-    - [ ] Add method `setAIStatus(status: 'downloading' | 'ready' | 'error', message?: string)`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: UI Updates (Overlay & Sidebar)' (Protocol in workflow.md)
+- [x] Task: Update `Overlay` class in `src/content/overlay.ts`.
+    - [x] Add support for displaying a "System Message" (e.g., "Downloading AI models...").
+    - [x] Ensure translation text is rendered *above* the original text.
+- [x] Task: Update `Sidebar` class in `src/content/sidebar.ts`.
+    - [x] Add a status icon area in the header for AI Model states (Downloading, Ready, Error).
+    - [x] Add method `setAIStatus(status: 'downloading' | 'ready' | 'error', message?: string)`.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Updates (Overlay & Sidebar)' (Protocol in workflow.md)
 
 ## Phase 3: Subtitle Capture & Translation Logic
 - [ ] Task: Re-enable Subtitle Capture in `src/content/index.ts`.

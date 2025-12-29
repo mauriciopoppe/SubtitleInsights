@@ -4,6 +4,7 @@ import { renderSegmentedText } from "./render";
 
 export class Overlay {
   private container: HTMLElement;
+  private systemMessage: HTMLElement;
   private translation: HTMLElement;
   private original: HTMLElement;
   private literal: HTMLElement;
@@ -13,6 +14,10 @@ export class Overlay {
   constructor() {
     this.container = document.createElement("div");
     this.container.id = "lle-overlay";
+
+    this.systemMessage = document.createElement("div");
+    this.systemMessage.className = "lle-system-message";
+    this.systemMessage.style.display = "none";
 
     this.translation = document.createElement("div");
     this.translation.className = "lle-translation";
@@ -29,6 +34,7 @@ export class Overlay {
     this.gotchas = document.createElement("div");
     this.gotchas.className = "lle-gotchas";
 
+    this.container.appendChild(this.systemMessage);
     this.container.appendChild(this.translation);
     this.container.appendChild(this.original);
     this.container.appendChild(this.literal);
@@ -48,8 +54,21 @@ export class Overlay {
     return this.container.style.display === "flex";
   }
 
+  public setSystemMessage(message: string | null) {
+    if (message) {
+      this.systemMessage.innerText = message;
+      this.systemMessage.style.display = "block";
+      this.setVisible(true);
+    } else {
+      this.systemMessage.innerText = "";
+      this.systemMessage.style.display = "none";
+    }
+  }
+
   public clear() {
     this.setVisible(false);
+    this.systemMessage.innerText = "";
+    this.systemMessage.style.display = "none";
     this.original.innerHTML = "";
     this.translation.innerText = "";
     this.literal.innerText = "";

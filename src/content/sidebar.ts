@@ -9,6 +9,7 @@ export class Sidebar {
   private overlayToggle: HTMLElement | null = null;
   private uploadBtn: HTMLElement | null = null;
   private jumpBtn: HTMLElement | null = null;
+  private aiStatusIcon: HTMLElement | null = null;
   private warningIcon: HTMLElement | null = null;
 
   constructor(onUploadClick?: () => void) {
@@ -55,6 +56,18 @@ export class Sidebar {
 
     this.initOverlayToggle();
 
+    // AI Status Icon
+    this.aiStatusIcon = document.createElement("span");
+    this.aiStatusIcon.className = "lle-sidebar-ai-status";
+    this.aiStatusIcon.style.display = "none";
+    this.aiStatusIcon.style.marginLeft = "8px";
+    this.aiStatusIcon.style.cursor = "help";
+    this.aiStatusIcon.innerHTML = `
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+        <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.08-.34.12-.57.12s-.41-.04-.57-.12l-7.9-4.44A1.001 1.001 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.08.34-.12.57-.12s.41.04.57.12l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.21v6.7zm14 0v-6.7l-6 3.37v6.71l6-3.38z"/>
+      </svg>
+    `;
+
     // Warning Icon
     this.warningIcon = document.createElement("span");
     this.warningIcon.className = "lle-sidebar-warning";
@@ -71,6 +84,7 @@ export class Sidebar {
     controls.appendChild(this.jumpBtn);
     controls.appendChild(this.uploadBtn);
     controls.appendChild(this.overlayToggle);
+    controls.appendChild(this.aiStatusIcon);
     controls.appendChild(this.warningIcon);
 
     header.appendChild(title);
@@ -81,6 +95,25 @@ export class Sidebar {
 
     this.container.appendChild(header);
     this.container.appendChild(this.listContainer);
+  }
+
+  public setAIStatus(status: "downloading" | "ready" | "error" | "none", message?: string) {
+    if (!this.aiStatusIcon) return;
+    if (status === "none") {
+      this.aiStatusIcon.style.display = "none";
+      return;
+    }
+
+    this.aiStatusIcon.style.display = "inline-flex";
+    this.aiStatusIcon.title = message || status;
+
+    if (status === "downloading") {
+      this.aiStatusIcon.style.color = "#3ea6ff"; // Blue
+    } else if (status === "ready") {
+      this.aiStatusIcon.style.color = "#2ba640"; // Green
+    } else if (status === "error") {
+      this.aiStatusIcon.style.color = "#ff4e43"; // Red
+    }
   }
 
   public setWarning(message?: string) {

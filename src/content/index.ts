@@ -156,17 +156,30 @@ const init = async () => {
     console.log("[LLE] AI Translation availability:", availability);
 
     if (availability === "available") {
+      sidebar.setAIStatus("ready", "AI Translator Ready");
       await translatorService.initialize();
       console.log("[LLE] AI Translator initialized.");
     } else if (availability === "downloadable") {
+      sidebar.setAIStatus("none");
       console.log("[LLE] AI models need download.");
       
       const initDownload = async () => {
+         sidebar.setAIStatus("downloading", "Downloading AI models...");
+         overlay.setSystemMessage("Downloading AI models...");
          const success = await translatorService.initialize((loaded, total) => {
-          console.log(`[LLE] AI Download progress: ${Math.round((loaded / total) * 100)}%`);
+          const percent = Math.round((loaded / total) * 100);
+          sidebar.setAIStatus("downloading", `Downloading AI models: ${percent}%`);
+          overlay.setSystemMessage(`Downloading AI models: ${percent}%`);
+          console.log(`[LLE] AI Download progress: ${percent}%`);
         });
+
         if (success) {
+           sidebar.setAIStatus("ready", "AI Translator Ready");
+           overlay.setSystemMessage(null);
            console.log("[LLE] AI Translator initialized after download.");
+        } else {
+           sidebar.setAIStatus("error", "AI Initialization Failed");
+           overlay.setSystemMessage("AI Translation Failed to initialize");
         }
       };
 
