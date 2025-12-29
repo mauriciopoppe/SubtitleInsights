@@ -31,7 +31,7 @@
     - [x] Update `SubtitleStore` with the translated text as it becomes available.
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Subtitle Capture & Translation Logic' (Protocol in workflow.md)
 
-## Phase 4: Integration & Polish
+## Phase 4: Integration & Polish [checkpoint: c9fa96d]
 - [x] Task: Wire up `Sidebar` updates.
     - [x] Ensure `Sidebar.render()` reflects the new translations in real-time (or optimistically update specific rows).
 - [x] Task: Verify Auto-Activation.
