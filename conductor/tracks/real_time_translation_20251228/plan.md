@@ -10,7 +10,7 @@
     - [x] Handle `after-download` status by showing UI indicators (to be implemented in Phase 2/3).
 - [x] Task: Conductor - User Manual Verification 'Phase 1: API Integration & Service Wrapper' (Protocol in workflow.md)
 
-## Phase 2: UI Updates (Overlay & Sidebar)
+## Phase 2: UI Updates (Overlay & Sidebar) [checkpoint: cfaf0f8]
 - [x] Task: Update `Overlay` class in `src/content/overlay.ts`.
     - [x] Add support for displaying a "System Message" (e.g., "Downloading AI models...").
     - [x] Ensure translation text is rendered *above* the original text.
