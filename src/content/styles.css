@@ -157,3 +157,86 @@ rt {
 .lle-upload-btn.active {
   color: #065fd4;
 }
+
+#lle-sidebar {
+  background-color: var(--yt-spec-general-background-a, #0f0f0f);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  border: 1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+  overflow: hidden;
+  font-family: Roboto, Arial, sans-serif;
+  color: var(--yt-spec-text-primary, #fff);
+}
+
+.lle-sidebar-header {
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+}
+
+.lle-sidebar-list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.lle-sidebar-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--yt-spec-5-percent-layer, rgba(255, 255, 255, 0.05));
+  transition: background-color 0.2s;
+}
+
+.lle-sidebar-item:hover {
+  background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+}
+
+.lle-sidebar-item.active {
+  background-color: rgba(6, 95, 212, 0.2); /* YouTube blue with opacity */
+  border-left: 4px solid #065fd4;
+}
+
+.lle-sidebar-original {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.lle-sidebar-translation {
+  font-size: 13px;
+  color: var(--yt-spec-text-secondary, #aaa);
+  margin-bottom: 2px;
+}
+
+.lle-sidebar-literal {
+  font-size: 12px;
+  color: var(--yt-spec-text-disabled, #777);
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.lle-sidebar-analysis,
+.lle-sidebar-gotchas {
+  font-size: 12px;
+  color: var(--yt-spec-text-secondary, #aaa);
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--yt-spec-5-percent-layer, rgba(255, 255, 255, 0.05));
+  white-space: normal;
+}
+
+.lle-sidebar-analysis ul,
+.lle-sidebar-gotchas ul {
+  padding-left: 16px;
+  margin: 4px 0;
+}
+
+.lle-sidebar-analysis code,
+.lle-sidebar-gotchas code {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-family: monospace;
+}

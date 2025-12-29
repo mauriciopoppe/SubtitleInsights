@@ -1,5 +1,5 @@
 export class Config {
-  private static STORAGE_KEY = 'lle_is_enabled';
+  private static STORAGE_KEY = "lle_is_enabled";
 
   static async getIsEnabled(): Promise<boolean> {
     return new Promise((resolve) => {
@@ -20,7 +20,7 @@ export class Config {
 
   static addChangeListener(callback: (isEnabled: boolean) => void) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName === 'local' && changes[this.STORAGE_KEY]) {
+      if (areaName === "local" && changes[this.STORAGE_KEY]) {
         callback(changes[this.STORAGE_KEY].newValue);
       }
     });

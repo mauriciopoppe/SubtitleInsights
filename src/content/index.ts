@@ -4,6 +4,7 @@ import { store, SubtitleStore, SubtitleSegment } from "./store";
 import { aiClient } from "./ai";
 import { renderSegmentedText } from "./render";
 import { Config } from "./config";
+import { sidebar } from "./sidebar";
 
 console.log("[LLE] Content script injected.");
 
@@ -136,16 +137,23 @@ const setupToggle = async () => {
 
         if (segments && segments.length > 0) {
           store.loadStructuredData(segments);
+          sidebar.render(store.getAllSegments());
           uploadBtn.classList.add("active");
           uploadBtn.title = `Loaded: ${file.name}`;
-          console.log(`[LLE] Successfully loaded ${segments.length} segments from ${file.name}`);
+          console.log(
+            `[LLE] Successfully loaded ${segments.length} segments from ${file.name}`,
+          );
         } else {
           console.warn("[LLE] No valid segments found in file:", file.name);
-          alert("No valid segments found in the Markdown file. Please check the format.");
+          alert(
+            "No valid segments found in the Markdown file. Please check the format.",
+          );
         }
       } catch (err) {
         console.error("[LLE] Failed to parse Markdown file", err);
-        alert("Failed to parse Markdown file. Make sure it follows the required format.");
+        alert(
+          "Failed to parse Markdown file. Make sure it follows the required format.",
+        );
       }
     };
     reader.readAsText(file);
@@ -172,17 +180,22 @@ const init = async () => {
   console.log("[LLE] Waiting for video player...");
   const player = await waitForElement("#movie_player");
   const video = (await waitForElement("video")) as HTMLVideoElement;
-  console.log("[LLE] Video player and element found.");
+  const secondaryInner = await waitForElement("#secondary-inner");
+  console.log("[LLE] Video player, element and secondary column found.");
 
   const { uploadBtn } = await setupToggle();
 
   const overlay = createOverlay();
   player.appendChild(overlay.container);
-  console.log("[LLE] Overlay injected.");
+  secondaryInner.prepend(sidebar.getElement());
+  console.log("[LLE] Overlay and Sidebar injected.");
 
   let isEnabled = await Config.getIsEnabled();
+  sidebar.setVisible(isEnabled);
+
   Config.addChangeListener((enabled) => {
     isEnabled = enabled;
+    sidebar.setVisible(isEnabled);
     if (!isEnabled) {
       overlay.container.style.display = "none";
     }
@@ -221,6 +234,7 @@ const init = async () => {
 
     const currentTimeMs = video.currentTime * 1000;
     store.updatePlaybackTime(currentTimeMs); // Trigger lazy loading
+    sidebar.highlight(currentTimeMs);
     const activeSegment = store.getSegmentAt(currentTimeMs);
 
     // Case 1: No active segment
@@ -279,8 +293,12 @@ const init = async () => {
 
       // Update Additional Fields (only for structured data)
       overlay.literal.innerText = activeSegment.literal_translation || "";
-      overlay.analysis.innerHTML = activeSegment.contextual_analysis ? snarkdown(activeSegment.contextual_analysis) : "";
-      overlay.gotchas.innerHTML = activeSegment.grammatical_gotchas ? snarkdown(activeSegment.grammatical_gotchas) : "";
+      overlay.analysis.innerHTML = activeSegment.contextual_analysis
+        ? snarkdown(activeSegment.contextual_analysis)
+        : "";
+      overlay.gotchas.innerHTML = activeSegment.grammatical_gotchas
+        ? snarkdown(activeSegment.grammatical_gotchas)
+        : "";
     }
 
     currentActiveSegment = activeSegment;
@@ -299,6 +317,7 @@ const init = async () => {
       );
       currentVideoId = newVideoId;
       store.clear();
+      sidebar.clear();
       uploadBtn.classList.remove("active");
       uploadBtn.title = "Upload Structured Subtitles (Markdown)";
       overlay.original.innerHTML = "";
@@ -318,6 +337,7 @@ const init = async () => {
       console.log("[LLE] Received subtitles from background:", message.payload);
       const segments = SubtitleStore.parseYouTubeJSON(message.payload);
       store.addSegments(segments);
+      sidebar.render(store.getAllSegments());
     }
   });
 };
