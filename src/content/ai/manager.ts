@@ -13,6 +13,11 @@ export class TranslationManager {
       return;
     }
 
+    // Only auto-translate Japanese content
+    if (store.sourceLanguage && !store.sourceLanguage.startsWith('ja')) {
+      return;
+    }
+
     const allSegments = store.getAllSegments();
     if (allSegments.length === 0) return;
 

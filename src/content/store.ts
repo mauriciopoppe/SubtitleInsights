@@ -16,18 +16,36 @@ export interface SubtitleSegment {
 export class SubtitleStore {
   private segments: SubtitleSegment[] = [];
   private _isStructured = false;
+  private _sourceLanguage: string | null = null;
   private changeListeners: (() => void)[] = [];
+  private segmentUpdateListeners: ((index: number, segment: SubtitleSegment) => void)[] = [];
 
   get isStructured() {
     return this._isStructured;
+  }
+
+  get sourceLanguage() {
+    return this._sourceLanguage;
+  }
+
+  setSourceLanguage(lang: string | null) {
+    this._sourceLanguage = lang;
   }
 
   addChangeListener(callback: () => void) {
     this.changeListeners.push(callback);
   }
 
+  addSegmentUpdateListener(callback: (index: number, segment: SubtitleSegment) => void) {
+    this.segmentUpdateListeners.push(callback);
+  }
+
   private notifyListeners() {
     this.changeListeners.forEach((cb) => cb());
+  }
+
+  private notifySegmentUpdate(index: number, segment: SubtitleSegment) {
+    this.segmentUpdateListeners.forEach((cb) => cb(index, segment));
   }
 
   addSegments(newSegments: SubtitleSegment[]) {
@@ -120,7 +138,7 @@ export class SubtitleStore {
   updateSegmentTranslation(index: number, translation: string) {
     if (this.segments[index]) {
       this.segments[index].translation = translation;
-      this.notifyListeners();
+      this.notifySegmentUpdate(index, this.segments[index]);
     }
   }
 
@@ -328,6 +346,7 @@ export class SubtitleStore {
   clear() {
     this.segments = [];
     this._isStructured = false;
+    this._sourceLanguage = null;
     this.notifyListeners();
   }
 

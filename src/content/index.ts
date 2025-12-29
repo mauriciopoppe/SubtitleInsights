@@ -126,7 +126,16 @@ const setupToggle = async (
 // @ts-ignore
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === "LLE_SUBTITLES_CAPTURED") {
+    const currentVideoId = new URLSearchParams(window.location.search).get("v");
+    if (message.videoId && message.videoId !== currentVideoId) {
+      console.log(`[LLE] Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`);
+      return;
+    }
+
     console.log("[LLE] Received subtitles from background:", message.payload);
+    if (message.language) {
+      store.setSourceLanguage(message.language);
+    }
     const segments = SubtitleStore.parseYouTubeJSON(message.payload);
     store.addSegments(segments);
   }
@@ -233,6 +242,10 @@ const init = async () => {
 
   store.addChangeListener(() => {
     sidebar.render(store.getAllSegments());
+  });
+
+  store.addSegmentUpdateListener((index, segment) => {
+    sidebar.updateSegment(index, segment);
   });
   
   // Initial render in case data arrived before sidebar was ready

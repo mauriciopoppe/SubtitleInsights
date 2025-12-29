@@ -32,10 +32,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Subtitle Capture & Translation Logic' (Protocol in workflow.md)
 
 ## Phase 4: Integration & Polish
-- [ ] Task: Wire up `Sidebar` updates.
-    - [ ] Ensure `Sidebar.render()` reflects the new translations in real-time (or optimistically update specific rows).
-- [ ] Task: Verify Auto-Activation.
-    - [ ] Ensure it only runs for Japanese videos (check `sourceLanguage: 'ja'` in availability check).
-- [ ] Task: Handle Upload Override.
-    - [ ] Ensure uploading a Markdown file cancels/overwrites any AI translation state.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Integration & Polish' (Protocol in workflow.md)
+- [x] Task: Wire up `Sidebar` updates.
+    - [x] Ensure `Sidebar.render()` reflects the new translations in real-time (or optimistically update specific rows).
+- [x] Task: Verify Auto-Activation.
+    - [x] Ensure it only runs for Japanese videos (check `sourceLanguage: 'ja'` in availability check).
+- [x] Task: Handle Upload Override.
+    - [x] Ensure uploading a Markdown file cancels/overwrites any AI translation state.
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Integration & Polish' (Protocol in workflow.md)

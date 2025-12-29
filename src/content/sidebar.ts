@@ -234,6 +234,16 @@ export class Sidebar {
     });
   }
 
+  public updateSegment(index: number, segment: SubtitleSegment) {
+    const item = this.listContainer.querySelector(`.lle-sidebar-item[data-index="${index}"]`);
+    if (!item) return;
+
+    const translation = item.querySelector(".lle-sidebar-translation");
+    if (translation) {
+      translation.textContent = segment.translation || "";
+    }
+  }
+
   private activeItem: HTMLElement | null = null;
   private lastActiveItem: HTMLElement | null = null;
 

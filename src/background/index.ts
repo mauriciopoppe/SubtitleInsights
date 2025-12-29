@@ -7,6 +7,10 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
 
       if (url.includes('/api/timedtext') && !url.includes('lle_ignore=true')) {
         console.log('[LLE] Detected subtitle URL:', url);
+        
+        const urlObj = new URL(url);
+        const lang = urlObj.searchParams.get('lang');
+        const videoId = urlObj.searchParams.get('v');
 
         try {
           // We add a param to avoid intercepting our own fetch
@@ -17,7 +21,9 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
           if (tabId !== -1) {
             chrome.tabs.sendMessage(tabId, {
               type: 'LLE_SUBTITLES_CAPTURED',
-              payload: data
+              payload: data,
+              language: lang,
+              videoId: videoId
             }, () => {
               if (chrome.runtime.lastError) {
                 console.warn('[LLE] Could not send subtitles to tab. Content script might not be ready yet.', chrome.runtime.lastError.message);
