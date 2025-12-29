@@ -5,10 +5,10 @@
 - [x] Task: Add getter/setter and change listener support for `isOverlayEnabled` in `Config` class.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: State Management Updates' (Protocol in workflow.md)
 
-## Phase 2: Sidebar Header Enhancements
-- [ ] Task: Update `src/content/sidebar.ts` to include the Upload button and the Overlay Toggle in the `lle-sidebar-header`.
-- [ ] Task: Implement the "Overlay" toggle logic in the `Sidebar` class, firing the `Config` update.
-- [ ] Task: Update the `Sidebar` constructor to accept callbacks or references needed for the Upload button functionality (or manage it via events).
+## Phase 2: Sidebar Header Enhancements [checkpoint: c2fca57]
+- [x] Task: Update `src/content/sidebar.ts` to include the Upload button and the Overlay Toggle in the `lle-sidebar-header`.
+- [x] Task: Implement the "Overlay" toggle logic in the `Sidebar` class, firing the `Config` update.
+- [x] Task: Update the `Sidebar` constructor to accept callbacks or references needed for the Upload button functionality (or manage it via events).
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Sidebar Header Enhancements' (Protocol in workflow.md)
 
 ## Phase 3: Player Controls & Logic Refactoring
