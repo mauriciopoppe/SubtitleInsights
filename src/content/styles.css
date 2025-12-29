@@ -151,10 +151,50 @@ rt {
 }
 
 .lle-sidebar-header {
-  padding: 12px 16px;
+  padding: 8px 16px;
   font-size: 16px;
   font-weight: bold;
   border-bottom: 1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lle-sidebar-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.lle-sidebar-upload-btn,
+.lle-sidebar-overlay-btn {
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background-color 0.1s;
+  user-select: none;
+  background-color: var(--yt-spec-badge-chip-background, rgba(255, 255, 255, 0.1));
+  color: var(--yt-spec-text-secondary, #aaa);
+}
+
+.lle-sidebar-upload-btn:hover,
+.lle-sidebar-overlay-btn:hover {
+  background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.2));
+}
+
+.lle-sidebar-upload-btn.active {
+  color: #065fd4;
+  font-weight: bold;
+}
+
+.lle-sidebar-overlay-btn.enabled {
+  color: #fff;
+  background-color: rgba(6, 95, 212, 0.3);
+}
+
+.lle-sidebar-overlay-btn.disabled {
+  color: var(--yt-spec-text-disabled, #777);
 }
 
 .lle-sidebar-list {

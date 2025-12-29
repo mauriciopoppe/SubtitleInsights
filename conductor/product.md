@@ -19,6 +19,7 @@ A Chrome extension designed for language learners who use YouTube as their prima
 - **Pre-fetch Translation:** Optimizes speed by fetching and translating subtitle tracks ahead of playback.
 - **Player Integration:** Adds a seamless enable/disable toggle directly into the YouTube player controls.
 - **Structured Subtitle Upload:** Allows uploading pre-processed Markdown files for high-quality, curated translations and analysis, bypassing AI generation when available.
+- **Sidebar Transcript:** Provides a vertical list of all educational segments in the YouTube sidebar, highlighting the active segment in sync with the video.
 - **In-Page Overlay:** Injects directly into the YouTube player for a seamless, "Language Reactor"-style experience.
 
 ## User Experience

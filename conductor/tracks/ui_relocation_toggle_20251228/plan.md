@@ -11,13 +11,13 @@
 - [x] Task: Update the `Sidebar` constructor to accept callbacks or references needed for the Upload button functionality (or manage it via events).
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Sidebar Header Enhancements' (Protocol in workflow.md)
 
-## Phase 3: Player Controls & Logic Refactoring
-- [ ] Task: Modify `setupToggle` in `src/content/index.ts` to remove the Upload button from the YouTube player controls.
-- [ ] Task: Connect the relocated Upload button in the Sidebar to the existing file input logic in `index.ts`.
-- [ ] Task: Update the `timeupdate` listener in `src/content/index.ts` to check both `isEnabled` (Master) and `isOverlayEnabled` (Sub-toggle) before showing the on-video overlay.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Player Controls & Logic Refactoring' (Protocol in workflow.md)
+## Phase 3: Player Controls & Logic Refactoring [checkpoint: be02839]
+- [x] Task: Modify `setupToggle` in `src/content/index.ts` to remove the Upload button from the YouTube player controls.
+- [x] Task: Connect the relocated Upload button in the Sidebar to the existing file input logic in `index.ts`.
+- [x] Task: Update the `timeupdate` listener in `src/content/index.ts` to check both `isEnabled` (Master) and `isOverlayEnabled` (Sub-toggle) before showing the on-video overlay.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Player Controls & Logic Refactoring' (Protocol in workflow.md)
 
 ## Phase 4: Styling & Polish
-- [ ] Task: Update `src/content/styles.css` to layout the new Sidebar Header controls (flexbox, spacing, active states).
-- [ ] Task: Ensure the "Overlay" toggle has a visual "enabled/disabled" state similar to the main LLE toggle.
+- [x] Task: Update `src/content/styles.css` to layout the new Sidebar Header controls (flexbox, spacing, active states).
+- [x] Task: Ensure the "Overlay" toggle has a visual "enabled/disabled" state similar to the main LLE toggle.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Styling & Polish' (Protocol in workflow.md)

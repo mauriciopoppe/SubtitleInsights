@@ -27,7 +27,7 @@ export class Sidebar {
     // Upload Button
     this.uploadBtn = document.createElement("span");
     this.uploadBtn.className = "lle-sidebar-upload-btn";
-    this.uploadBtn.innerText = "UP";
+    this.uploadBtn.innerText = "Upload";
     this.uploadBtn.title = "Upload Structured Subtitles (Markdown)";
     if (onUploadClick) {
       this.uploadBtn.onclick = onUploadClick;
@@ -78,6 +78,19 @@ export class Sidebar {
 
   public getUploadBtn(): HTMLElement | null {
     return this.uploadBtn;
+  }
+
+  public setUploadActive(active: boolean, filename?: string) {
+    if (!this.uploadBtn) return;
+    if (active) {
+      this.uploadBtn.classList.add("active");
+      if (filename) {
+        this.uploadBtn.title = `Loaded: ${filename}`;
+      }
+    } else {
+      this.uploadBtn.classList.remove("active");
+      this.uploadBtn.title = "Upload Structured Subtitles (Markdown)";
+    }
   }
 
   public getElement(): HTMLElement {

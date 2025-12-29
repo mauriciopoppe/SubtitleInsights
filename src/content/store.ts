@@ -16,9 +16,18 @@ export interface SubtitleSegment {
 export class SubtitleStore {
   private segments: SubtitleSegment[] = [];
   private _isStructured = false;
+  private changeListeners: (() => void)[] = [];
 
   get isStructured() {
     return this._isStructured;
+  }
+
+  addChangeListener(callback: () => void) {
+    this.changeListeners.push(callback);
+  }
+
+  private notifyListeners() {
+    this.changeListeners.forEach((cb) => cb());
   }
 
   addSegments(segments: SubtitleSegment[]) {
@@ -28,10 +37,15 @@ export class SubtitleStore {
     console.log(
       `[LLE][SubtitleStore] Added ${segments.length} segments. Total: ${this.segments.length}`,
     );
+    this.notifyListeners();
   }
 
   loadStructuredData(data: any[]) {
     this.clear();
+    console.log(
+      "[LLE] SubtitleStore: Loading structured data, count:",
+      data.length,
+    );
     this.segments = data
       .map((s) => {
         const segment: SubtitleSegment = {
@@ -44,7 +58,6 @@ export class SubtitleStore {
           contextual_analysis: s.contextual_analysis,
           grammatical_gotchas: s.grammatical_gotchas,
         };
-        console.log(segment);
 
         if (Array.isArray(s.segmentation)) {
           segment.segmentedData = s.segmentation.map((token) =>
@@ -58,6 +71,7 @@ export class SubtitleStore {
     console.log(
       `[LLE][SubtitleStore] Loaded ${this.segments.length} structured segments.`,
     );
+    this.notifyListeners();
   }
 
   /**
@@ -199,6 +213,7 @@ export class SubtitleStore {
   clear() {
     this.segments = [];
     this._isStructured = false;
+    this.notifyListeners();
   }
 
   // Helper to parse YouTube format

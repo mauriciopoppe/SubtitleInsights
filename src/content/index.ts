@@ -3,7 +3,7 @@ import snarkdown from "snarkdown";
 import { store, SubtitleStore, SubtitleSegment } from "./store";
 import { renderSegmentedText } from "./render";
 import { Config } from "./config";
-import { sidebar } from "./sidebar";
+import { Sidebar } from "./sidebar";
 
 console.log("[LLE] Content script injected.");
 
@@ -74,7 +74,7 @@ const createOverlay = (): OverlayElements => {
   };
 };
 
-const setupToggle = async () => {
+const setupToggle = async (onFileLoaded?: (filename: string) => void) => {
   console.log("[LLE] Setting up toggle...");
   const leftControls = await waitForElement(".ytp-left-controls");
   console.log("[LLE] Found left controls:", leftControls);
@@ -89,11 +89,6 @@ const setupToggle = async () => {
   toggle.innerText = "LLE";
   toggle.title = "Toggle Language Learning Extension";
 
-  const uploadBtn = document.createElement("span");
-  uploadBtn.className = "lle-upload-btn";
-  uploadBtn.innerText = "UP";
-  uploadBtn.title = "Upload Structured Subtitles (Markdown)";
-
   const fileInput = document.createElement("input");
   fileInput.type = "file";
   fileInput.accept = ".md";
@@ -101,7 +96,6 @@ const setupToggle = async () => {
   fileInput.id = "lle-upload-input";
 
   container.appendChild(toggle);
-  container.appendChild(uploadBtn);
   container.appendChild(fileInput);
 
   const updateUI = (enabled: boolean) => {
@@ -110,10 +104,6 @@ const setupToggle = async () => {
 
   const isEnabled = await Config.getIsEnabled();
   updateUI(isEnabled);
-
-  uploadBtn.onclick = () => {
-    fileInput.click();
-  };
 
   fileInput.onchange = (e) => {
     const target = e.target as HTMLInputElement;
@@ -128,9 +118,7 @@ const setupToggle = async () => {
 
         if (segments && segments.length > 0) {
           store.loadStructuredData(segments);
-          sidebar.render(store.getAllSegments());
-          uploadBtn.classList.add("active");
-          uploadBtn.title = `Loaded: ${file.name}`;
+          if (onFileLoaded) onFileLoaded(file.name);
           console.log(
             `[LLE] Successfully loaded ${segments.length} segments from ${file.name}`,
           );
@@ -164,7 +152,7 @@ const setupToggle = async () => {
   // Insert container after time display
   timeDisplay.after(container);
 
-  return { uploadBtn };
+  return { fileInput };
 };
 
 const init = async () => {
@@ -174,14 +162,26 @@ const init = async () => {
   const secondaryInner = await waitForElement("#secondary-inner");
   console.log("[LLE] Video player, element and secondary column found.");
 
-  const { uploadBtn } = await setupToggle();
+  const { fileInput } = await setupToggle((filename) => {
+    if (sidebar) sidebar.setUploadActive(true, filename);
+  });
+
+  sidebar = new Sidebar(() => {
+    fileInput.click();
+  });
 
   const overlay = createOverlay();
   player.appendChild(overlay.container);
   secondaryInner.prepend(sidebar.getElement());
   console.log("[LLE] Overlay and Sidebar injected.");
 
+  store.addChangeListener(() => {
+    sidebar.render(store.getAllSegments());
+  });
+
   let isEnabled = await Config.getIsEnabled();
+  let isOverlayEnabled = await Config.getIsOverlayEnabled();
+
   sidebar.setVisible(isEnabled);
 
   Config.addChangeListener((enabled) => {
@@ -192,14 +192,25 @@ const init = async () => {
     }
   });
 
+  Config.addOverlayChangeListener((enabled) => {
+    isOverlayEnabled = enabled;
+    if (!isOverlayEnabled) {
+      overlay.container.style.display = "none";
+    }
+  });
+
   let currentActiveSegment: SubtitleSegment | undefined = undefined;
 
   // Sync Engine
   video.addEventListener("timeupdate", () => {
-    if (!isEnabled) return;
-
     const currentTimeMs = video.currentTime * 1000;
     sidebar.highlight(currentTimeMs);
+
+    if (!isEnabled || !isOverlayEnabled) {
+      overlay.container.style.display = "none";
+      return;
+    }
+
     const activeSegment = store.getSegmentAt(currentTimeMs);
 
     // Case 1: No active segment
@@ -262,8 +273,8 @@ const init = async () => {
       currentVideoId = newVideoId;
       store.clear();
       sidebar.clear();
-      uploadBtn.classList.remove("active");
-      uploadBtn.title = "Upload Structured Subtitles (Markdown)";
+      sidebar.setUploadActive(false);
+
       overlay.original.innerHTML = "";
       overlay.translation.innerText = "";
       overlay.literal.innerText = "";
