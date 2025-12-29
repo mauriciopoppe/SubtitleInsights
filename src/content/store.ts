@@ -30,12 +30,55 @@ export class SubtitleStore {
     this.changeListeners.forEach((cb) => cb());
   }
 
-  addSegments(segments: SubtitleSegment[]) {
-    this.segments = [...this.segments, ...segments].sort(
+  addSegments(newSegments: SubtitleSegment[]) {
+    if (newSegments.length === 0) return;
+
+    // Optimization: If the store is empty, just add
+    if (this.segments.length === 0) {
+      this.segments = newSegments.sort((a, b) => a.start - b.start);
+      console.log(
+        `[LLE][SubtitleStore] Added ${newSegments.length} segments. Total: ${this.segments.length}`,
+      );
+      this.notifyListeners();
+      return;
+    }
+
+    // Check for identical payload (common case for double fetch of full track)
+    if (this.segments.length === newSegments.length) {
+       const firstOld = this.segments[0];
+       const firstNew = newSegments[0];
+       // Check if first segment matches, a strong heuristic for identical full track
+       if (firstOld.start === firstNew.start && firstOld.text === firstNew.text) {
+          console.log('[LLE][SubtitleStore] Duplicate subtitle track detected. Ignoring.');
+          return;
+       }
+    }
+
+    // Merge using Map to ensure uniqueness O(N+M)
+    const uniqueSegments = new Map<string, SubtitleSegment>();
+    
+    // Add existing segments first to preserve their state (e.g. translations)
+    this.segments.forEach(s => uniqueSegments.set(`${s.start}:${s.text}`, s));
+    
+    let addedCount = 0;
+    newSegments.forEach(s => {
+       const key = `${s.start}:${s.text}`;
+       if (!uniqueSegments.has(key)) {
+         uniqueSegments.set(key, s);
+         addedCount++;
+       }
+    });
+
+    if (addedCount === 0) {
+      console.log('[LLE][SubtitleStore] No new unique segments found.');
+      return;
+    }
+
+    this.segments = Array.from(uniqueSegments.values()).sort(
       (a, b) => a.start - b.start,
     );
     console.log(
-      `[LLE][SubtitleStore] Added ${segments.length} segments. Total: ${this.segments.length}`,
+      `[LLE][SubtitleStore] Added ${addedCount} segments. Total: ${this.segments.length}`,
     );
     this.notifyListeners();
   }
@@ -72,6 +115,13 @@ export class SubtitleStore {
       `[LLE][SubtitleStore] Loaded ${this.segments.length} structured segments.`,
     );
     this.notifyListeners();
+  }
+
+  updateSegmentTranslation(index: number, translation: string) {
+    if (this.segments[index]) {
+      this.segments[index].translation = translation;
+      this.notifyListeners();
+    }
   }
 
   /**

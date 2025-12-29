@@ -1,4 +1,4 @@
-console.log('[LLE] Background script loading...');
+console.log('[LLE] Background script loading...', new Date().toISOString());
 
 if (typeof chrome !== 'undefined' && chrome.webRequest) {
   chrome.webRequest.onCompleted.addListener(
@@ -18,6 +18,10 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
             chrome.tabs.sendMessage(tabId, {
               type: 'LLE_SUBTITLES_CAPTURED',
               payload: data
+            }, () => {
+              if (chrome.runtime.lastError) {
+                console.warn('[LLE] Could not send subtitles to tab. Content script might not be ready yet.', chrome.runtime.lastError.message);
+              }
             });
           }
         } catch (e) {

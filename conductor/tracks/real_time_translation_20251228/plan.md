@@ -20,16 +20,16 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: UI Updates (Overlay & Sidebar)' (Protocol in workflow.md)
 
 ## Phase 3: Subtitle Capture & Translation Logic
-- [ ] Task: Re-enable Subtitle Capture in `src/content/index.ts`.
-    - [ ] Uncomment the `chrome.runtime.onMessage.addListener` block.
-    - [ ] Verify that `LLE_SUBTITLES_CAPTURED` messages from the background script are correctly parsed by `SubtitleStore.parseYouTubeJSON` and added to the store.
-- [ ] Task: Implement Translation Manager.
-    - [ ] Upon capturing subtitles (and if no manual file is loaded), trigger the translation flow.
-- [ ] Task: Implement Pre-fetching Buffer.
-    - [ ] Create a buffer queue that maintains translations for the current + next 20 segments.
-    - [ ] On `timeupdate`, check if upcoming segments need translation and trigger them.
-    - [ ] Update `SubtitleStore` with the translated text as it becomes available.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Subtitle Capture & Translation Logic' (Protocol in workflow.md)
+- [x] Task: Re-enable Subtitle Capture in `src/content/index.ts`.
+    - [x] Uncomment the `chrome.runtime.onMessage.addListener` block.
+    - [x] Verify that `LLE_SUBTITLES_CAPTURED` messages from the background script are correctly parsed by `SubtitleStore.parseYouTubeJSON` and added to the store.
+- [x] Task: Implement Translation Manager.
+    - [x] Upon capturing subtitles (and if no manual file is loaded), trigger the translation flow.
+- [x] Task: Implement Pre-fetching Buffer.
+    - [x] Create a buffer queue that maintains translations for the current + next 20 segments.
+    - [x] On `timeupdate`, check if upcoming segments should be translated and trigger them.
+    - [x] Update `SubtitleStore` with the translated text as it becomes available.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Subtitle Capture & Translation Logic' (Protocol in workflow.md)
 
 ## Phase 4: Integration & Polish
 - [ ] Task: Wire up `Sidebar` updates.

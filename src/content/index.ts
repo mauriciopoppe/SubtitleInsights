@@ -4,6 +4,7 @@ import { Config } from "./config";
 import { Sidebar } from "./sidebar";
 import { Overlay } from "./overlay";
 import { translatorService } from "./ai/translator";
+import { translationManager } from "./ai/manager";
 
 console.log("[LLE] Content script injected.");
 
@@ -36,9 +37,7 @@ const setupToggle = async (
 ) => {
   console.log("[LLE] Setting up toggle...");
   const leftControls = await waitForElement(".ytp-left-controls");
-  console.log("[LLE] Found left controls:", leftControls);
   const timeDisplay = await waitForElement(".ytp-time-display");
-  console.log("[LLE] Found time display:", timeDisplay);
 
   const container = document.createElement("div");
   container.className = "lle-toggle-container";
@@ -124,10 +123,28 @@ const setupToggle = async (
   return { fileInput };
 };
 
+// @ts-ignore
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.type === "LLE_SUBTITLES_CAPTURED") {
+    console.log("[LLE] Received subtitles from background:", message.payload);
+    const segments = SubtitleStore.parseYouTubeJSON(message.payload);
+    store.addSegments(segments);
+  }
+});
+
+let isInitialized = false;
+let isInitializing = false;
+
 const init = async () => {
+  if (isInitialized || isInitializing) return;
+  isInitializing = true;
+
+  console.log("[LLE] Initializing extension for watch page...");
+
   console.log("[LLE] Waiting for video player...");
   const player = await waitForElement("#movie_player");
   const video = (await waitForElement("video")) as HTMLVideoElement;
+  // secondary-inner might take longer or depend on layout (theater mode etc)
   const secondaryInner = await waitForElement("#secondary-inner");
   console.log("[LLE] Video player, element and secondary column found.");
 
@@ -189,7 +206,7 @@ const init = async () => {
       } else {
         console.log("[LLE] Waiting for user interaction to start download...");
         const onUserInteraction = async (e: Event) => {
-           // Filter invalid keydown events (Escape or browser shortcuts check would be complex, simplistic check for now)
+           // Filter invalid keydown events
            if (e.type === 'keydown' && (e as KeyboardEvent).key === 'Escape') return;
 
            // Remove all listeners
@@ -217,6 +234,9 @@ const init = async () => {
   store.addChangeListener(() => {
     sidebar.render(store.getAllSegments());
   });
+  
+  // Initial render in case data arrived before sidebar was ready
+  sidebar.render(store.getAllSegments());
 
   let isEnabled = await Config.getIsEnabled();
   let isOverlayEnabled = await Config.getIsOverlayEnabled();
@@ -262,6 +282,7 @@ const init = async () => {
     checkVideoChange();
     const currentTimeMs = video.currentTime * 1000;
     sidebar.highlight(currentTimeMs);
+    translationManager.onTimeUpdate(currentTimeMs);
 
     if (!isEnabled || !isOverlayEnabled) {
       overlay.setVisible(false);
@@ -297,16 +318,15 @@ const init = async () => {
   window.addEventListener("yt-navigate-finish", checkVideoChange);
   window.addEventListener("popstate", checkVideoChange);
 
-  // @ts-ignore
-  // chrome.runtime.onMessage.addListener((message) => {
-  //   if (message.type === "LLE_SUBTITLES_CAPTURED") {
-  //     console.log("[LLE] Received subtitles from background:", message.payload);
-  //     const segments = SubtitleStore.parseYouTubeJSON(message.payload);
-  //     store.addSegments(segments);
-  //     sidebar.render(store.getAllSegments());
-  //   }
-  // });
+  isInitialized = true;
+  isInitializing = false;
 };
 
-init();
+const run = () => {
+    if (window.location.pathname === '/watch' || window.location.pathname.startsWith('/watch')) {
+        init();
+    }
+};
 
+window.addEventListener("yt-navigate-finish", run);
+run();

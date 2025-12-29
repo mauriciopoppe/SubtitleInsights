@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "js": ["src/content/index.ts"],
-      "matches": ["https://www.youtube.com/watch*"]
+      "matches": ["https://www.youtube.com/*"]
     }
   ],
   "background": {
