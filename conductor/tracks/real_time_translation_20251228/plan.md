@@ -1,6 +1,6 @@
 # Plan: AI Subtitle Analysis & Translation Overlay
 
-## Phase 1: API Integration & Service Wrapper
+## Phase 1: API Integration & Service Wrapper [checkpoint: f23e47e]
 - [x] Task: Create `src/content/ai/translator.ts` to wrap the `window.Translation` API.
     - [x] Implement `checkAvailability()` method handling `available`, `after-download`, and `unavailable`.
     - [x] Implement `initialize()` method to create the translator instance.
