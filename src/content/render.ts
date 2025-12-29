@@ -11,7 +11,7 @@ export function renderSegmentedText(segments: AISegment[][]): string {
       const groupHTML = wordGroup
         .map((segment) => {
           const { word, reading } = segment;
-          if (reading) {
+          if (reading && reading !== word) {
             return `<ruby>${word}<rt>${reading}</rt></ruby>`;
           }
           return `<span>${word}</span>`;

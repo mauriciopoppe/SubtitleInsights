@@ -162,6 +162,7 @@ const init = async () => {
   const secondaryInner = await waitForElement("#secondary-inner");
   console.log("[LLE] Video player, element and secondary column found.");
 
+  let sidebar: Sidebar;
   const { fileInput } = await setupToggle((filename) => {
     if (sidebar) sidebar.setUploadActive(true, filename);
   });

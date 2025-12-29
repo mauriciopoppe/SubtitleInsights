@@ -179,10 +179,11 @@ export class SubtitleStore {
   private parseFurigana(token: string): AISegment[] {
     const parts: AISegment[] = [];
     let lastIndex = 0;
-    // Matches "KanjiBlock(Reading)"
-    // Using Unicode property escape \p{Ideographic} to catch all Kanji.
-    // The 'u' flag is required for Unicode property escapes.
-    const regex = /([\p{Ideographic}\u3005]+)\(([^()]+)\)/gu;
+    // Matches "AnyWord(Reading)"
+    // Relaxed regex to capture any non-parenthesis characters before the parens
+    // This allows "Hiragana(Hiragana)" or "Katakana(Reading)" cases to be parsed
+    // so we can strip redundant readings in the render phase.
+    const regex = /([^\s()]+)\(([^()]+)\)/gu;
     let match;
 
     while ((match = regex.exec(token)) !== null) {

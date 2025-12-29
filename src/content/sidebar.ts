@@ -8,6 +8,7 @@ export class Sidebar {
   private listContainer: HTMLElement;
   private overlayToggle: HTMLElement | null = null;
   private uploadBtn: HTMLElement | null = null;
+  private jumpBtn: HTMLElement | null = null;
 
   constructor(onUploadClick?: () => void) {
     this.container = document.createElement("div");
@@ -24,6 +25,18 @@ export class Sidebar {
     const controls = document.createElement("div");
     controls.className = "lle-sidebar-controls";
 
+    // Jump to Active Button
+    this.jumpBtn = document.createElement("span");
+    this.jumpBtn.className = "lle-sidebar-jump-btn";
+    this.jumpBtn.title = "Jump to Active Segment";
+    this.jumpBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+        <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+      </svg>
+      <span>Sync</span>
+    `;
+    this.jumpBtn.onclick = () => this.scrollToActive();
+
     // Upload Button
     this.uploadBtn = document.createElement("span");
     this.uploadBtn.className = "lle-sidebar-upload-btn";
@@ -33,7 +46,7 @@ export class Sidebar {
       this.uploadBtn.onclick = onUploadClick;
     }
 
-    // Overlay Toggle
+    // Overlay Toggle Button
     this.overlayToggle = document.createElement("span");
     this.overlayToggle.className = "lle-sidebar-overlay-btn";
     this.overlayToggle.innerText = "Overlay";
@@ -41,6 +54,7 @@ export class Sidebar {
 
     this.initOverlayToggle();
 
+    controls.appendChild(this.jumpBtn);
     controls.appendChild(this.uploadBtn);
     controls.appendChild(this.overlayToggle);
 
@@ -104,6 +118,7 @@ export class Sidebar {
   public clear() {
     this.listContainer.innerHTML = "";
     this.activeItem = null;
+    this.lastActiveItem = null;
   }
 
   public render(segments: SubtitleSegment[]) {
@@ -161,6 +176,14 @@ export class Sidebar {
   }
 
   private activeItem: HTMLElement | null = null;
+  private lastActiveItem: HTMLElement | null = null;
+
+  private scrollToActive() {
+    const target = this.activeItem || this.lastActiveItem;
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
 
   public highlight(currentTimeMs: number) {
     const items = this.listContainer.querySelectorAll(".lle-sidebar-item");
@@ -179,6 +202,7 @@ export class Sidebar {
           }
           htmlItem.classList.add("active");
           this.activeItem = htmlItem;
+          this.lastActiveItem = htmlItem;
           // htmlItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
       }

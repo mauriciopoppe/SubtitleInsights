@@ -166,7 +166,8 @@ rt {
 }
 
 .lle-sidebar-upload-btn,
-.lle-sidebar-overlay-btn {
+.lle-sidebar-overlay-btn,
+.lle-sidebar-jump-btn {
   padding: 4px 8px;
   cursor: pointer;
   font-size: 12px;
@@ -176,11 +177,16 @@ rt {
   user-select: none;
   background-color: var(--yt-spec-badge-chip-background, rgba(255, 255, 255, 0.1));
   color: var(--yt-spec-text-secondary, #aaa);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .lle-sidebar-upload-btn:hover,
-.lle-sidebar-overlay-btn:hover {
+.lle-sidebar-overlay-btn:hover,
+.lle-sidebar-jump-btn:hover {
   background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.2));
+  color: var(--yt-spec-text-primary, #fff);
 }
 
 .lle-sidebar-upload-btn.active {
