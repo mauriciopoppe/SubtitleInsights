@@ -19,7 +19,7 @@
     - [x] Add method `setAIStatus(status: 'downloading' | 'ready' | 'error', message?: string)`.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: UI Updates (Overlay & Sidebar)' (Protocol in workflow.md)
 
-## Phase 3: Subtitle Capture & Translation Logic
+## Phase 3: Subtitle Capture & Translation Logic [checkpoint: 9bf68bc]
 - [x] Task: Re-enable Subtitle Capture in `src/content/index.ts`.
     - [x] Uncomment the `chrome.runtime.onMessage.addListener` block.
     - [x] Verify that `LLE_SUBTITLES_CAPTURED` messages from the background script are correctly parsed by `SubtitleStore.parseYouTubeJSON` and added to the store.
