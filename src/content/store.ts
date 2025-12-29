@@ -1,4 +1,4 @@
-import { aiClient, AISegment } from "./ai";
+import { AISegment } from "./types";
 
 export interface SubtitleSegment {
   start: number;
@@ -15,7 +15,6 @@ export interface SubtitleSegment {
 
 export class SubtitleStore {
   private segments: SubtitleSegment[] = [];
-  private isTranslating = false;
   private _isStructured = false;
 
   get isStructured() {
@@ -29,79 +28,6 @@ export class SubtitleStore {
     console.log(
       `[LLE][SubtitleStore] Added ${segments.length} segments. Total: ${this.segments.length}`,
     );
-  }
-
-  async updatePlaybackTime(currentTimeMs: number) {
-    if (this.isTranslating || this._isStructured) return;
-
-    // Find current and next few segments that need processing
-    // 1. Find index of current segment (or the next one if between segments)
-    const currentIndex = this.segments.findIndex((s) => s.end >= currentTimeMs);
-    if (currentIndex === -1) return;
-
-    // 2. Look ahead N segments
-    const LOOKAHEAD = 5;
-    const MIN_BATCH_SIZE = 3;
-    const candidates = this.segments.slice(
-      currentIndex,
-      currentIndex + LOOKAHEAD,
-    );
-
-    // 3. Filter for pending ones
-    const pending = candidates.filter(
-      (s) => !s.translation || !s.segmentedData,
-    );
-
-    if (pending.length === 0) return;
-
-    const currentSegment = this.segments[currentIndex];
-    const isCurrentPending =
-      !currentSegment.translation || !currentSegment.segmentedData;
-
-    if (pending.length >= MIN_BATCH_SIZE || isCurrentPending) {
-      await this.processBatch(pending);
-    }
-  }
-
-  async processBatch(batch: SubtitleSegment[]) {
-    if (this.isTranslating || this._isStructured) return;
-    this.isTranslating = true;
-
-    console.log(
-      `[LLE][SubtitleStore] Processing lazy batch of ${batch.length} segments...`,
-    );
-
-    for (const segment of batch) {
-      try {
-        // Double check if processed in race condition
-        if (segment.translation && segment.segmentedData) continue;
-
-        const [translation, segmentedData] = await Promise.all([
-          segment.translation
-            ? Promise.resolve(segment.translation)
-            : aiClient.translate(segment.text),
-          segment.segmentedData
-            ? Promise.resolve(segment.segmentedData)
-            : aiClient.segment(segment.text),
-        ]);
-
-        segment.translation = translation;
-        // AI segments are flat, each is its own visual block
-        // @ts-ignore (AIClient returns AISegment[])
-        segment.segmentedData = segmentedData.map((s) => [s]);
-      } catch (e) {
-        console.error(
-          "[LLE][SubtitleStore] Failed to process segment",
-          segment.text,
-          e,
-        );
-        if (!segment.translation) segment.translation = "Error";
-        if (!segment.segmentedData)
-          segment.segmentedData = [[{ word: segment.text }]];
-      }
-    }
-
-    this.isTranslating = false;
   }
 
   loadStructuredData(data: any[]) {
@@ -118,6 +44,7 @@ export class SubtitleStore {
           contextual_analysis: s.contextual_analysis,
           grammatical_gotchas: s.grammatical_gotchas,
         };
+        console.log(segment);
 
         if (Array.isArray(s.segmentation)) {
           segment.segmentedData = s.segmentation.map((token) =>

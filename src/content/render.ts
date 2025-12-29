@@ -1,4 +1,4 @@
-import { AISegment } from "./ai";
+import { AISegment } from "./types";
 
 /**
  * Renders a list of AI segments into an HTML string with Furigana and word spacing.
