@@ -77,12 +77,21 @@ export class SubtitleStore {
   /**
    * Parses a Markdown file content into SubtitleSegment objects.
    */
-  parseMarkdownStructuredData(content: string): SubtitleSegment[] {
+  parseMarkdownStructuredData(content: string): {
+    segments: SubtitleSegment[];
+    errors: string[];
+  } {
     const segments: SubtitleSegment[] = [];
+    const errors: string[] = [];
+
     // Split by "## [Text]" but keep the text
     const sections = content.split(/^##\s+/m).slice(1);
 
-    for (const section of sections) {
+    if (sections.length === 0) {
+      errors.push("No valid sections found (must start with '## ').");
+    }
+
+    sections.forEach((section, index) => {
       const lines = section.split("\n");
       const text = lines[0].trim();
 
@@ -140,20 +149,67 @@ export class SubtitleStore {
       };
 
       const segmentationStr = getValue("Segmentation");
+      
+      // Try parsing new combined Timestamp format first
+      let startStr = "";
+      let endStr = "";
+      const timestampCombined = getValue("Timestamp");
+
+      if (timestampCombined && timestampCombined.includes("-->")) {
+        const parts = timestampCombined.split("-->").map((s) => s.trim());
+        if (parts.length >= 2) {
+          startStr = parts[0];
+          endStr = parts[1];
+        }
+      } else {
+        // Fallback to old separate fields
+        startStr = getValue("Timestamp Start");
+        endStr = getValue("Timestamp End");
+      }
+
+      const start = this.parseTimestamp(startStr);
+      const end = this.parseTimestamp(endStr);
+
+      // Validation
+      if (!text) {
+        errors.push(`Segment ${index + 1}: Missing text.`);
+        return; // Skip this segment
+      }
+      
+      const isStartValid = start > 0 || (start === 0 && (startStr.includes("00:00:00.000") || startStr.includes("00:00:00,000")));
+      
+      if (!startStr || !isStartValid) {
+         if (!startStr) {
+            errors.push(`Segment ${index + 1} ("${text.substring(0, 20)}..."): Missing timestamp information.`);
+            return;
+         } else {
+            errors.push(`Segment ${index + 1} ("${text.substring(0, 20)}..."): Invalid start timestamp format: "${startStr}".`);
+            return;
+         }
+      }
+
+      if (!endStr) {
+          errors.push(`Segment ${index + 1} ("${text.substring(0, 20)}..."): Missing end time.`);
+          return;
+      }
+      if (end < start) {
+        errors.push(`Segment ${index + 1} ("${text.substring(0, 20)}..."): End time (${endStr}) is before Start time (${startStr}).`);
+        return;
+      }
 
       segments.push({
         text,
-        start: this.parseTimestamp(getValue("Timestamp Start")),
-        end: this.parseTimestamp(getValue("Timestamp End")),
+        start,
+        end,
         translation: getValue("Translation"),
         literal_translation: getValue("Literal Translation"),
         segmentation: segmentationStr ? segmentationStr.split(/\s+/) : [],
         contextual_analysis: getMultilineValue("Contextual Analysis"),
         grammatical_gotchas: getMultilineValue("Grammatical Gotchas"),
       });
-    }
+    });
 
-    return segments;
+    return { segments, errors };
   }
 
   /**
@@ -163,14 +219,22 @@ export class SubtitleStore {
   private parseTimestamp(ts: string): number {
     if (!ts) return 0;
 
-    // Matches optional HH:, mandatory MM:SS.SSS
-    const match = ts.match(/^(?:(\d{2}):)?(\d{2}):(\d{2})\.(\d{3})$/);
+    // Matches optional HH:, mandatory MM:SS, and optional milliseconds with . or ,
+    // Accepting one or more digits for milliseconds (\d+)
+    const match = ts.match(/^(?:(\d{2}):)?(\d{2}):(\d{2})(?:[.,](\d+))?$/);
     if (match) {
       const h = match[1] ? parseInt(match[1], 10) : 0;
       const m = parseInt(match[2], 10);
       const s = parseInt(match[3], 10);
-      const ms = parseInt(match[4], 10);
-      return h * 3600 + m * 60 + s + ms / 1000;
+      
+      let fractionalSeconds = 0;
+      if (match[4]) {
+        const msValue = parseInt(match[4], 10);
+        const msLength = match[4].length;
+        fractionalSeconds = msValue / Math.pow(10, msLength);
+      }
+      
+      return h * 3600 + m * 60 + s + fractionalSeconds;
     }
 
     return 0;

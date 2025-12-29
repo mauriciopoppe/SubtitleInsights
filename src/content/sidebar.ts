@@ -9,6 +9,7 @@ export class Sidebar {
   private overlayToggle: HTMLElement | null = null;
   private uploadBtn: HTMLElement | null = null;
   private jumpBtn: HTMLElement | null = null;
+  private warningIcon: HTMLElement | null = null;
 
   constructor(onUploadClick?: () => void) {
     this.container = document.createElement("div");
@@ -54,9 +55,23 @@ export class Sidebar {
 
     this.initOverlayToggle();
 
+    // Warning Icon
+    this.warningIcon = document.createElement("span");
+    this.warningIcon.className = "lle-sidebar-warning";
+    this.warningIcon.style.display = "none";
+    this.warningIcon.style.color = "#ffcc00"; // Warning yellow
+    this.warningIcon.style.marginLeft = "8px";
+    this.warningIcon.style.cursor = "help";
+    this.warningIcon.innerHTML = `
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+      </svg>
+    `;
+
     controls.appendChild(this.jumpBtn);
     controls.appendChild(this.uploadBtn);
     controls.appendChild(this.overlayToggle);
+    controls.appendChild(this.warningIcon);
 
     header.appendChild(title);
     header.appendChild(controls);
@@ -66,6 +81,17 @@ export class Sidebar {
 
     this.container.appendChild(header);
     this.container.appendChild(this.listContainer);
+  }
+
+  public setWarning(message?: string) {
+    if (!this.warningIcon) return;
+    if (message) {
+      this.warningIcon.style.display = "inline-flex";
+      this.warningIcon.title = message;
+    } else {
+      this.warningIcon.style.display = "none";
+      this.warningIcon.title = "";
+    }
   }
 
   private async initOverlayToggle() {

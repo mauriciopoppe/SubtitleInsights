@@ -1,9 +1,8 @@
 import "./styles.css";
-import snarkdown from "snarkdown";
-import { store, SubtitleStore, SubtitleSegment } from "./store";
-import { renderSegmentedText } from "./render";
+import { store, SubtitleSegment, SubtitleStore } from "./store";
 import { Config } from "./config";
 import { Sidebar } from "./sidebar";
+import { Overlay } from "./overlay";
 
 console.log("[LLE] Content script injected.");
 
@@ -30,51 +29,10 @@ const waitForElement = (selector: string): Promise<HTMLElement> => {
   });
 };
 
-interface OverlayElements {
-  container: HTMLElement;
-  translation: HTMLElement;
-  original: HTMLElement;
-  literal: HTMLElement;
-  analysis: HTMLElement;
-  gotchas: HTMLElement;
-}
-
-const createOverlay = (): OverlayElements => {
-  const overlay = document.createElement("div");
-  overlay.id = "lle-overlay";
-
-  const translationText = document.createElement("div");
-  translationText.className = "lle-translation";
-
-  const originalText = document.createElement("div");
-  originalText.className = "lle-original";
-
-  const literalText = document.createElement("div");
-  literalText.className = "lle-literal";
-
-  const analysisText = document.createElement("div");
-  analysisText.className = "lle-analysis";
-
-  const gotchasText = document.createElement("div");
-  gotchasText.className = "lle-gotchas";
-
-  overlay.appendChild(translationText);
-  overlay.appendChild(originalText);
-  overlay.appendChild(literalText);
-  overlay.appendChild(analysisText);
-  overlay.appendChild(gotchasText);
-
-  return {
-    container: overlay,
-    translation: translationText,
-    original: originalText,
-    literal: literalText,
-    analysis: analysisText,
-    gotchas: gotchasText,
-  };
-};
-
-const setupToggle = async (onFileLoaded?: (filename: string) => void) => {
+const setupToggle = async (
+  onFileLoaded?: (filename: string) => void,
+  onWarning?: (msg?: string) => void,
+) => {
   console.log("[LLE] Setting up toggle...");
   const leftControls = await waitForElement(".ytp-left-controls");
   console.log("[LLE] Found left controls:", leftControls);
@@ -114,7 +72,17 @@ const setupToggle = async (onFileLoaded?: (filename: string) => void) => {
     reader.onload = (event) => {
       try {
         const content = event.target?.result as string;
-        const segments = store.parseMarkdownStructuredData(content);
+        const { segments, errors } = store.parseMarkdownStructuredData(content);
+
+        if (errors.length > 0) {
+          console.group("[LLE] Import Errors");
+          errors.forEach((err) => console.error(err));
+          console.groupEnd();
+          if (onWarning)
+            onWarning("Import errors occurred. Check console for details.");
+        } else {
+          if (onWarning) onWarning(undefined);
+        }
 
         if (segments && segments.length > 0) {
           store.loadStructuredData(segments);
@@ -125,7 +93,7 @@ const setupToggle = async (onFileLoaded?: (filename: string) => void) => {
         } else {
           console.warn("[LLE] No valid segments found in file:", file.name);
           alert(
-            "No valid segments found in the Markdown file. Please check the format.",
+            "No valid segments found in the Markdown file. Please check the format and console for errors.",
           );
         }
       } catch (err) {
@@ -163,16 +131,21 @@ const init = async () => {
   console.log("[LLE] Video player, element and secondary column found.");
 
   let sidebar: Sidebar;
-  const { fileInput } = await setupToggle((filename) => {
-    if (sidebar) sidebar.setUploadActive(true, filename);
-  });
+  const { fileInput } = await setupToggle(
+    (filename) => {
+      if (sidebar) sidebar.setUploadActive(true, filename);
+    },
+    (msg) => {
+      if (sidebar) sidebar.setWarning(msg);
+    },
+  );
 
   sidebar = new Sidebar(() => {
     fileInput.click();
   });
 
-  const overlay = createOverlay();
-  player.appendChild(overlay.container);
+  const overlay = new Overlay();
+  player.appendChild(overlay.getElement());
   secondaryInner.prepend(sidebar.getElement());
   console.log("[LLE] Overlay and Sidebar injected.");
 
@@ -189,26 +162,44 @@ const init = async () => {
     isEnabled = enabled;
     sidebar.setVisible(isEnabled);
     if (!isEnabled) {
-      overlay.container.style.display = "none";
+      overlay.setVisible(false);
     }
   });
 
   Config.addOverlayChangeListener((enabled) => {
     isOverlayEnabled = enabled;
     if (!isOverlayEnabled) {
-      overlay.container.style.display = "none";
+      overlay.setVisible(false);
     }
   });
 
   let currentActiveSegment: SubtitleSegment | undefined = undefined;
+  let currentVideoId = new URLSearchParams(window.location.search).get("v");
+
+  const checkVideoChange = () => {
+    const newVideoId = new URLSearchParams(window.location.search).get("v");
+    if (newVideoId !== currentVideoId) {
+      console.log(
+        `[LLE] Video ID changed (${currentVideoId} -> ${newVideoId}). Clearing store.`,
+      );
+      currentVideoId = newVideoId;
+      store.clear();
+      sidebar.clear();
+      sidebar.setUploadActive(false);
+
+      overlay.clear();
+      currentActiveSegment = undefined;
+    }
+  };
 
   // Sync Engine
   video.addEventListener("timeupdate", () => {
+    checkVideoChange();
     const currentTimeMs = video.currentTime * 1000;
     sidebar.highlight(currentTimeMs);
 
     if (!isEnabled || !isOverlayEnabled) {
-      overlay.container.style.display = "none";
+      overlay.setVisible(false);
       return;
     }
 
@@ -217,12 +208,7 @@ const init = async () => {
     // Case 1: No active segment
     if (!activeSegment) {
       if (currentActiveSegment !== undefined) {
-        overlay.container.style.display = "none";
-        overlay.original.innerHTML = "";
-        overlay.translation.innerText = "";
-        overlay.literal.innerText = "";
-        overlay.analysis.innerText = "";
-        overlay.gotchas.innerText = "";
+        overlay.clear();
         currentActiveSegment = undefined;
       }
       return;
@@ -230,70 +216,32 @@ const init = async () => {
 
     // Case 2: Active segment exists
     // Ensure overlay is visible
-    if (overlay.container.style.display !== "flex") {
-      overlay.container.style.display = "flex";
+    if (!overlay.isVisible()) {
+      overlay.setVisible(true);
     }
 
-    // Update Original Text
-    if (activeSegment.segmentedData) {
-      overlay.original.innerHTML = renderSegmentedText(
-        activeSegment.segmentedData,
-      );
-    } else {
-      // Fallback
-      overlay.original.innerHTML = activeSegment.text
-        .split("")
-        .map((char) => `<span class="lle-word">${char}</span>`)
-        .join("");
+    if (activeSegment === currentActiveSegment) {
+      return;
     }
 
-    // Update Translation Text
-    overlay.translation.innerText = activeSegment.translation || "";
-
-    // Update Additional Fields (only for structured data)
-    overlay.literal.innerText = activeSegment.literal_translation || "";
-    overlay.analysis.innerHTML = activeSegment.contextual_analysis
-      ? snarkdown(activeSegment.contextual_analysis)
-      : "";
-    overlay.gotchas.innerHTML = activeSegment.grammatical_gotchas
-      ? snarkdown(activeSegment.grammatical_gotchas)
-      : "";
-
+    overlay.update(activeSegment);
     currentActiveSegment = activeSegment;
   });
 
-  let currentVideoId = new URLSearchParams(window.location.search).get("v");
-
   // Listen for YouTube navigation events to clear the store
-  window.addEventListener("yt-navigate-finish", () => {
-    const newVideoId = new URLSearchParams(window.location.search).get("v");
-    if (newVideoId !== currentVideoId) {
-      console.log(
-        `[LLE] YouTube navigation detected (${currentVideoId} -> ${newVideoId}). Clearing store.`,
-      );
-      currentVideoId = newVideoId;
-      store.clear();
-      sidebar.clear();
-      sidebar.setUploadActive(false);
-
-      overlay.original.innerHTML = "";
-      overlay.translation.innerText = "";
-      overlay.literal.innerText = "";
-      overlay.analysis.innerHTML = "";
-      overlay.gotchas.innerHTML = "";
-      currentActiveSegment = undefined;
-    }
-  });
+  window.addEventListener("yt-navigate-finish", checkVideoChange);
+  window.addEventListener("popstate", checkVideoChange);
 
   // @ts-ignore
-  chrome.runtime.onMessage.addListener((message) => {
-    if (message.type === "LLE_SUBTITLES_CAPTURED") {
-      console.log("[LLE] Received subtitles from background:", message.payload);
-      const segments = SubtitleStore.parseYouTubeJSON(message.payload);
-      store.addSegments(segments);
-      sidebar.render(store.getAllSegments());
-    }
-  });
+  // chrome.runtime.onMessage.addListener((message) => {
+  //   if (message.type === "LLE_SUBTITLES_CAPTURED") {
+  //     console.log("[LLE] Received subtitles from background:", message.payload);
+  //     const segments = SubtitleStore.parseYouTubeJSON(message.payload);
+  //     store.addSegments(segments);
+  //     sidebar.render(store.getAllSegments());
+  //   }
+  // });
 };
 
 init();
+
