@@ -8,7 +8,7 @@ import { grammarExplainer } from "./ai/explainer";
 import { translationManager } from "./ai/manager";
 
 import { render } from "preact";
-import { HelloWorld } from "./components/HelloWorld";
+import { SidebarApp } from "./components/SidebarApp";
 
 console.log("[LLE] Content script injected.");
 
@@ -128,29 +128,18 @@ const init = async () => {
   const secondaryInner = await waitForElement("#secondary-inner");
   console.log("[LLE] Video player, element and secondary column found.");
 
-  let sidebar: Sidebar;
   await setupToggle();
 
-  sidebar = new Sidebar(
-    (filename) => {
-      if (sidebar) sidebar.setUploadActive(true, filename);
-    },
-    (msg) => {
-      if (sidebar) sidebar.setWarning(msg);
-    },
-  );
+  const sidebarContainer = document.createElement("div");
+  sidebarContainer.id = "lle-sidebar-root";
+  secondaryInner.prepend(sidebarContainer);
+  render(<SidebarApp />, sidebarContainer);
+
+  const getSidebar = () => (window as any).__LLE_SIDEBAR__;
 
   const overlay = new Overlay();
   player.appendChild(overlay.getElement());
-  secondaryInner.prepend(sidebar.getElement());
-
-  // POC: Preact Render
-  const preactContainer = document.createElement("div");
-  preactContainer.id = "lle-preact-root";
-  secondaryInner.prepend(preactContainer);
-  render(<HelloWorld />, preactContainer);
-
-  console.log("[LLE] Overlay and Sidebar injected.");
+  console.log("[LLE] Overlay and Preact Sidebar injected.");
 
   // AI Translation & Grammar Setup
   const setupAI = async () => {
@@ -158,29 +147,29 @@ const init = async () => {
     console.log("[LLE] AI Translation availability:", translationAvailability);
 
     if (translationAvailability === "available") {
-      sidebar.setAIStatus("ready", "AI Translator Ready");
+      getSidebar()?.setAIStatus("ready", "AI Translator Ready");
       await translatorService.initialize();
       console.log("[LLE] AI Translator initialized.");
     } else if (translationAvailability === "downloadable") {
-      sidebar.setAIStatus("none");
+      getSidebar()?.setAIStatus("none");
       console.log("[LLE] AI models need download.");
       
       const initDownload = async () => {
-         sidebar.setAIStatus("downloading", "Downloading AI models...");
+         getSidebar()?.setAIStatus("downloading", "Downloading AI models...");
          overlay.setSystemMessage("Downloading AI models...");
          const success = await translatorService.initialize((loaded, total) => {
           const percent = Math.round((loaded / total) * 100);
-          sidebar.setAIStatus("downloading", `Downloading AI models: ${percent}%`);
+          getSidebar()?.setAIStatus("downloading", `Downloading AI models: ${percent}%`);
           overlay.setSystemMessage(`Downloading AI models: ${percent}%`);
           console.log(`[LLE] AI Download progress: ${percent}%`);
         });
 
         if (success) {
-           sidebar.setAIStatus("ready", "AI Translator Ready");
+           getSidebar()?.setAIStatus("ready", "AI Translator Ready");
            overlay.setSystemMessage(null);
            console.log("[LLE] AI Translator initialized after download.");
         } else {
-           sidebar.setAIStatus("error", "AI Initialization Failed");
+           getSidebar()?.setAIStatus("error", "AI Initialization Failed");
            overlay.setSystemMessage("AI Translation Failed to initialize");
         }
       };
@@ -224,25 +213,11 @@ const init = async () => {
 
   setupAI();
 
-  store.addChangeListener(() => {
-    sidebar.render(store.getAllSegments());
-  });
-
-  store.addSegmentUpdateListener((index, segment) => {
-    sidebar.updateSegment(index, segment);
-  });
-  
-  // Initial render in case data arrived before sidebar was ready
-  sidebar.render(store.getAllSegments());
-
   let isEnabled = await Config.getIsEnabled();
   let isOverlayEnabled = await Config.getIsOverlayEnabled();
 
-  sidebar.setVisible(isEnabled);
-
   Config.addChangeListener((enabled) => {
     isEnabled = enabled;
-    sidebar.setVisible(isEnabled);
     if (!isEnabled) {
       overlay.setVisible(false);
     }
@@ -266,8 +241,7 @@ const init = async () => {
       );
       currentVideoId = newVideoId;
       store.clear();
-      sidebar.clear();
-      sidebar.setUploadActive(false);
+      getSidebar()?.setUploadActive(false);
 
       overlay.clear();
       currentActiveSegment = undefined;
@@ -278,7 +252,6 @@ const init = async () => {
   video.addEventListener("timeupdate", () => {
     checkVideoChange();
     const currentTimeMs = video.currentTime * 1000;
-    sidebar.highlight(currentTimeMs);
     translationManager.onTimeUpdate(currentTimeMs);
 
     if (!isEnabled || !isOverlayEnabled) {

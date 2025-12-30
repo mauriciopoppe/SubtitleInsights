@@ -21,18 +21,18 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Reactivity & Store Binding' (Protocol in workflow.md)
 
 ## Phase 3: Sidebar Migration
-- [ ] Task: Create Sidebar Components.
-    - [ ] `SidebarHeader.tsx` (Title, Controls).
-    - [ ] `SidebarList.tsx` (Virtual list or standard list of items).
-    - [ ] `SidebarItem.tsx` (Individual segment display).
-- [ ] Task: Implement `SidebarApp.tsx`.
-    - [ ] Assemble components.
-    - [ ] Implement "Scroll to Active" logic (using refs).
-    - [ ] Implement File Upload logic.
-- [ ] Task: Replace Legacy Sidebar.
-    - [ ] Update `src/content/index.ts` to mount `<SidebarApp />` instead of instantiating `new Sidebar()`.
-    - [ ] Delete `src/content/sidebar.ts`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Sidebar Migration' (Protocol in workflow.md)
+- [x] Task: Create Sidebar Components.
+    - [x] `SidebarHeader.tsx` (Title, Controls).
+    - [x] `SidebarList.tsx` (Virtual list or standard list of items).
+    - [x] `SidebarItem.tsx` (Individual segment display).
+- [x] Task: Implement `SidebarApp.tsx`.
+    - [x] Assemble components.
+    - [x] Implement "Scroll to Active" logic (using refs).
+    - [x] Implement File Upload logic.
+- [x] Task: Replace Legacy Sidebar.
+    - [x] Update `src/content/index.ts` to mount `<SidebarApp />` instead of instantiating `new Sidebar()`.
+    - [x] Delete `src/content/sidebar.ts`.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Sidebar Migration' (Protocol in workflow.md)
 
 ## Phase 4: Overlay Migration & Cleanup
 - [ ] Task: Create Overlay Components.

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render } from 'preact';
 import { store, SubtitleStore } from './store';
-import { Sidebar } from './sidebar';
+import { SidebarApp } from './components/SidebarApp';
 
 // Mock Config to avoid async calls issues or dependency on storage
 vi.mock('./config', () => ({
@@ -8,30 +9,32 @@ vi.mock('./config', () => ({
     getIsEnabled: vi.fn().mockResolvedValue(true),
     getIsOverlayEnabled: vi.fn().mockResolvedValue(true),
     getIsGrammarExplainerEnabled: vi.fn().mockResolvedValue(true),
+    getTargetJLPTLevel: vi.fn().mockResolvedValue('N5'),
     addChangeListener: vi.fn(),
     addOverlayChangeListener: vi.fn(),
     addGrammarExplainerChangeListener: vi.fn(),
+    addJLPTLevelChangeListener: vi.fn(),
   },
 }));
 
 describe('Integration: Background Message -> Sidebar Render', () => {
-  let sidebar: Sidebar;
-
   beforeEach(() => {
     // Reset store
     store.clear();
     
-    // Setup Sidebar
-    sidebar = new Sidebar();
+    // Clear DOM
+    document.body.innerHTML = '<div id="test-root"></div>';
     
-    // Bind Store to Sidebar (mimicking index.ts logic)
-    store.addChangeListener(() => {
-      sidebar.render(store.getAllSegments());
-    });
+    // Mock video element for SidebarApp useEffect
+    const video = document.createElement('video');
+    document.body.appendChild(video);
   });
 
   it('should render segments in the sidebar when "LLE_SUBTITLES_CAPTURED" payload is processed', async () => {
-    // 1. Simulate the data payload from the background script
+    // 1. Mount SidebarApp
+    render(<SidebarApp />, document.getElementById('test-root')!);
+
+    // 2. Simulate the data payload from the background script
     const mockPayload = {
       events: [
         {
@@ -47,13 +50,15 @@ describe('Integration: Background Message -> Sidebar Render', () => {
       ],
     };
 
-    // 2. Simulate the logic inside chrome.runtime.onMessage listener
+    // 3. Simulate the logic inside chrome.runtime.onMessage listener
     const segments = SubtitleStore.parseYouTubeJSON(mockPayload);
     store.addSegments(segments);
 
-    // 3. Verify Sidebar DOM
-    const sidebarEl = sidebar.getElement();
-    const items = sidebarEl.querySelectorAll('.lle-sidebar-item');
+    // Wait for Preact to render
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    
+    // 4. Verify Sidebar DOM
+    const items = document.querySelectorAll('.lle-sidebar-item');
 
     expect(items.length).toBe(2);
     
