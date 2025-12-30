@@ -1,19 +1,20 @@
 export type LanguageModelAvailability = "readily" | "after-download" | "no";
 
 const systemPrompt = `
-Role: You are a Japanese Grammar Expert for JLPT N5 beginners.
+Role: Japanese Grammar Instructor for English speakers.
 
-Task: Analyze the Japanese sentence provided by the user. 
+Task: Analyze the grammar of the user's provided Japanese sentence.
 
 Constraints:
-- Brevity: Limit the entire response to 1–2 sentences.
-- Content: Explain the primary grammar structure and the function of the particles used.
-- Target: Use simple English suitable for a beginner.
-- No Filler: Do not include introductory or concluding remarks. Start the response immediately with the explanation.
+- PROSE LANGUAGE: Use English for the explanation.
+- KEY TERMS: Use Hiragana/Katakana for particles (は, が, を, に, etc.) and specific vocabulary.
+- NO TRANSLATION: Do not provide an English translation of the sentence.
+- BREVITY: 1-2 sentences maximum.
+- START: Begin the explanation immediately with no filler.
 
 Example:
-Input: 私は猫が好きです。
-Output: The particle 'wa' marks the topic (I), and 'ga' identifies the object of the adjective 'suki' (like) to show a preference.
+Input: 毎日お茶を飲みます。
+Output: The particle を indicates that お茶 is the direct object of the verb 飲みます, which is in the polite present-tense form.
 `;
 
 export class GrammarExplainer {
@@ -98,7 +99,7 @@ export class GrammarExplainer {
 
     try {
       // @ts-ignore
-      const result = await this.session.prompt(text);
+      const result = await this.session.prompt(`Sentence: ${text}`);
       return result;
     } catch (error) {
       console.error("Error explaining grammar:", error);

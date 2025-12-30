@@ -13,7 +13,8 @@ interface ProcessingTask {
 export class AIManager {
   private isProcessing = false;
   private pendingIndices = new Set<number>();
-  private prefetchBuffer = 10;
+  private translateBuffer = 10;
+  private grammarBuffer = 2;
 
   constructor() {}
 
@@ -54,17 +55,17 @@ export class AIManager {
     const toProcess: ProcessingTask[] = [];
 
     const isGrammarEnabled = await Config.getIsGrammarExplainerEnabled();
-    const grammarBuffer = 2;
 
+    // Single loop up to the maximum buffer (translateBuffer)
     for (
       let i = startIndex;
-      i < Math.min(startIndex + this.prefetchBuffer, allSegments.length);
+      i < Math.min(startIndex + this.translateBuffer, allSegments.length);
       i++
     ) {
       const seg = allSegments[i];
       const needsTranslation = translatorService.isReady() && !seg.translation;
       
-      const inGrammarRange = i < startIndex + grammarBuffer;
+      const inGrammarRange = i < startIndex + this.grammarBuffer;
       const needsGrammar =
         isGrammarEnabled &&
         grammarExplainer.isReady() &&
@@ -110,17 +111,22 @@ export class AIManager {
       const tasks: Promise<any>[] = [];
 
       const withTimeout = (promise: Promise<any>, ms: number) => {
-          return Promise.race([
-              promise,
-              new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), ms))
-          ]);
+        return Promise.race([
+          promise,
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Timeout")), ms),
+          ),
+        ]);
       };
 
       if (translate) {
         tasks.push(
           (async () => {
             try {
-              const translation = await withTimeout(translatorService.translate(segment.text), 10000);
+              const translation = await withTimeout(
+                translatorService.translate(segment.text),
+                10000,
+              );
               store.updateSegmentTranslation(index, translation);
             } catch (e) {
               console.error(`[LLE] Translation failed for ${index}:`, e);
@@ -133,7 +139,10 @@ export class AIManager {
         tasks.push(
           (async () => {
             try {
-              const analysis = await withTimeout(grammarExplainer.explainGrammar(segment.text), 10000);
+              const analysis = await withTimeout(
+                grammarExplainer.explainGrammar(segment.text),
+                10000,
+              );
               store.updateSegmentAnalysis(index, analysis);
             } catch (e) {
               console.error(`[LLE] Grammar explanation failed for ${index}:`, e);
@@ -144,7 +153,10 @@ export class AIManager {
 
       await Promise.all(tasks);
     } catch (error) {
-      console.error(`[LLE][AIManager] Failed to process segment ${index}`, error);
+      console.error(
+        `[LLE][AIManager] Failed to process segment ${index}`,
+        error,
+      );
     } finally {
       this.pendingIndices.delete(index);
     }

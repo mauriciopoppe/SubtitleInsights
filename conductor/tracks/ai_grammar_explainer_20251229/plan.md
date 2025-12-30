@@ -27,9 +27,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Data Flow' (Protocol in workflow.md)
 
 ## Phase 4: UI Polish & Verification
-- [ ] Task: Verify Sidebar and Overlay Rendering.
-    - [ ] Confirm that AI-generated summaries appear in both components as they become available.
-    - [ ] Check for graceful handling of loading states (if applicable).
-- [ ] Task: Verify Disable Logic.
-    - [ ] Confirm that turning off the toggle immediately stops all Prompt API activity.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: UI Polish & Verification' (Protocol in workflow.md)
+- [x] Task: Verify Sidebar and Overlay Rendering.
+    - [x] Confirm that AI-generated summaries appear in both components as they become available.
+    - [x] Check for graceful handling of loading states (if applicable).
+- [x] Task: Verify Disable Logic.
+    - [x] Confirm that turning off the toggle immediately stops all Prompt API activity.
+- [x] Task: Conductor - User Manual Verification 'Phase 4: UI Polish & Verification' (Protocol in workflow.md)

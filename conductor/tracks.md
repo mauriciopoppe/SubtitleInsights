@@ -5,5 +5,5 @@
 ## [ ] Track: Automated Furigana Generation (Kuromoji.js)
 ---
 
-## [~] Track: AI Grammar Explainer (Chrome Prompt API)
+## [x] Track: AI Grammar Explainer (Chrome Prompt API)
 *Link: [./conductor/tracks/ai_grammar_explainer_20251229/](./conductor/tracks/ai_grammar_explainer_20251229/)*
