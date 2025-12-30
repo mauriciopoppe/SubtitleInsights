@@ -37,75 +37,40 @@ const setupToggle = async (
   onWarning?: (msg?: string) => void,
 ) => {
   console.log("[LLE] Setting up toggle...");
-  const leftControls = await waitForElement(".ytp-left-controls");
-  const timeDisplay = await waitForElement(".ytp-time-display");
+  const rightControls = await waitForElement(".ytp-right-controls");
+  // Try to find the subtitles button to insert before it
+  const subtitlesBtn = await waitForElement(".ytp-subtitles-button");
 
-  const container = document.createElement("div");
-  container.className = "lle-toggle-container";
-
-  const toggle = document.createElement("span");
-  toggle.className = "lle-toggle-btn";
-  toggle.innerText = "LLE";
-  toggle.title = "Toggle Language Learning Extension";
-
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = ".md";
-  fileInput.style.display = "none";
-  fileInput.id = "lle-upload-input";
-
-  container.appendChild(toggle);
-  container.appendChild(fileInput);
+  const toggle = document.createElement("button");
+  toggle.className = "ytp-button lle-toggle-btn";
+  toggle.setAttribute("aria-label", "Toggle Language Learning Extension");
+  toggle.setAttribute("aria-pressed", "false");
+  toggle.title = "LLE: Subtitle Analysis & Overlay";
+  
+  // Use native-like structure
+  toggle.innerHTML = `
+    <div class="lle-button-icon" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+      <svg height="24" viewBox="0 0 24 24" width="24" style="fill: white;">
+        <path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+      </svg>
+    </div>
+  `;
 
   const updateUI = (enabled: boolean) => {
-    toggle.className = `lle-toggle-btn ${enabled ? "enabled" : "disabled"}`;
+    // Native buttons use aria-pressed or opacity for state
+    if (enabled) {
+      toggle.style.opacity = "1";
+      toggle.setAttribute("aria-pressed", "true");
+      toggle.style.color = "#fff";
+    } else {
+      toggle.style.opacity = "0.7";
+      toggle.setAttribute("aria-pressed", "false");
+      toggle.style.color = "#aaa";
+    }
   };
 
   const isEnabled = await Config.getIsEnabled();
   updateUI(isEnabled);
-
-  fileInput.onchange = (e) => {
-    const target = e.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const content = event.target?.result as string;
-        const { segments, errors } = store.parseMarkdownStructuredData(content);
-
-        if (errors.length > 0) {
-          console.group("[LLE] Import Errors");
-          errors.forEach((err) => console.error(err));
-          console.groupEnd();
-          if (onWarning)
-            onWarning("Import errors occurred. Check console for details.");
-        } else {
-          if (onWarning) onWarning(undefined);
-        }
-
-        if (segments && segments.length > 0) {
-          store.loadStructuredData(segments);
-          if (onFileLoaded) onFileLoaded(file.name);
-          console.log(
-            `[LLE] Successfully loaded ${segments.length} segments from ${file.name}`,
-          );
-        } else {
-          console.warn("[LLE] No valid segments found in file:", file.name);
-          alert(
-            "No valid segments found in the Markdown file. Please check the format and console for errors.",
-          );
-        }
-      } catch (err) {
-        console.error("[LLE] Failed to parse Markdown file", err);
-        alert(
-          "Failed to parse Markdown file. Make sure it follows the required format.",
-        );
-      }
-    };
-    reader.readAsText(file);
-  };
 
   toggle.onclick = async () => {
     const currentState = await Config.getIsEnabled();
@@ -118,10 +83,12 @@ const setupToggle = async (
     updateUI(enabled);
   });
 
-  // Insert container after time display
-  timeDisplay.after(container);
-
-  return { fileInput };
+  // Insert before CC button if possible, otherwise prepend to right controls
+  if (subtitlesBtn && subtitlesBtn.parentNode) {
+    subtitlesBtn.parentNode.insertBefore(toggle, subtitlesBtn);
+  } else {
+    rightControls.prepend(toggle);
+  }
 };
 
 // @ts-ignore
@@ -159,7 +126,9 @@ const init = async () => {
   console.log("[LLE] Video player, element and secondary column found.");
 
   let sidebar: Sidebar;
-  const { fileInput } = await setupToggle(
+  await setupToggle();
+
+  sidebar = new Sidebar(
     (filename) => {
       if (sidebar) sidebar.setUploadActive(true, filename);
     },
@@ -167,10 +136,6 @@ const init = async () => {
       if (sidebar) sidebar.setWarning(msg);
     },
   );
-
-  sidebar = new Sidebar(() => {
-    fileInput.click();
-  });
 
   const overlay = new Overlay();
   player.appendChild(overlay.getElement());

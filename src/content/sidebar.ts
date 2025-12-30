@@ -1,4 +1,4 @@
-import { SubtitleSegment } from "./store";
+import { SubtitleSegment, store } from "./store";
 import { renderSegmentedText } from "./render";
 import snarkdown from "snarkdown";
 import { Config } from "./config";
@@ -6,6 +6,7 @@ import { Config } from "./config";
 export class Sidebar {
   private container: HTMLElement;
   private listContainer: HTMLElement;
+  private fileInput: HTMLInputElement;
   private overlayToggle: HTMLElement | null = null;
   private grammarToggle: HTMLElement | null = null;
   private uploadBtn: HTMLElement | null = null;
@@ -13,10 +14,64 @@ export class Sidebar {
   private aiStatusIcon: HTMLElement | null = null;
   private warningIcon: HTMLElement | null = null;
 
-  constructor(onUploadClick?: () => void) {
+  constructor(
+    onFileLoaded?: (filename: string) => void,
+    onWarning?: (msg?: string) => void,
+  ) {
     this.container = document.createElement("div");
     this.container.id = "lle-sidebar";
     this.container.style.display = "none"; // Hidden by default
+
+    // Hidden file input for uploads
+    this.fileInput = document.createElement("input");
+    this.fileInput.type = "file";
+    this.fileInput.accept = ".md";
+    this.fileInput.style.display = "none";
+    this.fileInput.id = "lle-sidebar-upload-input";
+    document.body.appendChild(this.fileInput);
+
+    this.fileInput.onchange = (e) => {
+      const target = e.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const content = event.target?.result as string;
+          const { segments, errors } = store.parseMarkdownStructuredData(content);
+
+          if (errors.length > 0) {
+            console.group("[LLE] Import Errors");
+            errors.forEach((err) => console.error(err));
+            console.groupEnd();
+            if (onWarning)
+              onWarning("Import errors occurred. Check console for details.");
+          } else {
+            if (onWarning) onWarning(undefined);
+          }
+
+          if (segments && segments.length > 0) {
+            store.loadStructuredData(segments);
+            if (onFileLoaded) onFileLoaded(file.name);
+            console.log(
+              `[LLE] Successfully loaded ${segments.length} segments from ${file.name}`,
+            );
+          } else {
+            console.warn("[LLE] No valid segments found in file:", file.name);
+            alert(
+              "No valid segments found in the Markdown file. Please check the format and console for errors.",
+            );
+          }
+        } catch (err) {
+          console.error("[LLE] Failed to parse Markdown file", err);
+          alert(
+            "Failed to parse Markdown file. Make sure it follows the required format.",
+          );
+        }
+      };
+      reader.readAsText(file);
+    };
 
     const header = document.createElement("div");
     header.className = "lle-sidebar-header";
@@ -45,9 +100,7 @@ export class Sidebar {
     this.uploadBtn.className = "lle-sidebar-upload-btn";
     this.uploadBtn.innerText = "Upload";
     this.uploadBtn.title = "Upload Structured Subtitles (Markdown)";
-    if (onUploadClick) {
-      this.uploadBtn.onclick = onUploadClick;
-    }
+    this.uploadBtn.onclick = () => this.fileInput.click();
 
     // Overlay Toggle Button
     this.overlayToggle = document.createElement("span");
