@@ -13,12 +13,12 @@
     - [x] Attempt to render it inside the existing sidebar container in `src/content/index.ts` to verify the build pipeline works.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Setup & Infrastructure' (Protocol in workflow.md)
 
-## Phase 2: Reactivity & Store Binding
+## Phase 2: Reactivity & Store Binding [checkpoint: a01091e]
 - [x] Task: Create `useSubtitleStore` hook.
     - [x] Implement a hook that subscribes to `SubtitleStore` events and returns the current segments/state.
 - [x] Task: Create `useConfig` hook.
     - [x] Implement a hook that subscribes to `Config` changes.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Reactivity & Store Binding' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Reactivity & Store Binding' (Protocol in workflow.md)
 
 ## Phase 3: Sidebar Migration
 - [ ] Task: Create Sidebar Components.
