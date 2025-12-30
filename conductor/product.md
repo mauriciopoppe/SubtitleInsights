@@ -19,8 +19,8 @@ A Chrome extension designed for language learners who use YouTube as their prima
 - **Pre-fetch Translation:** Optimizes speed by fetching and translating subtitle tracks ahead of playback.
 - **AI Automated Translation:** Automatically translates Japanese subtitle tracks into English using on-device AI models if no manual data is provided.
 - **AI Grammar Explainer:** Automatically generates concise English summaries of grammar and particles for Japanese sentences using the local Chrome Prompt API.
-- **Player Integration:** Adds a seamless enable/disable toggle directly into the YouTube player controls.
-- **Structured Subtitle Upload:** Move subtitles management to the sidebar for a cleaner interface.
+- **Player Integration:** Adds a native-style toggle icon directly into the YouTube player's right controls (left of the CC button) for seamless activation.
+- **SRT Subtitle Upload:** Allows users to upload standard .srt subtitle files to replace or augment the video tracks.
 - **Sidebar Transcript:** Provides a vertical list of all educational segments in the YouTube sidebar, highlighting the active segment in sync with the video.
 - **Granular Visibility Controls:** A sub-toggle in the sidebar allows users to hide/show the on-video overlay independently of the sidebar content.
 - **In-Page Overlay:** Injects directly into the YouTube player for a seamless, "Language Reactor"-style experience.
@@ -31,4 +31,4 @@ A Chrome extension designed for language learners who use YouTube as their prima
 3. The Chrome Translation API processes translations (up to 10 segments in advance).
 4. The Chrome Prompt API generates grammar explanations for upcoming segments (up to 2 in advance).
 5. An overlay and sidebar cards display the dual-translation and grammar summaries.
-6. (Optional) User uploads a structured Markdown file to upgrade the experience to expert-curated content.
+6. (Optional) User uploads a standard .srt file to use custom subtitles.
