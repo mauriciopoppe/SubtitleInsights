@@ -8,6 +8,7 @@ import { translationManager } from "./ai/manager";
 import { render } from "preact";
 import { SidebarApp } from "./components/SidebarApp";
 import { OverlayApp } from "./components/OverlayApp";
+import { ExtensionToggle } from "./components/ExtensionToggle";
 
 console.log("[LLE] Content script injected.");
 
@@ -32,65 +33,6 @@ const waitForElement = (selector: string): Promise<HTMLElement> => {
       subtree: true,
     });
   });
-};
-
-const setupToggle = async (
-  onFileLoaded?: (filename: string) => void,
-  onWarning?: (msg?: string) => void,
-) => {
-  console.log("[LLE] Setting up toggle...");
-  const rightControls = await waitForElement(".ytp-right-controls");
-  // Try to find the subtitles button to insert before it
-  const subtitlesBtn = await waitForElement(".ytp-subtitles-button");
-
-  const toggle = document.createElement("button");
-  toggle.className = "ytp-button lle-toggle-btn";
-  toggle.setAttribute("aria-label", "Toggle Language Learning Extension");
-  toggle.setAttribute("aria-pressed", "false");
-  toggle.title = "LLE: Subtitle Analysis & Overlay";
-  
-  // Use native-like structure
-  toggle.innerHTML = `
-    <div class="lle-button-icon" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-      <svg height="24" viewBox="0 0 24 24" width="24" style="fill: white;">
-        <path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
-      </svg>
-    </div>
-  `;
-
-  const updateUI = (enabled: boolean) => {
-    // Native buttons use aria-pressed or opacity for state
-    if (enabled) {
-      toggle.style.opacity = "1";
-      toggle.setAttribute("aria-pressed", "true");
-      toggle.style.color = "#fff";
-    } else {
-      toggle.style.opacity = "0.4"; // More transparent when disabled
-      toggle.setAttribute("aria-pressed", "false");
-      toggle.style.color = "#aaa";
-    }
-  };
-
-  const isEnabled = await Config.getIsEnabled();
-  updateUI(isEnabled);
-
-  toggle.onclick = async () => {
-    const currentState = await Config.getIsEnabled();
-    const newState = !currentState;
-    await Config.setIsEnabled(newState);
-    updateUI(newState);
-  };
-
-  Config.addChangeListener((enabled) => {
-    updateUI(enabled);
-  });
-
-  // Insert before CC button if possible, otherwise prepend to right controls
-  if (subtitlesBtn && subtitlesBtn.parentNode) {
-    subtitlesBtn.parentNode.insertBefore(toggle, subtitlesBtn);
-  } else {
-    rightControls.prepend(toggle);
-  }
 };
 
 // @ts-ignore
@@ -127,7 +69,19 @@ const init = async () => {
   const secondaryInner = await waitForElement("#secondary-inner");
   console.log("[LLE] Video player, element and secondary column found.");
 
-  await setupToggle();
+  // Injection: Right Controls Toggle
+  const rightControls = await waitForElement(".ytp-right-controls");
+  const subtitlesBtn = await waitForElement(".ytp-subtitles-button");
+  const toggleContainer = document.createElement("div");
+  toggleContainer.id = "lle-toggle-root";
+  toggleContainer.style.display = "contents"; // No layout impact
+
+  if (subtitlesBtn && subtitlesBtn.parentNode) {
+    subtitlesBtn.parentNode.insertBefore(toggleContainer, subtitlesBtn);
+  } else {
+    rightControls.prepend(toggleContainer);
+  }
+  render(<ExtensionToggle />, toggleContainer);
   
   const sidebarContainer = document.createElement("div");
   sidebarContainer.id = "lle-sidebar-root";
