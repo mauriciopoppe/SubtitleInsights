@@ -1,7 +1,6 @@
 import "./styles.css";
-import { store, SubtitleSegment, SubtitleStore } from "./store";
+import { store, SubtitleStore } from "./store";
 import { Config } from "./config";
-import { Sidebar } from "./sidebar";
 import { translatorService } from "./ai/translator";
 import { grammarExplainer } from "./ai/explainer";
 import { translationManager } from "./ai/manager";
@@ -129,14 +128,11 @@ const init = async () => {
   console.log("[LLE] Video player, element and secondary column found.");
 
   await setupToggle();
-
+  
   const sidebarContainer = document.createElement("div");
   sidebarContainer.id = "lle-sidebar-root";
   secondaryInner.prepend(sidebarContainer);
   render(<SidebarApp />, sidebarContainer);
-
-  const getSidebar = () => (window as any).__LLE_SIDEBAR__;
-  const getOverlay = () => (window as any).__LLE_OVERLAY__;
 
   const overlayContainer = document.createElement("div");
   overlayContainer.id = "lle-overlay-root";
@@ -151,30 +147,30 @@ const init = async () => {
     console.log("[LLE] AI Translation availability:", translationAvailability);
 
     if (translationAvailability === "available") {
-      getSidebar()?.setAIStatus("ready", "AI Translator Ready");
+      store.setAIStatus("ready", "AI Translator Ready");
       await translatorService.initialize();
       console.log("[LLE] AI Translator initialized.");
     } else if (translationAvailability === "downloadable") {
-      getSidebar()?.setAIStatus("none");
+      store.setAIStatus("none");
       console.log("[LLE] AI models need download.");
       
       const initDownload = async () => {
-         getSidebar()?.setAIStatus("downloading", "Downloading AI models...");
-         getOverlay()?.setSystemMessage("Downloading AI models...");
+         store.setAIStatus("downloading", "Downloading AI models...");
+         store.setSystemMessage("Downloading AI models...");
          const success = await translatorService.initialize((loaded, total) => {
           const percent = Math.round((loaded / total) * 100);
-          getSidebar()?.setAIStatus("downloading", `Downloading AI models: ${percent}%`);
-          getOverlay()?.setSystemMessage(`Downloading AI models: ${percent}%`);
+          store.setAIStatus("downloading", `Downloading AI models: ${percent}%`);
+          store.setSystemMessage(`Downloading AI models: ${percent}%`);
           console.log(`[LLE] AI Download progress: ${percent}%`);
         });
 
         if (success) {
-           getSidebar()?.setAIStatus("ready", "AI Translator Ready");
-           getOverlay()?.setSystemMessage(null);
+           store.setAIStatus("ready", "AI Translator Ready");
+           store.setSystemMessage(null);
            console.log("[LLE] AI Translator initialized after download.");
         } else {
-           getSidebar()?.setAIStatus("error", "AI Initialization Failed");
-           getOverlay()?.setSystemMessage("AI Translation Failed to initialize");
+           store.setAIStatus("error", "AI Initialization Failed");
+           store.setSystemMessage("AI Translation Failed to initialize");
         }
       };
 
@@ -238,7 +234,6 @@ const init = async () => {
       );
       currentVideoId = newVideoId;
       store.clear();
-      getSidebar()?.setUploadActive(false);
     }
   };
 

@@ -21,10 +21,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Hook & Component Refactor' (Protocol in workflow.md)
 
 ## Phase 3: Integration & Cleanup
-- [ ] Task: Update `src/content/index.tsx`.
-    - [ ] Remove `getSidebar` and `getOverlay` bridge helpers.
-    - [ ] Update all AI and setup logic to call `store` methods directly.
-- [ ] Task: Final Verification & Test.
-    - [ ] Run `npm test -- run` to ensure integration tests still pass (may need minor updates to match new hook return signature).
-    - [ ] Verify manual functionality in browser.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md)
+- [x] Task: Update `src/content/index.tsx`.
+    - [x] Remove `getSidebar` and `getOverlay` bridge helpers.
+    - [x] Update all AI and setup logic to call `store` methods directly.
+- [x] Task: Final Verification & Test.
+    - [x] Run `npm test -- run` to ensure integration tests still pass (may need minor updates to match new hook return signature).
+    - [x] Verify manual functionality in browser.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md)
