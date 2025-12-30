@@ -9,7 +9,7 @@
     - [x] Update the button creation code to use the new SVG and native-like classes (`ytp-button`).
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Icon Design & DOM Injection' (Protocol in workflow.md)
 
-## Phase 2: Styling & Polish
+## Phase 2: Styling & Polish [checkpoint: 52d6c31]
 - [x] Task: Update CSS for the new button.
     - [x] Modify `src/content/styles.css` to remove old "pill" styles.
     - [x] Add new styles to ensure the icon centers correctly and matches `.ytp-button` hover states.
