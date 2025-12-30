@@ -9,7 +9,7 @@
     - [x] Add a toggle button/icon in the `Sidebar` header to enable/disable automated grammar explanations.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: API Setup & Configuration' (Protocol in workflow.md)
 
-## Phase 2: Analysis & Filtering Logic
+## Phase 2: Analysis & Filtering Logic [checkpoint: 5578727]
 - [x] Task: Implement Sentence Complexity Filtering.
     - [x] Create utility to check if a sentence should be analyzed (e.g., length > 5 or contains particles like は, が, を, に, etc.).
 - [x] Task: Implement Prompting Logic.
