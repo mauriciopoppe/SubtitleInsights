@@ -1,0 +1,8 @@
+{
+  "id": "ui_migration_preact_20251229",
+  "name": "UI Framework Migration (Preact)",
+  "description": "Migrate the imperative vanilla DOM UI to declarative Preact components to improve maintainability and scalability.",
+  "status": "planned",
+  "created_at": "2025-12-29",
+  "dependencies": []
+}
