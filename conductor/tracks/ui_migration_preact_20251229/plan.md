@@ -20,7 +20,7 @@
     - [x] Implement a hook that subscribes to `Config` changes.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Reactivity & Store Binding' (Protocol in workflow.md)
 
-## Phase 3: Sidebar Migration
+## Phase 3: Sidebar Migration [checkpoint: e608fa4]
 - [x] Task: Create Sidebar Components.
     - [x] `SidebarHeader.tsx` (Title, Controls).
     - [x] `SidebarList.tsx` (Virtual list or standard list of items).
