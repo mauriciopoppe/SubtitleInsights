@@ -174,6 +174,7 @@ rt {
 
 .lle-sidebar-upload-btn,
 .lle-sidebar-overlay-btn,
+.lle-sidebar-grammar-btn,
 .lle-sidebar-jump-btn {
   padding: 4px 8px;
   cursor: pointer;
@@ -191,6 +192,7 @@ rt {
 
 .lle-sidebar-upload-btn:hover,
 .lle-sidebar-overlay-btn:hover,
+.lle-sidebar-grammar-btn:hover,
 .lle-sidebar-jump-btn:hover {
   background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.2));
   color: var(--yt-spec-text-primary, #fff);
@@ -201,12 +203,14 @@ rt {
   font-weight: bold;
 }
 
-.lle-sidebar-overlay-btn.enabled {
+.lle-sidebar-overlay-btn.enabled,
+.lle-sidebar-grammar-btn.enabled {
   color: #fff;
   background-color: rgba(6, 95, 212, 0.3);
 }
 
-.lle-sidebar-overlay-btn.disabled {
+.lle-sidebar-overlay-btn.disabled,
+.lle-sidebar-grammar-btn.disabled {
   color: var(--yt-spec-text-disabled, #777);
 }
 

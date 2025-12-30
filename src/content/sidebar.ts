@@ -7,6 +7,7 @@ export class Sidebar {
   private container: HTMLElement;
   private listContainer: HTMLElement;
   private overlayToggle: HTMLElement | null = null;
+  private grammarToggle: HTMLElement | null = null;
   private uploadBtn: HTMLElement | null = null;
   private jumpBtn: HTMLElement | null = null;
   private aiStatusIcon: HTMLElement | null = null;
@@ -56,6 +57,18 @@ export class Sidebar {
 
     this.initOverlayToggle();
 
+    // Grammar Explainer Toggle Button
+    this.grammarToggle = document.createElement("span");
+    this.grammarToggle.className = "lle-sidebar-grammar-btn";
+    this.grammarToggle.title = "Toggle AI Grammar Explanation";
+    this.grammarToggle.innerHTML = `
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+        <path d="M7.5 5.6L10 0l2.5 5.6L18 8l-5.5 2.4L10 16 7.5 10.4 2 8l5.5-2.4z"/>
+      </svg>
+      <span>AI</span>
+    `;
+    this.initGrammarToggle();
+
     // AI Status Icon
     this.aiStatusIcon = document.createElement("span");
     this.aiStatusIcon.className = "lle-sidebar-ai-status";
@@ -84,6 +97,7 @@ export class Sidebar {
     controls.appendChild(this.jumpBtn);
     controls.appendChild(this.uploadBtn);
     controls.appendChild(this.overlayToggle);
+    controls.appendChild(this.grammarToggle);
     controls.appendChild(this.aiStatusIcon);
     controls.appendChild(this.warningIcon);
 
@@ -145,6 +159,32 @@ export class Sidebar {
     };
 
     Config.addOverlayChangeListener((enabled) => {
+      updateUI(enabled);
+    });
+  }
+
+  private async initGrammarToggle() {
+    if (!this.grammarToggle) return;
+
+    const updateUI = (enabled: boolean) => {
+      this.grammarToggle!.className = `lle-sidebar-grammar-btn ${enabled ? "enabled" : "disabled"}`;
+    };
+
+    // Default to false if not set (or true? Spec says provide toggle, let's assume default off for performance or on for discovery?
+    // Config defaults to true usually if logic isn't there, but let's check Config implementation)
+    // Config.getIsGrammarExplainerEnabled() needs to be implemented in Config first? I did that.
+    // Let's assume default true in Config.
+    const isEnabled = await Config.getIsGrammarExplainerEnabled();
+    updateUI(isEnabled);
+
+    this.grammarToggle.onclick = async () => {
+      const current = await Config.getIsGrammarExplainerEnabled();
+      const newState = !current;
+      await Config.setIsGrammarExplainerEnabled(newState);
+      updateUI(newState);
+    };
+
+    Config.addGrammarExplainerChangeListener((enabled) => {
       updateUI(enabled);
     });
   }

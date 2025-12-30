@@ -35,8 +35,8 @@ export class Overlay {
     this.gotchas.className = "lle-gotchas";
 
     this.container.appendChild(this.systemMessage);
-    this.container.appendChild(this.translation);
     this.container.appendChild(this.original);
+    this.container.appendChild(this.translation);
     this.container.appendChild(this.literal);
     this.container.appendChild(this.analysis);
     this.container.appendChild(this.gotchas);

@@ -3,6 +3,7 @@
 ## Core Technologies
 - **Platform:** Chrome Extension (Manifest V3)
 - **Primary API:** [Chrome Prompt API](https://developer.chrome.com/docs/ai/prompt-api) (Experimental)
+- **Translation API:** [Chrome Translation API](https://developer.chrome.com/docs/ai/translator-api) (Experimental)
 - **Language:** TypeScript
 - **Build Tool:** Vite (with @crxjs/vite-plugin for extension support)
 

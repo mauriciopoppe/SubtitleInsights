@@ -1,14 +1,9 @@
 # Project Tracks
----
-
-## [x] Track: Sidebar Transcript
-*Link: [./conductor/tracks/sidebar_transcript_20251228/](./conductor/tracks/sidebar_transcript_20251228/)*
----
-
-## [x] Track: UI Control Relocation & Overlay Toggle
-*Link: [./conductor/tracks/ui_relocation_toggle_20251228/](./conductor/tracks/ui_relocation_toggle_20251228/)*
 
 ---
 
-## [~] Track: AI Subtitle Analysis & Translation Overlay
-*Link: [./conductor/tracks/real_time_translation_20251228/](./conductor/tracks/real_time_translation_20251228/)*
+## [ ] Track: Automated Furigana Generation (Kuromoji.js)
+---
+
+## [~] Track: AI Grammar Explainer (Chrome Prompt API)
+*Link: [./conductor/tracks/ai_grammar_explainer_20251229/](./conductor/tracks/ai_grammar_explainer_20251229/)*
