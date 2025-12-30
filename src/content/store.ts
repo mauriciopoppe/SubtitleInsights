@@ -142,6 +142,13 @@ export class SubtitleStore {
     }
   }
 
+  updateSegmentAnalysis(index: number, analysis: string) {
+    if (this.segments[index]) {
+      this.segments[index].contextual_analysis = analysis;
+      this.notifySegmentUpdate(index, this.segments[index]);
+    }
+  }
+
   /**
    * Parses a Markdown file content into SubtitleSegment objects.
    */

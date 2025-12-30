@@ -4,19 +4,10 @@ import { Config } from "./config";
 import { Sidebar } from "./sidebar";
 import { Overlay } from "./overlay";
 import { translatorService } from "./ai/translator";
+import { grammarExplainer } from "./ai/explainer";
 import { translationManager } from "./ai/manager";
-import { isComplexSentence } from "./ai/utils";
 
 console.log("[LLE] Content script injected.");
-
-// Debug Test for isComplexSentence
-console.group("[LLE] Complexity Filter Test");
-console.log("'はい':", isComplexSentence("はい")); // false
-console.log("'こんにちは':", isComplexSentence("こんにちは")); // false (len 5)
-console.log("'こんばんは':", isComplexSentence("こんばんは")); // true (len 6)
-console.log("'私は':", isComplexSentence("私は")); // true (contains particle は)
-console.log("'これを食べる':", isComplexSentence("これを食べる")); // true
-console.groupEnd();
 
 const waitForElement = (selector: string): Promise<HTMLElement> => {
   return new Promise((resolve) => {
@@ -186,16 +177,16 @@ const init = async () => {
   secondaryInner.prepend(sidebar.getElement());
   console.log("[LLE] Overlay and Sidebar injected.");
 
-  // AI Translation Setup
+  // AI Translation & Grammar Setup
   const setupAI = async () => {
-    const availability = await translatorService.checkAvailability();
-    console.log("[LLE] AI Translation availability:", availability);
+    const translationAvailability = await translatorService.checkAvailability();
+    console.log("[LLE] AI Translation availability:", translationAvailability);
 
-    if (availability === "available") {
+    if (translationAvailability === "available") {
       sidebar.setAIStatus("ready", "AI Translator Ready");
       await translatorService.initialize();
       console.log("[LLE] AI Translator initialized.");
-    } else if (availability === "downloadable") {
+    } else if (translationAvailability === "downloadable") {
       sidebar.setAIStatus("none");
       console.log("[LLE] AI models need download.");
       
@@ -245,6 +236,14 @@ const init = async () => {
         document.addEventListener('touchend', onUserInteraction);
         document.addEventListener('keydown', onUserInteraction);
       }
+    }
+
+    // Grammar Explainer Setup
+    const grammarAvailability = await grammarExplainer.checkAvailability();
+    console.log("[LLE] AI Grammar Explainer availability:", grammarAvailability);
+    if (grammarAvailability === "readily" || grammarAvailability === "available") {
+       await grammarExplainer.initialize();
+       console.log("[LLE] AI Grammar Explainer initialized.");
     }
   };
 

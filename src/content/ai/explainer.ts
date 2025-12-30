@@ -1,5 +1,21 @@
 export type LanguageModelAvailability = "readily" | "after-download" | "no";
 
+const systemPrompt = `
+Role: You are a Japanese Grammar Expert for JLPT N5 beginners.
+
+Task: Analyze the Japanese sentence provided by the user. 
+
+Constraints:
+- Brevity: Limit the entire response to 1–2 sentences.
+- Content: Explain the primary grammar structure and the function of the particles used.
+- Target: Use simple English suitable for a beginner.
+- No Filler: Do not include introductory or concluding remarks. Start the response immediately with the explanation.
+
+Example:
+Input: 私は猫が好きです。
+Output: The particle 'wa' marks the topic (I), and 'ga' identifies the object of the adjective 'suki' (like) to show a preference.
+`;
+
 export class GrammarExplainer {
   private session: any = null;
 
@@ -28,10 +44,23 @@ export class GrammarExplainer {
 
   async initialize(): Promise<boolean> {
     try {
+      const params = await window.LanguageModel.params();
       const options = {
-        systemPrompt: "You are a Japanese grammar expert. Provide a very concise (1-2 sentences) summary of the main grammar points and particles in the provided sentence for a beginner student (JLPT N5 level). Focus on brevity and clarity. Do not use conversational filler.",
-        temperature: 0,
-        topK: 1
+        initialPrompts: [
+          {
+            role: "system",
+            content: systemPrompt,
+          },
+        ],
+        expectedInputs: [
+          {
+            type: "text",
+            languages: ["en" /* system prompt */, "ja" /* user prompt */],
+          },
+        ],
+        expectedOutputs: [{ type: "text", languages: ["en", "ja"] }],
+        temperature: 0.2,
+        topK: params.defaultTopK,
       };
 
       // @ts-ignore

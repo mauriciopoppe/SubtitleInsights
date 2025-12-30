@@ -18,13 +18,13 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Analysis & Filtering Logic' (Protocol in workflow.md)
 
 ## Phase 3: Integration & Data Flow
-- [ ] Task: Update Subtitle Processing Pipeline.
-    - [ ] Hook into the `SubtitleStore` or `TranslationManager` to trigger grammar analysis for new segments.
-    - [ ] Ensure analysis only triggers if `isGrammarExplainerEnabled` is true.
-- [ ] Task: Implement Asynchronous Store Updates.
-    - [ ] Update `SubtitleStore` to allow updating the `contextual_analysis` field of existing segments.
-    - [ ] Ensure `Sidebar` and `Overlay` re-render correctly when this field is updated.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Data Flow' (Protocol in workflow.md)
+- [x] Task: Update Subtitle Processing Pipeline.
+    - [x] Hook into the `SubtitleStore` or `TranslationManager` to trigger grammar analysis for new segments.
+    - [x] Ensure analysis only triggers if `isGrammarExplainerEnabled` is true.
+- [x] Task: Implement Asynchronous Store Updates.
+    - [x] Update `SubtitleStore` to allow updating the `contextual_analysis` field of existing segments.
+    - [x] Ensure `Sidebar` and `Overlay` re-render correctly when this field is updated.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Data Flow' (Protocol in workflow.md)
 
 ## Phase 4: UI Polish & Verification
 - [ ] Task: Verify Sidebar and Overlay Rendering.

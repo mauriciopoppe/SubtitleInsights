@@ -278,9 +278,21 @@ export class Sidebar {
     const item = this.listContainer.querySelector(`.lle-sidebar-item[data-index="${index}"]`);
     if (!item) return;
 
+    // Update Translation
     const translation = item.querySelector(".lle-sidebar-translation");
     if (translation) {
       translation.textContent = segment.translation || "";
+    }
+
+    // Update Contextual Analysis
+    if (segment.contextual_analysis) {
+      let analysis = item.querySelector(".lle-sidebar-analysis");
+      if (!analysis) {
+        analysis = document.createElement("div");
+        analysis.className = "lle-sidebar-analysis";
+        item.appendChild(analysis);
+      }
+      analysis.innerHTML = snarkdown(segment.contextual_analysis);
     }
   }
 
