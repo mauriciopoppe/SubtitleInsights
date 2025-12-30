@@ -7,10 +7,9 @@ import { store } from '../store';
 import snarkdown from 'snarkdown';
 
 export function OverlayApp() {
-  const segments = useSubtitleStore();
+  const { segments, systemMessage } = useSubtitleStore();
   const config = useConfig();
   const [currentTimeMs, setCurrentTimeMs] = useState(0);
-  const [systemMessage, setSystemMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const video = document.querySelector('video');
@@ -22,14 +21,6 @@ export function OverlayApp() {
 
     video.addEventListener('timeupdate', handleTimeUpdate);
     return () => video.removeEventListener('timeupdate', handleTimeUpdate);
-  }, []);
-
-  // Bridge for index.tsx
-  useEffect(() => {
-    (window as any).__LLE_OVERLAY__ = {
-      setSystemMessage: (msg: string | null) => setSystemMessage(msg)
-    };
-    return () => delete (window as any).__LLE_OVERLAY__;
   }, []);
 
   const activeSegment = useMemo(() => {

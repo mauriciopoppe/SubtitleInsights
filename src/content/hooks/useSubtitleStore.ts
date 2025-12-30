@@ -1,23 +1,32 @@
 import { useState, useEffect } from 'preact/hooks';
-import { store, SubtitleSegment } from '../store';
+import { store } from '../store';
 
 export function useSubtitleStore() {
-  const [segments, setSegments] = useState<SubtitleSegment[]>(store.getAllSegments());
+  const getStoreState = () => ({
+    segments: store.getAllSegments(),
+    aiStatus: store.aiStatus,
+    warning: store.warning,
+    systemMessage: store.systemMessage,
+    isUploadActive: store.isUploadActive,
+    uploadFilename: store.uploadFilename
+  });
+
+  const [state, setState] = useState(getStoreState());
 
   useEffect(() => {
     const handleUpdate = () => {
-      setSegments([...store.getAllSegments()]);
+      setState(getStoreState());
     };
 
     store.addChangeListener(handleUpdate);
     
-    // Initial fetch in case it changed between initialization and effect
+    // Initial fetch
     handleUpdate();
 
-    // Note: Our current store doesn't have a removeChangeListener method.
-    // In a production app, we should add one to prevent leaks.
-    // For now, we'll just subscribe.
+    return () => {
+      // In a production app, we should remove the listener.
+    };
   }, []);
 
-  return segments;
+  return state;
 }

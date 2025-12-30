@@ -10,15 +10,15 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Store Enhancement' (Protocol in workflow.md)
 
 ## Phase 2: Hook & Component Refactor
-- [ ] Task: Update `useSubtitleStore` hook.
-    - [ ] Modify `src/content/hooks/useSubtitleStore.ts` to return an object with all store fields.
-- [ ] Task: Refactor `SidebarApp.tsx`.
-    - [ ] Remove local state and window bridge.
-    - [ ] Connect to store fields via updated hook.
-- [ ] Task: Refactor `OverlayApp.tsx`.
-    - [ ] Remove local state and window bridge.
-    - [ ] Connect to store fields via updated hook.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Hook & Component Refactor' (Protocol in workflow.md)
+- [x] Task: Update `useSubtitleStore` hook.
+    - [x] Modify `src/content/hooks/useSubtitleStore.ts` to return an object with all store fields.
+- [x] Task: Refactor `SidebarApp.tsx`.
+    - [x] Remove local state and window bridge.
+    - [x] Connect to store fields via updated hook.
+- [x] Task: Refactor `OverlayApp.tsx`.
+    - [x] Remove local state and window bridge.
+    - [x] Connect to store fields via updated hook.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Hook & Component Refactor' (Protocol in workflow.md)
 
 ## Phase 3: Integration & Cleanup
 - [ ] Task: Update `src/content/index.tsx`.

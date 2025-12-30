@@ -8,13 +8,15 @@ import { Config } from '../config';
 import { store } from '../store';
 
 export function SidebarApp() {
-  const segments = useSubtitleStore();
+  const {
+    segments,
+    aiStatus,
+    warning,
+    isUploadActive,
+    uploadFilename
+  } = useSubtitleStore();
   const config = useConfig();
   const [currentTimeMs, setCurrentTimeMs] = useState(0);
-  const [aiStatus, setAIStatus] = useState<{ status: 'downloading' | 'ready' | 'error' | 'none'; message?: string }>({ status: 'none' });
-  const [warning, setWarning] = useState<string | undefined>(undefined);
-  const [isUploadActive, setIsUploadActive] = useState(false);
-  const [uploadFilename, setUploadFilename] = useState<string | undefined>(undefined);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,20 +31,6 @@ export function SidebarApp() {
 
     video.addEventListener('timeupdate', handleTimeUpdate);
     return () => video.removeEventListener('timeupdate', handleTimeUpdate);
-  }, []);
-
-  // Expose setters to window for integration with index.tsx during migration
-  // This is a temporary bridge until we refactor AI Manager etc.
-  useEffect(() => {
-    (window as any).__LLE_SIDEBAR__ = {
-      setAIStatus: (status: any, message: any) => setAIStatus({ status, message }),
-      setWarning: (msg: any) => setWarning(msg),
-      setUploadActive: (active: boolean, filename?: string) => {
-        setIsUploadActive(active);
-        setUploadFilename(filename);
-      }
-    };
-    return () => delete (window as any).__LLE_SIDEBAR__;
   }, []);
 
   const handleSync = () => {
@@ -70,15 +58,14 @@ export function SidebarApp() {
           console.group("[LLE] Import Errors");
           errors.forEach((err) => console.error(err));
           console.groupEnd();
-          setWarning("Import errors occurred. Check console for details.");
+          store.setWarning("Import errors occurred. Check console for details.");
         } else {
-          setWarning(undefined);
+          store.setWarning(undefined);
         }
 
         if (newSegments && newSegments.length > 0) {
           store.loadCustomSegments(newSegments);
-          setIsUploadActive(true);
-          setUploadFilename(file.name);
+          store.setUploadStatus(true, file.name);
           console.log(`[LLE] Successfully loaded ${newSegments.length} segments from ${file.name}`);
         } else {
           alert("No valid segments found in the SRT file.");
