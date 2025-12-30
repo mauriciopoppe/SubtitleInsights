@@ -1,6 +1,6 @@
 # Plan: UI Framework Migration (Preact)
 
-## Phase 1: Setup & Infrastructure
+## Phase 1: Setup & Infrastructure [checkpoint: a988e30]
 - [x] Task: Install Preact dependencies.
     - [x] Run `npm install preact`.
     - [x] Run `npm install -D @preact/preset-vite`.
@@ -11,7 +11,7 @@
 - [x] Task: Proof of Concept.
     - [x] Create a simple `<HelloWorld />` component.
     - [x] Attempt to render it inside the existing sidebar container in `src/content/index.ts` to verify the build pipeline works.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Setup & Infrastructure' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Setup & Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Reactivity & Store Binding
 - [ ] Task: Create `useSubtitleStore` hook.
