@@ -5,7 +5,7 @@
   "description": "YouTube Language Learning Overlay",
   "content_scripts": [
     {
-      "js": ["src/content/index.ts"],
+      "js": ["src/content/index.tsx"],
       "matches": ["https://www.youtube.com/*"]
     }
   ],

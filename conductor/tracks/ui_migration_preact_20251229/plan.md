@@ -1,16 +1,16 @@
 # Plan: UI Framework Migration (Preact)
 
 ## Phase 1: Setup & Infrastructure
-- [ ] Task: Install Preact dependencies.
-    - [ ] Run `npm install preact`.
-    - [ ] Run `npm install -D @preact/preset-vite`.
-- [ ] Task: Configure Vite and TypeScript.
-    - [ ] Update `vite.config.ts` to use Preact plugin.
-    - [ ] Update `tsconfig.json` to handle JSX (`"jsx": "react-jsx"`, `"jsxImportSource": "preact"`).
-    - [ ] Rename relevant `.ts` files to `.tsx` (initially just for testing).
-- [ ] Task: Proof of Concept.
-    - [ ] Create a simple `<HelloWorld />` component.
-    - [ ] Attempt to render it inside the existing sidebar container in `src/content/index.ts` to verify the build pipeline works.
+- [x] Task: Install Preact dependencies.
+    - [x] Run `npm install preact`.
+    - [x] Run `npm install -D @preact/preset-vite`.
+- [x] Task: Configure Vite and TypeScript.
+    - [x] Update `vite.config.ts` to use Preact plugin.
+    - [x] Update `tsconfig.json` to handle JSX (`"jsx": "react-jsx"`, `"jsxImportSource": "preact"`).
+    - [x] Rename relevant `.ts` files to `.tsx` (initially just for testing).
+- [x] Task: Proof of Concept.
+    - [x] Create a simple `<HelloWorld />` component.
+    - [x] Attempt to render it inside the existing sidebar container in `src/content/index.ts` to verify the build pipeline works.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Setup & Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Reactivity & Store Binding

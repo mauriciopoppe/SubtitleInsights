@@ -7,6 +7,9 @@ import { translatorService } from "./ai/translator";
 import { grammarExplainer } from "./ai/explainer";
 import { translationManager } from "./ai/manager";
 
+import { render } from "preact";
+import { HelloWorld } from "./components/HelloWorld";
+
 console.log("[LLE] Content script injected.");
 
 const waitForElement = (selector: string): Promise<HTMLElement> => {
@@ -140,6 +143,13 @@ const init = async () => {
   const overlay = new Overlay();
   player.appendChild(overlay.getElement());
   secondaryInner.prepend(sidebar.getElement());
+
+  // POC: Preact Render
+  const preactContainer = document.createElement("div");
+  preactContainer.id = "lle-preact-root";
+  secondaryInner.prepend(preactContainer);
+  render(<HelloWorld />, preactContainer);
+
   console.log("[LLE] Overlay and Sidebar injected.");
 
   // AI Translation & Grammar Setup

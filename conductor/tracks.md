@@ -2,7 +2,7 @@
 
 ---
 
-## [ ] Track: UI Framework Migration (Preact)
+## [~] Track: UI Framework Migration (Preact)
 *Link: [./conductor/tracks/ui_migration_preact_20251229/](./conductor/tracks/ui_migration_preact_20251229/)*
 
 ## [ ] Track: Automated Furigana Generation (Kuromoji.js)
