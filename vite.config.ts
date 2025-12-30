@@ -5,6 +5,12 @@ import manifest from "./manifest.json"
 
 export default defineConfig({
   plugins: [preact(), crx({ manifest })],
+  resolve: {
+    alias: {
+      "preact/hooks": "preact/hooks",
+      "preact": "preact",
+    },
+  },
   server: {
     port: 5173,
     strictPort: true,

@@ -14,10 +14,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Setup & Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Reactivity & Store Binding
-- [ ] Task: Create `useSubtitleStore` hook.
-    - [ ] Implement a hook that subscribes to `SubtitleStore` events and returns the current segments/state.
-- [ ] Task: Create `useConfig` hook.
-    - [ ] Implement a hook that subscribes to `Config` changes.
+- [x] Task: Create `useSubtitleStore` hook.
+    - [x] Implement a hook that subscribes to `SubtitleStore` events and returns the current segments/state.
+- [x] Task: Create `useConfig` hook.
+    - [x] Implement a hook that subscribes to `Config` changes.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Reactivity & Store Binding' (Protocol in workflow.md)
 
 ## Phase 3: Sidebar Migration
