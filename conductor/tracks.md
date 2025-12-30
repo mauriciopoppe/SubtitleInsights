@@ -2,7 +2,7 @@
 
 ---
 
-## [ ] Track: Centralize State in Store
+## [~] Track: Centralize State in Store
 *Link: [./conductor/tracks/centralize_state_store_20251229/](./conductor/tracks/centralize_state_store_20251229/)*
 
 ## [ ] Track: Automated Furigana Generation (Kuromoji.js)

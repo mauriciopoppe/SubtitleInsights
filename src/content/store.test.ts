@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { SubtitleStore } from './store';
 
 describe('SubtitleStore', () => {
@@ -70,6 +70,72 @@ Hello`;
        const result = store.parseSRTData(srt);
        expect(result.segments[0].start).toBe(1.5);
        expect(result.segments[0].end).toBe(2.5);
+    });
+  });
+
+  describe('UI State Management', () => {
+    it('should initialize with default values', () => {
+      expect(store.aiStatus).toEqual({ status: 'none' });
+      expect(store.warning).toBeUndefined();
+      expect(store.systemMessage).toBeNull();
+      expect(store.isUploadActive).toBe(false);
+      expect(store.uploadFilename).toBeUndefined();
+    });
+
+    it('should update AI status and notify listeners', () => {
+      const listener = vi.fn();
+      store.addChangeListener(listener);
+      
+      store.setAIStatus('ready', 'AI is ready');
+      
+      expect(store.aiStatus).toEqual({ status: 'ready', message: 'AI is ready' });
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('should update warning and notify listeners', () => {
+      const listener = vi.fn();
+      store.addChangeListener(listener);
+      
+      store.setWarning('Something is wrong');
+      
+      expect(store.warning).toBe('Something is wrong');
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('should update system message and notify listeners', () => {
+      const listener = vi.fn();
+      store.addChangeListener(listener);
+      
+      store.setSystemMessage('Processing...');
+      
+      expect(store.systemMessage).toBe('Processing...');
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('should update upload status and notify listeners', () => {
+      const listener = vi.fn();
+      store.addChangeListener(listener);
+      
+      store.setUploadStatus(true, 'test.srt');
+      
+      expect(store.isUploadActive).toBe(true);
+      expect(store.uploadFilename).toBe('test.srt');
+      expect(listener).toHaveBeenCalled();
+    });
+
+    it('should reset UI states on clear', () => {
+      store.setAIStatus('ready');
+      store.setWarning('Warn');
+      store.setSystemMessage('Msg');
+      store.setUploadStatus(true, 'file.srt');
+      
+      store.clear();
+      
+      expect(store.aiStatus).toEqual({ status: 'none' });
+      expect(store.warning).toBeUndefined();
+      expect(store.systemMessage).toBeNull();
+      expect(store.isUploadActive).toBe(false);
+      expect(store.uploadFilename).toBeUndefined();
     });
   });
 });

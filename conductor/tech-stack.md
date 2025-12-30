@@ -8,7 +8,7 @@
 - **Build Tool:** Vite (with @crxjs/vite-plugin for extension support)
 
 ## Frontend & UI
-- **Framework:** Vanilla TypeScript (DOM manipulation)
+- **Framework:** Preact (Declarative components)
 - **Styling:** CSS3 (Standard CSS variables for theming)
 - **Icons:** SVG (Internal)
 

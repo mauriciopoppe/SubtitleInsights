@@ -2,13 +2,13 @@ import "./styles.css";
 import { store, SubtitleSegment, SubtitleStore } from "./store";
 import { Config } from "./config";
 import { Sidebar } from "./sidebar";
-import { Overlay } from "./overlay";
 import { translatorService } from "./ai/translator";
 import { grammarExplainer } from "./ai/explainer";
 import { translationManager } from "./ai/manager";
 
 import { render } from "preact";
 import { SidebarApp } from "./components/SidebarApp";
+import { OverlayApp } from "./components/OverlayApp";
 
 console.log("[LLE] Content script injected.");
 
@@ -136,9 +136,13 @@ const init = async () => {
   render(<SidebarApp />, sidebarContainer);
 
   const getSidebar = () => (window as any).__LLE_SIDEBAR__;
+  const getOverlay = () => (window as any).__LLE_OVERLAY__;
 
-  const overlay = new Overlay();
-  player.appendChild(overlay.getElement());
+  const overlayContainer = document.createElement("div");
+  overlayContainer.id = "lle-overlay-root";
+  player.appendChild(overlayContainer);
+  render(<OverlayApp />, overlayContainer);
+
   console.log("[LLE] Overlay and Preact Sidebar injected.");
 
   // AI Translation & Grammar Setup
@@ -156,21 +160,21 @@ const init = async () => {
       
       const initDownload = async () => {
          getSidebar()?.setAIStatus("downloading", "Downloading AI models...");
-         overlay.setSystemMessage("Downloading AI models...");
+         getOverlay()?.setSystemMessage("Downloading AI models...");
          const success = await translatorService.initialize((loaded, total) => {
           const percent = Math.round((loaded / total) * 100);
           getSidebar()?.setAIStatus("downloading", `Downloading AI models: ${percent}%`);
-          overlay.setSystemMessage(`Downloading AI models: ${percent}%`);
+          getOverlay()?.setSystemMessage(`Downloading AI models: ${percent}%`);
           console.log(`[LLE] AI Download progress: ${percent}%`);
         });
 
         if (success) {
            getSidebar()?.setAIStatus("ready", "AI Translator Ready");
-           overlay.setSystemMessage(null);
+           getOverlay()?.setSystemMessage(null);
            console.log("[LLE] AI Translator initialized after download.");
         } else {
            getSidebar()?.setAIStatus("error", "AI Initialization Failed");
-           overlay.setSystemMessage("AI Translation Failed to initialize");
+           getOverlay()?.setSystemMessage("AI Translation Failed to initialize");
         }
       };
 
@@ -218,19 +222,12 @@ const init = async () => {
 
   Config.addChangeListener((enabled) => {
     isEnabled = enabled;
-    if (!isEnabled) {
-      overlay.setVisible(false);
-    }
   });
 
   Config.addOverlayChangeListener((enabled) => {
     isOverlayEnabled = enabled;
-    if (!isOverlayEnabled) {
-      overlay.setVisible(false);
-    }
   });
 
-  let currentActiveSegment: SubtitleSegment | undefined = undefined;
   let currentVideoId = new URLSearchParams(window.location.search).get("v");
 
   const checkVideoChange = () => {
@@ -242,9 +239,6 @@ const init = async () => {
       currentVideoId = newVideoId;
       store.clear();
       getSidebar()?.setUploadActive(false);
-
-      overlay.clear();
-      currentActiveSegment = undefined;
     }
   };
 
@@ -253,35 +247,6 @@ const init = async () => {
     checkVideoChange();
     const currentTimeMs = video.currentTime * 1000;
     translationManager.onTimeUpdate(currentTimeMs);
-
-    if (!isEnabled || !isOverlayEnabled) {
-      overlay.setVisible(false);
-      return;
-    }
-
-    const activeSegment = store.getSegmentAt(currentTimeMs);
-
-    // Case 1: No active segment
-    if (!activeSegment) {
-      if (currentActiveSegment !== undefined) {
-        overlay.clear();
-        currentActiveSegment = undefined;
-      }
-      return;
-    }
-
-    // Case 2: Active segment exists
-    // Ensure overlay is visible
-    if (!overlay.isVisible()) {
-      overlay.setVisible(true);
-    }
-
-    if (activeSegment === currentActiveSegment) {
-      return;
-    }
-
-    overlay.update(activeSegment);
-    currentActiveSegment = activeSegment;
   });
 
   // Listen for YouTube navigation events to clear the store

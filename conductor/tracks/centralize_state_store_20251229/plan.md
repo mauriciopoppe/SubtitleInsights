@@ -1,12 +1,12 @@
 # Plan: Centralize State in Store
 
 ## Phase 1: Store Enhancement
-- [ ] Task: Update `SubtitleStore` class in `src/content/store.ts`.
-    - [ ] Add properties for `aiStatus`, `warning`, `systemMessage`, `isUploadActive`, `uploadFilename`.
-    - [ ] Implement setter methods for each (e.g., `setAIStatus`, `setSystemMessage`, `setUploadStatus`).
-    - [ ] Ensure setters call `notifyListeners()`.
-- [ ] Task: Verify Store logic with unit tests.
-    - [ ] Update `src/content/store.test.ts` to cover the new state fields and setters.
+- [x] Task: Update `SubtitleStore` class in `src/content/store.ts`.
+    - [x] Add properties for `aiStatus`, `warning`, `systemMessage`, `isUploadActive`, `uploadFilename`.
+    - [x] Implement setter methods for each (e.g., `setAIStatus`, `setSystemMessage`, `setUploadStatus`).
+    - [x] Ensure setters call `notifyListeners()`.
+- [x] Task: Verify Store logic with unit tests.
+    - [x] Update `src/content/store.test.ts` to cover the new state fields and setters.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Store Enhancement' (Protocol in workflow.md)
 
 ## Phase 2: Hook & Component Refactor

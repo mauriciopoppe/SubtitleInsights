@@ -35,13 +35,13 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Sidebar Migration' (Protocol in workflow.md)
 
 ## Phase 4: Overlay Migration & Cleanup
-- [ ] Task: Create Overlay Components.
-    - [ ] `OverlayApp.tsx`.
-    - [ ] Bind to store and config.
-- [ ] Task: Replace Legacy Overlay.
-    - [ ] Update `src/content/index.ts` to mount `<OverlayApp />` instead of `new Overlay()`.
-    - [ ] Delete `src/content/overlay.ts`.
-- [ ] Task: Final Polish.
-    - [ ] Verify all CSS modules/classes are correct.
-    - [ ] Run full integration test suite (may need to update tests to handle React components if they rely on specific DOM structure that changed slightly, though we aim for parity).
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Overlay Migration & Cleanup' (Protocol in workflow.md)
+- [x] Task: Create Overlay Components.
+    - [x] `OverlayApp.tsx`.
+    - [x] Bind to store and config.
+- [x] Task: Replace Legacy Overlay.
+    - [x] Update `src/content/index.ts` to mount `<OverlayApp />` instead of `new Overlay()`.
+    - [x] Delete `src/content/overlay.ts`.
+- [x] Task: Final Polish.
+    - [x] Verify all CSS modules/classes are correct.
+    - [x] Run full integration test suite (may need to update tests to handle React components if they rely on specific DOM structure that changed slightly, though we aim for parity).
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Overlay Migration & Cleanup' (Protocol in workflow.md)

@@ -11,4 +11,4 @@
 
 ## Performance Principles (Prototyping)
 - **Zero Latency Goal:** Prioritize perceived performance. If the Prompt API is slow, show a loading state for the specific word/segment rather than blocking the entire UI.
-- **Lean Implementation:** Avoid heavy UI frameworks for the content script; stick to vanilla JS or lightweight DOM manipulation to keep the video player performant.
+- **Lean Implementation:** Use lightweight frameworks like Preact for declarative UI while keeping the footprint minimal to ensure the video player remains performant.

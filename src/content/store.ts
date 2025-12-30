@@ -19,12 +19,60 @@ export class SubtitleStore {
   private changeListeners: (() => void)[] = [];
   private segmentUpdateListeners: ((index: number, segment: SubtitleSegment) => void)[] = [];
 
+  // UI State
+  private _aiStatus: { status: "downloading" | "ready" | "error" | "none"; message?: string } = { status: "none" };
+  private _warning: string | undefined = undefined;
+  private _systemMessage: string | null = null;
+  private _isUploadActive = false;
+  private _uploadFilename: string | undefined = undefined;
+
   get sourceLanguage() {
     return this._sourceLanguage;
   }
 
+  get aiStatus() {
+    return this._aiStatus;
+  }
+
+  get warning() {
+    return this._warning;
+  }
+
+  get systemMessage() {
+    return this._systemMessage;
+  }
+
+  get isUploadActive() {
+    return this._isUploadActive;
+  }
+
+  get uploadFilename() {
+    return this._uploadFilename;
+  }
+
   setSourceLanguage(lang: string | null) {
     this._sourceLanguage = lang;
+  }
+
+  setAIStatus(status: "downloading" | "ready" | "error" | "none", message?: string) {
+    this._aiStatus = { status, message };
+    this.notifyListeners();
+  }
+
+  setWarning(message: string | undefined) {
+    this._warning = message;
+    this.notifyListeners();
+  }
+
+  setSystemMessage(message: string | null) {
+    this._systemMessage = message;
+    this.notifyListeners();
+  }
+
+  setUploadStatus(active: boolean, filename?: string) {
+    this._isUploadActive = active;
+    this._uploadFilename = filename;
+    this.notifyListeners();
   }
 
   addChangeListener(callback: () => void) {
@@ -287,6 +335,11 @@ export class SubtitleStore {
   clear() {
     this.segments = [];
     this._sourceLanguage = null;
+    this._aiStatus = { status: "none" };
+    this._warning = undefined;
+    this._systemMessage = null;
+    this._isUploadActive = false;
+    this._uploadFilename = undefined;
     this.notifyListeners();
   }
 
