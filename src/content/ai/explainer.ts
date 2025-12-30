@@ -29,8 +29,8 @@ export class GrammarExplainer {
   async initialize(): Promise<boolean> {
     try {
       const options = {
-        systemPrompt: "You are a helpful Japanese grammar teacher. Analyze the grammar of the provided Japanese sentence for a beginner student.",
-        temperature: 0.2,
+        systemPrompt: "You are a Japanese grammar expert. Provide a very concise (1-2 sentences) summary of the main grammar points and particles in the provided sentence for a beginner student (JLPT N5 level). Focus on brevity and clarity. Do not use conversational filler.",
+        temperature: 0,
         topK: 1
       };
 
@@ -51,6 +51,14 @@ export class GrammarExplainer {
     } catch (error) {
       console.error("Error initializing language model:", error);
       return false;
+    }
+  }
+
+  async destroy() {
+    if (this.session) {
+      // @ts-ignore
+      await this.session.destroy();
+      this.session = null;
     }
   }
 

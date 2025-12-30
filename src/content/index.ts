@@ -5,8 +5,18 @@ import { Sidebar } from "./sidebar";
 import { Overlay } from "./overlay";
 import { translatorService } from "./ai/translator";
 import { translationManager } from "./ai/manager";
+import { isComplexSentence } from "./ai/utils";
 
 console.log("[LLE] Content script injected.");
+
+// Debug Test for isComplexSentence
+console.group("[LLE] Complexity Filter Test");
+console.log("'はい':", isComplexSentence("はい")); // false
+console.log("'こんにちは':", isComplexSentence("こんにちは")); // false (len 5)
+console.log("'こんばんは':", isComplexSentence("こんばんは")); // true (len 6)
+console.log("'私は':", isComplexSentence("私は")); // true (contains particle は)
+console.log("'これを食べる':", isComplexSentence("これを食べる")); // true
+console.groupEnd();
 
 const waitForElement = (selector: string): Promise<HTMLElement> => {
   return new Promise((resolve) => {
