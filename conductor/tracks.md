@@ -3,17 +3,4 @@
 ---
 
 ## [ ] Track: Automated Furigana Generation (Kuromoji.js)
----
-
-## [x] Track: Centralize State in Store
-*Link: [./conductor/archive/centralize_state_store_20251229/](./conductor/archive/centralize_state_store_20251229/)*
-
----
-
-## [x] Track: UI Framework Migration (Preact)
-*Link: [./conductor/archive/ui_migration_preact_20251229/](./conductor/archive/ui_migration_preact_20251229/)*
-
----
-
-## [x] Track: Relocate Extension Icon (Right Controls)
-*Link: [./conductor/archive/relocate_icon_20251229/](./conductor/archive/relocate_icon_20251229/)*
+*Link: [./conductor/tracks/automated_furigana_20251229/](./conductor/tracks/automated_furigana_20251229/)*
