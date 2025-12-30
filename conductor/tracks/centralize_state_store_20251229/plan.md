@@ -9,7 +9,7 @@
     - [x] Update `src/content/store.test.ts` to cover the new state fields and setters.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Store Enhancement' (Protocol in workflow.md)
 
-## Phase 2: Hook & Component Refactor
+## Phase 2: Hook & Component Refactor [checkpoint: f3e92d5]
 - [x] Task: Update `useSubtitleStore` hook.
     - [x] Modify `src/content/hooks/useSubtitleStore.ts` to return an object with all store fields.
 - [x] Task: Refactor `SidebarApp.tsx`.
