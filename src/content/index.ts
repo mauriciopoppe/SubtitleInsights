@@ -63,7 +63,7 @@ const setupToggle = async (
       toggle.setAttribute("aria-pressed", "true");
       toggle.style.color = "#fff";
     } else {
-      toggle.style.opacity = "0.7";
+      toggle.style.opacity = "0.4"; // More transparent when disabled
       toggle.setAttribute("aria-pressed", "false");
       toggle.style.color = "#aaa";
     }

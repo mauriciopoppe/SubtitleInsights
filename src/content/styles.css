@@ -82,40 +82,23 @@ rt {
   user-select: none;
 }
 
-.lle-toggle-container {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--yt-delhi-pill-top-height, 12px) 8px;
-  vertical-align: top;
-}
-
 .lle-toggle-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 8px;
-  margin: 0 2px;
-  cursor: pointer;
-  font-family: "YouTube Noto", Roboto, Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  border-radius: 4px;
-  transition: background-color 0.1s;
-  user-select: none;
-  background-color: transparent;
+  transition: opacity 0.1s;
 }
 
-.lle-toggle-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.lle-toggle-btn.enabled {
-  color: #fff;
-}
-
-.lle-toggle-btn.disabled {
-  color: #aaa;
+.lle-toggle-btn[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 2px;
+  background-color: #f00; /* Red underline for active state, matching CC */
 }
 
 .lle-upload-btn {

@@ -10,10 +10,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Icon Design & DOM Injection' (Protocol in workflow.md)
 
 ## Phase 2: Styling & Polish
-- [ ] Task: Update CSS for the new button.
-    - [ ] Modify `src/content/styles.css` to remove old "pill" styles.
-    - [ ] Add new styles to ensure the icon centers correctly and matches `.ytp-button` hover states.
-    - [ ] Ensure the "enabled" state (active) is visually distinct (e.g., icon color change or underline, similar to how CC button shows active state).
-- [ ] Task: Clean up old code.
-    - [ ] Remove any unused CSS or JS related to the old left-control pill button.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Styling & Polish' (Protocol in workflow.md)
+- [x] Task: Update CSS for the new button.
+    - [x] Modify `src/content/styles.css` to remove old "pill" styles.
+    - [x] Add new styles to ensure the icon centers correctly and matches `.ytp-button` hover states.
+    - [x] Ensure the "enabled" state (active) is visually distinct (e.g., icon color change or underline, similar to how CC button shows active state).
+- [x] Task: Clean up old code.
+    - [x] Remove any unused CSS or JS related to the old left-control pill button.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Styling & Polish' (Protocol in workflow.md)
