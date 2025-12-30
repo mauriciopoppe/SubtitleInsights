@@ -1,6 +1,6 @@
 # Plan: Relocate Extension Icon (Right Controls)
 
-## Phase 1: Icon Design & DOM Injection
+## Phase 1: Icon Design & DOM Injection [checkpoint: 638e848]
 - [~] Task: Create a new SVG icon for the extension button.
     - [ ] Design or source a simple SVG (e.g., "Translate" icon) that fits the YouTube player aesthetic.
 - [x] Task: Update `setupToggle` in `src/content/index.ts`.
