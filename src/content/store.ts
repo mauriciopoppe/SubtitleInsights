@@ -15,14 +15,9 @@ export interface SubtitleSegment {
 
 export class SubtitleStore {
   private segments: SubtitleSegment[] = [];
-  private _isStructured = false;
   private _sourceLanguage: string | null = null;
   private changeListeners: (() => void)[] = [];
   private segmentUpdateListeners: ((index: number, segment: SubtitleSegment) => void)[] = [];
-
-  get isStructured() {
-    return this._isStructured;
-  }
 
   get sourceLanguage() {
     return this._sourceLanguage;
@@ -101,10 +96,10 @@ export class SubtitleStore {
     this.notifyListeners();
   }
 
-  loadStructuredData(data: any[]) {
+  loadCustomSegments(data: any[]) {
     this.clear();
     console.log(
-      "[LLE] SubtitleStore: Loading structured data, count:",
+      "[LLE] SubtitleStore: Loading custom segments, count:",
       data.length,
     );
     this.segments = data
@@ -128,9 +123,8 @@ export class SubtitleStore {
         return segment;
       })
       .sort((a, b) => a.start - b.start);
-    this._isStructured = true;
     console.log(
-      `[LLE][SubtitleStore] Loaded ${this.segments.length} structured segments.`,
+      `[LLE][SubtitleStore] Loaded ${this.segments.length} custom segments.`,
     );
     this.notifyListeners();
   }
@@ -150,137 +144,70 @@ export class SubtitleStore {
   }
 
   /**
-   * Parses a Markdown file content into SubtitleSegment objects.
+   * Parses an SRT file content into partial segment objects.
+   * Returns objects compatible with loadStructuredData input (seconds for time).
    */
-  parseMarkdownStructuredData(content: string): {
-    segments: SubtitleSegment[];
+  parseSRTData(content: string): {
+    segments: any[];
     errors: string[];
   } {
-    const segments: SubtitleSegment[] = [];
+    const segments: any[] = [];
     const errors: string[] = [];
 
-    // Split by "## [Text]" but keep the text
-    const sections = content.split(/^##\s+/m).slice(1);
+    // Normalize newlines and split by double newlines
+    const blocks = content.trim().replace(/\r\n/g, "\n").split(/\n\n+/);
 
-    if (sections.length === 0) {
-      errors.push("No valid sections found (must start with '## ').");
-    }
-
-    sections.forEach((section, index) => {
-      const lines = section.split("\n");
-      const text = lines[0].trim();
-
-      const getMultilineValue = (key: string) => {
-        const pattern = `**${key}**:`;
-        const headerIndex = lines.findIndex((l) => l.includes(pattern));
-        if (headerIndex === -1) return "";
-
-        const headerLine = lines[headerIndex];
-        const sameLineContent = headerLine
-          .split(pattern)
-          .slice(1)
-          .join(pattern)
-          .trim();
-
-        const valueLines = [];
-        if (sameLineContent) {
-          valueLines.push(sameLineContent);
-        }
-
-        // Look at subsequent lines until we hit another key or the end
-        for (let i = headerIndex + 1; i < lines.length; i++) {
-          const line = lines[i];
-          // Check if the line starts a new key (e.g., "* **Key**:")
-          if (line.trim().startsWith("* **") && line.includes("**:")) {
-            break;
-          }
-          // Only add if it's not empty or if we already have some content
-          if (line.trim() !== "" || valueLines.length > 0) {
-            // If it's a list item, we keep it as is, otherwise we might want to trim it
-            // but for markdown rendering, whitespace can be important (e.g. indentation)
-            // however, usually these are within a bullet point, so we trim leading "* " or "- " if it's there?
-            // Actually, let's just trim the line and keep it if it's not starting a new property.
-            valueLines.push(line.trim());
-          }
-        }
-
-        // Remove trailing empty lines
-        while (
-          valueLines.length > 0 &&
-          valueLines[valueLines.length - 1] === ""
-        ) {
-          valueLines.pop();
-        }
-
-        return valueLines.join("\n");
-      };
-
-      const getValue = (key: string) => {
-        const pattern = `**${key}**:`;
-        const line = lines.find((l) => l.includes(pattern));
-        if (!line) return "";
-        const parts = line.split(pattern);
-        return parts.slice(1).join(pattern).trim();
-      };
-
-      const segmentationStr = getValue("Segmentation");
-      
-      // Try parsing new combined Timestamp format first
-      let startStr = "";
-      let endStr = "";
-      const timestampCombined = getValue("Timestamp");
-
-      if (timestampCombined && timestampCombined.includes("-->")) {
-        const parts = timestampCombined.split("-->").map((s) => s.trim());
-        if (parts.length >= 2) {
-          startStr = parts[0];
-          endStr = parts[1];
-        }
-      } else {
-        // Fallback to old separate fields
-        startStr = getValue("Timestamp Start");
-        endStr = getValue("Timestamp End");
-      }
-
-      const start = this.parseTimestamp(startStr);
-      const end = this.parseTimestamp(endStr);
-
-      // Validation
-      if (!text) {
-        errors.push(`Segment ${index + 1}: Missing text.`);
-        return; // Skip this segment
-      }
-      
-      const isStartValid = start > 0 || (start === 0 && (startStr.includes("00:00:00.000") || startStr.includes("00:00:00,000")));
-      
-      if (!startStr || !isStartValid) {
-         if (!startStr) {
-            errors.push(`Segment ${index + 1} ("${text.substring(0, 20)}..."): Missing timestamp information.`);
-            return;
-         } else {
-            errors.push(`Segment ${index + 1} ("${text.substring(0, 20)}..."): Invalid start timestamp format: "${startStr}".`);
-            return;
-         }
-      }
-
-      if (!endStr) {
-          errors.push(`Segment ${index + 1} ("${text.substring(0, 20)}..."): Missing end time.`);
-          return;
-      }
-      if (end < start) {
-        errors.push(`Segment ${index + 1} ("${text.substring(0, 20)}..."): End time (${endStr}) is before Start time (${startStr}).`);
+    blocks.forEach((block, index) => {
+      const lines = block.split("\n");
+      if (lines.length < 2) {
+        // Skip empty or malformed blocks
         return;
       }
 
+      // SRT format:
+      // 1
+      // 00:00:20,000 --> 00:00:24,400
+      // Text line 1
+      // Text line 2
+
+      // Heuristic: If the first line is just a number, it's the index.
+      // If the first line contains "-->", maybe the index is missing.
+      let timeLineIndex = 0;
+      if (lines[0].match(/^\d+$/)) {
+        timeLineIndex = 1;
+      }
+
+      if (timeLineIndex >= lines.length) {
+         errors.push(`Block ${index + 1}: Malformed (missing timestamp).`);
+         return;
+      }
+
+      const timeLine = lines[timeLineIndex];
+      const parts = timeLine.split("-->").map((s) => s.trim());
+      
+      if (parts.length !== 2) {
+         errors.push(`Block ${index + 1}: Invalid timestamp format: "${timeLine}".`);
+         return;
+      }
+
+      const start = this.parseTimestamp(parts[0]);
+      const end = this.parseTimestamp(parts[1]);
+
+      // Join the rest of the lines as text
+      const textLines = lines.slice(timeLineIndex + 1);
+      const text = textLines.join("\n").trim();
+
+      if (!text) {
+          // It is possible to have empty subtitles in SRT, but usually discouraged.
+          // We can skip or include. Let's include with empty text or skip?
+          // Existing logic warned about missing text.
+          // errors.push(`Block ${index + 1}: Missing text.`);
+      }
+
       segments.push({
+        start, // seconds
+        end,   // seconds
         text,
-        start,
-        end,
-        translation: getValue("Translation"),
-        literal_translation: getValue("Literal Translation"),
-        segmentation: segmentationStr ? segmentationStr.split(/\s+/) : [],
-        contextual_analysis: getMultilineValue("Contextual Analysis"),
-        grammatical_gotchas: getMultilineValue("Grammatical Gotchas"),
       });
     });
 
@@ -352,7 +279,6 @@ export class SubtitleStore {
 
   clear() {
     this.segments = [];
-    this._isStructured = false;
     this._sourceLanguage = null;
     this.notifyListeners();
   }

@@ -19,10 +19,6 @@ export class AIManager {
   constructor() {}
 
   public async onTimeUpdate(currentTimeMs: number) {
-    if (store.isStructured) {
-      return;
-    }
-
     // Only process Japanese content
     if (store.sourceLanguage && !store.sourceLanguage.startsWith("ja")) {
       return;

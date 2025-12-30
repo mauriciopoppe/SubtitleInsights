@@ -25,7 +25,7 @@ export class Sidebar {
     // Hidden file input for uploads
     this.fileInput = document.createElement("input");
     this.fileInput.type = "file";
-    this.fileInput.accept = ".md";
+    this.fileInput.accept = ".srt";
     this.fileInput.style.display = "none";
     this.fileInput.id = "lle-sidebar-upload-input";
     document.body.appendChild(this.fileInput);
@@ -39,7 +39,7 @@ export class Sidebar {
       reader.onload = (event) => {
         try {
           const content = event.target?.result as string;
-          const { segments, errors } = store.parseMarkdownStructuredData(content);
+          const { segments, errors } = store.parseSRTData(content);
 
           if (errors.length > 0) {
             console.group("[LLE] Import Errors");
@@ -52,7 +52,7 @@ export class Sidebar {
           }
 
           if (segments && segments.length > 0) {
-            store.loadStructuredData(segments);
+            store.loadCustomSegments(segments);
             if (onFileLoaded) onFileLoaded(file.name);
             console.log(
               `[LLE] Successfully loaded ${segments.length} segments from ${file.name}`,
@@ -60,13 +60,13 @@ export class Sidebar {
           } else {
             console.warn("[LLE] No valid segments found in file:", file.name);
             alert(
-              "No valid segments found in the Markdown file. Please check the format and console for errors.",
+              "No valid segments found in the SRT file. Please check the format and console for errors.",
             );
           }
         } catch (err) {
-          console.error("[LLE] Failed to parse Markdown file", err);
+          console.error("[LLE] Failed to parse SRT file", err);
           alert(
-            "Failed to parse Markdown file. Make sure it follows the required format.",
+            "Failed to parse SRT file. Make sure it follows the required format.",
           );
         }
       };
@@ -99,7 +99,7 @@ export class Sidebar {
     this.uploadBtn = document.createElement("span");
     this.uploadBtn.className = "lle-sidebar-upload-btn";
     this.uploadBtn.innerText = "Upload";
-    this.uploadBtn.title = "Upload Structured Subtitles (Markdown)";
+    this.uploadBtn.title = "Upload Subtitles (SRT)";
     this.uploadBtn.onclick = () => this.fileInput.click();
 
     // Overlay Toggle Button
@@ -255,7 +255,7 @@ export class Sidebar {
       }
     } else {
       this.uploadBtn.classList.remove("active");
-      this.uploadBtn.title = "Upload Structured Subtitles (Markdown)";
+      this.uploadBtn.title = "Upload Subtitles (SRT)";
     }
   }
 
