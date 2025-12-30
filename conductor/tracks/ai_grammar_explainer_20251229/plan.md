@@ -17,7 +17,7 @@
     - [x] Implement the `explainGrammar(text: string)` method with low temperature settings.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Analysis & Filtering Logic' (Protocol in workflow.md)
 
-## Phase 3: Integration & Data Flow
+## Phase 3: Integration & Data Flow [checkpoint: 960315f]
 - [x] Task: Update Subtitle Processing Pipeline.
     - [x] Hook into the `SubtitleStore` or `TranslationManager` to trigger grammar analysis for new segments.
     - [x] Ensure analysis only triggers if `isGrammarExplainerEnabled` is true.
