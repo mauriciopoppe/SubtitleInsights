@@ -288,18 +288,18 @@ export class Sidebar {
       if (segment.segmentedData) {
         original.innerHTML = renderSegmentedText(segment.segmentedData);
       } else {
-        original.innerText = segment.text;
+        original.textContent = segment.text;
       }
 
       // Natural Translation
       const translation = document.createElement("div");
       translation.className = "lle-sidebar-translation";
-      translation.innerText = segment.translation || "";
+      translation.textContent = segment.translation || "";
 
       // Literal Translation
       const literal = document.createElement("div");
       literal.className = "lle-sidebar-literal";
-      literal.innerText = segment.literal_translation || "";
+      literal.textContent = segment.literal_translation || "";
 
       item.appendChild(original);
       item.appendChild(translation);

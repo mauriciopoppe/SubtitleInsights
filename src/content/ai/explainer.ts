@@ -25,7 +25,9 @@ export class GrammarExplainer {
       // @ts-ignore
       if (typeof window.LanguageModel !== "undefined") {
         // @ts-ignore
-        const availability = await window.LanguageModel.availability();
+        const availability = await window.LanguageModel.availability({
+          languages: ["en", "ja"],
+        });
         return availability;
       }
 

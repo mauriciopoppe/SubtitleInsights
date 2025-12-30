@@ -193,6 +193,13 @@ export class SubtitleStore {
       const start = this.parseTimestamp(parts[0]);
       const end = this.parseTimestamp(parts[1]);
 
+      if (isNaN(start) || isNaN(end)) {
+        errors.push(
+          `Block ${index + 1}: Invalid timestamp format in "${timeLine}"`,
+        );
+        return;
+      }
+
       // Join the rest of the lines as text
       const textLines = lines.slice(timeLineIndex + 1);
       const text = textLines.join("\n").trim();
@@ -239,7 +246,7 @@ export class SubtitleStore {
       return h * 3600 + m * 60 + s + fractionalSeconds;
     }
 
-    return 0;
+    return NaN;
   }
 
   private parseFurigana(token: string): AISegment[] {
