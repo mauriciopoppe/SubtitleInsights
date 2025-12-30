@@ -1,6 +1,6 @@
 # Plan: AI Grammar Explainer (Chrome Prompt API)
 
-## Phase 1: API Setup & Configuration
+## Phase 1: API Setup & Configuration [checkpoint: f039849]
 - [x] Task: Verify Chrome Prompt API availability and session management.
     - [x] Implement a wrapper for `window.LanguageModel` in `src/content/ai/explainer.ts`.
     - [x] Ensure basic session creation and prompt execution work.
