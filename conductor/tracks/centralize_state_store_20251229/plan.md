@@ -1,0 +1,30 @@
+# Plan: Centralize State in Store
+
+## Phase 1: Store Enhancement
+- [ ] Task: Update `SubtitleStore` class in `src/content/store.ts`.
+    - [ ] Add properties for `aiStatus`, `warning`, `systemMessage`, `isUploadActive`, `uploadFilename`.
+    - [ ] Implement setter methods for each (e.g., `setAIStatus`, `setSystemMessage`, `setUploadStatus`).
+    - [ ] Ensure setters call `notifyListeners()`.
+- [ ] Task: Verify Store logic with unit tests.
+    - [ ] Update `src/content/store.test.ts` to cover the new state fields and setters.
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Store Enhancement' (Protocol in workflow.md)
+
+## Phase 2: Hook & Component Refactor
+- [ ] Task: Update `useSubtitleStore` hook.
+    - [ ] Modify `src/content/hooks/useSubtitleStore.ts` to return an object with all store fields.
+- [ ] Task: Refactor `SidebarApp.tsx`.
+    - [ ] Remove local state and window bridge.
+    - [ ] Connect to store fields via updated hook.
+- [ ] Task: Refactor `OverlayApp.tsx`.
+    - [ ] Remove local state and window bridge.
+    - [ ] Connect to store fields via updated hook.
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Hook & Component Refactor' (Protocol in workflow.md)
+
+## Phase 3: Integration & Cleanup
+- [ ] Task: Update `src/content/index.tsx`.
+    - [ ] Remove `getSidebar` and `getOverlay` bridge helpers.
+    - [ ] Update all AI and setup logic to call `store` methods directly.
+- [ ] Task: Final Verification & Test.
+    - [ ] Run `npm test -- run` to ensure integration tests still pass (may need minor updates to match new hook return signature).
+    - [ ] Verify manual functionality in browser.
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md)
