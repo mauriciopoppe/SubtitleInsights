@@ -2,10 +2,12 @@
 
 ---
 
-## [~] Track: Centralize State in Store
-*Link: [./conductor/tracks/centralize_state_store_20251229/](./conductor/tracks/centralize_state_store_20251229/)*
-
 ## [ ] Track: Automated Furigana Generation (Kuromoji.js)
+---
+
+## [x] Track: Centralize State in Store
+*Link: [./conductor/archive/centralize_state_store_20251229/](./conductor/archive/centralize_state_store_20251229/)*
+
 ---
 
 ## [x] Track: UI Framework Migration (Preact)

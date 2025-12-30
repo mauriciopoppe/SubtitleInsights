@@ -20,7 +20,7 @@
     - [x] Connect to store fields via updated hook.
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Hook & Component Refactor' (Protocol in workflow.md)
 
-## Phase 3: Integration & Cleanup
+## Phase 3: Integration & Cleanup [checkpoint: 88562d7]
 - [x] Task: Update `src/content/index.tsx`.
     - [x] Remove `getSidebar` and `getOverlay` bridge helpers.
     - [x] Update all AI and setup logic to call `store` methods directly.
