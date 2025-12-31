@@ -1,6 +1,6 @@
 # Plan: Language Profiles & Settings Page
 
-## Phase 1: Core Infrastructure & Migration
+## Phase 1: Core Infrastructure & Migration [checkpoint: d4d0bd9]
 - [x] Task: Define `Profile` interface and `ProfileManager` class in `src/content/profiles.ts`.
     - [x] Implement CRUD operations (get, list, add, update, delete, setActive).
     - [x] Implement migration logic: Check if profiles exist; if not, create default "Japanese" profile.
