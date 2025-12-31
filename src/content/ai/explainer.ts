@@ -1,5 +1,3 @@
-export type LanguageModelAvailability = "readily" | "after-download" | "no";
-
 const systemPrompt = `
 Role: Japanese Grammar Instructor for English speakers.
 
@@ -18,67 +16,47 @@ Output: The particle を indicates that お茶 is the direct object of the verb 
 `;
 
 export class GrammarExplainer {
-  private session: any = null;
+  private rootSession: LanguageModelSession | null = null;
+  private workingSession: LanguageModelSession | null = null;
 
   async checkAvailability(): Promise<LanguageModelAvailability> {
     try {
-      // @ts-ignore
       if (typeof window.LanguageModel !== "undefined") {
-        // @ts-ignore
-        const availability = await window.LanguageModel.availability({
+        return await window.LanguageModel.availability({
           languages: ["en", "ja"],
         });
-        return availability;
       }
-
-      // @ts-ignore
-      if (typeof window.ai !== "undefined" && window.ai.languageModel) {
-        // @ts-ignore
-        const capabilities = await window.ai.languageModel.capabilities();
-        return capabilities.available;
-      }
-
-      return "no";
+      return "unavailable";
     } catch (error) {
       console.error("Error checking language model availability:", error);
-      return "no";
+      return "unavailable";
     }
   }
 
   async initialize(): Promise<boolean> {
     try {
-      const params = await window.LanguageModel.params();
-      const options = {
-        initialPrompts: [
-          {
-            role: "system",
-            content: systemPrompt,
-          },
-        ],
-        expectedInputs: [
-          {
-            type: "text",
-            languages: ["en" /* system prompt */, "ja" /* user prompt */],
-          },
-        ],
-        expectedOutputs: [{ type: "text", languages: ["en", "ja"] }],
+      if (this.rootSession) {
+        return true;
+      }
+
+      if (typeof window.LanguageModel === "undefined") {
+        return false;
+      }
+
+      const caps = await window.LanguageModel.capabilities();
+      const options: LanguageModelCreateOptions = {
+        systemPrompt: systemPrompt,
         temperature: 0.2,
-        topK: params.defaultTopK,
+        topK: caps.defaultTopK || undefined,
       };
 
-      // @ts-ignore
-      if (typeof window.LanguageModel !== "undefined") {
-        // @ts-ignore
-        this.session = await window.LanguageModel.create(options);
+      this.rootSession = await window.LanguageModel.create(options);
+
+      if (this.rootSession) {
+        await this.resetSession();
         return true;
       }
 
-      // @ts-ignore
-      if (typeof window.ai !== "undefined" && window.ai.languageModel) {
-        // @ts-ignore
-        this.session = await window.ai.languageModel.create(options);
-        return true;
-      }
       return false;
     } catch (error) {
       console.error("Error initializing language model:", error);
@@ -86,23 +64,43 @@ export class GrammarExplainer {
     }
   }
 
+  async resetSession() {
+    if (!this.rootSession) {
+      await this.initialize();
+      return;
+    }
+
+    try {
+      if (this.workingSession) {
+        this.workingSession.destroy();
+        this.workingSession = null;
+      }
+
+      this.workingSession = await this.rootSession.clone();
+      console.log("[LLE] GrammarExplainer: Session reset via clone.");
+    } catch (error) {
+      console.error("Error resetting grammar explainer session:", error);
+    }
+  }
+
   async destroy() {
-    if (this.session) {
-      // @ts-ignore
-      await this.session.destroy();
-      this.session = null;
+    if (this.workingSession) {
+      this.workingSession.destroy();
+      this.workingSession = null;
+    }
+    if (this.rootSession) {
+      this.rootSession.destroy();
+      this.rootSession = null;
     }
   }
 
   async explainGrammar(text: string): Promise<string> {
-    if (!this.session) {
+    if (!this.workingSession) {
       throw new Error("Language Model session not initialized");
     }
 
     try {
-      // @ts-ignore
-      const result = await this.session.prompt(`Sentence: ${text}`);
-      return result;
+      return await this.workingSession.prompt(`Sentence: ${text}`);
     } catch (error) {
       console.error("Error explaining grammar:", error);
       throw error;
@@ -110,7 +108,7 @@ export class GrammarExplainer {
   }
 
   isReady(): boolean {
-    return this.session !== null;
+    return this.workingSession !== null;
   }
 }
 

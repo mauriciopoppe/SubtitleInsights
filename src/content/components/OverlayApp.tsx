@@ -1,4 +1,4 @@
-import { h, Fragment } from 'preact';
+import { Fragment } from 'preact';
 import { useState, useEffect, useMemo } from 'preact/hooks';
 import { useSubtitleStore } from '../hooks/useSubtitleStore';
 import { useConfig } from '../hooks/useConfig';

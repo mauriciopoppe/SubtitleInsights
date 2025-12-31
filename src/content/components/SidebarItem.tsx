@@ -1,4 +1,3 @@
-import { h, Fragment } from 'preact';
 import { SubtitleSegment } from '../store';
 import { renderSegmentedText } from '../render';
 import snarkdown from 'snarkdown';

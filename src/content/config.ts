@@ -8,7 +8,7 @@ export class Config {
       return new Promise((resolve) => {
         chrome.storage.local.get([this.MASTER_STORAGE_KEY], (result) => {
           // Default to true if not set
-          resolve(result[this.MASTER_STORAGE_KEY] ?? true);
+          resolve((result[this.MASTER_STORAGE_KEY] as boolean) ?? true);
         });
       });
     }
@@ -25,7 +25,7 @@ export class Config {
       return new Promise((resolve) => {
         chrome.storage.local.get([this.OVERLAY_STORAGE_KEY], (result) => {
           // Default to true if not set
-          resolve(result[this.OVERLAY_STORAGE_KEY] ?? true);
+          resolve((result[this.OVERLAY_STORAGE_KEY] as boolean) ?? true);
         });
       });
     }
@@ -42,7 +42,7 @@ export class Config {
       return new Promise((resolve) => {
         chrome.storage.local.get([this.GRAMMAR_EXPLAINER_STORAGE_KEY], (result) => {
           // Default to true if not set
-          resolve(result[this.GRAMMAR_EXPLAINER_STORAGE_KEY] ?? true);
+          resolve((result[this.GRAMMAR_EXPLAINER_STORAGE_KEY] as boolean) ?? true);
         });
       });
     }
@@ -59,7 +59,7 @@ export class Config {
       return new Promise((resolve) => {
         chrome.storage.local.get([this.TARGET_JLPT_LEVEL_STORAGE_KEY], (result) => {
           // Default to 'N5' if not set
-          resolve(result[this.TARGET_JLPT_LEVEL_STORAGE_KEY] ?? 'N5');
+          resolve((result[this.TARGET_JLPT_LEVEL_STORAGE_KEY] as string) ?? 'N5');
         });
       });
     }
@@ -75,7 +75,7 @@ export class Config {
     static addChangeListener(callback: (isEnabled: boolean) => void) {
       chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === "local" && changes[this.MASTER_STORAGE_KEY]) {
-          callback(changes[this.MASTER_STORAGE_KEY].newValue);
+          callback(changes[this.MASTER_STORAGE_KEY].newValue as boolean);
         }
       });
     }
@@ -83,7 +83,7 @@ export class Config {
     static addOverlayChangeListener(callback: (isOverlayEnabled: boolean) => void) {
       chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === "local" && changes[this.OVERLAY_STORAGE_KEY]) {
-          callback(changes[this.OVERLAY_STORAGE_KEY].newValue);
+          callback(changes[this.OVERLAY_STORAGE_KEY].newValue as boolean);
         }
       });
     }
@@ -91,7 +91,7 @@ export class Config {
     static addGrammarExplainerChangeListener(callback: (isEnabled: boolean) => void) {
       chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === "local" && changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY]) {
-          callback(changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY].newValue);
+          callback(changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY].newValue as boolean);
         }
       });
     }
@@ -99,7 +99,7 @@ export class Config {
     static addJLPTLevelChangeListener(callback: (level: string) => void) {
       chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === "local" && changes[this.TARGET_JLPT_LEVEL_STORAGE_KEY]) {
-          callback(changes[this.TARGET_JLPT_LEVEL_STORAGE_KEY].newValue);
+          callback(changes[this.TARGET_JLPT_LEVEL_STORAGE_KEY].newValue as string);
         }
       });
     }

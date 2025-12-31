@@ -164,7 +164,7 @@ export class SubtitleStore {
         };
 
         if (Array.isArray(s.segmentation)) {
-          segment.segmentedData = s.segmentation.map((token) =>
+          segment.segmentedData = s.segmentation.map((token: string) =>
             this.parseFurigana(token),
           );
         }

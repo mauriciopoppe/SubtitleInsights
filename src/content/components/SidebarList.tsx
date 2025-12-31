@@ -1,4 +1,3 @@
-import { h } from 'preact';
 import { SubtitleSegment } from '../store';
 import { SidebarItem } from './SidebarItem';
 import { useMemo } from 'preact/hooks';

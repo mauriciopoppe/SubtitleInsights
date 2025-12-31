@@ -159,7 +159,7 @@ const init = async () => {
     // Grammar Explainer Setup
     const grammarAvailability = await grammarExplainer.checkAvailability();
     console.log("[LLE] AI Grammar Explainer availability:", grammarAvailability);
-    if (grammarAvailability === "readily" || grammarAvailability === "available") {
+    if (grammarAvailability === "available") {
        await grammarExplainer.initialize();
        console.log("[LLE] AI Grammar Explainer initialized.");
     }
@@ -167,15 +167,20 @@ const init = async () => {
 
   setupAI();
 
-  let isEnabled = await Config.getIsEnabled();
-  let isOverlayEnabled = await Config.getIsOverlayEnabled();
-
   Config.addChangeListener((enabled) => {
-    isEnabled = enabled;
+    if (!enabled) {
+      overlayContainer.style.display = "none";
+    } else {
+      overlayContainer.style.display = "block";
+    }
   });
 
   Config.addOverlayChangeListener((enabled) => {
-    isOverlayEnabled = enabled;
+    if (!enabled) {
+      overlayContainer.style.display = "none";
+    } else {
+      overlayContainer.style.display = "block";
+    }
   });
 
   let currentVideoId = new URLSearchParams(window.location.search).get("v");
@@ -188,6 +193,7 @@ const init = async () => {
       );
       currentVideoId = newVideoId;
       store.clear();
+      grammarExplainer.resetSession();
     }
   };
 

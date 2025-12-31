@@ -1,11 +1,10 @@
-import { h } from 'preact';
 import { useConfig } from '../hooks/useConfig';
 import { useSubtitleStore } from '../hooks/useSubtitleStore';
 import { Config } from '../config';
 
 export function ExtensionToggle() {
   const { isEnabled, isLoading } = useConfig();
-  const { aiStatus } = useSubtitleStore();
+  const { aiStatus: _aiStatus } = useSubtitleStore();
 
   const handleToggle = async () => {
     await Config.setIsEnabled(!isEnabled);

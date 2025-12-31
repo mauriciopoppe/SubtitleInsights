@@ -1,5 +1,4 @@
-import { h, Fragment } from 'preact';
-import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import { SidebarHeader } from './SidebarHeader';
 import { SidebarList } from './SidebarList';
 import { useSubtitleStore } from '../hooks/useSubtitleStore';
