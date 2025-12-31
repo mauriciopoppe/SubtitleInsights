@@ -8,16 +8,15 @@ import { AISegment } from "./types";
 export function renderSegmentedText(segments: AISegment[][]): string {
   return segments
     .map((wordGroup) => {
-      const groupHTML = wordGroup
+      return wordGroup
         .map((segment) => {
           const { word, reading } = segment;
           if (reading && reading !== word) {
             return `<ruby>${word}<rt>${reading}</rt></ruby>`;
           }
-          return `<span>${word}</span>`;
+          return word;
         })
         .join(""); // No space within a group
-      return `<span>${groupHTML}</span>`;
     })
     .join("&nbsp;"); // Space between groups
 }

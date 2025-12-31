@@ -45,9 +45,7 @@ export function OverlayApp() {
             {activeSegment.segmentedData ? (
               <span dangerouslySetInnerHTML={{ __html: renderSegmentedText(activeSegment.segmentedData) }} />
             ) : (
-              activeSegment.text.split('').map((char, i) => (
-                <span key={i} className="lle-word">{char}</span>
-              ))
+              activeSegment.text
             )}
           </div>
 
