@@ -1,3 +1,5 @@
+import { ProfileManager } from "../profiles";
+
 export type TranslationAvailability =
   | "available"
   | "downloadable"
@@ -6,13 +8,8 @@ export type TranslationAvailability =
 
 export class MyTranslator {
   private translator: any = null;
-  private sourceLanguage: string;
-  private targetLanguage: string;
 
-  constructor(sourceLanguage: string = "ja", targetLanguage: string = "en") {
-    this.sourceLanguage = sourceLanguage;
-    this.targetLanguage = targetLanguage;
-  }
+  constructor() {}
 
   async checkAvailability(): Promise<TranslationAvailability> {
     // @ts-ignore
@@ -20,10 +17,11 @@ export class MyTranslator {
       return "unavailable";
     }
 
+    const profile = await ProfileManager.getActiveProfile();
     // @ts-ignore
     return await Translator.availability({
-      sourceLanguage: this.sourceLanguage,
-      targetLanguage: this.targetLanguage,
+      sourceLanguage: profile.sourceLanguage,
+      targetLanguage: profile.targetLanguage,
     });
   }
 
@@ -36,9 +34,10 @@ export class MyTranslator {
         return false;
       }
 
+      const profile = await ProfileManager.getActiveProfile();
       const options: any = {
-        sourceLanguage: this.sourceLanguage,
-        targetLanguage: this.targetLanguage,
+        sourceLanguage: profile.sourceLanguage,
+        targetLanguage: profile.targetLanguage,
       };
 
       if (onProgress) {

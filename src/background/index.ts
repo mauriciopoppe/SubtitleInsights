@@ -41,3 +41,9 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
 } else {
   console.error('[LLE] chrome.webRequest is not available. Check permissions in manifest.json.');
 }
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'OPEN_OPTIONS_PAGE') {
+    chrome.runtime.openOptionsPage();
+  }
+});

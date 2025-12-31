@@ -125,6 +125,10 @@ export function SidebarApp() {
     await Config.setIsPauseOnHoverEnabled(!current);
   };
 
+  const handleOpenSettings = () => {
+    chrome.runtime.sendMessage({ type: "OPEN_OPTIONS_PAGE" });
+  };
+
   if (!config.isEnabled) return null;
 
   return (
@@ -142,6 +146,7 @@ export function SidebarApp() {
         onToggleOverlay={handleToggleOverlay}
         onToggleAI={handleToggleAI}
         onTogglePauseOnHover={handleTogglePauseOnHover}
+        onOpenSettings={handleOpenSettings}
         overlayEnabled={config.isOverlayEnabled}
         aiEnabled={config.isGrammarEnabled}
         pauseOnHoverEnabled={config.isPauseOnHoverEnabled}

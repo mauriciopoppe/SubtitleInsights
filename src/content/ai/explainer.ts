@@ -1,4 +1,7 @@
 import { ProfileManager } from "../profiles";
+import { store } from "../store";
+
+const SUPPORTED_LANGUAGES = ["en", "ja", "es"];
 
 export class GrammarExplainer {
   private rootSession: LanguageModelSession | null = null;
@@ -8,8 +11,19 @@ export class GrammarExplainer {
   async checkAvailability(): Promise<LanguageModelAvailability> {
     try {
       if (typeof window.LanguageModel !== "undefined") {
+        const profile = await ProfileManager.getActiveProfile();
+        
+        const isSourceSupported = SUPPORTED_LANGUAGES.includes(profile.sourceLanguage);
+        const isTargetSupported = SUPPORTED_LANGUAGES.includes(profile.targetLanguage);
+
+        if (!isSourceSupported || !isTargetSupported) {
+          const unsupported = !isSourceSupported ? profile.sourceLanguage : profile.targetLanguage;
+          store.setWarning(`Language Model does not support "${unsupported}". Only en, ja, es are supported.`);
+          return "unavailable";
+        }
+
         return await window.LanguageModel.availability({
-          languages: ["en", "ja"],
+          languages: [profile.targetLanguage, profile.sourceLanguage],
         });
       }
       return "unavailable";
@@ -30,6 +44,14 @@ export class GrammarExplainer {
       }
 
       const profile = await ProfileManager.getActiveProfile();
+
+      const isSourceSupported = SUPPORTED_LANGUAGES.includes(profile.sourceLanguage);
+      const isTargetSupported = SUPPORTED_LANGUAGES.includes(profile.targetLanguage);
+
+      if (!isSourceSupported || !isTargetSupported) {
+        return false;
+      }
+
       const params = await window.LanguageModel.params();
       const options: LanguageModelCreateOptions = {
         initialPrompts: [
@@ -38,8 +60,18 @@ export class GrammarExplainer {
             content: profile.systemPrompt,
           },
         ],
-        expectedInputs: [{ type: "text", languages: ["en", "ja"] }],
-        expectedOutputs: [{ type: "text", languages: ["en"] }],
+        expectedInputs: [
+          {
+            type: "text",
+            languages: [
+              "en" /* system prompt, must always be in english*/,
+              profile.sourceLanguage,
+            ],
+          },
+        ],
+        expectedOutputs: [
+          { type: "text", languages: [profile.targetLanguage] },
+        ],
         temperature: 0.2,
         topK: params.defaultTopK || undefined,
       };
@@ -96,10 +128,12 @@ export class GrammarExplainer {
 
     // Workaround: Reset the session when context pollution causes response timeouts or degradation.
     if (this.promptCount >= 50) {
-      console.log("[LLE] GrammarExplainer: Prompt count limit reached (50). Resetting session.");
+      console.log(
+        "[LLE] GrammarExplainer: Prompt count limit reached (50). Resetting session.",
+      );
       await this.resetSession();
       if (!this.workingSession) {
-         throw new Error("Language Model session failed to reset");
+        throw new Error("Language Model session failed to reset");
       }
     }
 

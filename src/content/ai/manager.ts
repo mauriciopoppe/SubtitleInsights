@@ -15,6 +15,78 @@ export class AIManager {
 
   constructor() {}
 
+  public async initializeAIServices() {
+    // Translator Setup
+    const translationAvailability = await translatorService.checkAvailability();
+    console.log("[LLE] AI Translation availability:", translationAvailability);
+
+    if (translationAvailability === "available") {
+      store.setAIStatus("ready", "AI Translator Ready");
+      await translatorService.initialize();
+      console.log("[LLE] AI Translator initialized.");
+    } else if (translationAvailability === "downloadable") {
+      this.initiateDownloadFlow();
+    }
+
+    // Grammar Explainer Setup
+    const grammarAvailability = await grammarExplainer.checkAvailability();
+    console.log("[LLE] AI Grammar Explainer availability:", grammarAvailability);
+    if (grammarAvailability === "available") {
+      await grammarExplainer.initialize();
+      console.log("[LLE] AI Grammar Explainer initialized.");
+    }
+  }
+
+  private initiateDownloadFlow() {
+    store.setAIStatus("none");
+    console.log("[LLE] AI models need download.");
+
+    const initDownload = async () => {
+      store.setAIStatus("downloading", "Downloading AI models...");
+      store.setSystemMessage("Downloading AI models...");
+      const success = await translatorService.initialize((loaded, total) => {
+        const percent = Math.round((loaded / total) * 100);
+        store.setAIStatus("downloading", `Downloading AI models: ${percent}%`);
+        store.setSystemMessage(`Downloading AI models: ${percent}%`);
+        console.log(`[LLE] AI Download progress: ${percent}%`);
+      });
+
+      if (success) {
+        store.setAIStatus("ready", "AI Translator Ready");
+        store.setSystemMessage(null);
+        console.log("[LLE] AI Translator initialized after download.");
+      } else {
+        store.setAIStatus("error", "AI Initialization Failed");
+        store.setSystemMessage("AI Translation Failed to initialize");
+      }
+    };
+
+    if (navigator.userActivation?.isActive) {
+      console.log("[LLE] User activation active. Starting download immediately.");
+      initDownload();
+    } else {
+      console.log("[LLE] Waiting for user interaction to start download...");
+      const onUserInteraction = (e: Event) => {
+        if (e.type === "keydown" && (e as KeyboardEvent).key === "Escape") return;
+
+        document.removeEventListener("mousedown", onUserInteraction);
+        document.removeEventListener("pointerdown", onUserInteraction);
+        document.removeEventListener("pointerup", onUserInteraction);
+        document.removeEventListener("touchend", onUserInteraction);
+        document.removeEventListener("keydown", onUserInteraction);
+
+        console.log(`[LLE] User interaction detected (${e.type}). Starting download...`);
+        initDownload();
+      };
+
+      document.addEventListener("mousedown", onUserInteraction);
+      document.addEventListener("pointerdown", onUserInteraction);
+      document.addEventListener("pointerup", onUserInteraction);
+      document.addEventListener("touchend", onUserInteraction);
+      document.addEventListener("keydown", onUserInteraction);
+    }
+  }
+
   public async onTimeUpdate(currentTimeMs: number) {
     // Only process Japanese content
     if (store.sourceLanguage && !store.sourceLanguage.startsWith("ja")) {

@@ -10,21 +10,21 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Core Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Settings Page UI
-- [ ] Task: Configure Vite to build a new entry point `src/settings/index.html`.
-    - [ ] Update `vite.config.ts`.
-    - [ ] Update `manifest.json` to register `options_page`.
-- [ ] Task: Scaffold Settings App structure (Preact).
-    - [ ] `src/settings/App.tsx`, `Sidebar.tsx`, `ProfileList.tsx`, `ProfileEditor.tsx`.
-- [ ] Task: Implement Profile Management UI.
-    - [ ] View list of profiles.
-    - [ ] Add/Delete buttons.
-    - [ ] Form to edit Source/Target lang and System Prompt.
-    - [ ] "Set Active" button.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Settings Page UI' (Protocol in workflow.md)
+- [x] Task: Configure Vite to build a new entry point `src/settings/index.html`.
+    - [x] Update `vite.config.ts`.
+    - [x] Update `manifest.json` to register `options_page`.
+- [x] Task: Scaffold Settings App structure (Preact).
+    - [x] `src/settings/App.tsx`, `ProfileList.tsx`, `ProfileEditor.tsx`.
+- [x] Task: Implement Profile Management UI.
+    - [x] View list of profiles.
+    - [x] Add/Delete buttons.
+    - [x] Form to edit Source/Target lang and System Prompt.
+    - [x] "Set Active" button.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Settings Page UI' (Protocol in workflow.md)
 
 ## Phase 3: Integration
-- [ ] Task: Add "Settings" link to the Sidebar extension UI.
-    - [ ] Add a gear/settings icon button that calls `chrome.runtime.openOptionsPage()`.
-- [ ] Task: Verify end-to-end flow.
-    - [ ] Change profile -> Check if AI Explainer uses new prompt.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration' (Protocol in workflow.md)
+- [x] Task: Add "Settings" link to the Sidebar extension UI.
+    - [x] Add a gear/settings icon button that calls `chrome.runtime.openOptionsPage()`.
+- [x] Task: Verify end-to-end flow.
+    - [x] Change profile -> Check if AI Explainer uses new prompt.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration' (Protocol in workflow.md)

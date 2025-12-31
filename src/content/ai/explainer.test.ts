@@ -4,8 +4,16 @@ import { GrammarExplainer } from './explainer';
 vi.mock('../profiles', () => ({
   ProfileManager: {
     getActiveProfile: vi.fn().mockResolvedValue({
-      systemPrompt: 'Mock Prompt'
+      systemPrompt: 'Mock Prompt',
+      sourceLanguage: 'ja',
+      targetLanguage: 'en'
     })
+  }
+}));
+
+vi.mock('../store', () => ({
+  store: {
+    setWarning: vi.fn()
   }
 }));
 

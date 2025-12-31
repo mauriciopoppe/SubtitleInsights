@@ -7,6 +7,7 @@ interface SidebarHeaderProps {
   onToggleOverlay: () => void;
   onToggleAI: () => void;
   onTogglePauseOnHover: () => void;
+  onOpenSettings: () => void;
   overlayEnabled: boolean;
   aiEnabled: boolean;
   pauseOnHoverEnabled: boolean;
@@ -25,6 +26,7 @@ export function SidebarHeader({
   onToggleOverlay,
   onToggleAI,
   onTogglePauseOnHover,
+  onOpenSettings,
   overlayEnabled,
   aiEnabled,
   pauseOnHoverEnabled,
@@ -144,6 +146,18 @@ export function SidebarHeader({
               </svg>
               <span>Hover Pause</span>
               <div className="lle-toggle-switch"></div>
+            </div>
+
+            <div 
+              className="lle-settings-dropdown-item"
+              title="Open full settings page"
+              onClick={onOpenSettings}
+              style={{ borderTop: '1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1))', marginTop: '4px' }}
+            >
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+              </svg>
+              <span>Detailed Settings</span>
             </div>
           </SettingsDropdown>
         </span>

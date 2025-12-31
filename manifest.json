@@ -14,6 +14,10 @@
     "type": "module"
   },
   "host_permissions": ["*://*.youtube.com/*"],
-  "permissions": ["storage", "webRequest"]
+  "permissions": ["storage", "webRequest"],
+  "options_ui": {
+    "page": "src/settings/index.html",
+    "open_in_tab": true
+  }
 }
 
