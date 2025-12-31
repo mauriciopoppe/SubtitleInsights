@@ -2,7 +2,7 @@
 
 I want to build a chrome extension that uses the Chrome Prompt API at https://developer.chrome.com/docs/ai/prompt-api. This is a toy project so experimentation and running as fast as possible is a must. No need to adhere to strict conventions. Just make it run as fast as possible.
 
-# Product Guide - Language Learning Extension (YouTube)
+# Product Guide - Subtitle Insights (YouTube)
 
 ## Core Concept
 A Chrome extension designed for language learners who use YouTube as their primary source of immersion. It overlays advanced translation data on top of native YouTube subtitles, leveraging the local Chrome Prompt API for high-performance, privacy-respecting AI features.
@@ -22,7 +22,7 @@ A Chrome extension designed for language learners who use YouTube as their prima
 - **Player Integration:** Adds a native-style toggle icon directly into the YouTube player's right controls (left of the CC button) for seamless activation.
 - **SRT Subtitle Upload:** Allows users to upload standard .srt subtitle files to replace or augment the video tracks.
 - **Sidebar Transcript:** Provides a vertical list of all educational segments in the YouTube sidebar, highlighting the active segment in sync with the video.
-- **Granular Visibility Controls:** A sub-toggle in the sidebar allows users to hide/show the on-video overlay independently of the sidebar content.
+- **Granular Visibility Controls:** Grouped toggles in the settings dropdown allow users to independently control the visibility of the original text, translations, AI insights, and player behaviors (like hover pause) within both the on-video Overlay and the Sidebar Transcript.
 - **Pause on Hover:** An optional setting that automatically pauses the video when the user hovers over the educational overlay to allow more reading time, resuming when the mouse leaves.
 - **Language Profiles:** Manage settings for different languages (e.g., Japanese, French) with custom AI prompts and configurations.
 - **Dedicated Settings Page:** A full settings page to manage profiles and other extension options, accessible from the sidebar.

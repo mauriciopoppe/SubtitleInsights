@@ -1,4 +1,4 @@
-# Product Guidelines - Language Learning Extension
+# Product Guidelines - Subtitle Insights
 
 ## Visual Identity
 - **Integrated Look:** UI elements must mimic the YouTube native style (Roboto font, semi-transparent black backgrounds, rounded corners). Custom player buttons should use SVG icons and match native spacing/hover states.

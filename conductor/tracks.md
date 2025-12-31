@@ -14,5 +14,4 @@
 
 ## [x] Track: Language Profiles & Settings Page
 *Link: [./conductor/archive/profiles_and_settings_page_20251231/](./conductor/archive/profiles_and_settings_page_20251231/)*
-*Link: [./conductor/tracks/profiles_and_settings_page_20251231/](./conductor/tracks/profiles_and_settings_page_20251231/)*
-\n---\n\n## [x] Track: Nested toggles for translation and insights visibility (Overlay/Sidebar)\n*Link: [./conductor/tracks/nested_visibility_toggles_20251231/](./conductor/tracks/nested_visibility_toggles_20251231/)*
+*Link: [./conductor/tracks/profiles_and_settings_page_20251231/](./conductor/tracks/profiles_and_settings_page_20251231/)*\n---\n\n## [~] Track: Rebrand to 'Subtitle Insights' and Prefix Migration\n*Link: [./conductor/tracks/rebrand_subtitle_insights_20251231/](./conductor/tracks/rebrand_subtitle_insights_20251231/)*

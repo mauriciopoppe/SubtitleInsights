@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Language Learning Extension",
+  "name": "Subtitle Insights",
   "version": "1.0.0",
-  "description": "YouTube Language Learning Overlay",
+  "description": "Smart AI insights and translations for YouTube subtitles",
   "content_scripts": [
     {
       "js": ["src/content/index.tsx"],
