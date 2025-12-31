@@ -17,3 +17,13 @@ export function isComplexSentence(text: string): boolean {
 
   return false;
 }
+
+/**
+ * Removes markdown links from a string entirely.
+ * Example: "Visit [Google](https://google.com) for info" -> "Visit  for info"
+ */
+export function removeMarkdownLinks(text: string): string {
+  if (!text) return text;
+  // Regex matches [text](url) globally
+  return text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '');
+}
