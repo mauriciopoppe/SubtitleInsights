@@ -2,6 +2,7 @@ import { SubtitleSegment } from '../store';
 import { renderSegmentedText } from '../render';
 import snarkdown from 'snarkdown';
 import { trimThinkingProcess } from '../ai/utils';
+import { useConfig } from '../hooks/useConfig';
 
 interface SidebarItemProps {
   segment: SubtitleSegment;
@@ -10,6 +11,8 @@ interface SidebarItemProps {
 }
 
 export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
+  const config = useConfig();
+
   return (
     <div
       className={`lle-sidebar-item ${isActive ? 'active' : ''}`}
@@ -27,12 +30,14 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
       </div>
 
       {/* Natural Translation */}
-      <div className="lle-sidebar-translation">
-        {segment.translation || ''}
-      </div>
+      {config.isTranslationVisibleInSidebar && (
+        <div className="lle-sidebar-translation">
+          {segment.translation || ''}
+        </div>
+      )}
 
       {/* Insights */}
-      {segment.insights && (
+      {segment.insights && config.isInsightsVisibleInSidebar && (
         <div
           className="lle-sidebar-insights"
           dangerouslySetInnerHTML={{ __html: snarkdown(trimThinkingProcess(segment.insights)) }}

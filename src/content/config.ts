@@ -7,6 +7,7 @@ export class Config {
     private static INSIGHTS_IN_SIDEBAR_KEY = "lle_is_insights_in_sidebar";
     private static TRANSLATION_IN_OVERLAY_KEY = "lle_is_translation_in_overlay";
     private static TRANSLATION_IN_SIDEBAR_KEY = "lle_is_translation_in_sidebar";
+    private static ORIGINAL_IN_OVERLAY_KEY = "lle_is_original_in_overlay";
   
     static async getIsEnabled(): Promise<boolean> {
       return new Promise((resolve) => {
@@ -133,6 +134,20 @@ export class Config {
         chrome.storage.local.set({ [this.TRANSLATION_IN_SIDEBAR_KEY]: value }, () => resolve());
       });
     }
+
+    static async getIsOriginalVisibleInOverlay(): Promise<boolean> {
+      return new Promise((resolve) => {
+        chrome.storage.local.get([this.ORIGINAL_IN_OVERLAY_KEY], (result) => {
+          resolve((result[this.ORIGINAL_IN_OVERLAY_KEY] as boolean) ?? true);
+        });
+      });
+    }
+
+    static async setIsOriginalVisibleInOverlay(value: boolean): Promise<void> {
+      return new Promise((resolve) => {
+        chrome.storage.local.set({ [this.ORIGINAL_IN_OVERLAY_KEY]: value }, () => resolve());
+      });
+    }
   
     static addChangeListener(callback: (isEnabled: boolean) => void) {
       chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -194,6 +209,14 @@ export class Config {
       chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === "local" && changes[this.TRANSLATION_IN_SIDEBAR_KEY]) {
           callback(changes[this.TRANSLATION_IN_SIDEBAR_KEY].newValue as boolean);
+        }
+      });
+    }
+
+    static addOriginalInOverlayChangeListener(callback: (value: boolean) => void) {
+      chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName === "local" && changes[this.ORIGINAL_IN_OVERLAY_KEY]) {
+          callback(changes[this.ORIGINAL_IN_OVERLAY_KEY].newValue as boolean);
         }
       });
     }

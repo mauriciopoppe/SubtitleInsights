@@ -30,7 +30,15 @@ export function OverlayApp() {
     return store.getSegmentAt(currentTimeMs);
   }, [segments, currentTimeMs]);
 
-  const isVisible = config.isEnabled && config.isOverlayEnabled && (!!activeSegment || !!systemMessage);
+  // The overlay is visible if the extension is enabled AND there is actual content to show
+  // (either a system message or an active segment with at least one visible field).
+  const hasOverlayContent = !!systemMessage || (!!activeSegment && (
+    config.isOriginalVisibleInOverlay || 
+    config.isTranslationVisibleInOverlay || 
+    (!!activeSegment.insights && config.isInsightsVisibleInOverlay)
+  ));
+
+  const isVisible = config.isEnabled && hasOverlayContent;
 
   usePauseOnHover(config.isPauseOnHoverEnabled, overlayRef, isVisible);
 
@@ -50,19 +58,23 @@ export function OverlayApp() {
 
       {activeSegment && !systemMessage && (
         <Fragment>
-          <div className="lle-original">
-            {activeSegment.segmentedData ? (
-              <span dangerouslySetInnerHTML={{ __html: renderSegmentedText(activeSegment.segmentedData) }} />
-            ) : (
-              activeSegment.text
-            )}
-          </div>
+          {config.isOriginalVisibleInOverlay && (
+            <div className="lle-original">
+              {activeSegment.segmentedData ? (
+                <span dangerouslySetInnerHTML={{ __html: renderSegmentedText(activeSegment.segmentedData) }} />
+              ) : (
+                activeSegment.text
+              )}
+            </div>
+          )}
 
-          <div className="lle-translation">
-            {activeSegment.translation || ''}
-          </div>
+          {config.isTranslationVisibleInOverlay && (
+            <div className="lle-translation">
+              {activeSegment.translation || ''}
+            </div>
+          )}
 
-          {activeSegment.insights && (
+          {activeSegment.insights && config.isInsightsVisibleInOverlay && (
             <div
               className="lle-insights"
               dangerouslySetInnerHTML={{ __html: snarkdown(trimThinkingProcess(activeSegment.insights)) }}

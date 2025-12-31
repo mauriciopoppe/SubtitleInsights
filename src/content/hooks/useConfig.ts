@@ -11,6 +11,7 @@ export function useConfig() {
     isInsightsVisibleInSidebar: true,
     isTranslationVisibleInOverlay: true,
     isTranslationVisibleInSidebar: true,
+    isOriginalVisibleInOverlay: true,
     isLoading: true
   });
 
@@ -27,6 +28,7 @@ export function useConfig() {
         isInsightsVisibleInSidebar,
         isTranslationVisibleInOverlay,
         isTranslationVisibleInSidebar,
+        isOriginalVisibleInOverlay,
       ] = await Promise.all([
         Config.getIsEnabled(),
         Config.getIsOverlayEnabled(),
@@ -36,6 +38,7 @@ export function useConfig() {
         Config.getIsInsightsVisibleInSidebar(),
         Config.getIsTranslationVisibleInOverlay(),
         Config.getIsTranslationVisibleInSidebar(),
+        Config.getIsOriginalVisibleInOverlay(),
       ]);
 
       if (isMounted) {
@@ -48,6 +51,7 @@ export function useConfig() {
           isInsightsVisibleInSidebar,
           isTranslationVisibleInOverlay,
           isTranslationVisibleInSidebar,
+          isOriginalVisibleInOverlay,
           isLoading: false
         });
       }
@@ -79,6 +83,9 @@ export function useConfig() {
     const handleTranslationSidebarChange = (val: boolean) => {
       setConfig(prev => ({ ...prev, isTranslationVisibleInSidebar: val }));
     };
+    const handleOriginalOverlayChange = (val: boolean) => {
+      setConfig(prev => ({ ...prev, isOriginalVisibleInOverlay: val }));
+    };
 
     Config.addChangeListener(handleEnabledChange);
     Config.addOverlayChangeListener(handleOverlayChange);
@@ -88,6 +95,7 @@ export function useConfig() {
     Config.addInsightsInSidebarChangeListener(handleInsightsSidebarChange);
     Config.addTranslationInOverlayChangeListener(handleTranslationOverlayChange);
     Config.addTranslationInSidebarChangeListener(handleTranslationSidebarChange);
+    Config.addOriginalInOverlayChangeListener(handleOriginalOverlayChange);
 
     return () => {
       isMounted = false;

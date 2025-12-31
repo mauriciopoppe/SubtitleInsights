@@ -110,40 +110,38 @@ export function SidebarApp() {
     reader.readAsText(file);
   };
 
-  const handleToggleOverlay = async () => {
-    const overlay = await Config.getIsTranslationVisibleInOverlay();
-    const sidebar = await Config.getIsTranslationVisibleInSidebar();
+  const handleToggleOverlayMaster = async () => {
+    const translation = await Config.getIsTranslationVisibleInOverlay();
+    const insights = await Config.getIsInsightsVisibleInOverlay();
+    const original = await Config.getIsOriginalVisibleInOverlay();
     
-    // Derived master state:
-    // If both are ON, we treat it as ON -> toggle to OFF
-    // If mixed or both OFF, we treat it as OFF/Mixed -> toggle to ON
-    const areBothOn = overlay && sidebar;
+    // If all are ON, turn OFF. Otherwise turn ON.
+    const areAllOn = translation && insights && original;
     
-    if (areBothOn) {
+    if (areAllOn) {
       await Config.setIsTranslationVisibleInOverlay(false);
-      await Config.setIsTranslationVisibleInSidebar(false);
+      await Config.setIsInsightsVisibleInOverlay(false);
+      await Config.setIsOriginalVisibleInOverlay(false);
     } else {
       await Config.setIsTranslationVisibleInOverlay(true);
-      await Config.setIsTranslationVisibleInSidebar(true);
+      await Config.setIsInsightsVisibleInOverlay(true);
+      await Config.setIsOriginalVisibleInOverlay(true);
     }
   };
 
-  const handleToggleAI = async () => {
-    const overlay = await Config.getIsInsightsVisibleInOverlay();
-    const sidebar = await Config.getIsInsightsVisibleInSidebar();
+  const handleToggleSidebarMaster = async () => {
+    const translation = await Config.getIsTranslationVisibleInSidebar();
+    const insights = await Config.getIsInsightsVisibleInSidebar();
     
-    const areBothOn = overlay && sidebar;
+    const areBothOn = translation && insights;
     
     if (areBothOn) {
-      await Config.setIsInsightsVisibleInOverlay(false);
+      await Config.setIsTranslationVisibleInSidebar(false);
       await Config.setIsInsightsVisibleInSidebar(false);
     } else {
-      await Config.setIsInsightsVisibleInOverlay(true);
+      await Config.setIsTranslationVisibleInSidebar(true);
       await Config.setIsInsightsVisibleInSidebar(true);
     }
-    // We update the legacy master flag just in case, or we can deprecate it too.
-    // For now, let's keep it in sync with "at least one active" or just ignore it.
-    await Config.setIsGrammarExplainerEnabled(!areBothOn);
   };
 
   const handleTogglePauseOnHover = async () => {
@@ -171,6 +169,11 @@ export function SidebarApp() {
     await Config.setIsTranslationVisibleInSidebar(!val);
   };
 
+  const handleToggleOriginalOverlay = async () => {
+    const val = await Config.getIsOriginalVisibleInOverlay();
+    await Config.setIsOriginalVisibleInOverlay(!val);
+  };
+
   const handleOpenSettings = () => {
     chrome.runtime.sendMessage({ type: "OPEN_OPTIONS_PAGE" });
   };
@@ -189,21 +192,21 @@ export function SidebarApp() {
       <SidebarHeader
         onSync={handleSync}
         onUpload={handleUploadClick}
-        onToggleTranslation={handleToggleOverlay}
-        onToggleAI={handleToggleAI}
+        onToggleOverlayMaster={handleToggleOverlayMaster}
+        onToggleSidebarMaster={handleToggleSidebarMaster}
         onTogglePauseOnHover={handleTogglePauseOnHover}
         onToggleInsightsOverlay={handleToggleInsightsOverlay}
         onToggleInsightsSidebar={handleToggleInsightsSidebar}
         onToggleTranslationOverlay={handleToggleTranslationOverlay}
         onToggleTranslationSidebar={handleToggleTranslationSidebar}
+        onToggleOriginalOverlay={handleToggleOriginalOverlay}
         onOpenSettings={handleOpenSettings}
-        overlayEnabled={config.isOverlayEnabled}
-        aiEnabled={config.isGrammarEnabled}
         pauseOnHoverEnabled={config.isPauseOnHoverEnabled}
         isInsightsVisibleInOverlay={config.isInsightsVisibleInOverlay}
         isInsightsVisibleInSidebar={config.isInsightsVisibleInSidebar}
         isTranslationVisibleInOverlay={config.isTranslationVisibleInOverlay}
         isTranslationVisibleInSidebar={config.isTranslationVisibleInSidebar}
+        isOriginalVisibleInOverlay={config.isOriginalVisibleInOverlay}
         aiStatus={aiStatus}
         warning={warning}
         isUploadActive={isUploadActive}
