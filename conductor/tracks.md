@@ -12,6 +12,11 @@
 
 ---
 
+## [ ] Track: Dual-Speed AI Processing Queues
+*Link: [./conductor/tracks/dual_speed_ai_queues_20251230/](./conductor/tracks/dual_speed_ai_queues_20251230/)*
+
+---
+
 ## [x] Track: Settings Dropdown and UI Renaming (Insights)
 *Link: [./conductor/archive/settings_dropdown_insights_20251230/](./conductor/archive/settings_dropdown_insights_20251230/)*
 

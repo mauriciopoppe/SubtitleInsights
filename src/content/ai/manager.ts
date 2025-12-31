@@ -60,7 +60,7 @@ export class AIManager {
     ) {
       const seg = allSegments[i];
       const needsTranslation = translatorService.isReady() && !seg.translation;
-      
+
       const inGrammarRange = i < startIndex + this.grammarBuffer;
       const needsGrammar =
         isGrammarEnabled &&
@@ -73,7 +73,7 @@ export class AIManager {
         toProcess.push({
           index: i,
           translate: !!needsTranslation,
-          grammar: !!needsGrammar
+          grammar: !!needsGrammar,
         });
       }
     }
@@ -141,7 +141,10 @@ export class AIManager {
               );
               store.updateSegmentAnalysis(index, analysis);
             } catch (e) {
-              console.error(`[LLE] Grammar explanation failed for ${index}:`, e);
+              console.error(
+                `[LLE] Grammar explanation failed for ${index}:`,
+                e,
+              );
             }
           })(),
         );
