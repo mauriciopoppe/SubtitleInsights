@@ -17,3 +17,43 @@ export function isComplexSentence(text: string): boolean {
 
   return false;
 }
+
+/**
+ * Some models prepend their response with a "thinking" process enclosed in brackets.
+ * This function removes any leading content enclosed in [brackets], handling nesting.
+ * Example: "[Thinking [deeply]...] Actual response" -> "Actual response"
+ */
+export function trimThinkingProcess(text: string): string {
+  if (!text) return text;
+
+  let currentText = text.trim();
+  let foundBlock = true;
+
+  while (foundBlock && currentText.startsWith("[")) {
+    let depth = 0;
+    let endFound = false;
+
+    for (let i = 0; i < currentText.length; i++) {
+      if (currentText[i] === "[") {
+        depth++;
+      } else if (currentText[i] === "]") {
+        depth--;
+        if (depth === 0) {
+          // Found the matching closing bracket
+          currentText = currentText.slice(i + 1).trim();
+          // Also remove common separators that might follow the block like "." or ":"
+          currentText = currentText.replace(/^[.:]\s*/, "");
+          endFound = true;
+          break;
+        }
+      }
+    }
+
+    // If we didn't find a closing bracket for the start, stop loop
+    if (!endFound) {
+      foundBlock = false;
+    }
+  }
+
+  return currentText;
+}
