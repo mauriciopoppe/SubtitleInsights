@@ -13,8 +13,8 @@
 - [x] Task: Conductor - User Manual Verification 'Internal Migration - Logic & State' (Protocol in workflow.md)
 
 ## Phase 3: Internal Migration - UI & Styling
-- [ ] Task: Perform a global search and replace for `.lle-` class names to `.si-` in `src/content/styles.css` and all `.tsx` components.
-- [ ] Task: Update DOM IDs (e.g., `#lle-overlay` -> `#si-overlay`) in CSS and components.
-- [ ] Task: Update user-facing UI titles (e.g., "LLE Transcript" -> "Subtitle Insights").
-- [ ] Task: Run `npm test -- run` to ensure no logic was broken by the rename.
-- [ ] Task: Conductor - User Manual Verification 'Internal Migration - UI & Styling' (Protocol in workflow.md)
+- [x] Task: Perform a global search and replace for `.lle-` class names to `.si-` in `src/content/styles.css` and all `.tsx` components.
+- [x] Task: Update DOM IDs (e.g., `#lle-overlay` -> `#si-overlay`) in CSS and components.
+- [x] Task: Update user-facing UI titles (e.g., "LLE Transcript" -> "Subtitle Insights").
+- [x] Task: Run `npm test -- run` to ensure no logic was broken by the rename.
+- [x] Task: Conductor - User Manual Verification 'Internal Migration - UI & Styling' (Protocol in workflow.md)
