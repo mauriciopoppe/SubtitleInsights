@@ -22,7 +22,7 @@ export function ExtensionToggle() {
 
   return (
     <button
-      className="ytp-button lle-toggle-btn"
+      className="ytp-button si-toggle-btn"
       aria-label={ariaLabel}
       aria-pressed={isEnabled ? "true" : "false"}
       title={title}
@@ -34,7 +34,7 @@ export function ExtensionToggle() {
         verticalAlign: 'top'
       }}
     >
-      <div className="lle-button-icon" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="si-button-icon" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {icon}
       </div>
     </button>

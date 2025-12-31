@@ -30,7 +30,7 @@ describe('Integration: Background Message -> Sidebar Render', () => {
     document.body.appendChild(video);
   });
 
-  it('should render segments in the sidebar when "LLE_SUBTITLES_CAPTURED" payload is processed', async () => {
+  it('should render segments in the sidebar when "SI_SUBTITLES_CAPTURED" payload is processed', async () => {
     // 1. Mount SidebarApp
     render(<SidebarApp />, document.getElementById('test-root')!);
 
@@ -58,16 +58,16 @@ describe('Integration: Background Message -> Sidebar Render', () => {
     await new Promise((resolve) => setTimeout(resolve, 50));
     
     // 4. Verify Sidebar DOM
-    const items = document.querySelectorAll('.lle-sidebar-item');
+    const items = document.querySelectorAll('.si-sidebar-item');
 
     expect(items.length).toBe(2);
     
     const firstItem = items[0] as HTMLElement;
     expect(firstItem.dataset.start).toBe('1000');
-    expect(firstItem.querySelector('.lle-sidebar-original')?.textContent).toBe('Hello');
+    expect(firstItem.querySelector('.si-sidebar-original')?.textContent).toBe('Hello');
 
     const secondItem = items[1] as HTMLElement;
     expect(secondItem.dataset.start).toBe('3500');
-    expect(secondItem.querySelector('.lle-sidebar-original')?.textContent).toBe('World');
+    expect(secondItem.querySelector('.si-sidebar-original')?.textContent).toBe('World');
   });
 });

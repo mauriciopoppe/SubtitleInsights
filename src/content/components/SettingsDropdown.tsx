@@ -37,7 +37,7 @@ export function SettingsDropdown({ isOpen, onClose, children, triggerRef }: Sett
   return (
     <div 
       ref={menuRef} 
-      className="lle-settings-dropdown"
+      className="si-settings-dropdown"
       onClick={(e) => e.stopPropagation()}
     >
       {children}
@@ -56,7 +56,7 @@ interface SettingsItemProps {
 }
 
 export function SettingsItem({ label, icon, onClick, status, title, isNested, style }: SettingsItemProps) {
-  const className = `lle-settings-dropdown-item ${status || ''} ${isNested ? 'nested' : ''}`;
+  const className = `si-settings-dropdown-item ${status || ''} ${isNested ? 'nested' : ''}`;
   
   return (
     <div 
@@ -65,10 +65,10 @@ export function SettingsItem({ label, icon, onClick, status, title, isNested, st
       onClick={onClick}
       style={style}
     >
-      {icon && <span className="lle-settings-item-icon">{icon}</span>}
-      <span className="lle-settings-item-label">{label}</span>
+      {icon && <span className="si-settings-item-icon">{icon}</span>}
+      <span className="si-settings-item-label">{label}</span>
       {status !== undefined && (
-        <div className={`lle-toggle-switch ${status}`}></div>
+        <div className={`si-toggle-switch ${status}`}></div>
       )}
     </div>
   );

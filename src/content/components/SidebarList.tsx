@@ -15,7 +15,7 @@ export function SidebarList({ segments, currentTimeMs }: SidebarListProps) {
   }, [segments, currentTimeMs]);
 
   return (
-    <div className="lle-sidebar-list">
+    <div className="si-sidebar-list">
       {segments.map((segment, index) => (
         <SidebarItem
           key={`${segment.start}-${index}`}

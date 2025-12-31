@@ -58,7 +58,7 @@ export function SidebarHeader({
   const getStatusIcon = () => {
     if (warning) {
       return (
-        <span className="lle-sidebar-status-icon warning" title={warning}>
+        <span className="si-sidebar-status-icon warning" title={warning}>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
           </svg>
@@ -68,7 +68,7 @@ export function SidebarHeader({
     if (aiStatus.status !== 'none') {
       return (
         <span 
-          className={`lle-sidebar-status-icon ai-${aiStatus.status}`} 
+          className={`si-sidebar-status-icon ai-${aiStatus.status}`} 
           title={aiStatus.message || aiStatus.status}
         >
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
@@ -87,15 +87,15 @@ export function SidebarHeader({
   };
 
   return (
-    <div className="lle-sidebar-header">
-      <div className="lle-sidebar-title-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <div className="lle-sidebar-title">LLE Transcript</div>
+    <div className="si-sidebar-header">
+      <div className="si-sidebar-title-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="si-sidebar-title">Subtitle Insights</div>
         {getStatusIcon()}
       </div>
-      <div className="lle-sidebar-controls">
+      <div className="si-sidebar-controls">
         {/* Jump to Active Button */}
         <span
-          className="lle-sidebar-jump-btn"
+          className="si-sidebar-jump-btn"
           title="Jump to Active Segment"
           onClick={onSync}
         >
@@ -107,7 +107,7 @@ export function SidebarHeader({
 
         {/* Upload Button */}
         <span
-          className={`lle-sidebar-upload-btn ${isUploadActive ? 'active' : ''}`}
+          className={`si-sidebar-upload-btn ${isUploadActive ? 'active' : ''}`}
           title={isUploadActive ? `Loaded: ${uploadFilename}` : "Upload Subtitles (SRT)"}
           onClick={onUpload}
         >
@@ -120,7 +120,7 @@ export function SidebarHeader({
         {/* Settings Button */}
         <span
           ref={settingsBtnRef}
-          className={`lle-sidebar-settings-btn ${isDropdownOpen ? 'active' : ''}`}
+          className={`si-sidebar-settings-btn ${isDropdownOpen ? 'active' : ''}`}
           title="Settings"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           style={{ position: 'relative' }}

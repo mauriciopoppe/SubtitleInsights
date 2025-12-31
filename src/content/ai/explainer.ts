@@ -122,7 +122,7 @@ export class GrammarExplainer {
       }
 
       this.workingSession = await this.rootSession.clone();
-      console.log("[LLE] GrammarExplainer: Session reset via clone.");
+      console.log("[SI] GrammarExplainer: Session reset via clone.");
     } catch (error) {
       console.error("Error resetting grammar explainer session:", error);
     }
@@ -148,7 +148,7 @@ export class GrammarExplainer {
     if (inputUsage / inputQuota > 0.8) {
       // Reset if usage exceeds 80%
       console.log(
-        `[LLE] GrammarExplainer: Input usage at ${inputUsage}/${inputQuota}. Resetting session.`,
+        `[SI] GrammarExplainer: Input usage at ${inputUsage}/${inputQuota}. Resetting session.`,
       );
       await this.resetSession();
       if (!this.workingSession) {

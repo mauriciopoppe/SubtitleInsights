@@ -10,7 +10,7 @@ import { SidebarApp } from "./components/SidebarApp";
 import { OverlayApp } from "./components/OverlayApp";
 import { ExtensionToggle } from "./components/ExtensionToggle";
 
-console.log("[LLE] Content script injected.");
+console.log("[SI] Content script injected.");
 
 const waitForElement = (selector: string): Promise<HTMLElement> => {
   return new Promise((resolve) => {
@@ -37,16 +37,16 @@ const waitForElement = (selector: string): Promise<HTMLElement> => {
 
 // @ts-ignore
 chrome.runtime.onMessage.addListener((message) => {
-  if (message.type === "LLE_SUBTITLES_CAPTURED") {
+  if (message.type === "SI_SUBTITLES_CAPTURED") {
     const currentVideoId = new URLSearchParams(window.location.search).get("v");
     if (message.videoId && message.videoId !== currentVideoId) {
       console.log(
-        `[LLE] Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`,
+        `[SI] Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`,
       );
       return;
     }
 
-    console.log("[LLE] Accepted message to process from background:", message);
+    console.log("[SI] Accepted message to process from background:", message);
     if (message.language) {
       store.setSourceLanguage(message.language);
     }
@@ -62,20 +62,20 @@ const init = async () => {
   if (isInitialized || isInitializing) return;
   isInitializing = true;
 
-  console.log("[LLE] Initializing extension for watch page...");
+  console.log("[SI] Initializing extension for watch page...");
 
-  console.log("[LLE] Waiting for video player...");
+  console.log("[SI] Waiting for video player...");
   const player = await waitForElement("#movie_player");
   const video = (await waitForElement("video")) as HTMLVideoElement;
   // secondary-inner might take longer or depend on layout (theater mode etc)
   const secondaryInner = await waitForElement("#secondary-inner");
-  console.log("[LLE] Video player, element and secondary column found.");
+  console.log("[SI] Video player, element and secondary column found.");
 
   // Injection: Right Controls Toggle
   const rightControls = await waitForElement(".ytp-right-controls");
   const subtitlesBtn = await waitForElement(".ytp-subtitles-button");
   const toggleContainer = document.createElement("div");
-  toggleContainer.id = "lle-toggle-root";
+  toggleContainer.id = "si-toggle-root";
   toggleContainer.style.display = "contents"; // No layout impact
 
   if (subtitlesBtn && subtitlesBtn.parentNode) {
@@ -86,16 +86,16 @@ const init = async () => {
   render(<ExtensionToggle />, toggleContainer);
 
   const sidebarContainer = document.createElement("div");
-  sidebarContainer.id = "lle-sidebar-root";
+  sidebarContainer.id = "si-sidebar-root";
   secondaryInner.prepend(sidebarContainer);
   render(<SidebarApp />, sidebarContainer);
 
   const overlayContainer = document.createElement("div");
-  overlayContainer.id = "lle-overlay-root";
+  overlayContainer.id = "si-overlay-root";
   player.appendChild(overlayContainer);
   render(<OverlayApp />, overlayContainer);
 
-  console.log("[LLE] Overlay and Preact Sidebar injected.");
+  console.log("[SI] Overlay and Preact Sidebar injected.");
 
   // AI Translation & Grammar Setup
   translationManager.initializeAIServices();
@@ -122,7 +122,7 @@ const init = async () => {
     const newVideoId = new URLSearchParams(window.location.search).get("v");
     if (newVideoId !== currentVideoId) {
       console.log(
-        `[LLE] Video ID changed (${currentVideoId} -> ${newVideoId}). Clearing store.`,
+        `[SI] Video ID changed (${currentVideoId} -> ${newVideoId}). Clearing store.`,
       );
       currentVideoId = newVideoId;
       store.clear();

@@ -1,13 +1,13 @@
 export class Config {
-    private static MASTER_STORAGE_KEY = "lle_is_enabled";
-    private static OVERLAY_STORAGE_KEY = "lle_is_overlay_enabled";
-    private static GRAMMAR_EXPLAINER_STORAGE_KEY = "lle_is_grammar_explainer_enabled";
-    private static PAUSE_ON_HOVER_STORAGE_KEY = "lle_is_pause_on_hover_enabled";
-    private static INSIGHTS_IN_OVERLAY_KEY = "lle_is_insights_in_overlay";
-    private static INSIGHTS_IN_SIDEBAR_KEY = "lle_is_insights_in_sidebar";
-    private static TRANSLATION_IN_OVERLAY_KEY = "lle_is_translation_in_overlay";
-    private static TRANSLATION_IN_SIDEBAR_KEY = "lle_is_translation_in_sidebar";
-    private static ORIGINAL_IN_OVERLAY_KEY = "lle_is_original_in_overlay";
+    private static MASTER_STORAGE_KEY = "si_is_enabled";
+    private static OVERLAY_STORAGE_KEY = "si_is_overlay_enabled";
+    private static GRAMMAR_EXPLAINER_STORAGE_KEY = "si_is_grammar_explainer_enabled";
+    private static PAUSE_ON_HOVER_STORAGE_KEY = "si_is_pause_on_hover_enabled";
+    private static INSIGHTS_IN_OVERLAY_KEY = "si_is_insights_in_overlay";
+    private static INSIGHTS_IN_SIDEBAR_KEY = "si_is_insights_in_sidebar";
+    private static TRANSLATION_IN_OVERLAY_KEY = "si_is_translation_in_overlay";
+    private static TRANSLATION_IN_SIDEBAR_KEY = "si_is_translation_in_sidebar";
+    private static ORIGINAL_IN_OVERLAY_KEY = "si_is_original_in_overlay";
   
     static async getIsEnabled(): Promise<boolean> {
       return new Promise((resolve) => {

@@ -15,13 +15,13 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
 
   return (
     <div
-      className={`lle-sidebar-item ${isActive ? 'active' : ''}`}
+      className={`si-sidebar-item ${isActive ? 'active' : ''}`}
       data-index={index}
       data-start={segment.start}
       data-end={segment.end}
     >
       {/* Original text with Furigana */}
-      <div className="lle-sidebar-original">
+      <div className="si-sidebar-original">
         {segment.segmentedData ? (
           <span dangerouslySetInnerHTML={{ __html: renderSegmentedText(segment.segmentedData) }} />
         ) : (
@@ -31,7 +31,7 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
 
       {/* Natural Translation */}
       {config.isTranslationVisibleInSidebar && (
-        <div className="lle-sidebar-translation">
+        <div className="si-sidebar-translation">
           {segment.translation || ''}
         </div>
       )}
@@ -39,7 +39,7 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
       {/* Insights */}
       {segment.insights && config.isInsightsVisibleInSidebar && (
         <div
-          className="lle-sidebar-insights"
+          className="si-sidebar-insights"
           dangerouslySetInnerHTML={{ __html: snarkdown(trimThinkingProcess(segment.insights)) }}
         />
       )}

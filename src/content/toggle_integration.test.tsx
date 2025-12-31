@@ -38,7 +38,7 @@ describe('Integration: ExtensionToggle', () => {
       await Promise.resolve(); 
     });
 
-    const button = document.querySelector('.lle-toggle-btn') as HTMLButtonElement;
+    const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement;
     expect(button).not.toBeNull();
     expect(button.getAttribute('aria-pressed')).toBe('true');
     expect(button.style.opacity).toBe('1');
@@ -54,7 +54,7 @@ describe('Integration: ExtensionToggle', () => {
     // Wait for load
     await act(async () => { await Promise.resolve(); });
 
-    const button = document.querySelector('.lle-toggle-btn') as HTMLButtonElement;
+    const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement;
     
     await act(async () => {
       button.click();
@@ -79,7 +79,7 @@ describe('Integration: ExtensionToggle', () => {
 
     await act(async () => { await Promise.resolve(); });
 
-    const button = document.querySelector('.lle-toggle-btn') as HTMLButtonElement;
+    const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement;
     expect(button.getAttribute('aria-pressed')).toBe('true');
 
     // Simulate external change to disabled

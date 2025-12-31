@@ -18,12 +18,12 @@ export class AIManager {
   public async initializeAIServices() {
     // Translator Setup
     const translationAvailability = await translatorService.checkAvailability();
-    console.log("[LLE] AI Translation availability:", translationAvailability);
+    console.log("[SI] AI Translation availability:", translationAvailability);
 
     if (translationAvailability === "available") {
       store.setAIStatus("ready", "AI Translator Ready");
       await translatorService.initialize();
-      console.log("[LLE] AI Translator initialized.");
+      console.log("[SI] AI Translator initialized.");
     } else if (translationAvailability === "downloadable") {
       this.initiateDownloadFlow();
     }
@@ -31,18 +31,18 @@ export class AIManager {
     // Grammar Explainer Setup
     const grammarAvailability = await grammarExplainer.checkAvailability();
     console.log(
-      "[LLE] AI Grammar Explainer availability:",
+      "[SI] AI Grammar Explainer availability:",
       grammarAvailability,
     );
     if (grammarAvailability === "available") {
       await grammarExplainer.initialize();
-      console.log("[LLE] AI Grammar Explainer initialized.");
+      console.log("[SI] AI Grammar Explainer initialized.");
     }
   }
 
   private initiateDownloadFlow() {
     store.setAIStatus("none");
-    console.log("[LLE] AI models need download.");
+    console.log("[SI] AI models need download.");
 
     const initDownload = async () => {
       store.setAIStatus("downloading", "Downloading AI models...");
@@ -51,13 +51,13 @@ export class AIManager {
         const percent = Math.round((loaded / total) * 100);
         store.setAIStatus("downloading", `Downloading AI models: ${percent}%`);
         store.setSystemMessage(`Downloading AI models: ${percent}%`);
-        console.log(`[LLE] AI Download progress: ${percent}%`);
+        console.log(`[SI] AI Download progress: ${percent}%`);
       });
 
       if (success) {
         store.setAIStatus("ready", "AI Translator Ready");
         store.setSystemMessage(null);
-        console.log("[LLE] AI Translator initialized after download.");
+        console.log("[SI] AI Translator initialized after download.");
       } else {
         store.setAIStatus("error", "AI Initialization Failed");
         store.setSystemMessage("AI Translation Failed to initialize");
@@ -66,11 +66,11 @@ export class AIManager {
 
     if (navigator.userActivation?.isActive) {
       console.log(
-        "[LLE] User activation active. Starting download immediately.",
+        "[SI] User activation active. Starting download immediately.",
       );
       initDownload();
     } else {
-      console.log("[LLE] Waiting for user interaction to start download...");
+      console.log("[SI] Waiting for user interaction to start download...");
       const onUserInteraction = (e: Event) => {
         if (e.type === "keydown" && (e as KeyboardEvent).key === "Escape")
           return;
@@ -82,7 +82,7 @@ export class AIManager {
         document.removeEventListener("keydown", onUserInteraction);
 
         console.log(
-          `[LLE] User interaction detected (${e.type}). Starting download...`,
+          `[SI] User interaction detected (${e.type}). Starting download...`,
         );
         initDownload();
       };
@@ -117,7 +117,7 @@ export class AIManager {
       Math.abs(targetIndex - this.lastTriggerIndex) > 5
     ) {
       console.log(
-        `[LLE] Significant jump detected (${this.lastTriggerIndex} -> ${targetIndex}). Clearing queues.`,
+        `[SI] Significant jump detected (${this.lastTriggerIndex} -> ${targetIndex}). Clearing queues.`,
       );
       this.pendingTranslationIndices.clear();
       this.pendingInsightsIndices.clear();
@@ -233,7 +233,7 @@ export class AIManager {
           );
           store.updateSegmentTranslation(index, translation);
         } catch (e) {
-          console.error(`[LLE] Translation failed for ${index}:`, e);
+          console.error(`[SI] Translation failed for ${index}:`, e);
         }
       }
 
@@ -245,12 +245,12 @@ export class AIManager {
           );
           store.updateSegmentInsights(index, analysis);
         } catch (e) {
-          console.error(`[LLE] Insights explanation failed for ${index}:`, e);
+          console.error(`[SI] Insights explanation failed for ${index}:`, e);
         }
       }
     } catch (error) {
       console.error(
-        `[LLE][AIManager] Execution error for segment ${index}`,
+        `[SI][AIManager] Execution error for segment ${index}`,
         error,
       );
     } finally {

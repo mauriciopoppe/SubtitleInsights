@@ -29,7 +29,7 @@ export function usePauseOnHover(
 
       const video = document.querySelector("video");
       if (video && wasPausedByHover && video.paused) {
-        console.log("[LLE] Resuming video: Mouse left overlay.");
+        console.log("[SI] Resuming video: Mouse left overlay.");
         video.play();
       }
       setWasPausedByHover(false);
@@ -62,7 +62,7 @@ export function usePauseOnHover(
         // Pause if we are within 300ms (0.3s) of the end of the segment
         if (remainingTimeMs > 0 && remainingTimeMs <= 300) {
           if (!video.paused) {
-            console.log("[LLE] Pausing video due to hover near segment end.");
+            console.log("[SI] Pausing video due to hover near segment end.");
             video.pause();
             setWasPausedByHover(true);
           }

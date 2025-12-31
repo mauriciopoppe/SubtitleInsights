@@ -34,8 +34,8 @@ Output: The particle を indicates that お茶 is the direct object of the verb 
 };
 
 export class ProfileManager {
-  private static STORAGE_KEY = 'lle_profiles';
-  private static ACTIVE_PROFILE_KEY = 'lle_active_profile_id';
+  private static STORAGE_KEY = 'si_profiles';
+  private static ACTIVE_PROFILE_KEY = 'si_active_profile_id';
 
   static async getProfiles(): Promise<Profile[]> {
     const result = await chrome.storage.local.get(this.STORAGE_KEY);

@@ -6,11 +6,11 @@
 - [x] Task: Conductor - User Manual Verification 'Rebranding & Metadata' (Protocol in workflow.md)
 
 ## Phase 2: Internal Migration - Logic & State
-- [ ] Task: Replace all `lle` prefixes with `si` in storage keys within `src/content/config.ts` and `src/content/profiles.ts`.
-- [ ] Task: Update all console log prefixes from `[LLE]` to `[SI]` across the codebase.
-- [ ] Task: Rename message types (e.g., `LLE_SUBTITLES_CAPTURED` -> `SI_SUBTITLES_CAPTURED`) in background and content scripts.
-- [ ] Task: Update internal constant/variable names that explicitly use `lle`.
-- [ ] Task: Conductor - User Manual Verification 'Internal Migration - Logic & State' (Protocol in workflow.md)
+- [x] Task: Replace all `lle` prefixes with `si` in storage keys within `src/content/config.ts` and `src/content/profiles.ts`.
+- [x] Task: Update all console log prefixes from `[LLE]` to `[SI]` across the codebase.
+- [x] Task: Rename message types (e.g., `LLE_SUBTITLES_CAPTURED` -> `SI_SUBTITLES_CAPTURED`) in background and content scripts.
+- [x] Task: Update internal constant/variable names that explicitly use `lle`.
+- [x] Task: Conductor - User Manual Verification 'Internal Migration - Logic & State' (Protocol in workflow.md)
 
 ## Phase 3: Internal Migration - UI & Styling
 - [ ] Task: Perform a global search and replace for `.lle-` class names to `.si-` in `src/content/styles.css` and all `.tsx` components.

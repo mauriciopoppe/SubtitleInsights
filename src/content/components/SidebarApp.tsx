@@ -42,7 +42,7 @@ export function SidebarApp() {
       if (targetIndex !== -1) {
         // We need to wait a tick for the items to actually be in the DOM
         setTimeout(() => {
-          const item = document.querySelector(`.lle-sidebar-item[data-index="${targetIndex}"]`);
+          const item = document.querySelector(`.si-sidebar-item[data-index="${targetIndex}"]`);
           if (item && typeof item.scrollIntoView === 'function') {
             item.scrollIntoView({ behavior: 'auto', block: 'center' });
             hasInitiallyScrolled.current = true;
@@ -66,7 +66,7 @@ export function SidebarApp() {
   }, []);
 
   const handleSync = () => {
-    const activeItem = document.querySelector('.lle-sidebar-item.active');
+    const activeItem = document.querySelector('.si-sidebar-item.active');
     if (activeItem) {
       activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -87,7 +87,7 @@ export function SidebarApp() {
         const { segments: newSegments, errors } = store.parseSRTData(content);
 
         if (errors.length > 0) {
-          console.group("[LLE] Import Errors");
+          console.group("[SI] Import Errors");
           errors.forEach((err) => console.error(err));
           console.groupEnd();
           store.setWarning("Import errors occurred. Check console for details.");
@@ -98,12 +98,12 @@ export function SidebarApp() {
         if (newSegments && newSegments.length > 0) {
           store.loadCustomSegments(newSegments);
           store.setUploadStatus(true, file.name);
-          console.log(`[LLE] Successfully loaded ${newSegments.length} segments from ${file.name}`);
+          console.log(`[SI] Successfully loaded ${newSegments.length} segments from ${file.name}`);
         } else {
           alert("No valid segments found in the SRT file.");
         }
       } catch (err) {
-        console.error("[LLE] Failed to parse SRT file", err);
+        console.error("[SI] Failed to parse SRT file", err);
         alert("Failed to parse SRT file.");
       }
     };
@@ -181,7 +181,7 @@ export function SidebarApp() {
   if (!config.isEnabled) return null;
 
   return (
-    <div id="lle-sidebar" style={{ display: 'flex' }}>
+    <div id="si-sidebar" style={{ display: 'flex' }}>
       <input
         type="file"
         accept=".srt"

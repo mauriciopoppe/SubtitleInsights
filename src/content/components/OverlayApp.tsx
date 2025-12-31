@@ -46,12 +46,12 @@ export function OverlayApp() {
 
   return (
     <div 
-      id="lle-overlay" 
+      id="si-overlay" 
       ref={overlayRef}
       style={{ display: 'flex' }}
     >
       {systemMessage && (
-        <div className="lle-system-message" style={{ display: 'block' }}>
+        <div className="si-system-message" style={{ display: 'block' }}>
           {systemMessage}
         </div>
       )}
@@ -59,7 +59,7 @@ export function OverlayApp() {
       {activeSegment && !systemMessage && (
         <Fragment>
           {config.isOriginalVisibleInOverlay && (
-            <div className="lle-original">
+            <div className="si-original">
               {activeSegment.segmentedData ? (
                 <span dangerouslySetInnerHTML={{ __html: renderSegmentedText(activeSegment.segmentedData) }} />
               ) : (
@@ -69,14 +69,14 @@ export function OverlayApp() {
           )}
 
           {config.isTranslationVisibleInOverlay && (
-            <div className="lle-translation">
+            <div className="si-translation">
               {activeSegment.translation || ''}
             </div>
           )}
 
           {activeSegment.insights && config.isInsightsVisibleInOverlay && (
             <div
-              className="lle-insights"
+              className="si-insights"
               dangerouslySetInnerHTML={{ __html: snarkdown(trimThinkingProcess(activeSegment.insights)) }}
             />
           )}

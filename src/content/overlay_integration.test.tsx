@@ -58,7 +58,7 @@ describe("Integration: Overlay Rendering", () => {
     });
 
     // 4. Verify Overlay
-    const original = document.querySelector(".lle-original");
+    const original = document.querySelector(".si-original");
     expect(original).not.toBeNull();
     expect(original?.textContent).toBe("First Segment");
 
@@ -71,7 +71,7 @@ describe("Integration: Overlay Rendering", () => {
       videoEl.dispatchEvent(new Event("timeupdate"));
     });
 
-    expect(document.querySelector(".lle-original")?.textContent).toBe(
+    expect(document.querySelector(".si-original")?.textContent).toBe(
       "Second Segment",
     );
 
@@ -84,7 +84,7 @@ describe("Integration: Overlay Rendering", () => {
       videoEl.dispatchEvent(new Event("timeupdate"));
     });
 
-    expect(document.querySelector("#lle-overlay")).toBeNull();
+    expect(document.querySelector("#si-overlay")).toBeNull();
   });
 
   it("should display system messages when set", async () => {
@@ -97,7 +97,7 @@ describe("Integration: Overlay Rendering", () => {
       store.setSystemMessage("Loading AI...");
     });
 
-    const systemMsg = document.querySelector(".lle-system-message");
+    const systemMsg = document.querySelector(".si-system-message");
     expect(systemMsg).not.toBeNull();
     expect(systemMsg?.textContent).toBe("Loading AI...");
 
@@ -105,6 +105,6 @@ describe("Integration: Overlay Rendering", () => {
     await act(async () => {
       store.setSystemMessage(null);
     });
-    expect(document.querySelector(".lle-system-message")).toBeNull();
+    expect(document.querySelector(".si-system-message")).toBeNull();
   });
 });

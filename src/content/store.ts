@@ -96,7 +96,7 @@ export class SubtitleStore {
     if (this.segments.length === 0) {
       this.segments = newSegments.sort((a, b) => a.start - b.start);
       console.log(
-        `[LLE][SubtitleStore] Added ${newSegments.length} segments. Total: ${this.segments.length}`,
+        `[SI][SubtitleStore] Added ${newSegments.length} segments. Total: ${this.segments.length}`,
       );
       this.notifyListeners();
       return;
@@ -108,7 +108,7 @@ export class SubtitleStore {
        const firstNew = newSegments[0];
        // Check if first segment matches, a strong heuristic for identical full track
        if (firstOld.start === firstNew.start && firstOld.text === firstNew.text) {
-          console.log('[LLE][SubtitleStore] Duplicate subtitle track detected. Ignoring.');
+          console.log('[SI][SubtitleStore] Duplicate subtitle track detected. Ignoring.');
           return;
        }
     }
@@ -129,7 +129,7 @@ export class SubtitleStore {
     });
 
     if (addedCount === 0) {
-      console.log('[LLE][SubtitleStore] No new unique segments found.');
+      console.log('[SI][SubtitleStore] No new unique segments found.');
       return;
     }
 
@@ -137,7 +137,7 @@ export class SubtitleStore {
       (a, b) => a.start - b.start,
     );
     console.log(
-      `[LLE][SubtitleStore] Added ${addedCount} segments. Total: ${this.segments.length}`,
+      `[SI][SubtitleStore] Added ${addedCount} segments. Total: ${this.segments.length}`,
     );
     this.notifyListeners();
   }
@@ -145,7 +145,7 @@ export class SubtitleStore {
   loadCustomSegments(data: any[]) {
     this.clear();
     console.log(
-      "[LLE] SubtitleStore: Loading custom segments, count:",
+      "[SI] SubtitleStore: Loading custom segments, count:",
       data.length,
     );
     this.segments = data
@@ -168,7 +168,7 @@ export class SubtitleStore {
       })
       .sort((a, b) => a.start - b.start);
     console.log(
-      `[LLE][SubtitleStore] Loaded ${this.segments.length} custom segments.`,
+      `[SI][SubtitleStore] Loaded ${this.segments.length} custom segments.`,
     );
     this.notifyListeners();
   }
