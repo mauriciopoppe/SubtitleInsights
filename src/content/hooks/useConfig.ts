@@ -6,7 +6,6 @@ export function useConfig() {
     isEnabled: true,
     isOverlayEnabled: true,
     isGrammarEnabled: true,
-    targetJLPTLevel: 'N5',
     isLoading: true
   });
 
@@ -14,11 +13,10 @@ export function useConfig() {
     let isMounted = true;
 
     async function loadConfig() {
-      const [isEnabled, isOverlayEnabled, isGrammarEnabled, targetJLPTLevel] = await Promise.all([
+      const [isEnabled, isOverlayEnabled, isGrammarEnabled] = await Promise.all([
         Config.getIsEnabled(),
         Config.getIsOverlayEnabled(),
-        Config.getIsGrammarExplainerEnabled(),
-        Config.getTargetJLPTLevel()
+        Config.getIsGrammarExplainerEnabled()
       ]);
 
       if (isMounted) {
@@ -26,7 +24,6 @@ export function useConfig() {
           isEnabled,
           isOverlayEnabled,
           isGrammarEnabled,
-          targetJLPTLevel,
           isLoading: false
         });
       }
@@ -43,14 +40,10 @@ export function useConfig() {
     const handleGrammarChange = (val: boolean) => {
       setConfig(prev => ({ ...prev, isGrammarEnabled: val }));
     };
-    const handleJLPTChange = (val: string) => {
-      setConfig(prev => ({ ...prev, targetJLPTLevel: val }));
-    };
 
     Config.addChangeListener(handleEnabledChange);
     Config.addOverlayChangeListener(handleOverlayChange);
     Config.addGrammarExplainerChangeListener(handleGrammarChange);
-    Config.addJLPTLevelChangeListener(handleJLPTChange);
 
     return () => {
       isMounted = false;

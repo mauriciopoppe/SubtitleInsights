@@ -10,12 +10,10 @@ vi.mock('./config', () => ({
     getIsEnabled: vi.fn().mockResolvedValue(true),
     getIsOverlayEnabled: vi.fn().mockResolvedValue(true),
     getIsGrammarExplainerEnabled: vi.fn().mockResolvedValue(true),
-    getTargetJLPTLevel: vi.fn().mockResolvedValue('N5'),
     setIsEnabled: vi.fn().mockResolvedValue(undefined),
     addChangeListener: vi.fn(),
     addOverlayChangeListener: vi.fn(),
     addGrammarExplainerChangeListener: vi.fn(),
-    addJLPTLevelChangeListener: vi.fn(),
   },
 }));
 

@@ -2,7 +2,6 @@ export class Config {
     private static MASTER_STORAGE_KEY = "lle_is_enabled";
     private static OVERLAY_STORAGE_KEY = "lle_is_overlay_enabled";
     private static GRAMMAR_EXPLAINER_STORAGE_KEY = "lle_is_grammar_explainer_enabled";
-    private static TARGET_JLPT_LEVEL_STORAGE_KEY = "lle_target_jlpt_level";
   
     static async getIsEnabled(): Promise<boolean> {
       return new Promise((resolve) => {
@@ -55,23 +54,6 @@ export class Config {
       });
     }
   
-    static async getTargetJLPTLevel(): Promise<string> {
-      return new Promise((resolve) => {
-        chrome.storage.local.get([this.TARGET_JLPT_LEVEL_STORAGE_KEY], (result) => {
-          // Default to 'N5' if not set
-          resolve((result[this.TARGET_JLPT_LEVEL_STORAGE_KEY] as string) ?? 'N5');
-        });
-      });
-    }
-  
-    static async setTargetJLPTLevel(value: string): Promise<void> {
-      return new Promise((resolve) => {
-        chrome.storage.local.set({ [this.TARGET_JLPT_LEVEL_STORAGE_KEY]: value }, () => {
-          resolve();
-        });
-      });
-    }
-  
     static addChangeListener(callback: (isEnabled: boolean) => void) {
       chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === "local" && changes[this.MASTER_STORAGE_KEY]) {
@@ -92,14 +74,6 @@ export class Config {
       chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === "local" && changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY]) {
           callback(changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY].newValue as boolean);
-        }
-      });
-    }
-  
-    static addJLPTLevelChangeListener(callback: (level: string) => void) {
-      chrome.storage.onChanged.addListener((changes, areaName) => {
-        if (areaName === "local" && changes[this.TARGET_JLPT_LEVEL_STORAGE_KEY]) {
-          callback(changes[this.TARGET_JLPT_LEVEL_STORAGE_KEY].newValue as string);
         }
       });
     }
