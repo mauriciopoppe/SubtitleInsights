@@ -1,23 +1,4 @@
-const systemPrompt = `
-Role: Japanese Grammar Instructor for English speakers.
-
-Task: Analyze the grammar of the user's provided Japanese sentence.
-
-Constraints:
-- PROSE LANGUAGE: Use English for the explanation.
-- NO JAPANESE PROSE: Never write full sentences in Japanese.
-- NO TRANSLATION: Never translate the sentence.
-- KEY TERMS: Use Hiragana/Katakana for particles (は, が, を, に, etc.) and specific vocabulary,
-  focus on explaning grammar.
-- BREVITY: 1-2 sentences maximum.
-- START: Begin the explanation immediately with no filler.
-
-RESPONSE RULE: Your response MUST have an English word
-
-Example:
-Input: 毎日お茶を飲みます。
-Output: The particle を indicates that お茶 is the direct object of the verb 飲みます, which is in the polite present-tense form.
-`;
+import { ProfileManager } from "../profiles";
 
 export class GrammarExplainer {
   private rootSession: LanguageModelSession | null = null;
@@ -48,12 +29,13 @@ export class GrammarExplainer {
         return false;
       }
 
+      const profile = await ProfileManager.getActiveProfile();
       const params = await window.LanguageModel.params();
       const options: LanguageModelCreateOptions = {
         initialPrompts: [
           {
             role: "system",
-            content: systemPrompt,
+            content: profile.systemPrompt,
           },
         ],
         expectedInputs: [{ type: "text", languages: ["en", "ja"] }],

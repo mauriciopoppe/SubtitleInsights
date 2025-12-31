@@ -23,6 +23,7 @@ A Chrome extension designed for language learners who use YouTube as their prima
 - **SRT Subtitle Upload:** Allows users to upload standard .srt subtitle files to replace or augment the video tracks.
 - **Sidebar Transcript:** Provides a vertical list of all educational segments in the YouTube sidebar, highlighting the active segment in sync with the video.
 - **Granular Visibility Controls:** A sub-toggle in the sidebar allows users to hide/show the on-video overlay independently of the sidebar content.
+- **Pause on Hover:** An optional setting that automatically pauses the video when the user hovers over the educational overlay to allow more reading time, resuming when the mouse leaves.
 - **In-Page Overlay:** Injects directly into the YouTube player for a seamless, "Language Reactor"-style experience.
 
 ## User Experience

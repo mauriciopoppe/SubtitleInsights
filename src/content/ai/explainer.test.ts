@@ -1,6 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GrammarExplainer } from './explainer';
 
+vi.mock('../profiles', () => ({
+  ProfileManager: {
+    getActiveProfile: vi.fn().mockResolvedValue({
+      systemPrompt: 'Mock Prompt'
+    })
+  }
+}));
+
 describe('GrammarExplainer', () => {
   let explainer: GrammarExplainer;
   let mockRootSession: any;
