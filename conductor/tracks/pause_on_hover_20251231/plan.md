@@ -22,9 +22,9 @@
     - [x] Call `video.pause()` when conditions are met.
 - [x] Task: Implement resume condition check.
     - [ ] Call `video.play()` when mouse leaves overlay or if video is manually played by user.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Pause/Resume Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Core Pause/Resume Logic' (Protocol in workflow.md)
 
-## Phase 3: Integration & Testing
+## Phase 3: Integration & Testing [checkpoint: f318a10]
 - [x] Task: Integration test for full functionality.
     - [ ] Manually test toggling the feature on/off.
     - [ ] Verify precise pausing 0.3s before segment end.
