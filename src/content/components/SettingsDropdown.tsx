@@ -17,7 +17,6 @@ export function SettingsDropdown({ isOpen, onClose, children, triggerRef }: Sett
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
       
-      // If we clicked the trigger button, let its own click handler handle it
       if (triggerRef?.current && triggerRef.current.contains(target)) {
         return;
       }
@@ -27,7 +26,6 @@ export function SettingsDropdown({ isOpen, onClose, children, triggerRef }: Sett
       }
     };
 
-    // Use mousedown to be more responsive and avoid issues with text selection
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -40,9 +38,38 @@ export function SettingsDropdown({ isOpen, onClose, children, triggerRef }: Sett
     <div 
       ref={menuRef} 
       className="lle-settings-dropdown"
-      onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+      onClick={(e) => e.stopPropagation()}
     >
       {children}
+    </div>
+  );
+}
+
+interface SettingsItemProps {
+  label: string;
+  icon?: ComponentChildren;
+  onClick?: () => void;
+  status?: 'enabled' | 'disabled' | 'indeterminate';
+  title?: string;
+  isNested?: boolean;
+  style?: any;
+}
+
+export function SettingsItem({ label, icon, onClick, status, title, isNested, style }: SettingsItemProps) {
+  const className = `lle-settings-dropdown-item ${status || ''} ${isNested ? 'nested' : ''}`;
+  
+  return (
+    <div 
+      className={className}
+      title={title}
+      onClick={onClick}
+      style={style}
+    >
+      {icon && <span className="lle-settings-item-icon">{icon}</span>}
+      <span className="lle-settings-item-label">{label}</span>
+      {status !== undefined && (
+        <div className={`lle-toggle-switch ${status}`}></div>
+      )}
     </div>
   );
 }

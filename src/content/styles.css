@@ -224,12 +224,25 @@
   font-weight: 400;
 }
 
+.lle-settings-dropdown-item.nested {
+  padding-left: 36px;
+  font-size: 12px;
+  color: var(--yt-spec-text-secondary, #aaa);
+}
+
 .lle-settings-dropdown-item:hover {
   background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
 }
 
-.lle-settings-dropdown-item svg {
+.lle-settings-dropdown-item svg,
+.lle-settings-item-icon {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.lle-settings-item-label {
+  flex: 1;
 }
 
 /* YouTube-style Toggle Switch */
@@ -264,6 +277,20 @@
 .lle-settings-dropdown-item.enabled .lle-toggle-switch::after {
   transform: translateX(18px);
   background-color: #3ea6ff; /* Solid blue thumb */
+}
+
+.lle-settings-dropdown-item.indeterminate .lle-toggle-switch {
+  background-color: rgba(62, 166, 255, 0.3);
+}
+
+.lle-settings-dropdown-item.indeterminate .lle-toggle-switch::after {
+  transform: translateX(9px);
+  background-color: #3ea6ff;
+  border-radius: 4px;
+  width: 14px;
+  height: 4px;
+  top: 5px;
+  left: 1px;
 }
 
 .lle-sidebar-upload-btn,
