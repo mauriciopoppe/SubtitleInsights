@@ -4,17 +4,14 @@ import { isComplexSentence } from "./utils";
 import { Config } from "../config";
 import { store } from "../store";
 
-interface ProcessingTask {
-  index: number;
-  translate: boolean;
-  insights: boolean;
-}
-
 export class AIManager {
-  private isProcessing = false;
-  private pendingIndices = new Set<number>();
+  private isTranslationProcessing = false;
+  private isInsightsProcessing = false;
+  private pendingTranslationIndices = new Set<number>();
+  private pendingInsightsIndices = new Set<number>();
   private translateBuffer = 10;
-  private insightsBuffer = 2;
+  private insightsBuffer = 5;
+  private lastTriggerIndex = -1;
 
   constructor() {}
 
@@ -39,73 +36,100 @@ export class AIManager {
       if (targetIndex === -1) targetIndex = 0; // Fallback to start
     }
 
-    // console.log(`[LLE] Time: ${Math.round(currentTimeMs)}, Current: ${currentIndex}, Target: ${targetIndex}, Processing: ${this.isProcessing}`);
+    // Detect significant jumps to clear queues
+    if (this.lastTriggerIndex !== -1 && Math.abs(targetIndex - this.lastTriggerIndex) > 5) {
+      console.log(`[LLE] Significant jump detected (${this.lastTriggerIndex} -> ${targetIndex}). Clearing queues.`);
+      this.pendingTranslationIndices.clear();
+      this.pendingInsightsIndices.clear();
+      // We don't reset processing flags here, they'll resolve naturally or stay locked if active
+    }
+    this.lastTriggerIndex = targetIndex;
 
     await this.triggerPrefetch(targetIndex);
   }
 
   private async triggerPrefetch(startIndex: number) {
-    if (this.isProcessing) return;
+    if (this.isTranslationProcessing && this.isInsightsProcessing) return;
 
     const allSegments = store.getAllSegments();
-    const toProcess: ProcessingTask[] = [];
+    const translationTasks: number[] = [];
+    const insightsTasks: number[] = [];
 
     const isInsightsEnabled = await Config.getIsGrammarExplainerEnabled();
 
-    // Single loop up to the maximum buffer (translateBuffer)
+    // Determine what needs processing in the current window
     for (
       let i = startIndex;
       i < Math.min(startIndex + this.translateBuffer, allSegments.length);
       i++
     ) {
       const seg = allSegments[i];
-      const needsTranslation = translatorService.isReady() && !seg.translation;
+      
+      const needsTranslation = 
+        !this.pendingTranslationIndices.has(i) && 
+        translatorService.isReady() && 
+        !seg.translation;
 
       const inInsightsRange = i < startIndex + this.insightsBuffer;
       const needsInsights =
+        !this.pendingInsightsIndices.has(i) &&
         isInsightsEnabled &&
         grammarExplainer.isReady() &&
         !seg.contextual_analysis &&
         isComplexSentence(seg.text) &&
         inInsightsRange;
 
-      if ((needsTranslation || needsInsights) && !this.pendingIndices.has(i)) {
-        toProcess.push({
-          index: i,
-          translate: !!needsTranslation,
-          insights: !!needsInsights,
-        });
-      }
+      if (needsTranslation) translationTasks.push(i);
+      if (needsInsights) insightsTasks.push(i);
     }
 
-    if (toProcess.length > 0) {
-      await this.processQueue(toProcess);
+    if (translationTasks.length > 0 && !this.isTranslationProcessing) {
+      this.processTranslations(translationTasks);
+    }
+
+    if (insightsTasks.length > 0 && !this.isInsightsProcessing) {
+      // Mark as pending immediately to indicate they are scheduled.
+      // If a jump occurs, these will be cleared, and processInsights will skip them.
+      insightsTasks.forEach(i => this.pendingInsightsIndices.add(i));
+      this.processInsights(insightsTasks);
     }
   }
 
-  private async processQueue(tasks: ProcessingTask[]) {
-    this.isProcessing = true;
-
+  private async processTranslations(indices: number[]) {
+    this.isTranslationProcessing = true;
     try {
-      // Process all indices in parallel
-      await Promise.all(tasks.map((task) => this.processSegment(task)));
+      await Promise.all(indices.map(idx => this.executeTask(idx, true, false)));
     } finally {
-      this.isProcessing = false;
+      this.isTranslationProcessing = false;
     }
   }
 
-  private async processSegment(task: ProcessingTask) {
-    const { index, translate, insights } = task;
+  private async processInsights(indices: number[]) {
+    this.isInsightsProcessing = true;
+    try {
+      // Process serially
+      for (const idx of indices) {
+        // Only process if still marked as pending.
+        // If a jump occurred, pendingInsightsIndices would have been cleared,
+        // so we should skip the remaining tasks from the old queue.
+        if (this.pendingInsightsIndices.has(idx)) {
+           await this.executeTask(idx, false, true);
+        }
+      }
+    } finally {
+      this.isInsightsProcessing = false;
+    }
+  }
+
+  private async executeTask(index: number, translate: boolean, insights: boolean) {
     const allSegments = store.getAllSegments();
     const segment = allSegments[index];
     if (!segment) return;
 
-    this.pendingIndices.add(index);
-    // console.log(`[LLE] Processing segment ${index}...`);
+    if (translate) this.pendingTranslationIndices.add(index);
+    if (insights) this.pendingInsightsIndices.add(index);
 
     try {
-      const tasks: Promise<any>[] = [];
-
       const withTimeout = (promise: Promise<any>, ms: number) => {
         return Promise.race([
           promise,
@@ -116,48 +140,33 @@ export class AIManager {
       };
 
       if (translate) {
-        tasks.push(
-          (async () => {
-            try {
-              const translation = await withTimeout(
-                translatorService.translate(segment.text),
-                10000,
-              );
-              store.updateSegmentTranslation(index, translation);
-            } catch (e) {
-              console.error(`[LLE] Translation failed for ${index}:`, e);
-            }
-          })(),
-        );
+        try {
+          const translation = await withTimeout(
+            translatorService.translate(segment.text),
+            10000,
+          );
+          store.updateSegmentTranslation(index, translation);
+        } catch (e) {
+          console.error(`[LLE] Translation failed for ${index}:`, e);
+        }
       }
 
       if (insights) {
-        tasks.push(
-          (async () => {
-            try {
-              const analysis = await withTimeout(
-                grammarExplainer.explainGrammar(segment.text),
-                10000,
-              );
-              store.updateSegmentAnalysis(index, analysis);
-            } catch (e) {
-              console.error(
-                `[LLE] Insights explanation failed for ${index}:`,
-                e,
-              );
-            }
-          })(),
-        );
+        try {
+          const analysis = await withTimeout(
+            grammarExplainer.explainGrammar(segment.text),
+            10000,
+          );
+          store.updateSegmentAnalysis(index, analysis);
+        } catch (e) {
+          console.error(`[LLE] Insights explanation failed for ${index}:`, e);
+        }
       }
-
-      await Promise.all(tasks);
     } catch (error) {
-      console.error(
-        `[LLE][AIManager] Failed to process segment ${index}`,
-        error,
-      );
+      console.error(`[LLE][AIManager] Execution error for segment ${index}`, error);
     } finally {
-      this.pendingIndices.delete(index);
+      // We don't remove from pendingIndices here to prevent re-processing the same index
+      // until the video changes or a jump occurs.
     }
   }
 }

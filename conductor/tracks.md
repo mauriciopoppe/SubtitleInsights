@@ -2,18 +2,18 @@
 
 ---
 
-## [ ] Track: Automated Furigana Generation (Kuromoji.js)
-*Link: [./conductor/tracks/automated_furigana_20251229/](./conductor/tracks/automated_furigana_20251229/)*
+## [ ] Track: Automated Language Detection for Subtitles (Cancelled)
+*Link: [./conductor/archive/automated_language_detection_20251230/](./conductor/archive/automated_language_detection_20251230/)*
 
 ---
 
-## [ ] Track: Automated Language Detection for Subtitles
-*Link: [./conductor/tracks/automated_language_detection_20251230/](./conductor/tracks/automated_language_detection_20251230/)*
+## [x] Track: Dual-Speed AI Processing Queues
+*Link: [./conductor/archive/dual_speed_ai_queues_20251230/](./conductor/archive/dual_speed_ai_queues_20251230/)*
 
 ---
 
-## [ ] Track: Dual-Speed AI Processing Queues
-*Link: [./conductor/tracks/dual_speed_ai_queues_20251230/](./conductor/tracks/dual_speed_ai_queues_20251230/)*
+## [ ] Track: Automated Furigana Generation (Cancelled)
+*Link: [./conductor/archive/automated_furigana_20251229/](./conductor/archive/automated_furigana_20251229/)*
 
 ---
 

@@ -1,4 +1,4 @@
-import { h, ComponentChildren, RefObject } from 'preact';
+import { ComponentChildren, RefObject } from 'preact';
 import { useEffect, useRef } from 'preact/hooks';
 
 interface SettingsDropdownProps {

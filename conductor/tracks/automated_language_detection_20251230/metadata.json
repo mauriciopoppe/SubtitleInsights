@@ -1,8 +1,0 @@
-{
-  "track_id": "automated_language_detection_20251230",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2025-12-30T20:30:00Z",
-  "updated_at": "2025-12-30T20:30:00Z",
-  "description": "I added a new LanguageDetector API in src/types.ts, the way to use it is here: https://developer.chrome.com/docs/ai/language-detection. I want to use that API to know what's the language of the subtitles. Since we support Japanese to English (for now) we could use that mechanism to detect if both the Translator and the Explainer should work."
-}
