@@ -18,7 +18,7 @@ A Chrome extension designed for language learners who use YouTube as their prima
 - **Furigana & Segmentation:** Adds Hiragana readings above Kanji (using `<ruby>`) and segments sentences with visible spaces for easier reading.
 - **Pre-fetch Translation:** Optimizes speed by fetching and translating subtitle tracks ahead of playback.
 - **AI Automated Translation:** Automatically translates Japanese subtitle tracks into English using on-device AI models if no manual data is provided.
-- **AI Grammar Explainer:** Automatically generates concise English summaries of grammar and particles for Japanese sentences using the local Chrome Prompt API.
+- **AI Insights:** Automatically generates concise English summaries of grammar and particles for Japanese sentences using the local Chrome Prompt API.
 - **Player Integration:** Adds a native-style toggle icon directly into the YouTube player's right controls (left of the CC button) for seamless activation.
 - **SRT Subtitle Upload:** Allows users to upload standard .srt subtitle files to replace or augment the video tracks.
 - **Sidebar Transcript:** Provides a vertical list of all educational segments in the YouTube sidebar, highlighting the active segment in sync with the video.

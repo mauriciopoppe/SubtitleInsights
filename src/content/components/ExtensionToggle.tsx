@@ -10,8 +10,8 @@ export function ExtensionToggle() {
     await Config.setIsEnabled(!isEnabled);
   };
 
-  const title = "LLE: Subtitle Analysis & Overlay";
-  const ariaLabel = "Toggle Language Learning Extension";
+  const title = "SubLayer: AI Subtitles & Insights";
+  const ariaLabel = "Toggle SubLayer Extension";
 
   // Use the same SVG from index.tsx
   const icon = (

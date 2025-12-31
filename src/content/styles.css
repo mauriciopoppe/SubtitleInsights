@@ -156,8 +156,6 @@ rt {
 }
 
 .lle-sidebar-upload-btn,
-.lle-sidebar-overlay-btn,
-.lle-sidebar-grammar-btn,
 .lle-sidebar-jump-btn {
   padding: 4px 8px;
   cursor: pointer;
@@ -174,8 +172,6 @@ rt {
 }
 
 .lle-sidebar-upload-btn:hover,
-.lle-sidebar-overlay-btn:hover,
-.lle-sidebar-grammar-btn:hover,
 .lle-sidebar-jump-btn:hover {
   background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.2));
   color: var(--yt-spec-text-primary, #fff);
@@ -186,16 +182,111 @@ rt {
   font-weight: bold;
 }
 
-.lle-sidebar-overlay-btn.enabled,
-.lle-sidebar-grammar-btn.enabled {
-  color: #fff;
-  background-color: rgba(6, 95, 212, 0.3);
+.lle-sidebar-title-wrapper {
+  flex: 1;
+  min-width: 0;
 }
 
-.lle-sidebar-overlay-btn.disabled,
-.lle-sidebar-grammar-btn.disabled {
-  color: var(--yt-spec-text-disabled, #777);
+.lle-sidebar-status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  flex-shrink: 0;
+  transition: color 0.2s;
 }
+
+.lle-sidebar-status-icon.warning { color: #ffcc00; }
+.lle-sidebar-status-icon.ai-downloading { color: #3ea6ff; }
+.lle-sidebar-status-icon.ai-ready { color: #2ba640; }
+.lle-sidebar-status-icon.ai-error { color: #ff4e43; }
+
+.lle-sidebar-settings-btn {
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s;
+  color: var(--yt-spec-text-secondary, #aaa);
+}
+
+.lle-sidebar-settings-btn:hover, .lle-sidebar-settings-btn.active {
+  background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.2));
+  color: var(--yt-spec-text-primary, #fff);
+}
+
+.lle-settings-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background-color: var(--yt-spec-menu-background, #282828);
+  border: 1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  min-width: 180px;
+  overflow: hidden;
+}
+
+.lle-settings-dropdown-item {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.1s;
+  color: var(--yt-spec-text-primary, #fff);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.lle-settings-dropdown-item:hover {
+  background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+}
+
+.lle-settings-dropdown-item svg {
+  flex-shrink: 0;
+}
+
+/* YouTube-style Toggle Switch */
+.lle-toggle-switch {
+  margin-left: auto;
+  position: relative;
+  width: 34px;
+  height: 14px;
+  background-color: var(--yt-spec-text-disabled, #777);
+  border-radius: 7px;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.lle-toggle-switch::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -2px;
+  width: 20px;
+  height: 20px;
+  background-color: #eee;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.lle-settings-dropdown-item.enabled .lle-toggle-switch {
+  background-color: rgba(62, 166, 255, 0.5); /* Light blue track */
+}
+
+.lle-settings-dropdown-item.enabled .lle-toggle-switch::after {
+  transform: translateX(18px);
+  background-color: #3ea6ff; /* Solid blue thumb */
+}
+
+.lle-sidebar-upload-btn,
+
 
 .lle-sidebar-list {
   overflow-y: auto;
@@ -227,6 +318,10 @@ rt {
   font-size: 13px;
   color: var(--yt-spec-text-secondary, #aaa);
   margin-bottom: 2px;
+}
+
+.lle-sidebar-item.active .lle-sidebar-original {
+  color: #fff;
 }
 
 .lle-sidebar-literal {

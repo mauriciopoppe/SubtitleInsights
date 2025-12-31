@@ -12,8 +12,13 @@
 
 ---
 
-## [~] Track: Auto-Scroll Sidebar on Initial Render
-*Link: [./conductor/tracks/sidebar_auto_scroll_20251230/](./conductor/tracks/sidebar_auto_scroll_20251230/)*
+## [x] Track: Settings Dropdown and UI Renaming (Insights)
+*Link: [./conductor/archive/settings_dropdown_insights_20251230/](./conductor/archive/settings_dropdown_insights_20251230/)*
+
+---
+
+## [x] Track: Auto-Scroll Sidebar on Initial Render
+*Link: [./conductor/archive/sidebar_auto_scroll_20251230/](./conductor/archive/sidebar_auto_scroll_20251230/)*
 
 ---
 
