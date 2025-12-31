@@ -1,9 +1,9 @@
 # Plan: Granular Visibility Controls (Nested Toggles)
 
-## Phase 1: Configuration and State Persistence
-- [ ] Task: Update `Config` type and storage keys in `src/content/config.ts` to include granular visibility flags.
-- [ ] Task: Update `useConfig` hook to provide the new visibility settings.
-- [ ] Task: Conductor - User Manual Verification 'Configuration and State Persistence' (Protocol in workflow.md)
+## Phase 1: Configuration and State Persistence [checkpoint: f61f7ae]
+- [x] Task: Update `Config` type and storage keys in `src/content/config.ts` to include granular visibility flags.
+- [x] Task: Update `useConfig` hook to provide the new visibility settings.
+- [x] Task: Conductor - User Manual Verification 'Configuration and State Persistence' (Protocol in workflow.md)
 
 ## Phase 2: UI - Settings Dropdown Refactor
 - [ ] Task: Implement tri-state logic for "Master" toggles in `src/content/components/SettingsDropdown.tsx`.
