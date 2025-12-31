@@ -12,15 +12,15 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Settings Toggle & State Management' (Protocol in workflow.md)
 
 ## Phase 2: Core Pause/Resume Logic
-- [ ] Task: Implement video event listeners in `usePauseOnHover`.
+- [x] Task: Implement video event listeners in `usePauseOnHover`.
     - [ ] Listen for `timeupdate` events on the video player.
     - [ ] Listen for `mousemove` and `mouseleave` events on the overlay element (`#lle-overlay`).
-- [ ] Task: Integrate `usePauseOnHover` into `OverlayApp.tsx`.
+- [x] Task: Integrate `usePauseOnHover` into `OverlayApp.tsx`.
     - [ ] Pass necessary props like video element, config state, and overlay ref.
-- [ ] Task: Implement pause condition check.
-    - [ ] Within the `timeupdate` listener, check if "Pause on Hover" is enabled, subtitles are active, mouse is over overlay, and segment is nearing its end (0.5s buffer).
-    - [ ] Call `video.pause()` when conditions are met.
-- [ ] Task: Implement resume condition check.
+- [x] Task: Implement pause condition check.
+    - [x] Within the `timeupdate` listener, check if "Pause on Hover" is enabled, mouse is over overlay, and segment is nearing its end (0.3s buffer).
+    - [x] Call `video.pause()` when conditions are met.
+- [x] Task: Implement resume condition check.
     - [ ] Call `video.play()` when mouse leaves overlay or if video is manually played by user.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Pause/Resume Logic' (Protocol in workflow.md)
 
@@ -29,7 +29,6 @@
     - [ ] Ensure `usePauseOnHover` accurately determines if YouTube subtitles are enabled.
 - [ ] Task: Integration test for full functionality.
     - [ ] Manually test toggling the feature on/off.
-    - [ ] Verify precise pausing 0.5s before segment end.
+    - [ ] Verify precise pausing 0.3s before segment end.
     - [ ] Verify resume on mouse leave and manual play.
-    - [ ] Verify feature only active when YouTube subtitles are enabled.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Testing' (Protocol in workflow.md)
