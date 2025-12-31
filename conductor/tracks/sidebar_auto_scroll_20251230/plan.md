@@ -8,7 +8,7 @@
     - [x] Perform the instantaneous scroll using `scrollIntoView({ behavior: 'auto', block: 'center' })`.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Logic & Hook Enhancement' (Protocol in workflow.md)
 
-## Phase 2: Refinement & Robustness
+## Phase 2: Refinement & Robustness [checkpoint: 91cd39a]
 - [x] Task: Reset scroll state on video change.
     - [x] Ensure the `hasInitiallyScrolled` ref is reset whenever the video ID changes.
 - [x] Task: Manual Verification in Browser.
