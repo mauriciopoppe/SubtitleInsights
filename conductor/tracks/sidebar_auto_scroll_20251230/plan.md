@@ -9,10 +9,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Logic & Hook Enhancement' (Protocol in workflow.md)
 
 ## Phase 2: Refinement & Robustness
-- [ ] Task: Reset scroll state on video change.
-    - [ ] Ensure the `hasInitiallyScrolled` ref is reset whenever the video ID changes.
-- [ ] Task: Manual Verification in Browser.
-    - [ ] Open a video at 0:00. Verify no intrusive scrolling.
-    - [ ] Open a video at a mid-point (e.g., `?t=120`). Verify the sidebar centers the 2-minute segment instantly.
-    - [ ] Open a video during a subtitle gap. Verify it scrolls to the next upcoming segment.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Refinement & Robustness' (Protocol in workflow.md)
+- [x] Task: Reset scroll state on video change.
+    - [x] Ensure the `hasInitiallyScrolled` ref is reset whenever the video ID changes.
+- [x] Task: Manual Verification in Browser.
+    - [x] Open a video at 0:00. Verify no intrusive scrolling.
+    - [x] Open a video at a mid-point (e.g., `?t=120`). Verify the sidebar centers the 2-minute segment instantly.
+    - [x] Open a video during a subtitle gap. Verify it scrolls to the next upcoming segment.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Refinement & Robustness' (Protocol in workflow.md)
