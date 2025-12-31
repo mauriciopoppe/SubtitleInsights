@@ -1,7 +1,6 @@
 import { SubtitleSegment } from '../store';
 import { renderSegmentedText } from '../render';
 import snarkdown from 'snarkdown';
-import { removeMarkdownLinks } from '../ai/utils';
 
 interface SidebarItemProps {
   segment: SubtitleSegment;
@@ -42,7 +41,7 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
       {segment.contextual_analysis && (
         <div
           className="lle-sidebar-analysis"
-          dangerouslySetInnerHTML={{ __html: snarkdown(removeMarkdownLinks(segment.contextual_analysis)) }}
+          dangerouslySetInnerHTML={{ __html: snarkdown(segment.contextual_analysis) }}
         />
       )}
 
@@ -50,7 +49,7 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
       {segment.grammatical_gotchas && (
         <div
           className="lle-sidebar-gotchas"
-          dangerouslySetInnerHTML={{ __html: snarkdown(removeMarkdownLinks(segment.grammatical_gotchas)) }}
+          dangerouslySetInnerHTML={{ __html: snarkdown(segment.grammatical_gotchas) }}
         />
       )}
     </div>
