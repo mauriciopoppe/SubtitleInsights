@@ -7,6 +7,10 @@ export function useConfig() {
     isOverlayEnabled: true,
     isGrammarEnabled: true,
     isPauseOnHoverEnabled: false,
+    isInsightsVisibleInOverlay: true,
+    isInsightsVisibleInSidebar: true,
+    isTranslationVisibleInOverlay: true,
+    isTranslationVisibleInSidebar: true,
     isLoading: true
   });
 
@@ -14,11 +18,24 @@ export function useConfig() {
     let isMounted = true;
 
     async function loadConfig() {
-      const [isEnabled, isOverlayEnabled, isGrammarEnabled, isPauseOnHoverEnabled] = await Promise.all([
+      const [
+        isEnabled,
+        isOverlayEnabled,
+        isGrammarEnabled,
+        isPauseOnHoverEnabled,
+        isInsightsVisibleInOverlay,
+        isInsightsVisibleInSidebar,
+        isTranslationVisibleInOverlay,
+        isTranslationVisibleInSidebar,
+      ] = await Promise.all([
         Config.getIsEnabled(),
         Config.getIsOverlayEnabled(),
         Config.getIsGrammarExplainerEnabled(),
-        Config.getIsPauseOnHoverEnabled()
+        Config.getIsPauseOnHoverEnabled(),
+        Config.getIsInsightsVisibleInOverlay(),
+        Config.getIsInsightsVisibleInSidebar(),
+        Config.getIsTranslationVisibleInOverlay(),
+        Config.getIsTranslationVisibleInSidebar(),
       ]);
 
       if (isMounted) {
@@ -27,6 +44,10 @@ export function useConfig() {
           isOverlayEnabled,
           isGrammarEnabled,
           isPauseOnHoverEnabled,
+          isInsightsVisibleInOverlay,
+          isInsightsVisibleInSidebar,
+          isTranslationVisibleInOverlay,
+          isTranslationVisibleInSidebar,
           isLoading: false
         });
       }
@@ -46,11 +67,27 @@ export function useConfig() {
     const handlePauseOnHoverChange = (val: boolean) => {
       setConfig(prev => ({ ...prev, isPauseOnHoverEnabled: val }));
     };
+    const handleInsightsOverlayChange = (val: boolean) => {
+      setConfig(prev => ({ ...prev, isInsightsVisibleInOverlay: val }));
+    };
+    const handleInsightsSidebarChange = (val: boolean) => {
+      setConfig(prev => ({ ...prev, isInsightsVisibleInSidebar: val }));
+    };
+    const handleTranslationOverlayChange = (val: boolean) => {
+      setConfig(prev => ({ ...prev, isTranslationVisibleInOverlay: val }));
+    };
+    const handleTranslationSidebarChange = (val: boolean) => {
+      setConfig(prev => ({ ...prev, isTranslationVisibleInSidebar: val }));
+    };
 
     Config.addChangeListener(handleEnabledChange);
     Config.addOverlayChangeListener(handleOverlayChange);
     Config.addGrammarExplainerChangeListener(handleGrammarChange);
     Config.addPauseOnHoverChangeListener(handlePauseOnHoverChange);
+    Config.addInsightsInOverlayChangeListener(handleInsightsOverlayChange);
+    Config.addInsightsInSidebarChangeListener(handleInsightsSidebarChange);
+    Config.addTranslationInOverlayChangeListener(handleTranslationOverlayChange);
+    Config.addTranslationInSidebarChangeListener(handleTranslationSidebarChange);
 
     return () => {
       isMounted = false;
