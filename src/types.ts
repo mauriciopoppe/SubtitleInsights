@@ -80,25 +80,35 @@ declare global {
   }
 
   interface LanguageModelSession {
-    /** * Prompting now supports text or multimodal inputs (Blobs for images/audio).
+    /** * The total capacity of the session's context window.
+     * This is implementation-dependent (usually tokens).
      */
+    readonly inputQuota: number;
+
+    /** * How much of the quota has been consumed by the current
+     * history and system prompt.
+     */
+    readonly inputUsage: number;
+
+    /** Sends a prompt and waits for the full response. */
     prompt(
-      input: string | Array<string | Blob | ImageData>,
+      input: string | Array<string | Blob>,
       options?: LanguageModelPromptOptions,
     ): Promise<string>;
 
+    /** Sends a prompt and returns a stream of text chunks. */
     promptStreaming(
-      input: string | Array<string | Blob | ImageData>,
+      input: string | Array<string | Blob>,
       options?: LanguageModelPromptOptions,
     ): ReadableStream<string>;
 
+    /** * Reports how much of the quota a specific input would consume
+     * BEFORE you actually send it.
+     */
     measureInputUsage(input: string): Promise<number>;
+
     clone(): Promise<LanguageModelSession>;
     destroy(): void;
-
-    readonly maxTokens: number;
-    readonly tokensLeft: number;
-    readonly tokensSoFar: number;
   }
 
   interface LanguageModelPromptOptions {

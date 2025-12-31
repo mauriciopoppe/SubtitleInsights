@@ -6,7 +6,6 @@ const SUPPORTED_LANGUAGES = ["en", "ja", "es"];
 export class GrammarExplainer {
   private rootSession: LanguageModelSession | null = null;
   private workingSession: LanguageModelSession | null = null;
-  private promptCount = 0;
 
   async checkAvailability(): Promise<LanguageModelAvailability> {
     try {
@@ -29,9 +28,6 @@ export class GrammarExplainer {
           store.setWarning(`Source language "${profile.sourceLanguage}" not supported by Explainer. Falling back to "en" for analysis.`);
         }
         
-        return await window.LanguageModel.availability({
-          languages: [profile.targetLanguage, sourceLangForModel],
-        });
         return await window.LanguageModel.availability({
           languages: [profile.targetLanguage, sourceLangForModel],
         });
@@ -116,7 +112,6 @@ export class GrammarExplainer {
       }
 
       this.workingSession = await this.rootSession.clone();
-      this.promptCount = 0;
       console.log("[LLE] GrammarExplainer: Session reset via clone.");
     } catch (error) {
       console.error("Error resetting grammar explainer session:", error);
@@ -139,10 +134,10 @@ export class GrammarExplainer {
       throw new Error("Language Model session not initialized");
     }
 
-    // Workaround: Reset the session when context pollution causes response timeouts or degradation.
-    if (this.promptCount >= 50) {
+    const { inputUsage, inputQuota } = this.workingSession;
+    if (inputUsage / inputQuota > 0.8) { // Reset if usage exceeds 80%
       console.log(
-        "[LLE] GrammarExplainer: Prompt count limit reached (50). Resetting session.",
+        `[LLE] GrammarExplainer: Input usage at ${inputUsage}/${inputQuota}. Resetting session.`,
       );
       await this.resetSession();
       if (!this.workingSession) {
@@ -152,7 +147,6 @@ export class GrammarExplainer {
 
     try {
       const response = await this.workingSession.prompt(`Sentence: ${text}`);
-      this.promptCount++;
       return response;
     } catch (error) {
       console.error("Error explaining grammar:", error);
