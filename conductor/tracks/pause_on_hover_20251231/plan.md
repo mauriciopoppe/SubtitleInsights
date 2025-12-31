@@ -1,6 +1,6 @@
 # Plan: Pause on Hover Overlay
 
-## Phase 1: Settings Toggle & State Management
+## Phase 1: Settings Toggle & State Management [checkpoint: 50e5fc7]
 - [x] Task: Implement "Pause on Hover" toggle in `SettingsDropdown.tsx`.
     - [ ] Add a new `lle-settings-dropdown-item` for the toggle.
     - [ ] Bind the toggle to a new configuration state in `src/content/config.ts` (e.g., `lle_is_pause_on_hover_enabled`).
