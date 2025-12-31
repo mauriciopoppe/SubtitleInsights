@@ -1,0 +1,8 @@
+{
+  "track_id": "settings_dropdown_insights_20251230",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2025-12-30T22:45:00Z",
+  "updated_at": "2025-12-30T22:45:00Z",
+  "description": "Put the overlay and the AI (rename to Insights) inside a dropdown that shows when a settings button is clicked on the sidebar header."
+}
