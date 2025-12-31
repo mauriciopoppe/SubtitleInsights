@@ -34,3 +34,8 @@
 
 ## [x] Track: Refactor Extension Toggle to Preact
 *Link: [./conductor/archive/refactor_toggle_preact_20251229/](./conductor/archive/refactor_toggle_preact_20251229/)*
+
+---
+
+## [~] Track: Pause on Hover Overlay
+*Link: [./conductor/tracks/pause_on_hover_20251231/](./conductor/tracks/pause_on_hover_20251231/)*

@@ -10,10 +10,12 @@ vi.mock('./config', () => ({
     getIsEnabled: vi.fn().mockResolvedValue(true),
     getIsOverlayEnabled: vi.fn().mockResolvedValue(true),
     getIsGrammarExplainerEnabled: vi.fn().mockResolvedValue(true),
+    getIsPauseOnHoverEnabled: vi.fn().mockResolvedValue(false),
     setIsEnabled: vi.fn().mockResolvedValue(undefined),
     addChangeListener: vi.fn(),
     addOverlayChangeListener: vi.fn(),
     addGrammarExplainerChangeListener: vi.fn(),
+    addPauseOnHoverChangeListener: vi.fn(),
   },
 }));
 

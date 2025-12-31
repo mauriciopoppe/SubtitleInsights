@@ -120,6 +120,11 @@ export function SidebarApp() {
     await Config.setIsGrammarExplainerEnabled(!current);
   };
 
+  const handleTogglePauseOnHover = async () => {
+    const current = await Config.getIsPauseOnHoverEnabled();
+    await Config.setIsPauseOnHoverEnabled(!current);
+  };
+
   if (!config.isEnabled) return null;
 
   return (
@@ -136,8 +141,10 @@ export function SidebarApp() {
         onUpload={handleUploadClick}
         onToggleOverlay={handleToggleOverlay}
         onToggleAI={handleToggleAI}
+        onTogglePauseOnHover={handleTogglePauseOnHover}
         overlayEnabled={config.isOverlayEnabled}
         aiEnabled={config.isGrammarEnabled}
+        pauseOnHoverEnabled={config.isPauseOnHoverEnabled}
         aiStatus={aiStatus}
         warning={warning}
         isUploadActive={isUploadActive}

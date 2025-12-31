@@ -2,6 +2,7 @@ export class Config {
     private static MASTER_STORAGE_KEY = "lle_is_enabled";
     private static OVERLAY_STORAGE_KEY = "lle_is_overlay_enabled";
     private static GRAMMAR_EXPLAINER_STORAGE_KEY = "lle_is_grammar_explainer_enabled";
+    private static PAUSE_ON_HOVER_STORAGE_KEY = "lle_is_pause_on_hover_enabled";
   
     static async getIsEnabled(): Promise<boolean> {
       return new Promise((resolve) => {
@@ -53,6 +54,23 @@ export class Config {
         });
       });
     }
+
+    static async getIsPauseOnHoverEnabled(): Promise<boolean> {
+      return new Promise((resolve) => {
+        chrome.storage.local.get([this.PAUSE_ON_HOVER_STORAGE_KEY], (result) => {
+          // Default to false if not set (safer for new behavior)
+          resolve((result[this.PAUSE_ON_HOVER_STORAGE_KEY] as boolean) ?? false);
+        });
+      });
+    }
+  
+    static async setIsPauseOnHoverEnabled(value: boolean): Promise<void> {
+      return new Promise((resolve) => {
+        chrome.storage.local.set({ [this.PAUSE_ON_HOVER_STORAGE_KEY]: value }, () => {
+          resolve();
+        });
+      });
+    }
   
     static addChangeListener(callback: (isEnabled: boolean) => void) {
       chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -74,6 +92,14 @@ export class Config {
       chrome.storage.onChanged.addListener((changes, areaName) => {
         if (areaName === "local" && changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY]) {
           callback(changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY].newValue as boolean);
+        }
+      });
+    }
+
+    static addPauseOnHoverChangeListener(callback: (isEnabled: boolean) => void) {
+      chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName === "local" && changes[this.PAUSE_ON_HOVER_STORAGE_KEY]) {
+          callback(changes[this.PAUSE_ON_HOVER_STORAGE_KEY].newValue as boolean);
         }
       });
     }

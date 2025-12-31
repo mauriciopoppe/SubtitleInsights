@@ -6,8 +6,10 @@ interface SidebarHeaderProps {
   onUpload: () => void;
   onToggleOverlay: () => void;
   onToggleAI: () => void;
+  onTogglePauseOnHover: () => void;
   overlayEnabled: boolean;
   aiEnabled: boolean;
+  pauseOnHoverEnabled: boolean;
   aiStatus: {
     status: 'downloading' | 'ready' | 'error' | 'none';
     message?: string;
@@ -22,8 +24,10 @@ export function SidebarHeader({
   onUpload,
   onToggleOverlay,
   onToggleAI,
+  onTogglePauseOnHover,
   overlayEnabled,
   aiEnabled,
+  pauseOnHoverEnabled,
   aiStatus,
   warning,
   isUploadActive,
@@ -127,6 +131,18 @@ export function SidebarHeader({
                 <path d="M7.5 5.6L10 0l2.5 5.6L18 8l-5.5 2.4L10 16 7.5 10.4 2 8l5.5-2.4z" />
               </svg>
               <span>Insights</span>
+              <div className="lle-toggle-switch"></div>
+            </div>
+
+            <div 
+              className={`lle-settings-dropdown-item ${pauseOnHoverEnabled ? 'enabled' : 'disabled'}`}
+              title="Automatically pause video when hovering over the overlay"
+              onClick={onTogglePauseOnHover}
+            >
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+              </svg>
+              <span>Hover Pause</span>
               <div className="lle-toggle-switch"></div>
             </div>
           </SettingsDropdown>
