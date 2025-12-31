@@ -13,8 +13,6 @@ export function OverlayApp() {
   const [currentTimeMs, setCurrentTimeMs] = useState(0);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  usePauseOnHover(config.isPauseOnHoverEnabled, overlayRef);
-
   useEffect(() => {
     const video = document.querySelector('video');
     if (!video) return;
@@ -32,6 +30,8 @@ export function OverlayApp() {
   }, [segments, currentTimeMs]);
 
   const isVisible = config.isEnabled && config.isOverlayEnabled && (!!activeSegment || !!systemMessage);
+
+  usePauseOnHover(config.isPauseOnHoverEnabled, overlayRef, isVisible);
 
   if (!isVisible) return null;
 

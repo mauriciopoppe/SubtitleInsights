@@ -4,12 +4,13 @@ import { store } from "../store";
 export function usePauseOnHover(
   isEnabled: boolean,
   overlayRef: RefObject<HTMLElement>,
+  isOverlayVisible: boolean,
 ) {
   const [isHovering, setIsHovering] = useState(false);
   const [wasPausedByHover, setWasPausedByHover] = useState(false);
 
   useEffect(() => {
-    if (!isEnabled) {
+    if (!isEnabled || !isOverlayVisible) {
       setIsHovering(false);
       setWasPausedByHover(false);
       return;
@@ -40,7 +41,7 @@ export function usePauseOnHover(
       overlay.removeEventListener("mousemove", handleMouseMove);
       overlay.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [isEnabled, overlayRef.current, wasPausedByHover]);
+  }, [isEnabled, isOverlayVisible, overlayRef.current, wasPausedByHover]);
 
   useEffect(() => {
     if (!isEnabled) return;

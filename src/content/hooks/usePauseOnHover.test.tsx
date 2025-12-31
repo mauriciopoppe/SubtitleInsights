@@ -5,10 +5,10 @@ import { act } from 'preact/test-utils';
 import { usePauseOnHover } from './usePauseOnHover';
 import { store } from '../store';
 
-function TestComponent({ isEnabled }: { isEnabled: boolean }) {
+function TestComponent({ isEnabled, isOverlayVisible = true }: { isEnabled: boolean, isOverlayVisible?: boolean }) {
   const overlayRef = useRef<HTMLDivElement>(null);
-  usePauseOnHover(isEnabled, overlayRef);
-  return <div ref={overlayRef} id="test-overlay">Overlay</div>;
+  usePauseOnHover(isEnabled, overlayRef, isOverlayVisible);
+  return isOverlayVisible ? <div ref={overlayRef} id="test-overlay">Overlay</div> : null;
 }
 
 describe('usePauseOnHover', () => {
@@ -136,5 +136,41 @@ describe('usePauseOnHover', () => {
       overlayEl.dispatchEvent(new MouseEvent('mouseleave'));
     });
     expect(videoEl.play).not.toHaveBeenCalled();
+  });
+
+  it('should reset hover state when overlay becomes invisible', async () => {
+    const activeSegment = { start: 1000, end: 2000, text: 'Test' };
+    vi.spyOn(store, 'getSegmentAt').mockReturnValue(activeSegment);
+
+    await act(() => {
+      render(<TestComponent isEnabled={true} isOverlayVisible={true} />, document.getElementById('root')!);
+    });
+
+    const overlayEl = document.getElementById('test-overlay')!;
+
+    // 1. Hover
+    await act(() => {
+      overlayEl.dispatchEvent(new MouseEvent('mousemove'));
+    });
+
+    // 2. Make overlay invisible
+    await act(() => {
+      render(<TestComponent isEnabled={true} isOverlayVisible={false} />, document.getElementById('root')!);
+    });
+
+    // 3. Make overlay visible again (mouse is technically not "on" it unless we move it again)
+    // In our logic, it should reset isHovering to false.
+    await act(() => {
+      render(<TestComponent isEnabled={true} isOverlayVisible={true} />, document.getElementById('root')!);
+    });
+
+    // 4. Update time to trigger pause logic
+    await act(() => {
+      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true });
+      videoEl.dispatchEvent(new Event('timeupdate'));
+    });
+
+    // Should NOT pause because hover state was reset
+    expect(videoEl.pause).not.toHaveBeenCalled();
   });
 });
