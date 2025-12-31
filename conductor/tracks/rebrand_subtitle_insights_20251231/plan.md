@@ -5,7 +5,7 @@
 - [x] Task: Update product documentation in `conductor/product.md` and `conductor/product-guidelines.md`.
 - [x] Task: Conductor - User Manual Verification 'Rebranding & Metadata' (Protocol in workflow.md)
 
-## Phase 2: Internal Migration - Logic & State
+## Phase 2: Internal Migration - Logic & State [checkpoint: faa8df3]
 - [x] Task: Replace all `lle` prefixes with `si` in storage keys within `src/content/config.ts` and `src/content/profiles.ts`.
 - [x] Task: Update all console log prefixes from `[LLE]` to `[SI]` across the codebase.
 - [x] Task: Rename message types (e.g., `LLE_SUBTITLES_CAPTURED` -> `SI_SUBTITLES_CAPTURED`) in background and content scripts.
