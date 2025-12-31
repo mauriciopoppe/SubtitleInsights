@@ -26,22 +26,13 @@
 }
 
 .lle-translation {
-  font-size: 0.8em;
-  color: #ddd;
-}
-
-.lle-original {
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-.lle-literal {
-  font-size: 0.85em;
+  font-size: 16px;
   color: #aaa;
-  font-style: italic;
+  margin-top: 4px;
 }
 
-.lle-analysis, .lle-gotchas {
+
+.lle-insights {
   font-size: 0.75em;
   color: #ccc;
   max-width: 600px;
@@ -52,23 +43,23 @@
   text-align: left;
 }
 
-.lle-analysis ul, .lle-gotchas ul, .lle-analysis ol, .lle-gotchas ol {
-  padding-left: 20px;
-  margin: 4px 0;
+.lle-insights ul, .lle-insights ol {
+  margin: 4px 0 4px 20px;
+  padding: 0;
 }
 
-.lle-analysis li, .lle-gotchas li {
+.lle-insights li {
   margin-bottom: 2px;
 }
 
-.lle-analysis code, .lle-gotchas code {
-  background-color: rgba(255, 255, 255, 0.1);
+.lle-insights code {
+  background: rgba(0, 0, 0, 0.3);
   padding: 2px 4px;
   border-radius: 3px;
   font-family: monospace;
 }
 
-.lle-analysis:empty, .lle-gotchas:empty, .lle-literal:empty {
+.lle-insights:empty {
   display: none;
 }
 
@@ -314,15 +305,7 @@
   color: #fff;
 }
 
-.lle-sidebar-literal {
-  font-size: 12px;
-  color: var(--yt-spec-text-disabled, #777);
-  font-style: italic;
-  margin-bottom: 4px;
-}
-
-.lle-sidebar-analysis,
-.lle-sidebar-gotchas {
+.lle-sidebar-insights {
   font-size: 12px;
   color: var(--yt-spec-text-secondary, #aaa);
   margin-top: 4px;
@@ -331,14 +314,12 @@
   white-space: normal;
 }
 
-.lle-sidebar-analysis ul,
-.lle-sidebar-gotchas ul {
+.lle-sidebar-insights ul {
   padding-left: 16px;
   margin: 4px 0;
 }
 
-.lle-sidebar-analysis code,
-.lle-sidebar-gotchas code {
+.lle-sidebar-insights code {
   background-color: rgba(255, 255, 255, 0.1);
   padding: 1px 3px;
   border-radius: 2px;

@@ -155,7 +155,7 @@ export class AIManager {
         !this.pendingInsightsIndices.has(i) &&
         isInsightsEnabled &&
         grammarExplainer.isReady() &&
-        !seg.contextual_analysis &&
+        !seg.insights &&
         isComplexSentence(seg.text) &&
         inInsightsRange;
 
@@ -243,7 +243,7 @@ export class AIManager {
             grammarExplainer.explainGrammar(segment.text),
             10000,
           );
-          store.updateSegmentAnalysis(index, analysis);
+          store.updateSegmentInsights(index, analysis);
         } catch (e) {
           console.error(`[LLE] Insights explanation failed for ${index}:`, e);
         }

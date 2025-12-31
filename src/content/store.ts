@@ -8,9 +8,7 @@ export interface SubtitleSegment {
   segmentedData?: AISegment[][]; // Outer = visual blocks, Inner = parts of the block
   // Structured data fields
   segmentation?: string[];
-  literal_translation?: string;
-  contextual_analysis?: string;
-  grammatical_gotchas?: string;
+  insights?: string;
 }
 
 export class SubtitleStore {
@@ -158,9 +156,7 @@ export class SubtitleStore {
           text: s.text,
           translation: s.translation,
           segmentation: s.segmentation,
-          literal_translation: s.literal_translation,
-          contextual_analysis: s.contextual_analysis,
-          grammatical_gotchas: s.grammatical_gotchas,
+          insights: s.insights || s.contextual_analysis,
         };
 
         if (Array.isArray(s.segmentation)) {
@@ -184,9 +180,9 @@ export class SubtitleStore {
     }
   }
 
-  updateSegmentAnalysis(index: number, analysis: string) {
+  updateSegmentInsights(index: number, insights: string) {
     if (this.segments[index]) {
-      this.segments[index].contextual_analysis = analysis;
+      this.segments[index].insights = insights;
       this.notifySegmentUpdate(index, this.segments[index]);
     }
   }

@@ -1,4 +1,5 @@
-import { useEffect, useState, RefObject } from "preact/hooks";
+import { RefObject } from "preact";
+import { useEffect, useState } from "preact/hooks";
 import { store } from "../store";
 
 export function usePauseOnHover(

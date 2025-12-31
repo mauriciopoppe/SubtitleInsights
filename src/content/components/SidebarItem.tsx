@@ -1,6 +1,7 @@
 import { SubtitleSegment } from '../store';
 import { renderSegmentedText } from '../render';
 import snarkdown from 'snarkdown';
+import { trimThinkingProcess } from '../ai/utils';
 
 interface SidebarItemProps {
   segment: SubtitleSegment;
@@ -30,26 +31,11 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
         {segment.translation || ''}
       </div>
 
-      {/* Literal Translation */}
-      {segment.literal_translation && (
-        <div className="lle-sidebar-literal">
-          {segment.literal_translation}
-        </div>
-      )}
-
-      {/* Contextual Analysis */}
-      {segment.contextual_analysis && (
+      {/* Insights */}
+      {segment.insights && (
         <div
-          className="lle-sidebar-analysis"
-          dangerouslySetInnerHTML={{ __html: snarkdown(segment.contextual_analysis) }}
-        />
-      )}
-
-      {/* Grammatical Gotchas */}
-      {segment.grammatical_gotchas && (
-        <div
-          className="lle-sidebar-gotchas"
-          dangerouslySetInnerHTML={{ __html: snarkdown(segment.grammatical_gotchas) }}
+          className="lle-sidebar-insights"
+          dangerouslySetInnerHTML={{ __html: snarkdown(trimThinkingProcess(segment.insights)) }}
         />
       )}
     </div>

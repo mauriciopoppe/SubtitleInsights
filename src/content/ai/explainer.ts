@@ -63,9 +63,6 @@ export class GrammarExplainer {
       const isSourceSupported = SUPPORTED_LANGUAGES.includes(
         profile.sourceLanguage,
       );
-      const isTargetSupported = SUPPORTED_LANGUAGES.includes(
-        profile.targetLanguage,
-      );
 
       if (!isSourceSupported) {
         store.setWarning(
@@ -161,7 +158,6 @@ export class GrammarExplainer {
 
     try {
       const response = await this.workingSession.prompt(`Sentence: ${text}`);
-      console.log(response);
       return trimThinkingProcess(response);
     } catch (error) {
       console.error("Error explaining grammar:", error);

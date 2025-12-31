@@ -6,6 +6,7 @@ import { usePauseOnHover } from '../hooks/usePauseOnHover';
 import { renderSegmentedText } from '../render';
 import { store } from '../store';
 import snarkdown from 'snarkdown';
+import { trimThinkingProcess } from '../ai/utils';
 
 export function OverlayApp() {
   const { segments, systemMessage } = useSubtitleStore();
@@ -61,21 +62,10 @@ export function OverlayApp() {
             {activeSegment.translation || ''}
           </div>
 
-          <div className="lle-literal">
-            {activeSegment.literal_translation || ''}
-          </div>
-
-          {activeSegment.contextual_analysis && (
+          {activeSegment.insights && (
             <div
-              className="lle-analysis"
-              dangerouslySetInnerHTML={{ __html: snarkdown(activeSegment.contextual_analysis) }}
-            />
-          )}
-
-          {activeSegment.grammatical_gotchas && (
-            <div
-              className="lle-gotchas"
-              dangerouslySetInnerHTML={{ __html: snarkdown(activeSegment.grammatical_gotchas) }}
+              className="lle-insights"
+              dangerouslySetInnerHTML={{ __html: snarkdown(trimThinkingProcess(activeSegment.insights)) }}
             />
           )}
         </Fragment>
