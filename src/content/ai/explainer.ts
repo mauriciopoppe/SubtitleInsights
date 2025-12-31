@@ -12,18 +12,28 @@ export class GrammarExplainer {
     try {
       if (typeof window.LanguageModel !== "undefined") {
         const profile = await ProfileManager.getActiveProfile();
-        
+
         const isSourceSupported = SUPPORTED_LANGUAGES.includes(profile.sourceLanguage);
         const isTargetSupported = SUPPORTED_LANGUAGES.includes(profile.targetLanguage);
 
-        if (!isSourceSupported || !isTargetSupported) {
-          const unsupported = !isSourceSupported ? profile.sourceLanguage : profile.targetLanguage;
-          store.setWarning(`Language Model does not support "${unsupported}". Only en, ja, es are supported.`);
-          return "unavailable";
+        let sourceLangForModel = profile.sourceLanguage;
+        if (!isSourceSupported) {
+          sourceLangForModel = 'en';
         }
 
+        if (!isTargetSupported) {
+          store.setWarning(`Target language "${profile.targetLanguage}" not supported by Explainer. Only en, ja, es are supported.`);
+          return "unavailable";
+        }
+        if (!isSourceSupported) {
+          store.setWarning(`Source language "${profile.sourceLanguage}" not supported by Explainer. Falling back to "en" for analysis.`);
+        }
+        
         return await window.LanguageModel.availability({
-          languages: [profile.targetLanguage, profile.sourceLanguage],
+          languages: [profile.targetLanguage, sourceLangForModel],
+        });
+        return await window.LanguageModel.availability({
+          languages: [profile.targetLanguage, sourceLangForModel],
         });
       }
       return "unavailable";
@@ -45,12 +55,18 @@ export class GrammarExplainer {
 
       const profile = await ProfileManager.getActiveProfile();
 
-      const isSourceSupported = SUPPORTED_LANGUAGES.includes(profile.sourceLanguage);
-      const isTargetSupported = SUPPORTED_LANGUAGES.includes(profile.targetLanguage);
+      const isSourceSupported = SUPPORTED_LANGUAGES.includes(
+        profile.sourceLanguage,
+      );
+      const isTargetSupported = SUPPORTED_LANGUAGES.includes(
+        profile.targetLanguage,
+      );
 
-      if (!isSourceSupported || !isTargetSupported) {
-        return false;
+      if (!isSourceSupported) {
+        store.setWarning(`Source language "${profile.sourceLanguage}" not supported by Explainer. Falling back to "en".`);
       }
+      
+      const sourceLangForModel = isSourceSupported ? profile.sourceLanguage : 'en';
 
       const params = await window.LanguageModel.params();
       const options: LanguageModelCreateOptions = {
@@ -63,10 +79,7 @@ export class GrammarExplainer {
         expectedInputs: [
           {
             type: "text",
-            languages: [
-              "en" /* system prompt, must always be in english*/,
-              profile.sourceLanguage,
-            ],
+            languages: [profile.targetLanguage, sourceLangForModel],
           },
         ],
         expectedOutputs: [
@@ -75,14 +88,14 @@ export class GrammarExplainer {
         temperature: 0.2,
         topK: params.defaultTopK || undefined,
       };
-
+      
       this.rootSession = await window.LanguageModel.create(options);
-
+      
       if (this.rootSession) {
         await this.resetSession();
         return true;
       }
-
+      
       return false;
     } catch (error) {
       console.error("Error initializing language model:", error);

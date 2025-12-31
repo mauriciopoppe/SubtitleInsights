@@ -30,7 +30,10 @@ export class AIManager {
 
     // Grammar Explainer Setup
     const grammarAvailability = await grammarExplainer.checkAvailability();
-    console.log("[LLE] AI Grammar Explainer availability:", grammarAvailability);
+    console.log(
+      "[LLE] AI Grammar Explainer availability:",
+      grammarAvailability,
+    );
     if (grammarAvailability === "available") {
       await grammarExplainer.initialize();
       console.log("[LLE] AI Grammar Explainer initialized.");
@@ -62,12 +65,15 @@ export class AIManager {
     };
 
     if (navigator.userActivation?.isActive) {
-      console.log("[LLE] User activation active. Starting download immediately.");
+      console.log(
+        "[LLE] User activation active. Starting download immediately.",
+      );
       initDownload();
     } else {
       console.log("[LLE] Waiting for user interaction to start download...");
       const onUserInteraction = (e: Event) => {
-        if (e.type === "keydown" && (e as KeyboardEvent).key === "Escape") return;
+        if (e.type === "keydown" && (e as KeyboardEvent).key === "Escape")
+          return;
 
         document.removeEventListener("mousedown", onUserInteraction);
         document.removeEventListener("pointerdown", onUserInteraction);
@@ -75,7 +81,9 @@ export class AIManager {
         document.removeEventListener("touchend", onUserInteraction);
         document.removeEventListener("keydown", onUserInteraction);
 
-        console.log(`[LLE] User interaction detected (${e.type}). Starting download...`);
+        console.log(
+          `[LLE] User interaction detected (${e.type}). Starting download...`,
+        );
         initDownload();
       };
 
@@ -88,11 +96,6 @@ export class AIManager {
   }
 
   public async onTimeUpdate(currentTimeMs: number) {
-    // Only process Japanese content
-    if (store.sourceLanguage && !store.sourceLanguage.startsWith("ja")) {
-      return;
-    }
-
     const allSegments = store.getAllSegments();
     if (allSegments.length === 0) return;
 
@@ -109,8 +112,13 @@ export class AIManager {
     }
 
     // Detect significant jumps to clear queues
-    if (this.lastTriggerIndex !== -1 && Math.abs(targetIndex - this.lastTriggerIndex) > 5) {
-      console.log(`[LLE] Significant jump detected (${this.lastTriggerIndex} -> ${targetIndex}). Clearing queues.`);
+    if (
+      this.lastTriggerIndex !== -1 &&
+      Math.abs(targetIndex - this.lastTriggerIndex) > 5
+    ) {
+      console.log(
+        `[LLE] Significant jump detected (${this.lastTriggerIndex} -> ${targetIndex}). Clearing queues.`,
+      );
       this.pendingTranslationIndices.clear();
       this.pendingInsightsIndices.clear();
       // We don't reset processing flags here, they'll resolve naturally or stay locked if active
@@ -136,10 +144,10 @@ export class AIManager {
       i++
     ) {
       const seg = allSegments[i];
-      
-      const needsTranslation = 
-        !this.pendingTranslationIndices.has(i) && 
-        translatorService.isReady() && 
+
+      const needsTranslation =
+        !this.pendingTranslationIndices.has(i) &&
+        translatorService.isReady() &&
         !seg.translation;
 
       const inInsightsRange = i < startIndex + this.insightsBuffer;
@@ -162,7 +170,7 @@ export class AIManager {
     if (insightsTasks.length > 0 && !this.isInsightsProcessing) {
       // Mark as pending immediately to indicate they are scheduled.
       // If a jump occurs, these will be cleared, and processInsights will skip them.
-      insightsTasks.forEach(i => this.pendingInsightsIndices.add(i));
+      insightsTasks.forEach((i) => this.pendingInsightsIndices.add(i));
       this.processInsights(insightsTasks);
     }
   }
@@ -170,7 +178,9 @@ export class AIManager {
   private async processTranslations(indices: number[]) {
     this.isTranslationProcessing = true;
     try {
-      await Promise.all(indices.map(idx => this.executeTask(idx, true, false)));
+      await Promise.all(
+        indices.map((idx) => this.executeTask(idx, true, false)),
+      );
     } finally {
       this.isTranslationProcessing = false;
     }
@@ -185,7 +195,7 @@ export class AIManager {
         // If a jump occurred, pendingInsightsIndices would have been cleared,
         // so we should skip the remaining tasks from the old queue.
         if (this.pendingInsightsIndices.has(idx)) {
-           await this.executeTask(idx, false, true);
+          await this.executeTask(idx, false, true);
         }
       }
     } finally {
@@ -193,7 +203,11 @@ export class AIManager {
     }
   }
 
-  private async executeTask(index: number, translate: boolean, insights: boolean) {
+  private async executeTask(
+    index: number,
+    translate: boolean,
+    insights: boolean,
+  ) {
     const allSegments = store.getAllSegments();
     const segment = allSegments[index];
     if (!segment) return;
@@ -235,7 +249,10 @@ export class AIManager {
         }
       }
     } catch (error) {
-      console.error(`[LLE][AIManager] Execution error for segment ${index}`, error);
+      console.error(
+        `[LLE][AIManager] Execution error for segment ${index}`,
+        error,
+      );
     } finally {
       // We don't remove from pendingIndices here to prevent re-processing the same index
       // until the video changes or a jump occurs.

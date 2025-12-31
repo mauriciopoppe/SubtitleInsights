@@ -12,5 +12,6 @@
 
 ---
 
-## [~] Track: Language Profiles & Settings Page
+## [x] Track: Language Profiles & Settings Page
+*Link: [./conductor/archive/profiles_and_settings_page_20251231/](./conductor/archive/profiles_and_settings_page_20251231/)*
 *Link: [./conductor/tracks/profiles_and_settings_page_20251231/](./conductor/tracks/profiles_and_settings_page_20251231/)*

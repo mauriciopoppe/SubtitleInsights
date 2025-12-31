@@ -1,21 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GrammarExplainer } from './explainer';
+import { ProfileManager } from '../profiles'; // Import for typing
+import { store } from '../store'; // Import for typing
 
-vi.mock('../profiles', () => ({
-  ProfileManager: {
-    getActiveProfile: vi.fn().mockResolvedValue({
-      systemPrompt: 'Mock Prompt',
-      sourceLanguage: 'ja',
-      targetLanguage: 'en'
-    })
-  }
-}));
-
-vi.mock('../store', () => ({
-  store: {
-    setWarning: vi.fn()
-  }
-}));
+vi.mock('../profiles'); // Mock the module globally
+vi.mock('../store'); // Mock the module globally
 
 describe('GrammarExplainer', () => {
   let explainer: GrammarExplainer;
@@ -23,6 +12,9 @@ describe('GrammarExplainer', () => {
   let mockWorkingSession: any;
 
   beforeEach(() => {
+    // Reset mocks before each test
+    vi.resetAllMocks();
+
     mockWorkingSession = {
       prompt: vi.fn().mockResolvedValue('Grammar explanation'),
       destroy: vi.fn().mockResolvedValue(undefined),
@@ -39,6 +31,16 @@ describe('GrammarExplainer', () => {
       create: vi.fn().mockResolvedValue(mockRootSession),
       availability: vi.fn().mockResolvedValue('available'),
     });
+
+    // Default mock for ProfileManager, can be overridden per test
+    (ProfileManager.getActiveProfile as vi.Mock).mockResolvedValue({
+      systemPrompt: 'Mock Prompt',
+      sourceLanguage: 'ja',
+      targetLanguage: 'en'
+    });
+    // Default mock for store.setWarning, can be overridden per test
+    (store.setWarning as vi.Mock).mockClear();
+
 
     explainer = new GrammarExplainer();
   });
@@ -88,5 +90,51 @@ describe('GrammarExplainer', () => {
     
     expect(result).toBe('Grammar explanation');
     expect(mockWorkingSession.prompt).toHaveBeenCalledWith(expect.stringContaining('毎日お茶を飲みます。'));
+  });
+
+  it('should surface a warning and fallback source language if not supported in initialize', async () => {
+    ProfileManager.getActiveProfile.mockResolvedValueOnce({
+      systemPrompt: 'Mock Prompt',
+      sourceLanguage: 'fr', // Unsupported
+      targetLanguage: 'en'
+    });
+    
+    const success = await explainer.initialize();
+    expect(success).toBe(true);
+    expect(store.setWarning).toHaveBeenCalledWith(expect.stringContaining('Source language "fr" not supported by Explainer. Falling back to "en".'));
+    expect(window.LanguageModel.create).toHaveBeenCalledWith(expect.objectContaining({
+      expectedInputs: expect.arrayContaining([
+        expect.objectContaining({ languages: ['en', 'en'] }) // Target 'en', Fallback source 'en'
+      ])
+    }));
+  });
+
+  it('should surface a warning and be unavailable if target language not supported in checkAvailability', async () => {
+    ProfileManager.getActiveProfile.mockResolvedValueOnce({
+      systemPrompt: 'Mock Prompt',
+      sourceLanguage: 'ja',
+      targetLanguage: 'fr' // Unsupported
+    });
+    window.LanguageModel.availability.mockResolvedValueOnce('unavailable');
+
+    const availability = await explainer.checkAvailability();
+    expect(availability).toBe('unavailable');
+    expect(store.setWarning).toHaveBeenCalledWith(expect.stringContaining('Target language "fr" not supported by Explainer. Only en, ja, es are supported.'));
+  });
+
+  it('should surface a warning and fallback source language in checkAvailability', async () => {
+    ProfileManager.getActiveProfile.mockResolvedValueOnce({
+      systemPrompt: 'Mock Prompt',
+      sourceLanguage: 'fr', // Unsupported
+      targetLanguage: 'en'
+    });
+    window.LanguageModel.availability.mockResolvedValueOnce('available'); // Assuming model can still become available with fallback
+
+    const availability = await explainer.checkAvailability();
+    expect(availability).toBe('available');
+    expect(store.setWarning).toHaveBeenCalledWith(expect.stringContaining('Source language "fr" not supported by Explainer. Falling back to "en" for analysis.'));
+    expect(window.LanguageModel.availability).toHaveBeenCalledWith(expect.objectContaining({
+      languages: ['en', 'en'] // Target 'en', Fallback source 'en'
+    }));
   });
 });
