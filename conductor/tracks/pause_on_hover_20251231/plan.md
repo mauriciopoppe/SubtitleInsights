@@ -11,7 +11,7 @@
     - [ ] This hook will manage the hover state over the overlay and control the video pausing.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Settings Toggle & State Management' (Protocol in workflow.md)
 
-## Phase 2: Core Pause/Resume Logic
+## Phase 2: Core Pause/Resume Logic [checkpoint: 73e3ec8]
 - [x] Task: Implement video event listeners in `usePauseOnHover`.
     - [ ] Listen for `timeupdate` events on the video player.
     - [ ] Listen for `mousemove` and `mouseleave` events on the overlay element (`#lle-overlay`).
