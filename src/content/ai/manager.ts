@@ -7,14 +7,14 @@ import { store } from "../store";
 interface ProcessingTask {
   index: number;
   translate: boolean;
-  grammar: boolean;
+  insights: boolean;
 }
 
 export class AIManager {
   private isProcessing = false;
   private pendingIndices = new Set<number>();
   private translateBuffer = 10;
-  private grammarBuffer = 2;
+  private insightsBuffer = 2;
 
   constructor() {}
 
@@ -50,7 +50,7 @@ export class AIManager {
     const allSegments = store.getAllSegments();
     const toProcess: ProcessingTask[] = [];
 
-    const isGrammarEnabled = await Config.getIsGrammarExplainerEnabled();
+    const isInsightsEnabled = await Config.getIsGrammarExplainerEnabled();
 
     // Single loop up to the maximum buffer (translateBuffer)
     for (
@@ -61,19 +61,19 @@ export class AIManager {
       const seg = allSegments[i];
       const needsTranslation = translatorService.isReady() && !seg.translation;
 
-      const inGrammarRange = i < startIndex + this.grammarBuffer;
-      const needsGrammar =
-        isGrammarEnabled &&
+      const inInsightsRange = i < startIndex + this.insightsBuffer;
+      const needsInsights =
+        isInsightsEnabled &&
         grammarExplainer.isReady() &&
         !seg.contextual_analysis &&
         isComplexSentence(seg.text) &&
-        inGrammarRange;
+        inInsightsRange;
 
-      if ((needsTranslation || needsGrammar) && !this.pendingIndices.has(i)) {
+      if ((needsTranslation || needsInsights) && !this.pendingIndices.has(i)) {
         toProcess.push({
           index: i,
           translate: !!needsTranslation,
-          grammar: !!needsGrammar,
+          insights: !!needsInsights,
         });
       }
     }
@@ -95,7 +95,7 @@ export class AIManager {
   }
 
   private async processSegment(task: ProcessingTask) {
-    const { index, translate, grammar } = task;
+    const { index, translate, insights } = task;
     const allSegments = store.getAllSegments();
     const segment = allSegments[index];
     if (!segment) return;
@@ -131,7 +131,7 @@ export class AIManager {
         );
       }
 
-      if (grammar) {
+      if (insights) {
         tasks.push(
           (async () => {
             try {
@@ -142,7 +142,7 @@ export class AIManager {
               store.updateSegmentAnalysis(index, analysis);
             } catch (e) {
               console.error(
-                `[LLE] Grammar explanation failed for ${index}:`,
+                `[LLE] Insights explanation failed for ${index}:`,
                 e,
               );
             }
