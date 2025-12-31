@@ -1,6 +1,6 @@
 # Plan: Rebrand to "Subtitle Insights" and Prefix Migration
 
-## Phase 1: Rebranding & Metadata
+## Phase 1: Rebranding & Metadata [checkpoint: f263c62]
 - [x] Task: Update extension name and description in `manifest.json`.
 - [x] Task: Update product documentation in `conductor/product.md` and `conductor/product-guidelines.md`.
 - [x] Task: Conductor - User Manual Verification 'Rebranding & Metadata' (Protocol in workflow.md)
