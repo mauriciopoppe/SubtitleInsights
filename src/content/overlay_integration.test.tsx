@@ -51,7 +51,7 @@ describe("Integration: Overlay Rendering", () => {
 
     // 2. Add segments to store
     await act(async () => {
-      store.addSegments([
+      store.replaceSegments([
         { start: 1000, end: 3000, text: "First Segment" },
         { start: 4000, end: 6000, text: "Second Segment" },
       ]);

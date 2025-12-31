@@ -62,7 +62,7 @@ describe('Integration: Background Message -> Sidebar Render', () => {
 
     // 3. Simulate the logic inside chrome.runtime.onMessage listener
     const segments = SubtitleStore.parseYouTubeJSON(mockPayload);
-    store.addSegments(segments);
+    store.replaceSegments(segments);
 
     // Wait for Preact to render
     await new Promise((resolve) => setTimeout(resolve, 50));

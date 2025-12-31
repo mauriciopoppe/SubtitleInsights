@@ -328,6 +328,14 @@ export class SubtitleStore {
     return this.segments;
   }
 
+  replaceSegments(newSegments: SubtitleSegment[]) {
+    this.segments = newSegments.sort((a, b) => a.start - b.start);
+    console.log(
+      `[SI][SubtitleStore] Replaced with ${newSegments.length} segments.`,
+    );
+    this.notifyListeners();
+  }
+
   clear() {
     this.segments = [];
     this._sourceLanguage = null;

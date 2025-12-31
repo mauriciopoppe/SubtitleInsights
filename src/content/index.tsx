@@ -51,7 +51,7 @@ chrome.runtime.onMessage.addListener((message) => {
       store.setSourceLanguage(message.language);
     }
     const segments = SubtitleStore.parseYouTubeJSON(message.payload);
-    store.addSegments(segments);
+    store.replaceSegments(segments);
   }
 });
 
