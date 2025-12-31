@@ -43,11 +43,18 @@ export class GrammarExplainer {
         return false;
       }
 
-      const caps = await window.LanguageModel.capabilities();
+      const params = await window.LanguageModel.params();
       const options: LanguageModelCreateOptions = {
-        systemPrompt: systemPrompt,
+        initialPrompts: [
+          {
+            role: "system",
+            content: systemPrompt,
+          },
+        ],
+        expectedInputs: [{ type: "text", languages: ["en", "ja"] }],
+        expectedOutputs: [{ type: "text", languages: ["en", "ja"] }],
         temperature: 0.2,
-        topK: caps.defaultTopK || undefined,
+        topK: params.defaultTopK || undefined,
       };
 
       this.rootSession = await window.LanguageModel.create(options);

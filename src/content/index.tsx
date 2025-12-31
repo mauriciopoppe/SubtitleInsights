@@ -40,11 +40,13 @@ chrome.runtime.onMessage.addListener((message) => {
   if (message.type === "LLE_SUBTITLES_CAPTURED") {
     const currentVideoId = new URLSearchParams(window.location.search).get("v");
     if (message.videoId && message.videoId !== currentVideoId) {
-      console.log(`[LLE] Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`);
+      console.log(
+        `[LLE] Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`,
+      );
       return;
     }
 
-    console.log("[LLE] Received subtitles from background:", message.payload);
+    console.log("[LLE] Accepted message to process from background:", message);
     if (message.language) {
       store.setSourceLanguage(message.language);
     }
@@ -82,7 +84,7 @@ const init = async () => {
     rightControls.prepend(toggleContainer);
   }
   render(<ExtensionToggle />, toggleContainer);
-  
+
   const sidebarContainer = document.createElement("div");
   sidebarContainer.id = "lle-sidebar-root";
   secondaryInner.prepend(sidebarContainer);
@@ -107,61 +109,72 @@ const init = async () => {
     } else if (translationAvailability === "downloadable") {
       store.setAIStatus("none");
       console.log("[LLE] AI models need download.");
-      
+
       const initDownload = async () => {
-         store.setAIStatus("downloading", "Downloading AI models...");
-         store.setSystemMessage("Downloading AI models...");
-         const success = await translatorService.initialize((loaded, total) => {
+        store.setAIStatus("downloading", "Downloading AI models...");
+        store.setSystemMessage("Downloading AI models...");
+        const success = await translatorService.initialize((loaded, total) => {
           const percent = Math.round((loaded / total) * 100);
-          store.setAIStatus("downloading", `Downloading AI models: ${percent}%`);
+          store.setAIStatus(
+            "downloading",
+            `Downloading AI models: ${percent}%`,
+          );
           store.setSystemMessage(`Downloading AI models: ${percent}%`);
           console.log(`[LLE] AI Download progress: ${percent}%`);
         });
 
         if (success) {
-           store.setAIStatus("ready", "AI Translator Ready");
-           store.setSystemMessage(null);
-           console.log("[LLE] AI Translator initialized after download.");
+          store.setAIStatus("ready", "AI Translator Ready");
+          store.setSystemMessage(null);
+          console.log("[LLE] AI Translator initialized after download.");
         } else {
-           store.setAIStatus("error", "AI Initialization Failed");
-           store.setSystemMessage("AI Translation Failed to initialize");
+          store.setAIStatus("error", "AI Initialization Failed");
+          store.setSystemMessage("AI Translation Failed to initialize");
         }
       };
 
       if (navigator.userActivation?.isActive) {
-        console.log("[LLE] User activation active. Starting download immediately.");
+        console.log(
+          "[LLE] User activation active. Starting download immediately.",
+        );
         await initDownload();
       } else {
         console.log("[LLE] Waiting for user interaction to start download...");
         const onUserInteraction = async (e: Event) => {
-           // Filter invalid keydown events
-           if (e.type === 'keydown' && (e as KeyboardEvent).key === 'Escape') return;
+          // Filter invalid keydown events
+          if (e.type === "keydown" && (e as KeyboardEvent).key === "Escape")
+            return;
 
-           // Remove all listeners
-           document.removeEventListener('mousedown', onUserInteraction);
-           document.removeEventListener('pointerdown', onUserInteraction);
-           document.removeEventListener('pointerup', onUserInteraction);
-           document.removeEventListener('touchend', onUserInteraction);
-           document.removeEventListener('keydown', onUserInteraction);
-           
-           console.log(`[LLE] User interaction detected (${e.type}). Starting download...`);
-           await initDownload();
+          // Remove all listeners
+          document.removeEventListener("mousedown", onUserInteraction);
+          document.removeEventListener("pointerdown", onUserInteraction);
+          document.removeEventListener("pointerup", onUserInteraction);
+          document.removeEventListener("touchend", onUserInteraction);
+          document.removeEventListener("keydown", onUserInteraction);
+
+          console.log(
+            `[LLE] User interaction detected (${e.type}). Starting download...`,
+          );
+          await initDownload();
         };
-        
-        document.addEventListener('mousedown', onUserInteraction);
-        document.addEventListener('pointerdown', onUserInteraction);
-        document.addEventListener('pointerup', onUserInteraction);
-        document.addEventListener('touchend', onUserInteraction);
-        document.addEventListener('keydown', onUserInteraction);
+
+        document.addEventListener("mousedown", onUserInteraction);
+        document.addEventListener("pointerdown", onUserInteraction);
+        document.addEventListener("pointerup", onUserInteraction);
+        document.addEventListener("touchend", onUserInteraction);
+        document.addEventListener("keydown", onUserInteraction);
       }
     }
 
     // Grammar Explainer Setup
     const grammarAvailability = await grammarExplainer.checkAvailability();
-    console.log("[LLE] AI Grammar Explainer availability:", grammarAvailability);
+    console.log(
+      "[LLE] AI Grammar Explainer availability:",
+      grammarAvailability,
+    );
     if (grammarAvailability === "available") {
-       await grammarExplainer.initialize();
-       console.log("[LLE] AI Grammar Explainer initialized.");
+      await grammarExplainer.initialize();
+      console.log("[LLE] AI Grammar Explainer initialized.");
     }
   };
 
@@ -213,9 +226,12 @@ const init = async () => {
 };
 
 const run = () => {
-    if (window.location.pathname === '/watch' || window.location.pathname.startsWith('/watch')) {
-        init();
-    }
+  if (
+    window.location.pathname === "/watch" ||
+    window.location.pathname.startsWith("/watch")
+  ) {
+    init();
+  }
 };
 
 window.addEventListener("yt-navigate-finish", run);
