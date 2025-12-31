@@ -16,8 +16,41 @@ export function SidebarApp() {
   } = useSubtitleStore();
   const config = useConfig();
   const [currentTimeMs, setCurrentTimeMs] = useState(0);
+  const hasInitiallyScrolled = useRef(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Reset scroll tracker when segments are cleared (usually on video change)
+  useEffect(() => {
+    if (segments.length === 0) {
+      hasInitiallyScrolled.current = false;
+    }
+  }, [segments.length]);
+
+  // Handle initial auto-scroll when segments arrive
+  useEffect(() => {
+    if (segments.length > 0 && !hasInitiallyScrolled.current) {
+      const video = document.querySelector('video');
+      const timeMs = video ? video.currentTime * 1000 : 0;
+
+      // Find active segment or nearest upcoming one
+      let targetIndex = segments.findIndex(s => timeMs >= s.start && timeMs <= s.end);
+      if (targetIndex === -1) {
+        targetIndex = segments.findIndex(s => s.start > timeMs);
+      }
+
+      if (targetIndex !== -1) {
+        // We need to wait a tick for the items to actually be in the DOM
+        setTimeout(() => {
+          const item = document.querySelector(`.lle-sidebar-item[data-index="${targetIndex}"]`);
+          if (item && typeof item.scrollIntoView === 'function') {
+            item.scrollIntoView({ behavior: 'auto', block: 'center' });
+            hasInitiallyScrolled.current = true;
+          }
+        }, 0);
+      }
+    }
+  }, [segments]);
 
   // Sync with video time
   useEffect(() => {

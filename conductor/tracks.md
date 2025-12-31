@@ -7,6 +7,16 @@
 
 ---
 
+## [ ] Track: Automated Language Detection for Subtitles
+*Link: [./conductor/tracks/automated_language_detection_20251230/](./conductor/tracks/automated_language_detection_20251230/)*
+
+---
+
+## [~] Track: Auto-Scroll Sidebar on Initial Render
+*Link: [./conductor/tracks/sidebar_auto_scroll_20251230/](./conductor/tracks/sidebar_auto_scroll_20251230/)*
+
+---
+
 ## [x] Track: Recreate Grammar Explainer on Video Change
 *Link: [./conductor/archive/recreate_explainer_20251230/](./conductor/archive/recreate_explainer_20251230/)*
 
