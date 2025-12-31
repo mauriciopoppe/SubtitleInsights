@@ -25,10 +25,8 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Pause/Resume Logic' (Protocol in workflow.md)
 
 ## Phase 3: Integration & Testing
-- [ ] Task: Verify subtitle status detection.
-    - [ ] Ensure `usePauseOnHover` accurately determines if YouTube subtitles are enabled.
-- [ ] Task: Integration test for full functionality.
+- [x] Task: Integration test for full functionality.
     - [ ] Manually test toggling the feature on/off.
     - [ ] Verify precise pausing 0.3s before segment end.
     - [ ] Verify resume on mouse leave and manual play.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Testing' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Testing' (Protocol in workflow.md)
