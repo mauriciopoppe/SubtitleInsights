@@ -1,37 +1,55 @@
-# Initial Concept
+# Product: Subtitle Insights
 
-I want to build a chrome extension that uses the Chrome Prompt API at https://developer.chrome.com/docs/ai/prompt-api. This is a toy project so experimentation and running as fast as possible is a must. No need to adhere to strict conventions. Just make it run as fast as possible.
+## Core Value Proposition
 
-# Product Guide - Subtitle Insights (YouTube)
-
-## Core Concept
-A Chrome extension designed for language learners who use YouTube as their primary source of immersion. It overlays advanced translation data on top of native YouTube subtitles, leveraging the local Chrome Prompt API for high-performance, privacy-respecting AI features.
-
-## Target Audience
-- Language learners (specifically Japanese to English initially).
-- Users who want both literal and natural translations to understand grammar and nuance.
-- Students of Kanji and Kana who benefit from Romaji and furigana-like aids.
+"Subtitle Insights" transforms any video with subtitles into an interactive language learning experience. By leveraging local, privacy-first AI models directly within Chrome, it provides real-time translations and grammatical insights for subtitle segments without sending data to external servers. It supports **multiple languages**, making it a versatile tool for learners.
 
 ## Key Features
-- **Dual Subtitles:** Overlays secondary English subtitles on top of original Japanese ones.
-- **Literal vs. Natural:** Displays both a word-for-word breakdown and a fluid natural translation.
-- **Furigana & Segmentation:** Adds Hiragana readings above Kanji (using `<ruby>`) and segments sentences with visible spaces for easier reading.
-- **Pre-fetch Translation:** Optimizes speed by fetching and translating subtitle tracks ahead of playback.
-- **AI Automated Translation:** Automatically translates Japanese subtitle tracks into English using on-device AI models if no manual data is provided.
-- **AI Insights:** Automatically generates concise English summaries of grammar and particles for Japanese sentences using the local Chrome Prompt API.
-- **Player Integration:** Adds a native-style toggle icon directly into the YouTube player's right controls (left of the CC button) for seamless activation.
-- **SRT Subtitle Upload:** Allows users to upload standard .srt subtitle files to replace or augment the video tracks.
-- **Sidebar Transcript:** Provides a vertical list of all educational segments in the YouTube sidebar, highlighting the active segment in sync with the video.
-- **Granular Visibility Controls:** Grouped toggles in the settings dropdown allow users to independently control the visibility of the original text, translations, AI insights, and player behaviors (like hover pause) within both the on-video Overlay and the Sidebar Transcript.
-- **Pause on Hover:** An optional setting that automatically pauses the video when the user hovers over the educational overlay to allow more reading time, resuming when the mouse leaves.
-- **Language Profiles:** Manage settings for different languages (e.g., Japanese, French) with custom AI prompts and configurations.
-- **Dedicated Settings Page:** A full settings page to manage profiles and other extension options, accessible from the sidebar.
-- **In-Page Overlay:** Injects directly into the YouTube player for a seamless, "Language Reactor"-style experience.
+
+1.  **In-Page Overlay**
+    *   Displays the current subtitle segment directly over the video player.
+    *   **Pause on Hover:** Automatically pauses the video when the user hovers over the overlay near the end of a segment, allowing time to read and process the information.
+    *   **Interactive Controls:**
+        *   **Replay Segment:** Instantly replay the current segment to listen again.
+        *   **Scroll Sync:** Button to sync the sidebar view to the current active segment.
+        *   **Pause Toggle:** Easily enable/disable the pause-on-hover feature.
+    *   **Proximity Visibility:** Controls appear only when the mouse is near the top-left area to avoid distracting from the content or blocking interactions (e.g., with Yomitan).
+
+2.  **Smart Sidebar**
+    *   Displays the full transcript of the video.
+    *   Highlights the active segment in real-time.
+    *   **Sync Button:** Instantly scrolls the sidebar to the currently playing segment.
+
+3.  **Local AI Translation**
+    *   **Single High-Quality Translation:** Provides a context-aware translation for each segment using Chrome's built-in AI Translation API.
+    *   **Privacy-First:** All processing happens locally on the device.
+    *   **Look-ahead Processing:** Pre-fetches translations for the next **10 segments** to ensure seamless playback.
+
+4.  **AI Insights (Grammar Explanation)**
+    *   analyzes complex sentences to provide grammatical breakdowns and cultural context.
+    *   Powered by Chrome's built-in Prompt API (Gemini Nano).
+    *   **Look-ahead Processing:** Pre-fetches insights for the next **5 segments**.
 
 ## User Experience
-1. User navigates to a YouTube video in Japanese.
-2. The extension activates, pre-fetching the subtitle track.
-3. The Chrome Translation API processes translations (up to 10 segments in advance).
-4. The Chrome Prompt API generates grammar explanations for upcoming segments (up to 2 in advance).
-5. An overlay and sidebar cards display the dual-translation and grammar summaries.
-6. (Optional) User uploads a standard .srt file to use custom subtitles.
+
+*   **Seamless Integration:** The extension injects a clean, unobtrusive overlay into the video player (e.g., YouTube).
+*   **Language Agnostic:** Works with any language supported by the underlying AI models.
+*   **Performance:** Optimized for low latency using local models.
+*   **Accessibility:** Supports keyboard shortcuts and visual cues.
+
+## Technical Foundation
+
+*   **Chrome Built-in AI:**
+    *   [Translation API](https://github.com/WICG/translation-api) for segment translation.
+    *   [Prompt API](https://github.com/explainers-by-googlers/prompt-api) for grammatical insights.
+*   **Framework:** Preact for a lightweight, performant UI.
+*   **Architecture:**
+    *   `SubtitleStore`: Centralized state management for segments and playback status.
+    *   `AIManager`: Orchestrates AI tasks with buffering (10 segments for translation, 5 for insights).
+    *   `OverlayApp`: Handles the visual presentation and user interactions on top of the video.
+
+## Future Direction
+
+*   Expand support for more video platforms.
+*   Allow users to customize AI prompts for different learning styles.
+
