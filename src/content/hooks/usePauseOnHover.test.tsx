@@ -32,6 +32,13 @@ describe('usePauseOnHover', () => {
       configurable: true
     });
 
+    // Mock seeking property
+    Object.defineProperty(videoEl, 'seeking', {
+      get: () => videoEl.hasAttribute('seeking-mock'),
+      set: (val) => val ? videoEl.setAttribute('seeking-mock', 'true') : videoEl.removeAttribute('seeking-mock'),
+      configurable: true
+    });
+
     // Mock play and pause
     videoEl.play = vi.fn().mockImplementation(async () => {
       (videoEl as any).paused = false;
@@ -136,6 +143,93 @@ describe('usePauseOnHover', () => {
       overlayEl.dispatchEvent(new MouseEvent('mouseleave'));
     });
     expect(videoEl.play).not.toHaveBeenCalled();
+  });
+
+  it('should not re-pause immediately if the user manually plays the video while hovering', async () => {
+    const activeSegment = { start: 1000, end: 2000, text: 'Test' };
+    vi.spyOn(store, 'getSegmentAt').mockReturnValue(activeSegment);
+
+    await act(() => {
+      render(<TestComponent isEnabled={true} />, document.getElementById('root')!);
+    });
+
+    const overlayEl = document.getElementById('test-overlay')!;
+
+    // 1. Hover and trigger auto-pause
+    await act(() => {
+      overlayEl.dispatchEvent(new MouseEvent('mousemove'));
+    });
+    await act(() => {
+      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true });
+      videoEl.dispatchEvent(new Event('timeupdate'));
+    });
+    expect(videoEl.pause).toHaveBeenCalledTimes(1);
+    expect(videoEl.paused).toBe(true);
+
+    // 2. Simulate manual play (space bar etc)
+    await act(() => {
+      // We need to ensure wasPausedByHover is true in the hook's state
+      // before dispatching 'play'. In JSDOM/Preact, the state update
+      // from video.pause() call might need a tick.
+      videoEl.dispatchEvent(new Event('play'));
+    });
+
+    // 3. Trigger timeupdate again at the same position
+    await act(() => {
+      videoEl.dispatchEvent(new Event('timeupdate'));
+    });
+
+    // Should NOT have called pause a second time
+    expect(videoEl.pause).toHaveBeenCalledTimes(1);
+  });
+
+  it('should still pause at the end if the segment is replayed from the beginning', async () => {
+    const activeSegment = { start: 1000, end: 2000, text: 'Test' };
+    vi.spyOn(store, 'getSegmentAt').mockReturnValue(activeSegment);
+
+    await act(() => {
+      render(<TestComponent isEnabled={true} />, document.getElementById('root')!);
+    });
+
+    const overlayEl = document.getElementById('test-overlay')!;
+
+    // 1. Hover and trigger auto-pause at the end of segment
+    await act(() => {
+      overlayEl.dispatchEvent(new MouseEvent('mousemove'));
+    });
+    await act(() => {
+      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true });
+      videoEl.dispatchEvent(new Event('timeupdate'));
+    });
+    expect(videoEl.pause).toHaveBeenCalledTimes(1);
+
+    // 2. Simulate "Replay" action: seek to start and play
+    await act(async () => {
+      Object.defineProperty(videoEl, 'currentTime', { value: 1.0, configurable: true });
+      // Update seeking state
+      (videoEl as any).seeking = true;
+      videoEl.dispatchEvent(new Event('seeking'));
+      
+      // Update paused state and fire play
+      (videoEl as any).paused = false;
+      videoEl.dispatchEvent(new Event('play'));
+      
+      // Simulate seeking done
+      (videoEl as any).seeking = false;
+      videoEl.dispatchEvent(new Event('seeked'));
+
+      // Ensure suppression is cleared immediately because we are far from the end
+      videoEl.dispatchEvent(new Event('timeupdate'));
+    });
+
+    // 3. Reach the end of the segment again
+    await act(() => {
+      Object.defineProperty(videoEl, 'currentTime', { value: 1.9, configurable: true });
+      videoEl.dispatchEvent(new Event('timeupdate'));
+    });
+
+    // Should pause AGAIN (total 2 times)
+    expect(videoEl.pause).toHaveBeenCalledTimes(2);
   });
 
   it('should reset hover state when overlay becomes invisible', async () => {
