@@ -14,4 +14,13 @@
 
 ## [x] Track: Language Profiles & Settings Page
 *Link: [./conductor/archive/profiles_and_settings_page_20251231/](./conductor/archive/profiles_and_settings_page_20251231/)*
-*Link: [./conductor/tracks/profiles_and_settings_page_20251231/](./conductor/tracks/profiles_and_settings_page_20251231/)*\n---\n\n## [~] Track: Rebrand to 'Subtitle Insights' and Prefix Migration\n*Link: [./conductor/tracks/rebrand_subtitle_insights_20251231/](./conductor/tracks/rebrand_subtitle_insights_20251231/)*
+
+---
+
+## [ ] Track: Rebrand to 'Subtitle Insights' and Prefix Migration (Archived)
+*Link: [./conductor/archive/rebrand_subtitle_insights_20251231/](./conductor/archive/rebrand_subtitle_insights_20251231/)*
+
+---
+
+## [ ] Track: Chrome Side Panel Migration (Future Idea)
+*Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tracks/chrome_side_panel_migration_20251231/)*

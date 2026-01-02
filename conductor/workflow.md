@@ -19,15 +19,18 @@ All tasks follow a high-velocity lifecycle:
 
 2. **Mark In Progress:** Edit `plan.md` and change the task from `[ ]` to `[~]`.
 
-3. **Implement:**
-   - Write the code to implement the feature or fix the bug.
-   - Focus on speed and functionality.
+3. **Test First (TDD):**
+   - Write an automated test that describes the desired behavior or reproduces the bug.
+   - Run the test and confirm it fails (`npm test -- run`).
 
-4. **Test:**
-   - Run `npm test -- run` to verify changes with automated tests.
-   - Fix any broken tests or update them if the behavior change was intentional.
+4. **Implement:**
+   - Write the minimum amount of code to make the test pass.
+   - Focus on functionality.
 
-5. **Verify:** Ensure the feature works as expected in the browser/app via manual verification.
+5. **Refactor & Verify:**
+   - Run `npm test -- run` to ensure all tests pass.
+   - Refactor code for cleanliness and readability.
+   - Ensure the feature works as expected in the browser/app via manual verification.
 
 6. **Document Deviations:** If implementation differs from tech stack:
    - Update `tech-stack.md` with new design
