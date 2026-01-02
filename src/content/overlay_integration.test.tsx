@@ -3,6 +3,7 @@ import { render } from "preact";
 import { act } from "preact/test-utils";
 import { store } from "./store";
 import { OverlayApp } from "./components/OverlayApp";
+import { Config } from "./config";
 
 // Mock Config
 vi.mock("./config", () => ({
@@ -16,6 +17,7 @@ vi.mock("./config", () => ({
     getIsTranslationVisibleInOverlay: vi.fn().mockResolvedValue(true),
     getIsTranslationVisibleInSidebar: vi.fn().mockResolvedValue(true),
     getIsOriginalVisibleInOverlay: vi.fn().mockResolvedValue(true),
+    setIsPauseOnHoverEnabled: vi.fn().mockResolvedValue(undefined),
     addChangeListener: vi.fn(),
     addOverlayChangeListener: vi.fn(),
     addGrammarExplainerChangeListener: vi.fn(),
@@ -116,5 +118,82 @@ describe("Integration: Overlay Rendering", () => {
       store.setSystemMessage(null);
     });
     expect(document.querySelector(".si-system-message")).toBeNull();
+  });
+
+  it("should toggle pause on hover when the icon is clicked", async () => {
+    await act(async () => {
+      render(<OverlayApp />, document.getElementById("overlay-root")!);
+    });
+
+    // Add a segment to make the overlay visible
+    await act(async () => {
+      store.replaceSegments([{ start: 1000, end: 3000, text: "Test" }]);
+      Object.defineProperty(videoEl, "currentTime", { value: 1.5, configurable: true });
+      videoEl.dispatchEvent(new Event("timeupdate"));
+    });
+
+    const toggleBtn = document.querySelector(".si-overlay-toggle-pause");
+    expect(toggleBtn).not.toBeNull();
+
+    await act(async () => {
+      toggleBtn?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(Config.setIsPauseOnHoverEnabled).toHaveBeenCalledWith(true);
+  });
+
+  it("should scroll the sidebar to the active segment when the scroll icon is clicked", async () => {
+    await act(async () => {
+      render(<OverlayApp />, document.getElementById("overlay-root")!);
+    });
+
+    // Add a segment to make the overlay visible
+    await act(async () => {
+      store.replaceSegments([{ start: 1000, end: 3000, text: "Test" }]);
+      Object.defineProperty(videoEl, "currentTime", { value: 1.5, configurable: true });
+      videoEl.dispatchEvent(new Event("timeupdate"));
+    });
+
+    // Mock an active sidebar item
+    const mockSidebarItem = document.createElement("div");
+    mockSidebarItem.className = "si-sidebar-item active";
+    mockSidebarItem.scrollIntoView = vi.fn();
+    document.body.appendChild(mockSidebarItem);
+
+    const scrollBtn = document.querySelector(".si-overlay-scroll-sidebar");
+    expect(scrollBtn).not.toBeNull();
+
+    await act(async () => {
+      scrollBtn?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(mockSidebarItem.scrollIntoView).toHaveBeenCalledWith({ behavior: "smooth", block: "center" });
+    
+    // Cleanup
+    document.body.removeChild(mockSidebarItem);
+  });
+
+  it("should replay the active segment when the replay icon is clicked", async () => {
+    await act(async () => {
+      render(<OverlayApp />, document.getElementById("overlay-root")!);
+    });
+
+    // Add a segment to make the overlay visible
+    await act(async () => {
+      store.replaceSegments([{ start: 1000, end: 3000, text: "Test" }]);
+      Object.defineProperty(videoEl, "currentTime", { value: 1.5, configurable: true, writable: true });
+      videoEl.play = vi.fn().mockResolvedValue(undefined);
+      videoEl.dispatchEvent(new Event("timeupdate"));
+    });
+
+    const replayBtn = document.querySelector(".si-overlay-replay-segment");
+    expect(replayBtn).not.toBeNull();
+
+    await act(async () => {
+      replayBtn?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(videoEl.currentTime).toBe(1); // 1000ms / 1000 = 1s
+    expect(videoEl.play).toHaveBeenCalled();
   });
 });

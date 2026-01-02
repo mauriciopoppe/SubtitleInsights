@@ -18,6 +18,57 @@
   user-select: text;
 }
 
+.si-overlay-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110px; /* Wider for three buttons */
+  height: 40px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 4px;
+  z-index: 10001;
+  gap: 4px;
+}
+
+.si-overlay-toggle-pause,
+.si-overlay-scroll-sidebar,
+.si-overlay-replay-segment {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s, background-color 0.1s;
+}
+
+.si-overlay-controls:hover .si-overlay-toggle-pause,
+.si-overlay-controls:hover .si-overlay-scroll-sidebar,
+.si-overlay-controls:hover .si-overlay-replay-segment {
+  opacity: 0.3;
+}
+
+.si-overlay-toggle-pause:hover,
+.si-overlay-scroll-sidebar:hover,
+.si-overlay-replay-segment:hover {
+  opacity: 1 !important;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.si-overlay-toggle-pause.active {
+  color: #3ea6ff;
+}
+
+.si-overlay-scroll-sidebar {
+  color: #fff;
+}
+
 .si-system-message {
   font-size: 0.9em;
   color: #fb0;
@@ -34,10 +85,10 @@
 
 .si-insights {
   font-size: 0.75em;
-  color: #ccc;
+  color: #999;
   max-width: 600px;
   margin-top: 4px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding-top: 4px;
   white-space: normal; /* snarkdown handles block structure */
   text-align: left;
