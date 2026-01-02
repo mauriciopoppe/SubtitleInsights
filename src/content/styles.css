@@ -22,14 +22,15 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 110px; /* Wider for three buttons */
-  height: 40px;
+  width: auto;
+  height: auto;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   padding: 4px;
   z-index: 10001;
   gap: 4px;
+  pointer-events: none;
 }
 
 .si-overlay-toggle-pause,
@@ -46,12 +47,13 @@
   color: #fff;
   opacity: 0;
   transition: opacity 0.2s, background-color 0.1s;
+  pointer-events: auto;
 }
 
-.si-overlay-controls:hover .si-overlay-toggle-pause,
-.si-overlay-controls:hover .si-overlay-scroll-sidebar,
-.si-overlay-controls:hover .si-overlay-replay-segment {
-  opacity: 0.3;
+.si-overlay-controls.visible .si-overlay-toggle-pause,
+.si-overlay-controls.visible .si-overlay-scroll-sidebar,
+.si-overlay-controls.visible .si-overlay-replay-segment {
+  opacity: 0.8;
 }
 
 .si-overlay-toggle-pause:hover,

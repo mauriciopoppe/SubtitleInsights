@@ -15,6 +15,25 @@ export function OverlayApp() {
   const [currentTimeMs, setCurrentTimeMs] = useState(0);
   const overlayRef = useRef<HTMLDivElement>(null);
 
+  const [isHoveringControls, setIsHoveringControls] = useState(false);
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (overlayRef.current) {
+      const rect = overlayRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Show controls if mouse is in the top-left area (120x50)
+      // or if we are already hovering the controls (to prevent flickering when moving fast)
+      const isInZone = x >= 0 && x <= 120 && y >= 0 && y <= 50;
+      setIsHoveringControls(isInZone);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHoveringControls(false);
+  };
+
   useEffect(() => {
     const video = document.querySelector('video');
     if (!video) return;
@@ -74,8 +93,10 @@ export function OverlayApp() {
       id="si-overlay" 
       ref={overlayRef}
       style={{ display: 'flex' }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
-      <div className="si-overlay-controls">
+      <div className={`si-overlay-controls ${isHoveringControls ? 'visible' : ''}`}>
         <button 
           className={`si-overlay-toggle-pause ${config.isPauseOnHoverEnabled ? 'active' : ''}`}
           onClick={togglePauseOnHover}

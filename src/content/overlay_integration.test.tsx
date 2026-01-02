@@ -196,4 +196,48 @@ describe("Integration: Overlay Rendering", () => {
     expect(videoEl.currentTime).toBe(1); // 1000ms / 1000 = 1s
     expect(videoEl.play).toHaveBeenCalled();
   });
+
+  it("should show controls only when hovering the top-left proximity zone", async () => {
+    await act(async () => {
+      render(<OverlayApp />, document.getElementById("overlay-root")!);
+    });
+
+    // Add a segment to make the overlay visible
+    await act(async () => {
+      store.replaceSegments([{ start: 1000, end: 3000, text: "Test" }]);
+      Object.defineProperty(videoEl, "currentTime", { value: 1.5, configurable: true });
+      videoEl.dispatchEvent(new Event("timeupdate"));
+    });
+
+    const overlay = document.getElementById("si-overlay");
+    const controls = document.querySelector(".si-overlay-controls");
+    expect(overlay).not.toBeNull();
+    expect(controls).not.toBeNull();
+    expect(controls?.classList.contains("visible")).toBe(false);
+
+    // Mock getBoundingClientRect for coordinate calculations
+    vi.spyOn(overlay!, "getBoundingClientRect").mockReturnValue({
+      left: 100,
+      top: 100,
+      width: 500,
+      height: 100,
+      bottom: 200,
+      right: 600,
+      x: 100,
+      y: 100,
+      toJSON: () => {}
+    });
+
+    // Move mouse INTO zone (relative x=10, y=10) -> Absolute 110, 110
+    await act(async () => {
+      overlay?.dispatchEvent(new MouseEvent("mousemove", { clientX: 110, clientY: 110, bubbles: true }));
+    });
+    expect(controls?.classList.contains("visible")).toBe(true);
+
+    // Move mouse OUT of zone (relative x=200, y=10) -> Absolute 300, 110
+    await act(async () => {
+      overlay?.dispatchEvent(new MouseEvent("mousemove", { clientX: 300, clientY: 110, bubbles: true }));
+    });
+    expect(controls?.classList.contains("visible")).toBe(false);
+  });
 });
