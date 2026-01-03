@@ -1,79 +1,77 @@
-import { ProfileManager } from "../profiles";
+import { ProfileManager } from '../profiles'
 
 export type TranslationAvailability =
-  | "available"
-  | "downloadable"
-  | "downloading"
-  | "unavailable";
+  | 'available'
+  | 'downloadable'
+  | 'downloading'
+  | 'unavailable'
 
 export class MyTranslator {
-  private translator: any = null;
+  private translator: any = null
 
-  constructor() {}
-
-  async checkAvailability(): Promise<TranslationAvailability> {
+  async checkAvailability (): Promise<TranslationAvailability> {
     // @ts-ignore
-    if (typeof Translator === "undefined") {
-      return "unavailable";
+    if (typeof Translator === 'undefined') {
+      return 'unavailable'
     }
 
-    const profile = await ProfileManager.getActiveProfile();
+    const profile = await ProfileManager.getActiveProfile()
     // @ts-ignore
     return await Translator.availability({
       sourceLanguage: profile.sourceLanguage,
       targetLanguage: profile.targetLanguage,
-    });
+    })
   }
 
-  async initialize(
-    onProgress?: (loaded: number, total: number) => void,
+  async initialize (
+    onProgress?: (loaded: number, total: number) => void
   ): Promise<boolean> {
     try {
       // @ts-ignore
-      if (typeof Translator === "undefined") {
-        return false;
+      if (typeof Translator === 'undefined') {
+        return false
       }
 
-      const profile = await ProfileManager.getActiveProfile();
+      const profile = await ProfileManager.getActiveProfile()
       const options: any = {
         sourceLanguage: profile.sourceLanguage,
         targetLanguage: profile.targetLanguage,
-      };
+      }
 
       if (onProgress) {
         options.monitor = (m: any) => {
-          m.addEventListener("downloadprogress", (e: any) => {
-            onProgress(e.loaded, e.total);
-          });
-        };
+          m.addEventListener('downloadprogress', (e: any) => {
+            onProgress(e.loaded, e.total)
+          })
+        }
       }
 
       // @ts-ignore
-      this.translator = await Translator.create(options);
+      this.translator = await Translator.create(options)
 
-      return true;
+      return true
     } catch (error) {
-      console.error("Error initializing translator:", error);
-      return false;
+      console.error('Error initializing translator:', error)
+      return false
     }
   }
 
-  async translate(text: string): Promise<string> {
+  async translate (text: string): Promise<string> {
     if (!this.translator) {
-      throw new Error("Translator not initialized");
+      throw new Error('Translator not initialized')
     }
 
     try {
-      return await this.translator.translate(text);
+      return await this.translator.translate(text)
     } catch (error) {
-      console.error("Error translating text:", error);
-      throw error;
+      console.error('Error translating text:', error)
+      throw error
     }
   }
 
-  isReady(): boolean {
-    return this.translator !== null;
+  isReady (): boolean {
+    return this.translator !== null
   }
 }
 
-export const translatorService = new MyTranslator();
+export const translatorService = new MyTranslator()
