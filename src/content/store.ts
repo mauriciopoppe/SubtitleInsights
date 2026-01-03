@@ -80,6 +80,15 @@ export class SubtitleStore {
     this.changeListeners.push(callback)
   }
 
+  removeChangeListener(callback: () => void) {
+    this.changeListeners = this.changeListeners.filter(cb => cb !== callback)
+  }
+
+  subscribe = (callback: () => void): (() => void) => {
+    this.addChangeListener(callback)
+    return () => this.removeChangeListener(callback)
+  }
+
   addSegmentUpdateListener(callback: (index: number, segment: SubtitleSegment) => void) {
     this.segmentUpdateListeners.push(callback)
   }

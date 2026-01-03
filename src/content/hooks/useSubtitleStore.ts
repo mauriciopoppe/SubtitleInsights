@@ -1,32 +1,20 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useSyncExternalStore } from 'preact/compat'
 import { store } from '../store'
 
 export function useSubtitleStore() {
-  const getStoreState = () => ({
-    segments: store.getAllSegments(),
-    aiStatus: store.aiStatus,
-    warning: store.warning,
-    systemMessage: store.systemMessage,
-    isUploadActive: store.isUploadActive,
-    uploadFilename: store.uploadFilename
-  })
+  const segments = useSyncExternalStore(store.subscribe, () => store.getAllSegments())
+  const aiStatus = useSyncExternalStore(store.subscribe, () => store.aiStatus)
+  const warning = useSyncExternalStore(store.subscribe, () => store.warning)
+  const systemMessage = useSyncExternalStore(store.subscribe, () => store.systemMessage)
+  const isUploadActive = useSyncExternalStore(store.subscribe, () => store.isUploadActive)
+  const uploadFilename = useSyncExternalStore(store.subscribe, () => store.uploadFilename)
 
-  const [state, setState] = useState(getStoreState())
-
-  useEffect(() => {
-    const handleUpdate = () => {
-      setState(getStoreState())
-    }
-
-    store.addChangeListener(handleUpdate)
-
-    // Initial fetch
-    handleUpdate()
-
-    return () => {
-      // In a production app, we should remove the listener.
-    }
-  }, [])
-
-  return state
+  return {
+    segments,
+    aiStatus,
+    warning,
+    systemMessage,
+    isUploadActive,
+    uploadFilename
+  }
 }
