@@ -1,106 +1,44 @@
 import { useState, useEffect } from 'preact/hooks'
-import { Config } from '../config'
+import { Config, AppConfig } from '../config'
+
+const DEFAULT_CONFIG: AppConfig = {
+  isEnabled: true,
+  isOverlayEnabled: true,
+  isGrammarEnabled: true,
+  isPauseOnHoverEnabled: false,
+  isInsightsVisibleInOverlay: true,
+  isInsightsVisibleInSidebar: true,
+  isTranslationVisibleInOverlay: true,
+  isTranslationVisibleInSidebar: true,
+  isOriginalVisibleInOverlay: true
+}
 
 export function useConfig() {
-  const [config, setConfig] = useState({
-    isEnabled: true,
-    isOverlayEnabled: true,
-    isGrammarEnabled: true,
-    isPauseOnHoverEnabled: false,
-    isInsightsVisibleInOverlay: true,
-    isInsightsVisibleInSidebar: true,
-    isTranslationVisibleInOverlay: true,
-    isTranslationVisibleInSidebar: true,
-    isOriginalVisibleInOverlay: true,
+  const [config, setConfig] = useState<AppConfig & { isLoading: boolean }>({
+    ...DEFAULT_CONFIG,
     isLoading: true
   })
 
   useEffect(() => {
     let isMounted = true
 
-    async function loadConfig() {
-      const [
-        isEnabled,
-        isOverlayEnabled,
-        isGrammarEnabled,
-        isPauseOnHoverEnabled,
-        isInsightsVisibleInOverlay,
-        isInsightsVisibleInSidebar,
-        isTranslationVisibleInOverlay,
-        isTranslationVisibleInSidebar,
-        isOriginalVisibleInOverlay
-      ] = await Promise.all([
-        Config.getIsEnabled(),
-        Config.getIsOverlayEnabled(),
-        Config.getIsGrammarExplainerEnabled(),
-        Config.getIsPauseOnHoverEnabled(),
-        Config.getIsInsightsVisibleInOverlay(),
-        Config.getIsInsightsVisibleInSidebar(),
-        Config.getIsTranslationVisibleInOverlay(),
-        Config.getIsTranslationVisibleInSidebar(),
-        Config.getIsOriginalVisibleInOverlay()
-      ])
-
+    // Initial load
+    Config.get().then(initialConfig => {
       if (isMounted) {
-        setConfig({
-          isEnabled,
-          isOverlayEnabled,
-          isGrammarEnabled,
-          isPauseOnHoverEnabled,
-          isInsightsVisibleInOverlay,
-          isInsightsVisibleInSidebar,
-          isTranslationVisibleInOverlay,
-          isTranslationVisibleInSidebar,
-          isOriginalVisibleInOverlay,
-          isLoading: false
-        })
+        setConfig({ ...initialConfig, isLoading: false })
       }
-    }
+    })
 
-    loadConfig()
-
-    const handleEnabledChange = (val: boolean) => {
-      setConfig(prev => ({ ...prev, isEnabled: val }))
-    }
-    const handleOverlayChange = (val: boolean) => {
-      setConfig(prev => ({ ...prev, isOverlayEnabled: val }))
-    }
-    const handleGrammarChange = (val: boolean) => {
-      setConfig(prev => ({ ...prev, isGrammarEnabled: val }))
-    }
-    const handlePauseOnHoverChange = (val: boolean) => {
-      setConfig(prev => ({ ...prev, isPauseOnHoverEnabled: val }))
-    }
-    const handleInsightsOverlayChange = (val: boolean) => {
-      setConfig(prev => ({ ...prev, isInsightsVisibleInOverlay: val }))
-    }
-    const handleInsightsSidebarChange = (val: boolean) => {
-      setConfig(prev => ({ ...prev, isInsightsVisibleInSidebar: val }))
-    }
-    const handleTranslationOverlayChange = (val: boolean) => {
-      setConfig(prev => ({ ...prev, isTranslationVisibleInOverlay: val }))
-    }
-    const handleTranslationSidebarChange = (val: boolean) => {
-      setConfig(prev => ({ ...prev, isTranslationVisibleInSidebar: val }))
-    }
-    const handleOriginalOverlayChange = (val: boolean) => {
-      setConfig(prev => ({ ...prev, isOriginalVisibleInOverlay: val }))
-    }
-
-    Config.addChangeListener(handleEnabledChange)
-    Config.addOverlayChangeListener(handleOverlayChange)
-    Config.addGrammarExplainerChangeListener(handleGrammarChange)
-    Config.addPauseOnHoverChangeListener(handlePauseOnHoverChange)
-    Config.addInsightsInOverlayChangeListener(handleInsightsOverlayChange)
-    Config.addInsightsInSidebarChangeListener(handleInsightsSidebarChange)
-    Config.addTranslationInOverlayChangeListener(handleTranslationOverlayChange)
-    Config.addTranslationInSidebarChangeListener(handleTranslationSidebarChange)
-    Config.addOriginalInOverlayChangeListener(handleOriginalOverlayChange)
+    // Subscription
+    const unsubscribe = Config.subscribe(newConfig => {
+      if (isMounted) {
+        setConfig({ ...newConfig, isLoading: false })
+      }
+    })
 
     return () => {
       isMounted = false
-      // chrome.storage.onChanged.removeListener is not exposed via our Config wrapper
-      // but in a production app we'd want to handle cleanup.
+      unsubscribe()
     }
   }, [])
 

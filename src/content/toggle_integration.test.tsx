@@ -7,25 +7,19 @@ import { Config } from './config'
 // Mock Config
 vi.mock('./config', () => ({
   Config: {
-    getIsEnabled: vi.fn().mockResolvedValue(true),
-    getIsOverlayEnabled: vi.fn().mockResolvedValue(true),
-    getIsGrammarExplainerEnabled: vi.fn().mockResolvedValue(true),
-    getIsPauseOnHoverEnabled: vi.fn().mockResolvedValue(false),
-    getIsInsightsVisibleInOverlay: vi.fn().mockResolvedValue(true),
-    getIsInsightsVisibleInSidebar: vi.fn().mockResolvedValue(true),
-    getIsTranslationVisibleInOverlay: vi.fn().mockResolvedValue(true),
-    getIsTranslationVisibleInSidebar: vi.fn().mockResolvedValue(true),
-    getIsOriginalVisibleInOverlay: vi.fn().mockResolvedValue(true),
-    setIsEnabled: vi.fn().mockResolvedValue(undefined),
-    addChangeListener: vi.fn(),
-    addOverlayChangeListener: vi.fn(),
-    addGrammarExplainerChangeListener: vi.fn(),
-    addPauseOnHoverChangeListener: vi.fn(),
-    addInsightsInOverlayChangeListener: vi.fn(),
-    addInsightsInSidebarChangeListener: vi.fn(),
-    addTranslationInOverlayChangeListener: vi.fn(),
-    addTranslationInSidebarChangeListener: vi.fn(),
-    addOriginalInOverlayChangeListener: vi.fn()
+    get: vi.fn().mockResolvedValue({
+      isEnabled: true,
+      isOverlayEnabled: true,
+      isGrammarEnabled: true,
+      isPauseOnHoverEnabled: false,
+      isInsightsVisibleInOverlay: true,
+      isInsightsVisibleInSidebar: true,
+      isTranslationVisibleInOverlay: true,
+      isTranslationVisibleInSidebar: true,
+      isOriginalVisibleInOverlay: true
+    }),
+    update: vi.fn().mockResolvedValue(undefined),
+    subscribe: vi.fn().mockReturnValue(() => {})
   }
 }))
 
@@ -36,9 +30,7 @@ describe('Integration: ExtensionToggle', () => {
   })
 
   it('should render with initial enabled state', async () => {
-    // Initial mock value is true
-    ;(Config.getIsEnabled as any).mockResolvedValue(true)
-
+    // Default mock has isEnabled: true
     await act(async () => {
       render(<ExtensionToggle />, document.getElementById('toggle-root')!)
     })
@@ -54,14 +46,12 @@ describe('Integration: ExtensionToggle', () => {
     expect(button.style.opacity).toBe('1')
   })
 
-  it('should call Config.setIsEnabled when clicked', async () => {
-    ;(Config.getIsEnabled as any).mockResolvedValue(true)
-
+  it('should call Config.update when clicked', async () => {
+    // Default mock has isEnabled: true
     await act(async () => {
       render(<ExtensionToggle />, document.getElementById('toggle-root')!)
     })
 
-    // Wait for load
     await act(async () => {
       await Promise.resolve()
     })
@@ -73,16 +63,14 @@ describe('Integration: ExtensionToggle', () => {
     })
 
     // Since initial was true, click should set to false
-    expect(Config.setIsEnabled).toHaveBeenCalledWith(false)
+    expect(Config.update).toHaveBeenCalledWith({ isEnabled: false })
   })
 
   it('should update appearance when config changes', async () => {
-    // Start enabled
-    ;(Config.getIsEnabled as any).mockResolvedValue(true)
-
-    let changeCallback: (val: boolean) => void = () => {}
-    ;(Config.addChangeListener as any).mockImplementation((cb: any) => {
+    let changeCallback: (val: any) => void = () => {}
+    ;(Config.subscribe as any).mockImplementation((cb: any) => {
       changeCallback = cb
+      return () => {}
     })
 
     await act(async () => {
@@ -98,7 +86,7 @@ describe('Integration: ExtensionToggle', () => {
 
     // Simulate external change to disabled
     await act(async () => {
-      changeCallback(false)
+      changeCallback({ isEnabled: false })
     })
 
     expect(button.getAttribute('aria-pressed')).toBe('false')

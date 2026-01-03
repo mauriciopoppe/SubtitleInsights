@@ -105,67 +105,74 @@ export function SidebarApp() {
   }
 
   const handleToggleOverlayMaster = async () => {
-    const translation = await Config.getIsTranslationVisibleInOverlay()
-    const insights = await Config.getIsInsightsVisibleInOverlay()
-    const original = await Config.getIsOriginalVisibleInOverlay()
+    const config = await Config.get()
+    const { isTranslationVisibleInOverlay, isInsightsVisibleInOverlay, isOriginalVisibleInOverlay } = config
 
     // If all are ON, turn OFF. Otherwise turn ON.
-    const areAllOn = translation && insights && original
+    const areAllOn = isTranslationVisibleInOverlay && isInsightsVisibleInOverlay && isOriginalVisibleInOverlay
 
     if (areAllOn) {
-      await Config.setIsTranslationVisibleInOverlay(false)
-      await Config.setIsInsightsVisibleInOverlay(false)
-      await Config.setIsOriginalVisibleInOverlay(false)
+      await Config.update({
+        isTranslationVisibleInOverlay: false,
+        isInsightsVisibleInOverlay: false,
+        isOriginalVisibleInOverlay: false
+      })
     } else {
-      await Config.setIsTranslationVisibleInOverlay(true)
-      await Config.setIsInsightsVisibleInOverlay(true)
-      await Config.setIsOriginalVisibleInOverlay(true)
+      await Config.update({
+        isTranslationVisibleInOverlay: true,
+        isInsightsVisibleInOverlay: true,
+        isOriginalVisibleInOverlay: true
+      })
     }
   }
 
   const handleToggleSidebarMaster = async () => {
-    const translation = await Config.getIsTranslationVisibleInSidebar()
-    const insights = await Config.getIsInsightsVisibleInSidebar()
+    const config = await Config.get()
+    const { isTranslationVisibleInSidebar, isInsightsVisibleInSidebar } = config
 
-    const areBothOn = translation && insights
+    const areBothOn = isTranslationVisibleInSidebar && isInsightsVisibleInSidebar
 
     if (areBothOn) {
-      await Config.setIsTranslationVisibleInSidebar(false)
-      await Config.setIsInsightsVisibleInSidebar(false)
+      await Config.update({
+        isTranslationVisibleInSidebar: false,
+        isInsightsVisibleInSidebar: false
+      })
     } else {
-      await Config.setIsTranslationVisibleInSidebar(true)
-      await Config.setIsInsightsVisibleInSidebar(true)
+      await Config.update({
+        isTranslationVisibleInSidebar: true,
+        isInsightsVisibleInSidebar: true
+      })
     }
   }
 
   const handleTogglePauseOnHover = async () => {
-    const current = await Config.getIsPauseOnHoverEnabled()
-    await Config.setIsPauseOnHoverEnabled(!current)
+    const { isPauseOnHoverEnabled } = await Config.get()
+    await Config.update({ isPauseOnHoverEnabled: !isPauseOnHoverEnabled })
   }
 
   const handleToggleInsightsOverlay = async () => {
-    const val = await Config.getIsInsightsVisibleInOverlay()
-    await Config.setIsInsightsVisibleInOverlay(!val)
+    const { isInsightsVisibleInOverlay } = await Config.get()
+    await Config.update({ isInsightsVisibleInOverlay: !isInsightsVisibleInOverlay })
   }
 
   const handleToggleInsightsSidebar = async () => {
-    const val = await Config.getIsInsightsVisibleInSidebar()
-    await Config.setIsInsightsVisibleInSidebar(!val)
+    const { isInsightsVisibleInSidebar } = await Config.get()
+    await Config.update({ isInsightsVisibleInSidebar: !isInsightsVisibleInSidebar })
   }
 
   const handleToggleTranslationOverlay = async () => {
-    const val = await Config.getIsTranslationVisibleInOverlay()
-    await Config.setIsTranslationVisibleInOverlay(!val)
+    const { isTranslationVisibleInOverlay } = await Config.get()
+    await Config.update({ isTranslationVisibleInOverlay: !isTranslationVisibleInOverlay })
   }
 
   const handleToggleTranslationSidebar = async () => {
-    const val = await Config.getIsTranslationVisibleInSidebar()
-    await Config.setIsTranslationVisibleInSidebar(!val)
+    const { isTranslationVisibleInSidebar } = await Config.get()
+    await Config.update({ isTranslationVisibleInSidebar: !isTranslationVisibleInSidebar })
   }
 
   const handleToggleOriginalOverlay = async () => {
-    const val = await Config.getIsOriginalVisibleInOverlay()
-    await Config.setIsOriginalVisibleInOverlay(!val)
+    const { isOriginalVisibleInOverlay } = await Config.get()
+    await Config.update({ isOriginalVisibleInOverlay: !isOriginalVisibleInOverlay })
   }
 
   const handleOpenSettings = () => {

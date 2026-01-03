@@ -8,25 +8,19 @@ import { Config } from './config'
 // Mock Config
 vi.mock('./config', () => ({
   Config: {
-    getIsEnabled: vi.fn().mockResolvedValue(true),
-    getIsOverlayEnabled: vi.fn().mockResolvedValue(true),
-    getIsGrammarExplainerEnabled: vi.fn().mockResolvedValue(true),
-    getIsPauseOnHoverEnabled: vi.fn().mockResolvedValue(false),
-    getIsInsightsVisibleInOverlay: vi.fn().mockResolvedValue(true),
-    getIsInsightsVisibleInSidebar: vi.fn().mockResolvedValue(true),
-    getIsTranslationVisibleInOverlay: vi.fn().mockResolvedValue(true),
-    getIsTranslationVisibleInSidebar: vi.fn().mockResolvedValue(true),
-    getIsOriginalVisibleInOverlay: vi.fn().mockResolvedValue(true),
-    setIsPauseOnHoverEnabled: vi.fn().mockResolvedValue(undefined),
-    addChangeListener: vi.fn(),
-    addOverlayChangeListener: vi.fn(),
-    addGrammarExplainerChangeListener: vi.fn(),
-    addPauseOnHoverChangeListener: vi.fn(),
-    addInsightsInOverlayChangeListener: vi.fn(),
-    addInsightsInSidebarChangeListener: vi.fn(),
-    addTranslationInOverlayChangeListener: vi.fn(),
-    addTranslationInSidebarChangeListener: vi.fn(),
-    addOriginalInOverlayChangeListener: vi.fn()
+    get: vi.fn().mockResolvedValue({
+      isEnabled: true,
+      isOverlayEnabled: true,
+      isGrammarEnabled: true,
+      isPauseOnHoverEnabled: false,
+      isInsightsVisibleInOverlay: true,
+      isInsightsVisibleInSidebar: true,
+      isTranslationVisibleInOverlay: true,
+      isTranslationVisibleInSidebar: true,
+      isOriginalVisibleInOverlay: true
+    }),
+    update: vi.fn().mockResolvedValue(undefined),
+    subscribe: vi.fn().mockReturnValue(() => {})
   }
 }))
 
@@ -140,7 +134,7 @@ describe('Integration: Overlay Rendering', () => {
       toggleBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
-    expect(Config.setIsPauseOnHoverEnabled).toHaveBeenCalledWith(true)
+    expect(Config.update).toHaveBeenCalledWith({ isPauseOnHoverEnabled: true })
   })
 
   it('should scroll the sidebar to the active segment when the scroll icon is clicked', async () => {

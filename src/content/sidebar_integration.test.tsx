@@ -6,24 +6,19 @@ import { SidebarApp } from './components/SidebarApp'
 // Mock Config to avoid async calls issues or dependency on storage
 vi.mock('./config', () => ({
   Config: {
-    getIsEnabled: vi.fn().mockResolvedValue(true),
-    getIsOverlayEnabled: vi.fn().mockResolvedValue(true),
-    getIsGrammarExplainerEnabled: vi.fn().mockResolvedValue(true),
-    getIsPauseOnHoverEnabled: vi.fn().mockResolvedValue(false),
-    getIsInsightsVisibleInOverlay: vi.fn().mockResolvedValue(true),
-    getIsInsightsVisibleInSidebar: vi.fn().mockResolvedValue(true),
-    getIsTranslationVisibleInOverlay: vi.fn().mockResolvedValue(true),
-    getIsTranslationVisibleInSidebar: vi.fn().mockResolvedValue(true),
-    getIsOriginalVisibleInOverlay: vi.fn().mockResolvedValue(true),
-    addChangeListener: vi.fn(),
-    addOverlayChangeListener: vi.fn(),
-    addGrammarExplainerChangeListener: vi.fn(),
-    addPauseOnHoverChangeListener: vi.fn(),
-    addInsightsInOverlayChangeListener: vi.fn(),
-    addInsightsInSidebarChangeListener: vi.fn(),
-    addTranslationInOverlayChangeListener: vi.fn(),
-    addTranslationInSidebarChangeListener: vi.fn(),
-    addOriginalInOverlayChangeListener: vi.fn()
+    get: vi.fn().mockResolvedValue({
+      isEnabled: true,
+      isOverlayEnabled: true,
+      isGrammarEnabled: true,
+      isPauseOnHoverEnabled: false,
+      isInsightsVisibleInOverlay: true,
+      isInsightsVisibleInSidebar: true,
+      isTranslationVisibleInOverlay: true,
+      isTranslationVisibleInSidebar: true,
+      isOriginalVisibleInOverlay: true
+    }),
+    update: vi.fn().mockResolvedValue(undefined),
+    subscribe: vi.fn().mockReturnValue(() => {})
   }
 }))
 

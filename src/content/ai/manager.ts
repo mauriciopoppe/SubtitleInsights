@@ -127,7 +127,7 @@ export class AIManager {
     const translationTasks: number[] = []
     const insightsTasks: number[] = []
 
-    const isInsightsEnabled = await Config.getIsGrammarExplainerEnabled()
+    const { isGrammarEnabled } = await Config.get()
 
     // Determine what needs processing in the current window
     for (let i = startIndex; i < Math.min(startIndex + this.translateBuffer, allSegments.length); i++) {
@@ -138,7 +138,7 @@ export class AIManager {
       const inInsightsRange = i < startIndex + this.insightsBuffer
       const needsInsights =
         !this.pendingInsightsIndices.has(i) &&
-        isInsightsEnabled &&
+        isGrammarEnabled &&
         grammarExplainer.isReady() &&
         !seg.insights &&
         isComplexSentence(seg.text) &&

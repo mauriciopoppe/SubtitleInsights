@@ -52,7 +52,7 @@ export function OverlayApp() {
 
   const togglePauseOnHover = (e: MouseEvent) => {
     e.stopPropagation()
-    Config.setIsPauseOnHoverEnabled(!config.isPauseOnHoverEnabled)
+    Config.update({ isPauseOnHoverEnabled: !config.isPauseOnHoverEnabled })
   }
 
   const scrollSidebarToActive = (e: MouseEvent) => {

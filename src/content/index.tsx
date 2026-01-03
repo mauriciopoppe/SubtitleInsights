@@ -101,16 +101,8 @@ const init = async () => {
   // AI Translation & Grammar Setup
   translationManager.initializeAIServices()
 
-  Config.addChangeListener(enabled => {
-    if (!enabled) {
-      overlayContainer.style.display = 'none'
-    } else {
-      overlayContainer.style.display = 'block'
-    }
-  })
-
-  Config.addOverlayChangeListener(enabled => {
-    if (!enabled) {
+  Config.subscribe(config => {
+    if (!config.isEnabled || !config.isOverlayEnabled) {
       overlayContainer.style.display = 'none'
     } else {
       overlayContainer.style.display = 'block'
