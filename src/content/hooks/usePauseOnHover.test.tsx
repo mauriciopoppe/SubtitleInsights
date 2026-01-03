@@ -5,10 +5,20 @@ import { act } from 'preact/test-utils'
 import { usePauseOnHover } from './usePauseOnHover'
 import { store } from '../store'
 
-function TestComponent ({ isEnabled, isOverlayVisible = true }: { isEnabled: boolean, isOverlayVisible?: boolean }) {
+function TestComponent({
+  isEnabled,
+  isOverlayVisible = true
+}: {
+  isEnabled: boolean
+  isOverlayVisible?: boolean
+}) {
   const overlayRef = useRef<HTMLDivElement>(null)
   usePauseOnHover(isEnabled, overlayRef, isOverlayVisible)
-  return isOverlayVisible ? <div ref={overlayRef} id='test-overlay'>Overlay</div> : null
+  return isOverlayVisible ? (
+    <div ref={overlayRef} id="test-overlay">
+      Overlay
+    </div>
+  ) : null
 }
 
 describe('usePauseOnHover', () => {
@@ -19,36 +29,43 @@ describe('usePauseOnHover', () => {
 
     // Mock video element
     videoEl = document.createElement('video')
-    vi.spyOn(document, 'querySelector').mockImplementation((selector) => {
+    vi.spyOn(document, 'querySelector').mockImplementation(selector => {
       if (selector === 'video') return videoEl
-      if (selector === '#test-overlay') return document.getElementById('test-overlay')
+      if (selector === '#test-overlay')
+        return document.getElementById('test-overlay')
       return null
     })
 
     // Mock paused property
     Object.defineProperty(videoEl, 'paused', {
       get: () => videoEl.hasAttribute('paused-mock'),
-      set: (val) => val ? videoEl.setAttribute('paused-mock', 'true') : videoEl.removeAttribute('paused-mock'),
+      set: val =>
+        val
+          ? videoEl.setAttribute('paused-mock', 'true')
+          : videoEl.removeAttribute('paused-mock'),
       configurable: true
     })
 
     // Mock seeking property
     Object.defineProperty(videoEl, 'seeking', {
       get: () => videoEl.hasAttribute('seeking-mock'),
-      set: (val) => val ? videoEl.setAttribute('seeking-mock', 'true') : videoEl.removeAttribute('seeking-mock'),
+      set: val =>
+        val
+          ? videoEl.setAttribute('seeking-mock', 'true')
+          : videoEl.removeAttribute('seeking-mock'),
       configurable: true
     })
 
     // Mock play and pause
     videoEl.play = vi.fn().mockImplementation(async () => {
-      (videoEl as any).paused = false
+      ;(videoEl as any).paused = false
     })
     videoEl.pause = vi.fn().mockImplementation(() => {
-      (videoEl as any).paused = true
-    });
+      ;(videoEl as any).paused = true
+    })
 
     // Initial state: playing
-    (videoEl as any).paused = false
+    ;(videoEl as any).paused = false
   })
 
   afterEach(() => {
@@ -72,7 +89,10 @@ describe('usePauseOnHover', () => {
 
     // Move time to 1800ms (200ms remaining, which is < 300ms)
     await act(() => {
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.8,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
 
@@ -89,7 +109,10 @@ describe('usePauseOnHover', () => {
 
     // Move time to 1800ms without hover
     await act(() => {
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.8,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
 
@@ -112,7 +135,10 @@ describe('usePauseOnHover', () => {
     })
 
     await act(() => {
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.8,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
     expect(videoEl.pause).toHaveBeenCalled()
@@ -135,7 +161,7 @@ describe('usePauseOnHover', () => {
 
     // Video is already paused
     await act(() => {
-      (videoEl as any).paused = true
+      ;(videoEl as any).paused = true
     })
 
     // Simulate mouse leave
@@ -160,7 +186,10 @@ describe('usePauseOnHover', () => {
       overlayEl.dispatchEvent(new MouseEvent('mousemove'))
     })
     await act(() => {
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.8,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
     expect(videoEl.pause).toHaveBeenCalledTimes(1)
@@ -198,24 +227,30 @@ describe('usePauseOnHover', () => {
       overlayEl.dispatchEvent(new MouseEvent('mousemove'))
     })
     await act(() => {
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.8,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
     expect(videoEl.pause).toHaveBeenCalledTimes(1)
 
     // 2. Simulate "Replay" action: seek to start and play
     await act(async () => {
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.0, configurable: true });
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.0,
+        configurable: true
+      })
       // Update seeking state
-      (videoEl as any).seeking = true
-      videoEl.dispatchEvent(new Event('seeking'));
+      ;(videoEl as any).seeking = true
+      videoEl.dispatchEvent(new Event('seeking'))
 
       // Update paused state and fire play
-      (videoEl as any).paused = false
-      videoEl.dispatchEvent(new Event('play'));
+      ;(videoEl as any).paused = false
+      videoEl.dispatchEvent(new Event('play'))
 
       // Simulate seeking done
-      (videoEl as any).seeking = false
+      ;(videoEl as any).seeking = false
       videoEl.dispatchEvent(new Event('seeked'))
 
       // Ensure suppression is cleared immediately because we are far from the end
@@ -224,7 +259,10 @@ describe('usePauseOnHover', () => {
 
     // 3. Reach the end of the segment again
     await act(() => {
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.9, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.9,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
 
@@ -237,7 +275,10 @@ describe('usePauseOnHover', () => {
     vi.spyOn(store, 'getSegmentAt').mockReturnValue(activeSegment)
 
     await act(() => {
-      render(<TestComponent isEnabled isOverlayVisible />, document.getElementById('root')!)
+      render(
+        <TestComponent isEnabled isOverlayVisible />,
+        document.getElementById('root')!
+      )
     })
 
     const overlayEl = document.getElementById('test-overlay')!
@@ -249,18 +290,27 @@ describe('usePauseOnHover', () => {
 
     // 2. Make overlay invisible
     await act(() => {
-      render(<TestComponent isEnabled isOverlayVisible={false} />, document.getElementById('root')!)
+      render(
+        <TestComponent isEnabled isOverlayVisible={false} />,
+        document.getElementById('root')!
+      )
     })
 
     // 3. Make overlay visible again (mouse is technically not "on" it unless we move it again)
     // In our logic, it should reset isHovering to false.
     await act(() => {
-      render(<TestComponent isEnabled isOverlayVisible />, document.getElementById('root')!)
+      render(
+        <TestComponent isEnabled isOverlayVisible />,
+        document.getElementById('root')!
+      )
     })
 
     // 4. Update time to trigger pause logic
     await act(() => {
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.8,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
 

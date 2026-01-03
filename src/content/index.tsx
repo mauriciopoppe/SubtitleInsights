@@ -34,7 +34,7 @@ const waitForElement = (selector: string): Promise<HTMLElement> => {
   })
 }
 
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener(message => {
   if (message.type === 'SI_SUBTITLES_CAPTURED') {
     const currentVideoId = new URLSearchParams(window.location.search).get('v')
     if (message.videoId && message.videoId !== currentVideoId) {

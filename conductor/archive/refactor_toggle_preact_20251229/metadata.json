@@ -4,5 +4,8 @@
   "description": "Convert the vanilla JS setupToggle logic in index.tsx into a declarative Preact component for better maintainability and consistency.",
   "status": "planned",
   "created_at": "2025-12-29",
-  "dependencies": ["ui_migration_preact_20251229", "centralize_state_store_20251229"]
+  "dependencies": [
+    "ui_migration_preact_20251229",
+    "centralize_state_store_20251229"
+  ]
 }

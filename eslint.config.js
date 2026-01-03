@@ -25,7 +25,7 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/ban-ts-comment': 'warn',
-      '@stylistic/lines-between-class-members': 'off',
-    },
-  },
-];
+      '@stylistic/lines-between-class-members': 'off'
+    }
+  }
+]

@@ -3,7 +3,7 @@
 ## Guiding Principles
 
 1. **The Plan is the Source of Truth:** All work must be tracked in `plan.md`
-2. **The Tech Stack is Deliberate:** Changes to the tech stack must be documented in `tech-stack.md` *before* implementation
+2. **The Tech Stack is Deliberate:** Changes to the tech stack must be documented in `tech-stack.md` _before_ implementation
 3. **Speed over Perfection:** Prioritize working prototypes and fast iteration.
 4. **Manual Verification:** Verify changes manually in the browser.
 5. **User Experience First:** Every decision should prioritize user experience
@@ -43,7 +43,6 @@ All tasks follow a high-velocity lifecycle:
 8. **Commit (Optional):**
    - You may commit changes now or wait until the end of the phase.
 
-
 ### Phase Completion Verification and Checkpointing Protocol
 
 **Trigger:** This protocol is executed immediately after a task is completed that also concludes a phase in `plan.md`.
@@ -51,46 +50,48 @@ All tasks follow a high-velocity lifecycle:
 1.  **Announce Protocol Start:** Inform the user that the phase is complete and the verification and checkpointing protocol has begun.
 
 2.  **Propose a Detailed, Actionable Manual Verification Plan:**
-    -   **CRITICAL:** To generate the plan, first analyze `product.md`, `product-guidelines.md`, and `plan.md` to determine the user-facing goals of the completed phase.
-    -   You **must** generate a step-by-step plan that walks the user through the verification process, including any necessary commands and specific, expected outcomes.
-    -   The plan you present to the user **must** follow this format:
+    - **CRITICAL:** To generate the plan, first analyze `product.md`, `product-guidelines.md`, and `plan.md` to determine the user-facing goals of the completed phase.
+    - You **must** generate a step-by-step plan that walks the user through the verification process, including any necessary commands and specific, expected outcomes.
+    - The plan you present to the user **must** follow this format:
 
-        **For a Frontend Change:**
-        ```
-        Phase [Phase Name] is complete. For manual verification, please follow these steps:
+      **For a Frontend Change:**
 
-        **Manual Verification Steps:**
-        1.  **Start the development server with the command:** `npm run dev`
-        2.  **Open your browser to:** `http://localhost:3000`
-        3.  **Confirm that you see:** The new user profile page, with the user's name and email displayed correctly.
-        ```
+      ```
+      Phase [Phase Name] is complete. For manual verification, please follow these steps:
 
-        **For a Backend Change:**
-        ```
-        Phase [Phase Name] is complete. For manual verification, please follow these steps:
+      **Manual Verification Steps:**
+      1.  **Start the development server with the command:** `npm run dev`
+      2.  **Open your browser to:** `http://localhost:3000`
+      3.  **Confirm that you see:** The new user profile page, with the user's name and email displayed correctly.
+      ```
 
-        **Manual Verification Steps:**
-        1.  **Ensure the server is running.**
-        2.  **Execute the following command in your terminal:** `curl -X POST http://localhost:8080/api/v1/users -d '{"name": "test"}'`
-        3.  **Confirm that you receive:** A JSON response with a status of `201 Created`.
-        ```
+      **For a Backend Change:**
+
+      ```
+      Phase [Phase Name] is complete. For manual verification, please follow these steps:
+
+      **Manual Verification Steps:**
+      1.  **Ensure the server is running.**
+      2.  **Execute the following command in your terminal:** `curl -X POST http://localhost:8080/api/v1/users -d '{"name": "test"}'`
+      3.  **Confirm that you receive:** A JSON response with a status of `201 Created`.
+      ```
 
 3.  **Await Explicit User Feedback:**
-    -   After presenting the detailed plan, ask the user for confirmation: "**Does this meet your expectations? Please confirm with yes or provide feedback on what needs to be changed.**"
-    -   **PAUSE** and await the user's response. Do not proceed without an explicit yes or confirmation.
+    - After presenting the detailed plan, ask the user for confirmation: "**Does this meet your expectations? Please confirm with yes or provide feedback on what needs to be changed.**"
+    - **PAUSE** and await the user's response. Do not proceed without an explicit yes or confirmation.
 
 4.  **Create Checkpoint Commit:**
-    -   Stage all changes. If no changes occurred in this step, proceed with an empty commit.
-    -   Perform the commit with a clear and concise message (e.g., `conductor(checkpoint): Checkpoint end of Phase X`).
+    - Stage all changes. If no changes occurred in this step, proceed with an empty commit.
+    - Perform the commit with a clear and concise message (e.g., `conductor(checkpoint): Checkpoint end of Phase X`).
 
 5.  **Get and Record Phase Checkpoint SHA:**
-    -   **Step 5.1: Get Commit Hash:** Obtain the hash of the *just-created checkpoint commit* (`git log -1 --format="%H"`).
-    -   **Step 5.2: Update Plan:** Read `plan.md`, find the heading for the completed phase, and append the first 7 characters of the commit hash in the format `[checkpoint: <sha>]`.
-    -   **Step 5.3: Write Plan:** Write the updated content back to `plan.md`.
+    - **Step 5.1: Get Commit Hash:** Obtain the hash of the _just-created checkpoint commit_ (`git log -1 --format="%H"`).
+    - **Step 5.2: Update Plan:** Read `plan.md`, find the heading for the completed phase, and append the first 7 characters of the commit hash in the format `[checkpoint: <sha>]`.
+    - **Step 5.3: Write Plan:** Write the updated content back to `plan.md`.
 
-6. **Commit Plan Update:**
-    -   **Action:** Stage the modified `plan.md` file.
-    -   **Action:** Commit this change with a descriptive message following the format `conductor(plan): Mark phase '<PHASE NAME>' as complete`.
+6.  **Commit Plan Update:**
+    - **Action:** Stage the modified `plan.md` file.
+    - **Action:** Commit this change with a descriptive message following the format `conductor(plan): Mark phase '<PHASE NAME>' as complete`.
 
 7.  **Announce Completion:** Inform the user that the phase is complete and the checkpoint has been created.
 
@@ -107,12 +108,14 @@ Before marking any task complete, verify:
 **AI AGENT INSTRUCTION: This section should be adapted to the project's specific language, framework, and build tools.**
 
 ### Setup
+
 ```bash
 # Install dependencies
 npm install
 ```
 
 ### Daily Development
+
 ```bash
 # Start development build
 npm run dev
@@ -125,6 +128,7 @@ npm test -- run
 ```
 
 ### Before Committing
+
 ```bash
 # Run all checks (format, lint, type check, tests)
 npm test -- run && npm run build
@@ -133,18 +137,21 @@ npm test -- run && npm run build
 ## Testing Requirements
 
 ### Unit Testing
+
 - Every module must have corresponding tests.
 - Use appropriate test setup/teardown mechanisms (e.g., fixtures, beforeEach/afterEach).
 - Mock external dependencies.
 - Test both success and failure cases.
 
 ### Integration Testing
+
 - Test complete user flows
 - Verify database transactions
 - Test authentication and authorization
 - Check form submissions
 
 ### Mobile Testing
+
 - Test on actual iPhone when possible
 - Use Safari developer tools
 - Test touch interactions
@@ -154,6 +161,7 @@ npm test -- run && npm run build
 ## Code Review Process
 
 ### Self-Review Checklist
+
 Before requesting review:
 
 1. **Functionality**
@@ -192,6 +200,7 @@ Before requesting review:
 ## Commit Guidelines
 
 ### Message Format
+
 ```
 <type>(<scope>): <description>
 
@@ -201,6 +210,7 @@ Before requesting review:
 ```
 
 ### Types
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation only
@@ -210,6 +220,7 @@ Before requesting review:
 - `chore`: Maintenance tasks
 
 ### Examples
+
 ```bash
 git commit -m "feat(auth): Add remember me functionality"
 git commit -m "fix(posts): Correct excerpt generation for short posts"
@@ -230,6 +241,7 @@ A task is complete when:
 ## Emergency Procedures
 
 ### Critical Bug in Production
+
 1. Create hotfix branch from main
 2. Write failing test for bug
 3. Implement minimal fix
@@ -238,6 +250,7 @@ A task is complete when:
 6. Document in plan.md
 
 ### Data Loss
+
 1. Stop all write operations
 2. Restore from latest backup
 3. Verify data integrity
@@ -245,6 +258,7 @@ A task is complete when:
 5. Update backup procedures
 
 ### Security Breach
+
 1. Rotate all secrets immediately
 2. Review access logs
 3. Patch vulnerability
@@ -254,6 +268,7 @@ A task is complete when:
 ## Deployment Workflow
 
 ### Pre-Deployment Checklist
+
 - [ ] All tests passing
 - [ ] Coverage >80%
 - [ ] No linting errors
@@ -263,6 +278,7 @@ A task is complete when:
 - [ ] Backup created
 
 ### Deployment Steps
+
 1. Merge feature branch to main
 2. Tag release with version
 3. Push to deployment service
@@ -272,6 +288,7 @@ A task is complete when:
 7. Monitor for errors
 
 ### Post-Deployment
+
 1. Monitor analytics
 2. Check error logs
 3. Gather user feedback

@@ -27,13 +27,13 @@ with multiple lines`
       expect(result.segments[0]).toEqual({
         start: 1,
         end: 4,
-        text: 'Hello World',
+        text: 'Hello World'
       })
 
       expect(result.segments[1]).toEqual({
         start: 5.5,
         end: 9.1,
-        text: 'Second subtitle\nwith multiple lines',
+        text: 'Second subtitle\nwith multiple lines'
       })
     })
 
@@ -88,7 +88,10 @@ Hello`
 
       store.setAIStatus('ready', 'AI is ready')
 
-      expect(store.aiStatus).toEqual({ status: 'ready', message: 'AI is ready' })
+      expect(store.aiStatus).toEqual({
+        status: 'ready',
+        message: 'AI is ready'
+      })
       expect(listener).toHaveBeenCalled()
     })
 

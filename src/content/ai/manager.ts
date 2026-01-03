@@ -13,7 +13,14 @@ export class AIManager {
   private insightsBuffer = 5
   private lastTriggerIndex = -1
 
-  public async initializeAIServices () {
+  public reset() {
+    console.log('[SI] Resetting AIManager queues.')
+    this.pendingTranslationIndices.clear()
+    this.pendingInsightsIndices.clear()
+    this.lastTriggerIndex = -1
+  }
+
+  public async initializeAIServices() {
     // Translator Setup
     const translationAvailability = await translatorService.checkAvailability()
     console.log('[SI] AI Translation availability:', translationAvailability)
@@ -28,17 +35,14 @@ export class AIManager {
 
     // Grammar Explainer Setup
     const grammarAvailability = await grammarExplainer.checkAvailability()
-    console.log(
-      '[SI] AI Grammar Explainer availability:',
-      grammarAvailability
-    )
+    console.log('[SI] AI Grammar Explainer availability:', grammarAvailability)
     if (grammarAvailability === 'available') {
       await grammarExplainer.initialize()
       console.log('[SI] AI Grammar Explainer initialized.')
     }
   }
 
-  private initiateDownloadFlow () {
+  private initiateDownloadFlow() {
     store.setAIStatus('none')
     console.log('[SI] AI models need download.')
 
@@ -63,14 +67,14 @@ export class AIManager {
     }
 
     if (navigator.userActivation?.isActive) {
-      console.log(
-        '[SI] User activation active. Starting download immediately.'
-      )
+      console.log('[SI] User activation active. Starting download immediately.')
       initDownload()
     } else {
       console.log('[SI] Waiting for user interaction to start download...')
       const onUserInteraction = (e: Event) => {
-        if (e.type === 'keydown' && (e as KeyboardEvent).key === 'Escape') { return }
+        if (e.type === 'keydown' && (e as KeyboardEvent).key === 'Escape') {
+          return
+        }
 
         document.removeEventListener('mousedown', onUserInteraction)
         document.removeEventListener('pointerdown', onUserInteraction)
@@ -92,19 +96,19 @@ export class AIManager {
     }
   }
 
-  public async onTimeUpdate (currentTimeMs: number) {
+  public async onTimeUpdate(currentTimeMs: number) {
     const allSegments = store.getAllSegments()
     if (allSegments.length === 0) return
 
     // Find current segment index
     const currentIndex = allSegments.findIndex(
-      (s) => currentTimeMs >= s.start && currentTimeMs <= s.end
+      s => currentTimeMs >= s.start && currentTimeMs <= s.end
     )
 
     let targetIndex = currentIndex
     if (currentIndex === -1) {
       // If no current segment, find the next upcoming one to start prefetching from
-      targetIndex = allSegments.findIndex((s) => s.start > currentTimeMs)
+      targetIndex = allSegments.findIndex(s => s.start > currentTimeMs)
       if (targetIndex === -1) targetIndex = 0 // Fallback to start
     }
 
@@ -125,7 +129,7 @@ export class AIManager {
     await this.triggerPrefetch(targetIndex)
   }
 
-  private async triggerPrefetch (startIndex: number) {
+  private async triggerPrefetch(startIndex: number) {
     if (this.isTranslationProcessing && this.isInsightsProcessing) return
 
     const allSegments = store.getAllSegments()
@@ -167,23 +171,21 @@ export class AIManager {
     if (insightsTasks.length > 0 && !this.isInsightsProcessing) {
       // Mark as pending immediately to indicate they are scheduled.
       // If a jump occurs, these will be cleared, and processInsights will skip them.
-      insightsTasks.forEach((i) => this.pendingInsightsIndices.add(i))
+      insightsTasks.forEach(i => this.pendingInsightsIndices.add(i))
       this.processInsights(insightsTasks)
     }
   }
 
-  private async processTranslations (indices: number[]) {
+  private async processTranslations(indices: number[]) {
     this.isTranslationProcessing = true
     try {
-      await Promise.all(
-        indices.map((idx) => this.executeTask(idx, true, false))
-      )
+      await Promise.all(indices.map(idx => this.executeTask(idx, true, false)))
     } finally {
       this.isTranslationProcessing = false
     }
   }
 
-  private async processInsights (indices: number[]) {
+  private async processInsights(indices: number[]) {
     this.isInsightsProcessing = true
     try {
       // Process serially
@@ -200,7 +202,7 @@ export class AIManager {
     }
   }
 
-  private async executeTask (
+  private async executeTask(
     index: number,
     translate: boolean,
     insights: boolean

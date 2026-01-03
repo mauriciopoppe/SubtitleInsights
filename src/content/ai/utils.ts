@@ -2,7 +2,7 @@
  * Checks if a Japanese sentence is "complex" enough to warrant an AI grammar explanation.
  * Complexity is defined as length > 5 characters OR containing at least one common particle.
  */
-export function isComplexSentence (text: string): boolean {
+export function isComplexSentence(text: string): boolean {
   if (!text) return false
 
   // Rule 1: Always analyze long sentences (> 10 chars)
@@ -23,8 +23,10 @@ export function isComplexSentence (text: string): boolean {
  * This function removes any leading content enclosed in [brackets], handling nesting.
  * Example: "[Thinking [deeply]...] Actual response" -> "Actual response"
  */
-export function trimThinkingProcess (text: string): string {
+export function trimThinkingProcess(text: string): string {
   if (!text) return text
+
+  console.log(text)
 
   let currentText = text.trim()
   let foundBlock = true

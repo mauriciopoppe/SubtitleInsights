@@ -7,112 +7,112 @@ declare global {
     addEventListener(
       type: string,
       listener: EventListenerOrEventListenerObject,
-      options?: boolean | AddEventListenerOptions,
-    ): void;
+      options?: boolean | AddEventListenerOptions
+    ): void
     addEventListener(
       type: 'downloadprogress',
-      listener: (event: { loaded: number; total: number }) => void,
-    ): void;
+      listener: (event: { loaded: number; total: number }) => void
+    ): void
   }
 }
 
 declare global {
   interface Window {
-    readonly LanguageModel: LanguageModelStatic;
+    readonly LanguageModel: LanguageModelStatic
   }
 
   // --- Capabilities and Availability ---
   type LanguageModelAvailability = 'available' | 'downloadable' | 'unavailable'
 
   interface LanguageModelCapabilities {
-    readonly available: LanguageModelAvailability;
-    readonly defaultTopK: number | null;
-    readonly maxTopK: number | null;
-    readonly defaultTemperature: number | null;
-    readonly maxTemperature: number | null;
+    readonly available: LanguageModelAvailability
+    readonly defaultTopK: number | null
+    readonly maxTopK: number | null
+    readonly defaultTemperature: number | null
+    readonly maxTemperature: number | null
   }
 
   // --- Multimodal & Multilingual Configuration ---
   type LanguageModelModality = 'text' | 'image' | 'audio'
 
   interface LanguageModelInputConstraint {
-    type: LanguageModelModality;
+    type: LanguageModelModality
     /** BCP 47 tags. Current support: "en", "ja", "es". */
-    languages?: string[];
+    languages?: string[]
   }
 
   interface LanguageModelOutputConstraint {
-    type: 'text'; // Currently, output is restricted to text
-    languages?: string[];
+    type: 'text' // Currently, output is restricted to text
+    languages?: string[]
   }
 
   // --- Creation Options ---
   interface LanguageModelCreateOptions {
-    systemPrompt?: string;
-    initialPrompts?: LanguageModelPrompt[];
+    systemPrompt?: string
+    initialPrompts?: LanguageModelPrompt[]
 
-    languages?: string[];
-    expectedInputs?: LanguageModelInputConstraint[];
-    expectedOutputs?: LanguageModelOutputConstraint[];
+    languages?: string[]
+    expectedInputs?: LanguageModelInputConstraint[]
+    expectedOutputs?: LanguageModelOutputConstraint[]
 
-    temperature?: number;
-    topK?: number;
-    signal?: AbortSignal;
-    monitor?: (m: DownloadMonitor) => void;
+    temperature?: number
+    topK?: number
+    signal?: AbortSignal
+    monitor?: (m: DownloadMonitor) => void
   }
 
   interface LanguageModelPrompt {
-    role: 'system' | 'user' | 'assistant';
-    content: string;
+    role: 'system' | 'user' | 'assistant'
+    content: string
     /** If true, allows the model to continue a partial assistant response. */
-    prefix?: boolean;
+    prefix?: boolean
   }
 
   // --- The Core API ---
   interface LanguageModelStatic {
     availability(
-      options?: LanguageModelCreateOptions,
-    ): Promise<LanguageModelAvailability>;
-    capabilities(): Promise<LanguageModelCapabilities>;
+      options?: LanguageModelCreateOptions
+    ): Promise<LanguageModelAvailability>
+    capabilities(): Promise<LanguageModelCapabilities>
     /** Older alias for capabilities(). */
-    params(): Promise<LanguageModelCapabilities>;
-    create(options?: LanguageModelCreateOptions): Promise<LanguageModelSession>;
+    params(): Promise<LanguageModelCapabilities>
+    create(options?: LanguageModelCreateOptions): Promise<LanguageModelSession>
   }
 
   interface LanguageModelSession {
     /** * The total capacity of the session's context window.
      * This is implementation-dependent (usually tokens).
      */
-    readonly inputQuota: number;
+    readonly inputQuota: number
 
     /** * How much of the quota has been consumed by the current
      * history and system prompt.
      */
-    readonly inputUsage: number;
+    readonly inputUsage: number
 
     /** Sends a prompt and waits for the full response. */
     prompt(
       input: string | Array<string | Blob>,
-      options?: LanguageModelPromptOptions,
-    ): Promise<string>;
+      options?: LanguageModelPromptOptions
+    ): Promise<string>
 
     /** Sends a prompt and returns a stream of text chunks. */
     promptStreaming(
       input: string | Array<string | Blob>,
-      options?: LanguageModelPromptOptions,
-    ): ReadableStream<string>;
+      options?: LanguageModelPromptOptions
+    ): ReadableStream<string>
 
     /** * Reports how much of the quota a specific input would consume
      * BEFORE you actually send it.
      */
-    measureInputUsage(input: string): Promise<number>;
+    measureInputUsage(input: string): Promise<number>
 
-    clone(): Promise<LanguageModelSession>;
-    destroy(): void;
+    clone(): Promise<LanguageModelSession>
+    destroy(): void
   }
 
   interface LanguageModelPromptOptions {
-    signal?: AbortSignal;
+    signal?: AbortSignal
   }
 }
 
@@ -122,7 +122,7 @@ declare global {
  */
 declare global {
   interface Window {
-    readonly LanguageDetector: LanguageDetectorStatic;
+    readonly LanguageDetector: LanguageDetectorStatic
   }
 
   type LanguageDetectorAvailability = 'available' | 'downloadable' | 'no'
@@ -132,57 +132,57 @@ declare global {
      * needs to be downloaded, or is unsupported.
      */
     availability(
-      options?: LanguageDetectorCreateOptions,
-    ): Promise<LanguageDetectorAvailability>;
+      options?: LanguageDetectorCreateOptions
+    ): Promise<LanguageDetectorAvailability>
 
     /** * Returns the capabilities of the detector, including availability status.
      */
-    capabilities(): Promise<LanguageDetectorCapabilities>;
+    capabilities(): Promise<LanguageDetectorCapabilities>
 
     /** * Initializes a new LanguageDetector session.
      */
-    create(options?: LanguageDetectorCreateOptions): Promise<LanguageDetector>;
+    create(options?: LanguageDetectorCreateOptions): Promise<LanguageDetector>
   }
 
   interface LanguageDetectorCapabilities {
-    readonly available: LanguageDetectorAvailability;
+    readonly available: LanguageDetectorAvailability
   }
 
   interface LanguageDetectorCreateOptions {
     /** * Providing a list of BCP 47 language tags can help the implementation
      * optimize by downloading specific language packs if needed.
      */
-    expectedInputLanguages?: string[];
+    expectedInputLanguages?: string[]
     /** An AbortSignal to cancel the creation process. */
-    signal?: AbortSignal;
+    signal?: AbortSignal
     /** Callback to monitor the download progress of the model. */
-    monitor?: (m: DownloadMonitor) => void;
+    monitor?: (m: DownloadMonitor) => void
   }
 
   interface LanguageDetector extends EventTarget {
     /** * Detects the language of the provided text.
      * Returns an array of results sorted by confidence (highest first).
      */
-    detect(text: string): Promise<LanguageDetectorResult[]>;
+    detect(text: string): Promise<LanguageDetectorResult[]>
 
     /**
      * Estimates how many tokens/resources the input text will consume.
      */
-    measureInputUsage(text: string): Promise<number>;
+    measureInputUsage(text: string): Promise<number>
 
     /** * Explicitly destroys the detector and frees up memory.
      */
-    destroy(): void;
+    destroy(): void
 
     /** The languages the detector was optimized for during creation. */
-    readonly expectedInputLanguages: ReadonlyArray<string>;
+    readonly expectedInputLanguages: ReadonlyArray<string>
   }
 
   interface LanguageDetectorResult {
     /** BCP 47 language tag (e.g., "en", "ja", "fr"). */
-    detectedLanguage: string;
+    detectedLanguage: string
     /** Confidence score between 0.0 and 1.0. */
-    confidence: number;
+    confidence: number
   }
 }
 

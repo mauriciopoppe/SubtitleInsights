@@ -9,7 +9,7 @@ export type TranslationAvailability =
 export class MyTranslator {
   private translator: any = null
 
-  async checkAvailability (): Promise<TranslationAvailability> {
+  async checkAvailability(): Promise<TranslationAvailability> {
     // @ts-ignore
     if (typeof Translator === 'undefined') {
       return 'unavailable'
@@ -19,11 +19,11 @@ export class MyTranslator {
     // @ts-ignore
     return await Translator.availability({
       sourceLanguage: profile.sourceLanguage,
-      targetLanguage: profile.targetLanguage,
+      targetLanguage: profile.targetLanguage
     })
   }
 
-  async initialize (
+  async initialize(
     onProgress?: (loaded: number, total: number) => void
   ): Promise<boolean> {
     try {
@@ -35,7 +35,7 @@ export class MyTranslator {
       const profile = await ProfileManager.getActiveProfile()
       const options: any = {
         sourceLanguage: profile.sourceLanguage,
-        targetLanguage: profile.targetLanguage,
+        targetLanguage: profile.targetLanguage
       }
 
       if (onProgress) {
@@ -56,7 +56,7 @@ export class MyTranslator {
     }
   }
 
-  async translate (text: string): Promise<string> {
+  async translate(text: string): Promise<string> {
     if (!this.translator) {
       throw new Error('Translator not initialized')
     }
@@ -69,7 +69,7 @@ export class MyTranslator {
     }
   }
 
-  isReady (): boolean {
+  isReady(): boolean {
     return this.translator !== null
   }
 }

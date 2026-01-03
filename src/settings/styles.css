@@ -145,7 +145,8 @@ label {
   font-weight: 500;
 }
 
-input, textarea {
+input,
+textarea {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
@@ -155,7 +156,8 @@ input, textarea {
   box-sizing: border-box;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   border-color: #065fd4;
   outline: none;
 }
@@ -177,7 +179,8 @@ button {
   color: #0f0f0f;
 }
 
-button.primary, button.create-btn {
+button.primary,
+button.create-btn {
   background-color: #065fd4;
   color: #fff;
 }

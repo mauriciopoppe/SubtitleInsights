@@ -29,7 +29,8 @@ describe('trimThinkingProcess', () => {
   })
 
   it('should handle user example with nested brackets', () => {
-    const input = '[Au sein de [cette société] [imbriquée dans [une autre société]], un an [de progrès] se fait [en une semaine]]. The phrase "Au sein de"...'
+    const input =
+      '[Au sein de [cette société] [imbriquée dans [une autre société]], un an [de progrès] se fait [en une semaine]]. The phrase "Au sein de"...'
     const expected = 'The phrase "Au sein de"...'
     expect(trimThinkingProcess(input)).toBe(expected)
   })

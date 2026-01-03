@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import { store } from '../store'
 
-export function useSubtitleStore () {
+export function useSubtitleStore() {
   const getStoreState = () => ({
     segments: store.getAllSegments(),
     aiStatus: store.aiStatus,

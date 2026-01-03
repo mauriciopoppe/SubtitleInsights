@@ -2,13 +2,18 @@ import { ComponentChildren, RefObject } from 'preact'
 import { useEffect, useRef } from 'preact/hooks'
 
 interface SettingsDropdownProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: ComponentChildren;
-  triggerRef?: RefObject<HTMLElement>;
+  isOpen: boolean
+  onClose: () => void
+  children: ComponentChildren
+  triggerRef?: RefObject<HTMLElement>
 }
 
-export function SettingsDropdown ({ isOpen, onClose, children, triggerRef }: SettingsDropdownProps) {
+export function SettingsDropdown({
+  isOpen,
+  onClose,
+  children,
+  triggerRef
+}: SettingsDropdownProps) {
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -37,8 +42,8 @@ export function SettingsDropdown ({ isOpen, onClose, children, triggerRef }: Set
   return (
     <div
       ref={menuRef}
-      className='si-settings-dropdown'
-      onClick={(e) => e.stopPropagation()}
+      className="si-settings-dropdown"
+      onClick={e => e.stopPropagation()}
     >
       {children}
     </div>
@@ -46,30 +51,31 @@ export function SettingsDropdown ({ isOpen, onClose, children, triggerRef }: Set
 }
 
 interface SettingsItemProps {
-  label: string;
-  icon?: ComponentChildren;
-  onClick?: () => void;
-  status?: 'enabled' | 'disabled' | 'indeterminate';
-  title?: string;
-  isNested?: boolean;
-  style?: any;
+  label: string
+  icon?: ComponentChildren
+  onClick?: () => void
+  status?: 'enabled' | 'disabled' | 'indeterminate'
+  title?: string
+  isNested?: boolean
+  style?: any
 }
 
-export function SettingsItem ({ label, icon, onClick, status, title, isNested, style }: SettingsItemProps) {
+export function SettingsItem({
+  label,
+  icon,
+  onClick,
+  status,
+  title,
+  isNested,
+  style
+}: SettingsItemProps) {
   const className = `si-settings-dropdown-item ${status || ''} ${isNested ? 'nested' : ''}`
 
   return (
-    <div
-      className={className}
-      title={title}
-      onClick={onClick}
-      style={style}
-    >
-      {icon && <span className='si-settings-item-icon'>{icon}</span>}
-      <span className='si-settings-item-label'>{label}</span>
-      {status !== undefined && (
-        <div className={`si-toggle-switch ${status}`} />
-      )}
+    <div className={className} title={title} onClick={onClick} style={style}>
+      {icon && <span className="si-settings-item-icon">{icon}</span>}
+      <span className="si-settings-item-label">{label}</span>
+      {status !== undefined && <div className={`si-toggle-switch ${status}`} />}
     </div>
   )
 }

@@ -8,18 +8,18 @@ export default defineConfig({
   resolve: {
     alias: {
       'preact/hooks': 'preact/hooks',
-      preact: 'preact',
-    },
+      preact: 'preact'
+    }
   },
   server: {
     port: 5173,
     strictPort: true,
     hmr: {
-      port: 5173,
+      port: 5173
     },
     cors: true,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  },
+      'Access-Control-Allow-Origin': '*'
+    }
+  }
 })

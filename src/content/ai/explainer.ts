@@ -8,7 +8,7 @@ export class GrammarExplainer {
   private rootSession: LanguageModelSession | null = null
   private workingSession: LanguageModelSession | null = null
 
-  async checkAvailability (): Promise<LanguageModelAvailability> {
+  async checkAvailability(): Promise<LanguageModelAvailability> {
     try {
       if (typeof window.LanguageModel !== 'undefined') {
         const profile = await ProfileManager.getActiveProfile()
@@ -38,7 +38,7 @@ export class GrammarExplainer {
         }
 
         return await window.LanguageModel.availability({
-          languages: [profile.targetLanguage, sourceLangForModel],
+          languages: [profile.targetLanguage, sourceLangForModel]
         })
       }
       return 'unavailable'
@@ -48,7 +48,7 @@ export class GrammarExplainer {
     }
   }
 
-  async initialize (): Promise<boolean> {
+  async initialize(): Promise<boolean> {
     try {
       if (this.rootSession) {
         return true
@@ -79,20 +79,20 @@ export class GrammarExplainer {
         initialPrompts: [
           {
             role: 'system',
-            content: profile.systemPrompt,
-          },
+            content: profile.systemPrompt
+          }
         ],
         expectedInputs: [
           {
             type: 'text',
-            languages: [profile.targetLanguage, sourceLangForModel],
-          },
+            languages: [profile.targetLanguage, sourceLangForModel]
+          }
         ],
         expectedOutputs: [
-          { type: 'text', languages: [profile.targetLanguage] },
+          { type: 'text', languages: [profile.targetLanguage] }
         ],
         temperature: 0.2,
-        topK: params.defaultTopK || undefined,
+        topK: params.defaultTopK || undefined
       }
 
       this.rootSession = await window.LanguageModel.create(options)
@@ -109,7 +109,7 @@ export class GrammarExplainer {
     }
   }
 
-  async resetSession () {
+  async resetSession() {
     if (!this.rootSession) {
       await this.initialize()
       return
@@ -128,7 +128,7 @@ export class GrammarExplainer {
     }
   }
 
-  async destroy () {
+  async destroy() {
     if (this.workingSession) {
       this.workingSession.destroy()
       this.workingSession = null
@@ -139,7 +139,7 @@ export class GrammarExplainer {
     }
   }
 
-  async explainGrammar (text: string): Promise<string> {
+  async explainGrammar(text: string): Promise<string> {
     if (!this.workingSession) {
       throw new Error('Language Model session not initialized')
     }
@@ -165,7 +165,7 @@ export class GrammarExplainer {
     }
   }
 
-  isReady (): boolean {
+  isReady(): boolean {
     return this.workingSession !== null
   }
 }

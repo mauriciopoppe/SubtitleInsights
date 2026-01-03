@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'preact/hooks'
 import { Config } from '../config'
 
-export function useConfig () {
+export function useConfig() {
   const [config, setConfig] = useState({
     isEnabled: true,
     isOverlayEnabled: true,
@@ -18,7 +18,7 @@ export function useConfig () {
   useEffect(() => {
     let isMounted = true
 
-    async function loadConfig () {
+    async function loadConfig() {
       const [
         isEnabled,
         isOverlayEnabled,
@@ -28,7 +28,7 @@ export function useConfig () {
         isInsightsVisibleInSidebar,
         isTranslationVisibleInOverlay,
         isTranslationVisibleInSidebar,
-        isOriginalVisibleInOverlay,
+        isOriginalVisibleInOverlay
       ] = await Promise.all([
         Config.getIsEnabled(),
         Config.getIsOverlayEnabled(),
@@ -38,7 +38,7 @@ export function useConfig () {
         Config.getIsInsightsVisibleInSidebar(),
         Config.getIsTranslationVisibleInOverlay(),
         Config.getIsTranslationVisibleInSidebar(),
-        Config.getIsOriginalVisibleInOverlay(),
+        Config.getIsOriginalVisibleInOverlay()
       ])
 
       if (isMounted) {

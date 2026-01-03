@@ -17,19 +17,19 @@ describe('GrammarExplainer', () => {
 
     mockWorkingSession = {
       prompt: vi.fn().mockResolvedValue('Grammar explanation'),
-      destroy: vi.fn().mockResolvedValue(undefined),
+      destroy: vi.fn().mockResolvedValue(undefined)
     }
 
     mockRootSession = {
       clone: vi.fn().mockResolvedValue(mockWorkingSession),
-      destroy: vi.fn().mockResolvedValue(undefined),
+      destroy: vi.fn().mockResolvedValue(undefined)
     }
 
     // Mock global LanguageModel using Vitest helper
     vi.stubGlobal('LanguageModel', {
       params: vi.fn().mockResolvedValue({ defaultTopK: 3 }),
       create: vi.fn().mockResolvedValue(mockRootSession),
-      availability: vi.fn().mockResolvedValue('available'),
+      availability: vi.fn().mockResolvedValue('available')
     })
 
     // Default mock for ProfileManager, can be overridden per test
@@ -82,7 +82,9 @@ describe('GrammarExplainer', () => {
   })
 
   it('should fail to explain if not initialized', async () => {
-    await expect(explainer.explainGrammar('test')).rejects.toThrow('Language Model session not initialized')
+    await expect(explainer.explainGrammar('test')).rejects.toThrow(
+      'Language Model session not initialized'
+    )
   })
 
   it('should call prompt on the working session', async () => {
@@ -90,7 +92,9 @@ describe('GrammarExplainer', () => {
     const result = await explainer.explainGrammar('毎日お茶を飲みます。')
 
     expect(result).toBe('Grammar explanation')
-    expect(mockWorkingSession.prompt).toHaveBeenCalledWith(expect.stringContaining('毎日お茶を飲みます。'))
+    expect(mockWorkingSession.prompt).toHaveBeenCalledWith(
+      expect.stringContaining('毎日お茶を飲みます。')
+    )
   })
 
   it('should surface a warning and fallback source language if not supported in initialize', async () => {
@@ -104,12 +108,18 @@ describe('GrammarExplainer', () => {
 
     const success = await explainer.initialize()
     expect(success).toBe(true)
-    expect(store.setWarning).toHaveBeenCalledWith(expect.stringContaining('Source language "fr" not supported by Explainer. Falling back to "en".'))
-    expect(vi.mocked(window.LanguageModel.create)).toHaveBeenCalledWith(expect.objectContaining({
-      expectedInputs: expect.arrayContaining([
-        expect.objectContaining({ languages: ['en', 'en'] }) // Target 'en', Fallback source 'en'
-      ])
-    }))
+    expect(store.setWarning).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'Source language "fr" not supported by Explainer. Falling back to "en".'
+      )
+    )
+    expect(vi.mocked(window.LanguageModel.create)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        expectedInputs: expect.arrayContaining([
+          expect.objectContaining({ languages: ['en', 'en'] }) // Target 'en', Fallback source 'en'
+        ])
+      })
+    )
   })
 
   it('should surface a warning and be unavailable if target language not supported in checkAvailability', async () => {
@@ -120,11 +130,17 @@ describe('GrammarExplainer', () => {
       sourceLanguage: 'ja',
       targetLanguage: 'fr' // Unsupported
     })
-    vi.mocked(window.LanguageModel.availability).mockResolvedValueOnce('unavailable')
+    vi.mocked(window.LanguageModel.availability).mockResolvedValueOnce(
+      'unavailable'
+    )
 
     const availability = await explainer.checkAvailability()
     expect(availability).toBe('unavailable')
-    expect(store.setWarning).toHaveBeenCalledWith(expect.stringContaining('Target language "fr" not supported by Explainer. Only en, ja, es are supported.'))
+    expect(store.setWarning).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'Target language "fr" not supported by Explainer. Only en, ja, es are supported.'
+      )
+    )
   })
 
   it('should surface a warning and fallback source language in checkAvailability', async () => {
@@ -135,13 +151,21 @@ describe('GrammarExplainer', () => {
       sourceLanguage: 'fr', // Unsupported
       targetLanguage: 'en'
     })
-    vi.mocked(window.LanguageModel.availability).mockResolvedValueOnce('available') // Assuming model can still become available with fallback
+    vi.mocked(window.LanguageModel.availability).mockResolvedValueOnce(
+      'available'
+    ) // Assuming model can still become available with fallback
 
     const availability = await explainer.checkAvailability()
     expect(availability).toBe('available')
-    expect(store.setWarning).toHaveBeenCalledWith(expect.stringContaining('Source language "fr" not supported by Explainer. Falling back to "en" for analysis.'))
-    expect(vi.mocked(window.LanguageModel.availability)).toHaveBeenCalledWith(expect.objectContaining({
-      languages: ['en', 'en'] // Target 'en', Fallback source 'en'
-    }))
+    expect(store.setWarning).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'Source language "fr" not supported by Explainer. Falling back to "en" for analysis.'
+      )
+    )
+    expect(vi.mocked(window.LanguageModel.availability)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        languages: ['en', 'en'] // Target 'en', Fallback source 'en'
+      })
+    )
   })
 })

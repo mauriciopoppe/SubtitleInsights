@@ -1,4 +1,4 @@
 export interface AISegment {
-  word: string;
-  reading?: string;
+  word: string
+  reading?: string
 }

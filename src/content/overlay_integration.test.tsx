@@ -26,8 +26,8 @@ vi.mock('./config', () => ({
     addInsightsInSidebarChangeListener: vi.fn(),
     addTranslationInOverlayChangeListener: vi.fn(),
     addTranslationInSidebarChangeListener: vi.fn(),
-    addOriginalInOverlayChangeListener: vi.fn(),
-  },
+    addOriginalInOverlayChangeListener: vi.fn()
+  }
 }))
 
 describe('Integration: Overlay Rendering', () => {
@@ -55,7 +55,7 @@ describe('Integration: Overlay Rendering', () => {
     await act(async () => {
       store.replaceSegments([
         { start: 1000, end: 3000, text: 'First Segment' },
-        { start: 4000, end: 6000, text: 'Second Segment' },
+        { start: 4000, end: 6000, text: 'Second Segment' }
       ])
     })
 
@@ -64,7 +64,7 @@ describe('Integration: Overlay Rendering', () => {
       // Manually set currentTime using Object.defineProperty to bypass JSDOM limitations
       Object.defineProperty(videoEl, 'currentTime', {
         value: 1.5,
-        configurable: true,
+        configurable: true
       })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
@@ -78,7 +78,7 @@ describe('Integration: Overlay Rendering', () => {
     await act(async () => {
       Object.defineProperty(videoEl, 'currentTime', {
         value: 5,
-        configurable: true,
+        configurable: true
       })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
@@ -91,7 +91,7 @@ describe('Integration: Overlay Rendering', () => {
     await act(async () => {
       Object.defineProperty(videoEl, 'currentTime', {
         value: 3.5,
-        configurable: true,
+        configurable: true
       })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
@@ -128,7 +128,10 @@ describe('Integration: Overlay Rendering', () => {
     // Add a segment to make the overlay visible
     await act(async () => {
       store.replaceSegments([{ start: 1000, end: 3000, text: 'Test' }])
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.5, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.5,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
 
@@ -150,7 +153,10 @@ describe('Integration: Overlay Rendering', () => {
     // Add a segment to make the overlay visible
     await act(async () => {
       store.replaceSegments([{ start: 1000, end: 3000, text: 'Test' }])
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.5, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.5,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
 
@@ -167,7 +173,10 @@ describe('Integration: Overlay Rendering', () => {
       scrollBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
-    expect(mockSidebarItem.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' })
+    expect(mockSidebarItem.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'center'
+    })
 
     // Cleanup
     document.body.removeChild(mockSidebarItem)
@@ -181,7 +190,11 @@ describe('Integration: Overlay Rendering', () => {
     // Add a segment to make the overlay visible
     await act(async () => {
       store.replaceSegments([{ start: 1000, end: 3000, text: 'Test' }])
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.5, configurable: true, writable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.5,
+        configurable: true,
+        writable: true
+      })
       videoEl.play = vi.fn().mockResolvedValue(undefined)
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
@@ -205,7 +218,10 @@ describe('Integration: Overlay Rendering', () => {
     // Add a segment to make the overlay visible
     await act(async () => {
       store.replaceSegments([{ start: 1000, end: 3000, text: 'Test' }])
-      Object.defineProperty(videoEl, 'currentTime', { value: 1.5, configurable: true })
+      Object.defineProperty(videoEl, 'currentTime', {
+        value: 1.5,
+        configurable: true
+      })
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
 
@@ -230,13 +246,25 @@ describe('Integration: Overlay Rendering', () => {
 
     // Move mouse INTO zone (relative x=10, y=10) -> Absolute 110, 110
     await act(async () => {
-      overlay?.dispatchEvent(new MouseEvent('mousemove', { clientX: 110, clientY: 110, bubbles: true }))
+      overlay?.dispatchEvent(
+        new MouseEvent('mousemove', {
+          clientX: 110,
+          clientY: 110,
+          bubbles: true
+        })
+      )
     })
     expect(controls?.classList.contains('visible')).toBe(true)
 
     // Move mouse OUT of zone (relative x=200, y=10) -> Absolute 300, 110
     await act(async () => {
-      overlay?.dispatchEvent(new MouseEvent('mousemove', { clientX: 300, clientY: 110, bubbles: true }))
+      overlay?.dispatchEvent(
+        new MouseEvent('mousemove', {
+          clientX: 300,
+          clientY: 110,
+          bubbles: true
+        })
+      )
     })
     expect(controls?.classList.contains('visible')).toBe(false)
   })

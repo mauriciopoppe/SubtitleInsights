@@ -1,9 +1,9 @@
 export interface Profile {
-  id: string;
-  name: string;
-  sourceLanguage: string;
-  targetLanguage: string;
-  systemPrompt: string;
+  id: string
+  name: string
+  sourceLanguage: string
+  targetLanguage: string
+  systemPrompt: string
 }
 
 export const DEFAULT_JAPANESE_PROFILE: Profile = {
@@ -20,8 +20,7 @@ Constraints:
 - PROSE LANGUAGE: Use English for the explanation.
 - NO JAPANESE PROSE: Never write full sentences in Japanese.
 - NO TRANSLATION: Never translate the sentence.
-- KEY TERMS: Use Hiragana/Katakana for particles (は, が, を, に, etc.) and specific vocabulary,
-  focus on explaning grammar.
+- KEY TERMS: Use Hiragana/Katakana for particles (は, が, を, に, etc.) and specific vocabulary, focus on explaining grammar.
 - BREVITY: 1-2 sentences maximum.
 - START: Begin the explanation immediately with no filler.
 
@@ -37,17 +36,17 @@ export class ProfileManager {
   private static STORAGE_KEY = 'si_profiles'
   private static ACTIVE_PROFILE_KEY = 'si_active_profile_id'
 
-  static async getProfiles (): Promise<Profile[]> {
+  static async getProfiles(): Promise<Profile[]> {
     const result = await chrome.storage.local.get(this.STORAGE_KEY)
     return (result[this.STORAGE_KEY] as Profile[]) || []
   }
 
-  static async getActiveProfileId (): Promise<string | null> {
+  static async getActiveProfileId(): Promise<string | null> {
     const result = await chrome.storage.local.get(this.ACTIVE_PROFILE_KEY)
     return (result[this.ACTIVE_PROFILE_KEY] as string) || null
   }
 
-  static async getActiveProfile (): Promise<Profile> {
+  static async getActiveProfile(): Promise<Profile> {
     const profiles = await this.getProfiles()
     const activeId = await this.getActiveProfileId()
 
@@ -60,7 +59,7 @@ export class ProfileManager {
     return active || profiles[0]
   }
 
-  static async saveProfile (profile: Profile): Promise<void> {
+  static async saveProfile(profile: Profile): Promise<void> {
     const profiles = await this.getProfiles()
     const index = profiles.findIndex(p => p.id === profile.id)
 
@@ -73,7 +72,7 @@ export class ProfileManager {
     await chrome.storage.local.set({ [this.STORAGE_KEY]: profiles })
   }
 
-  static async deleteProfile (id: string): Promise<void> {
+  static async deleteProfile(id: string): Promise<void> {
     let profiles = await this.getProfiles()
     profiles = profiles.filter(p => p.id !== id)
     await chrome.storage.local.set({ [this.STORAGE_KEY]: profiles })
@@ -92,11 +91,11 @@ export class ProfileManager {
     }
   }
 
-  static async setActiveProfile (id: string): Promise<void> {
+  static async setActiveProfile(id: string): Promise<void> {
     await chrome.storage.local.set({ [this.ACTIVE_PROFILE_KEY]: id })
   }
 
-  static async initializeDefaults (): Promise<void> {
+  static async initializeDefaults(): Promise<void> {
     const profiles = await this.getProfiles()
     if (profiles.length === 0) {
       await this.saveProfile(DEFAULT_JAPANESE_PROFILE)

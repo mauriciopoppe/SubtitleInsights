@@ -23,8 +23,8 @@ vi.mock('./config', () => ({
     addInsightsInSidebarChangeListener: vi.fn(),
     addTranslationInOverlayChangeListener: vi.fn(),
     addTranslationInSidebarChangeListener: vi.fn(),
-    addOriginalInOverlayChangeListener: vi.fn(),
-  },
+    addOriginalInOverlayChangeListener: vi.fn()
+  }
 }))
 
 describe('Integration: Background Message -> Sidebar Render', () => {
@@ -50,14 +50,14 @@ describe('Integration: Background Message -> Sidebar Render', () => {
         {
           tStartMs: 1000,
           dDurationMs: 2000,
-          segs: [{ utf8: 'Hello' }],
+          segs: [{ utf8: 'Hello' }]
         },
         {
           tStartMs: 3500,
           dDurationMs: 1500,
-          segs: [{ utf8: 'World' }],
-        },
-      ],
+          segs: [{ utf8: 'World' }]
+        }
+      ]
     }
 
     // 3. Simulate the logic inside chrome.runtime.onMessage listener
@@ -65,7 +65,7 @@ describe('Integration: Background Message -> Sidebar Render', () => {
     store.replaceSegments(segments)
 
     // Wait for Preact to render
-    await new Promise((resolve) => setTimeout(resolve, 50))
+    await new Promise(resolve => setTimeout(resolve, 50))
 
     // 4. Verify Sidebar DOM
     const items = document.querySelectorAll('.si-sidebar-item')
@@ -74,10 +74,14 @@ describe('Integration: Background Message -> Sidebar Render', () => {
 
     const firstItem = items[0] as HTMLElement
     expect(firstItem.dataset.start).toBe('1000')
-    expect(firstItem.querySelector('.si-sidebar-original')?.textContent).toBe('Hello')
+    expect(firstItem.querySelector('.si-sidebar-original')?.textContent).toBe(
+      'Hello'
+    )
 
     const secondItem = items[1] as HTMLElement
     expect(secondItem.dataset.start).toBe('3500')
-    expect(secondItem.querySelector('.si-sidebar-original')?.textContent).toBe('World')
+    expect(secondItem.querySelector('.si-sidebar-original')?.textContent).toBe(
+      'World'
+    )
   })
 })

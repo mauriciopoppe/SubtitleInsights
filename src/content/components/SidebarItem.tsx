@@ -5,12 +5,12 @@ import { trimThinkingProcess } from '../ai/utils'
 import { useConfig } from '../hooks/useConfig'
 
 interface SidebarItemProps {
-  segment: SubtitleSegment;
-  index: number;
-  isActive: boolean;
+  segment: SubtitleSegment
+  index: number
+  isActive: boolean
 }
 
-export function SidebarItem ({ segment, index, isActive }: SidebarItemProps) {
+export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
   const config = useConfig()
 
   return (
@@ -21,19 +21,21 @@ export function SidebarItem ({ segment, index, isActive }: SidebarItemProps) {
       data-end={segment.end}
     >
       {/* Original text with Furigana */}
-      <div className='si-sidebar-original'>
-        {segment.segmentedData
-          ? (
-            <span dangerouslySetInnerHTML={{ __html: renderSegmentedText(segment.segmentedData) }} />
-            )
-          : (
-              segment.text
-            )}
+      <div className="si-sidebar-original">
+        {segment.segmentedData ? (
+          <span
+            dangerouslySetInnerHTML={{
+              __html: renderSegmentedText(segment.segmentedData)
+            }}
+          />
+        ) : (
+          segment.text
+        )}
       </div>
 
       {/* Natural Translation */}
       {config.isTranslationVisibleInSidebar && (
-        <div className='si-sidebar-translation'>
+        <div className="si-sidebar-translation">
           {segment.translation || ''}
         </div>
       )}
@@ -41,8 +43,10 @@ export function SidebarItem ({ segment, index, isActive }: SidebarItemProps) {
       {/* Insights */}
       {segment.insights && config.isInsightsVisibleInSidebar && (
         <div
-          className='si-sidebar-insights'
-          dangerouslySetInnerHTML={{ __html: snarkdown(trimThinkingProcess(segment.insights)) }}
+          className="si-sidebar-insights"
+          dangerouslySetInnerHTML={{
+            __html: snarkdown(trimThinkingProcess(segment.insights))
+          }}
         />
       )}
     </div>

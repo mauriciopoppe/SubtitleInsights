@@ -25,8 +25,8 @@ vi.mock('./config', () => ({
     addInsightsInSidebarChangeListener: vi.fn(),
     addTranslationInOverlayChangeListener: vi.fn(),
     addTranslationInSidebarChangeListener: vi.fn(),
-    addOriginalInOverlayChangeListener: vi.fn(),
-  },
+    addOriginalInOverlayChangeListener: vi.fn()
+  }
 }))
 
 describe('Integration: ExtensionToggle', () => {
@@ -37,7 +37,7 @@ describe('Integration: ExtensionToggle', () => {
 
   it('should render with initial enabled state', async () => {
     // Initial mock value is true
-    (Config.getIsEnabled as any).mockResolvedValue(true)
+    ;(Config.getIsEnabled as any).mockResolvedValue(true)
 
     await act(async () => {
       render(<ExtensionToggle />, document.getElementById('toggle-root')!)
@@ -55,14 +55,16 @@ describe('Integration: ExtensionToggle', () => {
   })
 
   it('should call Config.setIsEnabled when clicked', async () => {
-    (Config.getIsEnabled as any).mockResolvedValue(true)
+    ;(Config.getIsEnabled as any).mockResolvedValue(true)
 
     await act(async () => {
       render(<ExtensionToggle />, document.getElementById('toggle-root')!)
     })
 
     // Wait for load
-    await act(async () => { await Promise.resolve() })
+    await act(async () => {
+      await Promise.resolve()
+    })
 
     const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement
 
@@ -76,10 +78,10 @@ describe('Integration: ExtensionToggle', () => {
 
   it('should update appearance when config changes', async () => {
     // Start enabled
-    (Config.getIsEnabled as any).mockResolvedValue(true)
+    ;(Config.getIsEnabled as any).mockResolvedValue(true)
 
-    let changeCallback: (val: boolean) => void = () => {};
-    (Config.addChangeListener as any).mockImplementation((cb: any) => {
+    let changeCallback: (val: boolean) => void = () => {}
+    ;(Config.addChangeListener as any).mockImplementation((cb: any) => {
       changeCallback = cb
     })
 
@@ -87,7 +89,9 @@ describe('Integration: ExtensionToggle', () => {
       render(<ExtensionToggle />, document.getElementById('toggle-root')!)
     })
 
-    await act(async () => { await Promise.resolve() })
+    await act(async () => {
+      await Promise.resolve()
+    })
 
     const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement
     expect(button.getAttribute('aria-pressed')).toBe('true')
