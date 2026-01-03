@@ -26,6 +26,12 @@ _Link: [./conductor/archive/rebrand_subtitle_insights_20251231/](./conductor/arc
 
 ---
 
+## [~] Track: Sidebar Layout Fixes
+
+_Link: [./conductor/tracks/sidebar_layout_fixes/](./conductor/tracks/sidebar_layout_fixes/)_
+
+---
+
 ## [ ] Track: Chrome Side Panel Migration (Future Idea)
 
 _Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tracks/chrome_side_panel_migration_20251231/)_

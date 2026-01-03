@@ -88,8 +88,37 @@ const init = async () => {
 
   const sidebarContainer = document.createElement('div')
   sidebarContainer.id = 'si-sidebar-root'
+  sidebarContainer.style.marginBottom = '12px'
   secondaryInner.prepend(sidebarContainer)
   render(<SidebarApp />, sidebarContainer)
+
+  const updateSidebarHeight = () => {
+    const hasSegments = store.getAllSegments().length > 0
+    if (hasSegments) {
+      const rect = player.getBoundingClientRect()
+      sidebarContainer.style.setProperty('--si-sidebar-height', `${rect.height}px`)
+    } else {
+      sidebarContainer.style.removeProperty('--si-sidebar-height')
+    }
+  }
+
+  // Sync Sidebar Height with Video Player
+  const resizeObserver = new ResizeObserver(() => {
+    updateSidebarHeight()
+  })
+  resizeObserver.observe(player)
+
+  // Update height when segments change (e.g. loaded)
+  store.addChangeListener(updateSidebarHeight)
+
+  // Ensure Sidebar stays at the top (above playlist)
+  const mutationObserver = new MutationObserver(() => {
+    if (secondaryInner.firstChild !== sidebarContainer) {
+      // console.log('[SI] Re-asserting sidebar position at top.')
+      secondaryInner.prepend(sidebarContainer)
+    }
+  })
+  mutationObserver.observe(secondaryInner, { childList: true })
 
   const overlayContainer = document.createElement('div')
   overlayContainer.id = 'si-overlay-root'

@@ -166,14 +166,14 @@
 #si-sidebar {
   background-color: var(--yt-spec-general-background-a, #0f0f0f);
   border-radius: 12px;
-  margin-bottom: 12px;
   display: flex;
   flex-direction: column;
-  max-height: 500px;
+  height: var(--si-sidebar-height, auto);
   border: 1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
   overflow: hidden;
   font-family: Roboto, Arial, sans-serif;
   color: var(--yt-spec-text-primary, #fff);
+  box-sizing: border-box;
 }
 
 .si-sidebar-header {
