@@ -165,7 +165,12 @@ export function OverlayApp() {
             <div
               className="si-insights"
               dangerouslySetInnerHTML={{
-                __html: snarkdown(trimThinkingProcess(activeSegment.insights))
+                __html: snarkdown(
+                  trimThinkingProcess(
+                    activeSegment.insights,
+                    activeSegment.text
+                  )
+                )
               }}
             />
           )}

@@ -19,18 +19,20 @@ export function isComplexSentence(text: string): boolean {
 }
 
 /**
- * Some models prepend their response with a "thinking" process enclosed in brackets.
- * This function removes any leading content enclosed in [brackets], handling nesting.
- * Example: "[Thinking [deeply]...] Actual response" -> "Actual response"
+ * Some models prepend their response with a "thinking" process enclosed in brackets
+ * or by repeating the original input text.
+ * This function cleans the response by removing such leading content.
  */
-export function trimThinkingProcess(text: string): string {
+export function trimThinkingProcess(
+  text: string,
+  originalInput?: string
+): string {
   if (!text) return text
 
-  console.log(text)
-
   let currentText = text.trim()
-  let foundBlock = true
 
+  // 1. Remove thinking blocks in brackets: [Thinking...]
+  let foundBlock = true
   while (foundBlock && currentText.startsWith('[')) {
     let depth = 0
     let endFound = false
@@ -41,19 +43,26 @@ export function trimThinkingProcess(text: string): string {
       } else if (currentText[i] === ']') {
         depth--
         if (depth === 0) {
-          // Found the matching closing bracket
           currentText = currentText.slice(i + 1).trim()
-          // Also remove common separators that might follow the block like "." or ":"
           currentText = currentText.replace(/^[.:]\s*/, '')
           endFound = true
           break
         }
       }
     }
+    if (!endFound) foundBlock = false
+  }
 
-    // If we didn't find a closing bracket for the start, stop loop
-    if (!endFound) {
-      foundBlock = false
+  // 2. Remove repeated input if present at the very beginning
+  if (originalInput) {
+    const trimmedInput = originalInput.trim()
+    if (currentText.startsWith(trimmedInput)) {
+      // Check if it's an exact match followed by whitespace or newline
+      // to avoid partial word matching if that were possible
+      const afterInput = currentText.slice(trimmedInput.length).trim()
+      if (afterInput !== currentText) {
+        currentText = afterInput
+      }
     }
   }
 
