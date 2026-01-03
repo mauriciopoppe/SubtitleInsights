@@ -1,7 +1,6 @@
 import './styles.css'
 import { store, SubtitleStore } from './store'
 import { Config } from './config'
-import { translatorService } from './ai/translator'
 import { grammarExplainer } from './ai/explainer'
 import { translationManager } from './ai/manager'
 
@@ -13,7 +12,7 @@ import { ExtensionToggle } from './components/ExtensionToggle'
 console.log('[SI] Content script injected.')
 
 const waitForElement = (selector: string): Promise<HTMLElement> => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const element = document.querySelector(selector)
     if (element) {
       resolve(element as HTMLElement)
@@ -30,12 +29,11 @@ const waitForElement = (selector: string): Promise<HTMLElement> => {
 
     observer.observe(document.body, {
       childList: true,
-      subtree: true,
+      subtree: true
     })
   })
 }
 
-// @ts-ignore
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === 'SI_SUBTITLES_CAPTURED') {
     const currentVideoId = new URLSearchParams(window.location.search).get('v')
@@ -51,6 +49,11 @@ chrome.runtime.onMessage.addListener((message) => {
       store.setSourceLanguage(message.language)
     }
     const segments = SubtitleStore.parseYouTubeJSON(message.payload)
+
+    // Reset AI managers because content has changed
+    translationManager.reset()
+    grammarExplainer.resetSession()
+
     store.replaceSegments(segments)
   }
 })
@@ -100,7 +103,7 @@ const init = async () => {
   // AI Translation & Grammar Setup
   translationManager.initializeAIServices()
 
-  Config.addChangeListener((enabled) => {
+  Config.addChangeListener(enabled => {
     if (!enabled) {
       overlayContainer.style.display = 'none'
     } else {
@@ -108,7 +111,7 @@ const init = async () => {
     }
   })
 
-  Config.addOverlayChangeListener((enabled) => {
+  Config.addOverlayChangeListener(enabled => {
     if (!enabled) {
       overlayContainer.style.display = 'none'
     } else {

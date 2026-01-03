@@ -1,95 +1,106 @@
 import { AISegment } from './types'
 
 export interface SubtitleSegment {
-  start: number;
-  end: number;
-  text: string;
-  translation?: string;
-  segmentedData?: AISegment[][]; // Outer = visual blocks, Inner = parts of the block
+  start: number
+  end: number
+  text: string
+  translation?: string
+  segmentedData?: AISegment[][] // Outer = visual blocks, Inner = parts of the block
   // Structured data fields
-  segmentation?: string[];
-  insights?: string;
+  segmentation?: string[]
+  insights?: string
 }
 
 export class SubtitleStore {
   private segments: SubtitleSegment[] = []
   private _sourceLanguage: string | null = null
   private changeListeners: (() => void)[] = []
-  private segmentUpdateListeners: ((index: number, segment: SubtitleSegment) => void)[] = []
+  private segmentUpdateListeners: ((
+    index: number,
+    segment: SubtitleSegment
+  ) => void)[] = []
 
   // UI State
-  private _aiStatus: { status: 'downloading' | 'ready' | 'error' | 'none'; message?: string } = { status: 'none' }
+  private _aiStatus: {
+    status: 'downloading' | 'ready' | 'error' | 'none'
+    message?: string
+  } = { status: 'none' }
   private _warning: string | undefined = undefined
   private _systemMessage: string | null = null
   private _isUploadActive = false
   private _uploadFilename: string | undefined = undefined
 
-  get sourceLanguage () {
+  get sourceLanguage() {
     return this._sourceLanguage
   }
 
-  get aiStatus () {
+  get aiStatus() {
     return this._aiStatus
   }
 
-  get warning () {
+  get warning() {
     return this._warning
   }
 
-  get systemMessage () {
+  get systemMessage() {
     return this._systemMessage
   }
 
-  get isUploadActive () {
+  get isUploadActive() {
     return this._isUploadActive
   }
 
-  get uploadFilename () {
+  get uploadFilename() {
     return this._uploadFilename
   }
 
-  setSourceLanguage (lang: string | null) {
+  setSourceLanguage(lang: string | null) {
     this._sourceLanguage = lang
   }
 
-  setAIStatus (status: 'downloading' | 'ready' | 'error' | 'none', message?: string) {
+  setAIStatus(
+    status: 'downloading' | 'ready' | 'error' | 'none',
+    message?: string
+  ) {
     this._aiStatus = { status, message }
     this.notifyListeners()
   }
 
-  setWarning (message: string | undefined) {
+  setWarning(message: string | undefined) {
     this._warning = message
     this.notifyListeners()
   }
 
-  setSystemMessage (message: string | null) {
+  setSystemMessage(message: string | null) {
     this._systemMessage = message
     this.notifyListeners()
   }
 
-  setUploadStatus (active: boolean, filename?: string) {
+  setUploadStatus(active: boolean, filename?: string) {
     this._isUploadActive = active
     this._uploadFilename = filename
     this.notifyListeners()
   }
 
-  addChangeListener (callback: () => void) {
+  addChangeListener(callback: () => void) {
     this.changeListeners.push(callback)
   }
 
-  addSegmentUpdateListener (callback: (index: number, segment: SubtitleSegment) => void) {
+  addSegmentUpdateListener(
+    callback: (index: number, segment: SubtitleSegment) => void
+  ) {
     this.segmentUpdateListeners.push(callback)
   }
 
-  private notifyListeners () {
-    this.changeListeners.forEach((cb) => cb())
+  private notifyListeners() {
+    this.changeListeners.forEach(cb => cb())
   }
 
-  private notifySegmentUpdate (index: number, segment: SubtitleSegment) {
-    this.segmentUpdateListeners.forEach((cb) => cb(index, segment))
+  private notifySegmentUpdate(index: number, segment: SubtitleSegment) {
+    this.segmentUpdateListeners.forEach(cb => cb(index, segment))
   }
 
-  addSegments (newSegments: SubtitleSegment[]) {
+  addSegments(newSegments: SubtitleSegment[]) {
     if (newSegments.length === 0) return
 
     // Optimization: If the store is empty, just add
@@ -107,8 +118,13 @@ export class SubtitleStore {
       const firstOld = this.segments[0]
       const firstNew = newSegments[0]
       // Check if first segment matches, a strong heuristic for identical full track
-      if (firstOld.start === firstNew.start && firstOld.text === firstNew.text) {
-        console.log('[SI][SubtitleStore] Duplicate subtitle track detected. Ignoring.')
+      if (
+        firstOld.start === firstNew.start &&
+        firstOld.text === firstNew.text
+      ) {
+        console.log(
+          '[SI][SubtitleStore] Duplicate subtitle track detected. Ignoring.'
+        )
         return
       }
     }
@@ -142,21 +158,21 @@ export class SubtitleStore {
     this.notifyListeners()
   }
 
-  loadCustomSegments (data: any[]) {
+  loadCustomSegments(data: any[]) {
     this.clear()
     console.log(
       '[SI] SubtitleStore: Loading custom segments, count:',
       data.length
     )
     this.segments = data
-      .map((s) => {
+      .map(s => {
         const segment: SubtitleSegment = {
           start: s.start * 1000,
           end: s.end * 1000,
           text: s.text,
           translation: s.translation,
           segmentation: s.segmentation,
-          insights: s.insights || s.contextual_analysis,
+          insights: s.insights || s.contextual_analysis
         }
 
         if (Array.isArray(s.segmentation)) {
@@ -173,14 +189,14 @@ export class SubtitleStore {
     this.notifyListeners()
   }
 
-  updateSegmentTranslation (index: number, translation: string) {
+  updateSegmentTranslation(index: number, translation: string) {
     if (this.segments[index]) {
       this.segments[index].translation = translation
       this.notifySegmentUpdate(index, this.segments[index])
     }
   }
 
-  updateSegmentInsights (index: number, insights: string) {
+  updateSegmentInsights(index: number, insights: string) {
     if (this.segments[index]) {
       this.segments[index].insights = insights
       this.notifySegmentUpdate(index, this.segments[index])
@@ -191,9 +207,9 @@ export class SubtitleStore {
    * Parses an SRT file content into partial segment objects.
    * Returns objects compatible with loadStructuredData input (seconds for time).
    */
-  parseSRTData (content: string): {
-    segments: any[];
-    errors: string[];
+  parseSRTData(content: string): {
+    segments: any[]
+    errors: string[]
   } {
     const segments: any[] = []
     const errors: string[] = []
@@ -227,10 +243,12 @@ export class SubtitleStore {
       }
 
       const timeLine = lines[timeLineIndex]
-      const parts = timeLine.split('-->').map((s) => s.trim())
+      const parts = timeLine.split('-->').map(s => s.trim())
 
       if (parts.length !== 2) {
-        errors.push(`Block ${index + 1}: Invalid timestamp format: "${timeLine}".`)
+        errors.push(
+          `Block ${index + 1}: Invalid timestamp format: "${timeLine}".`
+        )
         return
       }
 
@@ -257,8 +275,8 @@ export class SubtitleStore {
 
       segments.push({
         start, // seconds
-        end,   // seconds
-        text,
+        end, // seconds
+        text
       })
     })
 
@@ -269,7 +287,7 @@ export class SubtitleStore {
    * Parses a timestamp string into seconds.
    * Supports HH:MM:SS.SSS and MM:SS.SSS formats.
    */
-  private parseTimestamp (ts: string): number {
+  private parseTimestamp(ts: string): number {
     if (!ts) return 0
 
     // Matches optional HH:, mandatory MM:SS, and optional milliseconds with . or ,
@@ -293,7 +311,7 @@ export class SubtitleStore {
     return NaN
   }
 
-  private parseFurigana (token: string): AISegment[] {
+  private parseFurigana(token: string): AISegment[] {
     const parts: AISegment[] = []
     let lastIndex = 0
     // Matches "AnyWord(Reading)"
@@ -317,18 +335,16 @@ export class SubtitleStore {
     return parts
   }
 
-  getSegmentAt (timeMs: number): SubtitleSegment | undefined {
+  getSegmentAt(timeMs: number): SubtitleSegment | undefined {
     // simple linear search for MVP, can optimize with binary search later
-    return this.segments.find(
-      (seg) => timeMs >= seg.start && timeMs <= seg.end
-    )
+    return this.segments.find(seg => timeMs >= seg.start && timeMs <= seg.end)
   }
 
-  getAllSegments (): SubtitleSegment[] {
+  getAllSegments(): SubtitleSegment[] {
     return this.segments
   }
 
-  replaceSegments (newSegments: SubtitleSegment[]) {
+  replaceSegments(newSegments: SubtitleSegment[]) {
     this.segments = newSegments.sort((a, b) => a.start - b.start)
     console.log(
       `[SI][SubtitleStore] Replaced with ${newSegments.length} segments.`
@@ -336,7 +352,7 @@ export class SubtitleStore {
     this.notifyListeners()
   }
 
-  clear () {
+  clear() {
     this.segments = []
     this._sourceLanguage = null
     this._aiStatus = { status: 'none' }
@@ -348,7 +364,7 @@ export class SubtitleStore {
   }
 
   // Helper to parse YouTube format
-  static parseYouTubeJSON (json: any): SubtitleSegment[] {
+  static parseYouTubeJSON(json: any): SubtitleSegment[] {
     if (!json.events) return []
 
     return json.events
@@ -361,7 +377,7 @@ export class SubtitleStore {
         return {
           start,
           end: start + duration,
-          text,
+          text
         }
       })
   }
