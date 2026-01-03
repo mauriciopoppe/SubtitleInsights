@@ -45,7 +45,9 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
         <div
           className="si-sidebar-insights"
           dangerouslySetInnerHTML={{
-            __html: snarkdown(trimThinkingProcess(segment.insights, segment.text))
+            __html: snarkdown(
+              trimThinkingProcess(segment.insights, segment.text)
+            )
           }}
         />
       )}

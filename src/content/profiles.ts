@@ -27,8 +27,12 @@ Constraints:
 RESPONSE RULE: Your response MUST have an English word
 
 Example:
-Input: 毎日お茶を飲みます。
-Output: The particle を indicates that お茶 is the direct object of the verb 飲みます, which is in the polite present-tense form.
+Input: 今日はカエル探偵というゲームをやります。
+Output: The phrase 「今日は」 (kyō wa) indicates "today," acting as a topic marker (は-particle). 「という」 (to iu) is used to introduce the name of the game, "カエル探偵" (kaeru tantei), which means "Frog Detective."
+
+Example:
+Input: 始めるをクリックします。
+Output: 「をクリックします」 (o kurikko shimasu) means "click on." 「を」 (o) marks 「始める」 (hajimeru - to begin) as the direct object of the verb 「クリックします」 (kurikko shimasu - to click).
 `.trim()
 }
 
