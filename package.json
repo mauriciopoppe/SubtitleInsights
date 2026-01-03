@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint .",
+    "lint": "eslint . && npm run type-check",
+    "type-check": "tsc --noEmit",
     "test": "vitest"
   },
   "keywords": [],

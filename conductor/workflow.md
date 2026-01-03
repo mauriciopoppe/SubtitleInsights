@@ -29,6 +29,7 @@ All tasks follow a high-velocity lifecycle:
 
 5. **Refactor & Verify:**
    - Run `npm test -- run` to ensure all tests pass.
+   - Run `npm run lint` to ensure code style compliance and TypeScript type correctness (includes `tsc --noEmit`).
    - Refactor code for cleanliness and readability.
    - Ensure the feature works as expected in the browser/app via manual verification.
 

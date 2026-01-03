@@ -39,12 +39,12 @@ export class ProfileManager {
 
   static async getProfiles (): Promise<Profile[]> {
     const result = await chrome.storage.local.get(this.STORAGE_KEY)
-    return result[this.STORAGE_KEY] || []
+    return (result[this.STORAGE_KEY] as Profile[]) || []
   }
 
   static async getActiveProfileId (): Promise<string | null> {
     const result = await chrome.storage.local.get(this.ACTIVE_PROFILE_KEY)
-    return result[this.ACTIVE_PROFILE_KEY] || null
+    return (result[this.ACTIVE_PROFILE_KEY] as string) || null
   }
 
   static async getActiveProfile (): Promise<Profile> {
