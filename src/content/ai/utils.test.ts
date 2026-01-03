@@ -4,22 +4,22 @@ import { trimThinkingProcess, isComplexSentence } from './utils'
 describe('trimThinkingProcess', () => {
   it('should remove simple thinking blocks', () => {
     const input = '[Thinking...] Actual response'
-    expect(trimThinkingProcess(input)).toBe('Actual response')
+    expect(trimThinkingProcess(input, '')).toBe('Actual response')
   })
 
   it('should remove nested thinking blocks', () => {
     const input = '[Thinking [deeply]...] Actual response'
-    expect(trimThinkingProcess(input)).toBe('Actual response')
+    expect(trimThinkingProcess(input, '')).toBe('Actual response')
   })
 
   it('should remove leading separators after blocks', () => {
     const input = '[Thinking]: Actual response'
-    expect(trimThinkingProcess(input)).toBe('Actual response')
+    expect(trimThinkingProcess(input, '')).toBe('Actual response')
   })
 
   it('should handle multiple sequential blocks', () => {
     const input = '[Thinking][Still thinking] Actual response'
-    expect(trimThinkingProcess(input)).toBe('Actual response')
+    expect(trimThinkingProcess(input, '')).toBe('Actual response')
   })
 
   it('should remove repeated original input at the beginning', () => {

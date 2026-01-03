@@ -157,8 +157,9 @@ export class GrammarExplainer {
     }
 
     try {
-      const response = await this.workingSession.prompt(`Sentence: ${text}`)
-      return trimThinkingProcess(response)
+      const rawResponse = await this.workingSession.prompt(`Sentence: ${text}`)
+      const processedResponse = trimThinkingProcess(rawResponse, text)
+      return processedResponse
     } catch (error) {
       console.error('Error explaining grammar:', error)
       throw error

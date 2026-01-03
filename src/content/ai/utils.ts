@@ -25,7 +25,7 @@ export function isComplexSentence(text: string): boolean {
  */
 export function trimThinkingProcess(
   text: string,
-  originalInput?: string
+  originalInput: string
 ): string {
   if (!text) return text
 
@@ -54,15 +54,13 @@ export function trimThinkingProcess(
   }
 
   // 2. Remove repeated input if present at the very beginning
-  if (originalInput) {
-    const trimmedInput = originalInput.trim()
-    if (currentText.startsWith(trimmedInput)) {
-      // Check if it's an exact match followed by whitespace or newline
-      // to avoid partial word matching if that were possible
-      const afterInput = currentText.slice(trimmedInput.length).trim()
-      if (afterInput !== currentText) {
-        currentText = afterInput
-      }
+  const trimmedInput = originalInput.trim()
+  if (currentText.startsWith(trimmedInput)) {
+    // Check if it's an exact match followed by whitespace or newline
+    // to avoid partial word matching if that were possible
+    const afterInput = currentText.slice(trimmedInput.length).trim()
+    if (afterInput !== currentText) {
+      currentText = afterInput
     }
   }
 
