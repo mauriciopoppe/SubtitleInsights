@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'preact/hooks';
-import { store } from '../store';
+import { useState, useEffect } from 'preact/hooks'
+import { store } from '../store'
 
-export function useSubtitleStore() {
+export function useSubtitleStore () {
   const getStoreState = () => ({
     segments: store.getAllSegments(),
     aiStatus: store.aiStatus,
@@ -9,24 +9,24 @@ export function useSubtitleStore() {
     systemMessage: store.systemMessage,
     isUploadActive: store.isUploadActive,
     uploadFilename: store.uploadFilename
-  });
+  })
 
-  const [state, setState] = useState(getStoreState());
+  const [state, setState] = useState(getStoreState())
 
   useEffect(() => {
     const handleUpdate = () => {
-      setState(getStoreState());
-    };
+      setState(getStoreState())
+    }
 
-    store.addChangeListener(handleUpdate);
-    
+    store.addChangeListener(handleUpdate)
+
     // Initial fetch
-    handleUpdate();
+    handleUpdate()
 
     return () => {
       // In a production app, we should remove the listener.
-    };
-  }, []);
+    }
+  }, [])
 
-  return state;
+  return state
 }

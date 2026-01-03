@@ -31,76 +31,76 @@ Example:
 Input: 毎日お茶を飲みます。
 Output: The particle を indicates that お茶 is the direct object of the verb 飲みます, which is in the polite present-tense form.
 `.trim()
-};
+}
 
 export class ProfileManager {
-  private static STORAGE_KEY = 'si_profiles';
-  private static ACTIVE_PROFILE_KEY = 'si_active_profile_id';
+  private static STORAGE_KEY = 'si_profiles'
+  private static ACTIVE_PROFILE_KEY = 'si_active_profile_id'
 
-  static async getProfiles(): Promise<Profile[]> {
-    const result = await chrome.storage.local.get(this.STORAGE_KEY);
-    return result[this.STORAGE_KEY] || [];
+  static async getProfiles (): Promise<Profile[]> {
+    const result = await chrome.storage.local.get(this.STORAGE_KEY)
+    return result[this.STORAGE_KEY] || []
   }
 
-  static async getActiveProfileId(): Promise<string | null> {
-    const result = await chrome.storage.local.get(this.ACTIVE_PROFILE_KEY);
-    return result[this.ACTIVE_PROFILE_KEY] || null;
+  static async getActiveProfileId (): Promise<string | null> {
+    const result = await chrome.storage.local.get(this.ACTIVE_PROFILE_KEY)
+    return result[this.ACTIVE_PROFILE_KEY] || null
   }
 
-  static async getActiveProfile(): Promise<Profile> {
-    const profiles = await this.getProfiles();
-    const activeId = await this.getActiveProfileId();
-    
+  static async getActiveProfile (): Promise<Profile> {
+    const profiles = await this.getProfiles()
+    const activeId = await this.getActiveProfileId()
+
     if (profiles.length === 0) {
-      await this.initializeDefaults();
-      return DEFAULT_JAPANESE_PROFILE;
+      await this.initializeDefaults()
+      return DEFAULT_JAPANESE_PROFILE
     }
 
-    const active = profiles.find(p => p.id === activeId);
-    return active || profiles[0];
+    const active = profiles.find(p => p.id === activeId)
+    return active || profiles[0]
   }
 
-  static async saveProfile(profile: Profile): Promise<void> {
-    const profiles = await this.getProfiles();
-    const index = profiles.findIndex(p => p.id === profile.id);
-    
+  static async saveProfile (profile: Profile): Promise<void> {
+    const profiles = await this.getProfiles()
+    const index = profiles.findIndex(p => p.id === profile.id)
+
     if (index >= 0) {
-      profiles[index] = profile;
+      profiles[index] = profile
     } else {
-      profiles.push(profile);
+      profiles.push(profile)
     }
-    
-    await chrome.storage.local.set({ [this.STORAGE_KEY]: profiles });
+
+    await chrome.storage.local.set({ [this.STORAGE_KEY]: profiles })
   }
 
-  static async deleteProfile(id: string): Promise<void> {
-    let profiles = await this.getProfiles();
-    profiles = profiles.filter(p => p.id !== id);
-    await chrome.storage.local.set({ [this.STORAGE_KEY]: profiles });
-    
+  static async deleteProfile (id: string): Promise<void> {
+    let profiles = await this.getProfiles()
+    profiles = profiles.filter(p => p.id !== id)
+    await chrome.storage.local.set({ [this.STORAGE_KEY]: profiles })
+
     // If we deleted the active profile, reset active to the first available
-    const activeId = await this.getActiveProfileId();
+    const activeId = await this.getActiveProfileId()
     if (activeId === id) {
-      const remaining = profiles;
+      const remaining = profiles
       if (remaining.length > 0) {
-        await this.setActiveProfile(remaining[0].id);
+        await this.setActiveProfile(remaining[0].id)
       } else {
         // No profiles left? Restore default or leave in bad state?
         // Let's restore default to be safe
-        await this.initializeDefaults();
+        await this.initializeDefaults()
       }
     }
   }
 
-  static async setActiveProfile(id: string): Promise<void> {
-    await chrome.storage.local.set({ [this.ACTIVE_PROFILE_KEY]: id });
+  static async setActiveProfile (id: string): Promise<void> {
+    await chrome.storage.local.set({ [this.ACTIVE_PROFILE_KEY]: id })
   }
 
-  static async initializeDefaults(): Promise<void> {
-    const profiles = await this.getProfiles();
+  static async initializeDefaults (): Promise<void> {
+    const profiles = await this.getProfiles()
     if (profiles.length === 0) {
-      await this.saveProfile(DEFAULT_JAPANESE_PROFILE);
-      await this.setActiveProfile(DEFAULT_JAPANESE_PROFILE.id);
+      await this.saveProfile(DEFAULT_JAPANESE_PROFILE)
+      await this.setActiveProfile(DEFAULT_JAPANESE_PROFILE.id)
     }
   }
 }

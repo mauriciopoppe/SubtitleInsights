@@ -1,21 +1,21 @@
-import { SubtitleSegment } from '../store';
-import { SidebarItem } from './SidebarItem';
-import { useMemo } from 'preact/hooks';
+import { SubtitleSegment } from '../store'
+import { SidebarItem } from './SidebarItem'
+import { useMemo } from 'preact/hooks'
 
 interface SidebarListProps {
   segments: SubtitleSegment[];
   currentTimeMs: number;
 }
 
-export function SidebarList({ segments, currentTimeMs }: SidebarListProps) {
+export function SidebarList ({ segments, currentTimeMs }: SidebarListProps) {
   const activeIndex = useMemo(() => {
     return segments.findIndex(
       (seg) => currentTimeMs >= seg.start && currentTimeMs <= seg.end
-    );
-  }, [segments, currentTimeMs]);
+    )
+  }, [segments, currentTimeMs])
 
   return (
-    <div className="si-sidebar-list">
+    <div className='si-sidebar-list'>
       {segments.map((segment, index) => (
         <SidebarItem
           key={`${segment.start}-${index}`}
@@ -25,5 +25,5 @@ export function SidebarList({ segments, currentTimeMs }: SidebarListProps) {
         />
       ))}
     </div>
-  );
+  )
 }

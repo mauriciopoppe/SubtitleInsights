@@ -10,7 +10,7 @@ declare global {
       options?: boolean | AddEventListenerOptions,
     ): void;
     addEventListener(
-      type: "downloadprogress",
+      type: 'downloadprogress',
       listener: (event: { loaded: number; total: number }) => void,
     ): void;
   }
@@ -22,7 +22,7 @@ declare global {
   }
 
   // --- Capabilities and Availability ---
-  type LanguageModelAvailability = "available" | "downloadable" | "unavailable";
+  type LanguageModelAvailability = 'available' | 'downloadable' | 'unavailable'
 
   interface LanguageModelCapabilities {
     readonly available: LanguageModelAvailability;
@@ -33,7 +33,7 @@ declare global {
   }
 
   // --- Multimodal & Multilingual Configuration ---
-  type LanguageModelModality = "text" | "image" | "audio";
+  type LanguageModelModality = 'text' | 'image' | 'audio'
 
   interface LanguageModelInputConstraint {
     type: LanguageModelModality;
@@ -42,7 +42,7 @@ declare global {
   }
 
   interface LanguageModelOutputConstraint {
-    type: "text"; // Currently, output is restricted to text
+    type: 'text'; // Currently, output is restricted to text
     languages?: string[];
   }
 
@@ -62,7 +62,7 @@ declare global {
   }
 
   interface LanguageModelPrompt {
-    role: "system" | "user" | "assistant";
+    role: 'system' | 'user' | 'assistant';
     content: string;
     /** If true, allows the model to continue a partial assistant response. */
     prefix?: boolean;
@@ -125,7 +125,7 @@ declare global {
     readonly LanguageDetector: LanguageDetectorStatic;
   }
 
-  type LanguageDetectorAvailability = "available" | "downloadable" | "no";
+  type LanguageDetectorAvailability = 'available' | 'downloadable' | 'no'
 
   interface LanguageDetectorStatic {
     /** * Checks if the language detection model is available,
@@ -186,4 +186,4 @@ declare global {
   }
 }
 
-export {};
+export {}

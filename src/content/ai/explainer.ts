@@ -1,173 +1,173 @@
-import { ProfileManager } from "../profiles";
-import { store } from "../store";
-import { trimThinkingProcess } from "./utils";
+import { ProfileManager } from '../profiles'
+import { store } from '../store'
+import { trimThinkingProcess } from './utils'
 
-const SUPPORTED_LANGUAGES = ["en", "ja", "es"];
+const SUPPORTED_LANGUAGES = ['en', 'ja', 'es']
 
 export class GrammarExplainer {
-  private rootSession: LanguageModelSession | null = null;
-  private workingSession: LanguageModelSession | null = null;
+  private rootSession: LanguageModelSession | null = null
+  private workingSession: LanguageModelSession | null = null
 
-  async checkAvailability(): Promise<LanguageModelAvailability> {
+  async checkAvailability (): Promise<LanguageModelAvailability> {
     try {
-      if (typeof window.LanguageModel !== "undefined") {
-        const profile = await ProfileManager.getActiveProfile();
+      if (typeof window.LanguageModel !== 'undefined') {
+        const profile = await ProfileManager.getActiveProfile()
 
         const isSourceSupported = SUPPORTED_LANGUAGES.includes(
-          profile.sourceLanguage,
-        );
+          profile.sourceLanguage
+        )
         const isTargetSupported = SUPPORTED_LANGUAGES.includes(
-          profile.targetLanguage,
-        );
+          profile.targetLanguage
+        )
 
-        let sourceLangForModel = profile.sourceLanguage;
+        let sourceLangForModel = profile.sourceLanguage
         if (!isSourceSupported) {
-          sourceLangForModel = "en";
+          sourceLangForModel = 'en'
         }
 
         if (!isTargetSupported) {
           store.setWarning(
-            `Target language "${profile.targetLanguage}" not supported by Explainer. Only en, ja, es are supported.`,
-          );
-          return "unavailable";
+            `Target language "${profile.targetLanguage}" not supported by Explainer. Only en, ja, es are supported.`
+          )
+          return 'unavailable'
         }
         if (!isSourceSupported) {
           store.setWarning(
-            `Source language "${profile.sourceLanguage}" not supported by Explainer. Falling back to "en" for analysis.`,
-          );
+            `Source language "${profile.sourceLanguage}" not supported by Explainer. Falling back to "en" for analysis.`
+          )
         }
 
         return await window.LanguageModel.availability({
           languages: [profile.targetLanguage, sourceLangForModel],
-        });
+        })
       }
-      return "unavailable";
+      return 'unavailable'
     } catch (error) {
-      console.error("Error checking language model availability:", error);
-      return "unavailable";
+      console.error('Error checking language model availability:', error)
+      return 'unavailable'
     }
   }
 
-  async initialize(): Promise<boolean> {
+  async initialize (): Promise<boolean> {
     try {
       if (this.rootSession) {
-        return true;
+        return true
       }
 
-      if (typeof window.LanguageModel === "undefined") {
-        return false;
+      if (typeof window.LanguageModel === 'undefined') {
+        return false
       }
 
-      const profile = await ProfileManager.getActiveProfile();
+      const profile = await ProfileManager.getActiveProfile()
 
       const isSourceSupported = SUPPORTED_LANGUAGES.includes(
-        profile.sourceLanguage,
-      );
+        profile.sourceLanguage
+      )
 
       if (!isSourceSupported) {
         store.setWarning(
-          `Source language "${profile.sourceLanguage}" not supported by Explainer. Falling back to "en".`,
-        );
+          `Source language "${profile.sourceLanguage}" not supported by Explainer. Falling back to "en".`
+        )
       }
 
       const sourceLangForModel = isSourceSupported
         ? profile.sourceLanguage
-        : "en";
+        : 'en'
 
-      const params = await window.LanguageModel.params();
+      const params = await window.LanguageModel.params()
       const options: LanguageModelCreateOptions = {
         initialPrompts: [
           {
-            role: "system",
+            role: 'system',
             content: profile.systemPrompt,
           },
         ],
         expectedInputs: [
           {
-            type: "text",
+            type: 'text',
             languages: [profile.targetLanguage, sourceLangForModel],
           },
         ],
         expectedOutputs: [
-          { type: "text", languages: [profile.targetLanguage] },
+          { type: 'text', languages: [profile.targetLanguage] },
         ],
         temperature: 0.2,
         topK: params.defaultTopK || undefined,
-      };
-
-      this.rootSession = await window.LanguageModel.create(options);
-
-      if (this.rootSession) {
-        await this.resetSession();
-        return true;
       }
 
-      return false;
+      this.rootSession = await window.LanguageModel.create(options)
+
+      if (this.rootSession) {
+        await this.resetSession()
+        return true
+      }
+
+      return false
     } catch (error) {
-      console.error("Error initializing language model:", error);
-      return false;
+      console.error('Error initializing language model:', error)
+      return false
     }
   }
 
-  async resetSession() {
+  async resetSession () {
     if (!this.rootSession) {
-      await this.initialize();
-      return;
+      await this.initialize()
+      return
     }
 
     try {
       if (this.workingSession) {
-        this.workingSession.destroy();
-        this.workingSession = null;
+        this.workingSession.destroy()
+        this.workingSession = null
       }
 
-      this.workingSession = await this.rootSession.clone();
-      console.log("[SI] GrammarExplainer: Session reset via clone.");
+      this.workingSession = await this.rootSession.clone()
+      console.log('[SI] GrammarExplainer: Session reset via clone.')
     } catch (error) {
-      console.error("Error resetting grammar explainer session:", error);
+      console.error('Error resetting grammar explainer session:', error)
     }
   }
 
-  async destroy() {
+  async destroy () {
     if (this.workingSession) {
-      this.workingSession.destroy();
-      this.workingSession = null;
+      this.workingSession.destroy()
+      this.workingSession = null
     }
     if (this.rootSession) {
-      this.rootSession.destroy();
-      this.rootSession = null;
+      this.rootSession.destroy()
+      this.rootSession = null
     }
   }
 
-  async explainGrammar(text: string): Promise<string> {
+  async explainGrammar (text: string): Promise<string> {
     if (!this.workingSession) {
-      throw new Error("Language Model session not initialized");
+      throw new Error('Language Model session not initialized')
     }
 
-    const { inputUsage, inputQuota } = this.workingSession;
+    const { inputUsage, inputQuota } = this.workingSession
     if (inputUsage / inputQuota > 0.8) {
       // Reset if usage exceeds 80%
       console.log(
-        `[SI] GrammarExplainer: Input usage at ${inputUsage}/${inputQuota}. Resetting session.`,
-      );
-      await this.resetSession();
+        `[SI] GrammarExplainer: Input usage at ${inputUsage}/${inputQuota}. Resetting session.`
+      )
+      await this.resetSession()
       if (!this.workingSession) {
-        throw new Error("Language Model session failed to reset");
+        throw new Error('Language Model session failed to reset')
       }
     }
 
     try {
-      const response = await this.workingSession.prompt(`Sentence: ${text}`);
-      return trimThinkingProcess(response);
+      const response = await this.workingSession.prompt(`Sentence: ${text}`)
+      return trimThinkingProcess(response)
     } catch (error) {
-      console.error("Error explaining grammar:", error);
-      throw error;
+      console.error('Error explaining grammar:', error)
+      throw error
     }
   }
 
-  isReady(): boolean {
-    return this.workingSession !== null;
+  isReady (): boolean {
+    return this.workingSession !== null
   }
 }
 
-export const grammarExplainer = new GrammarExplainer();
+export const grammarExplainer = new GrammarExplainer()
