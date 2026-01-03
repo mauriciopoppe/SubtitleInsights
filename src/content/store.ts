@@ -15,10 +15,7 @@ export class SubtitleStore {
   private segments: SubtitleSegment[] = []
   private _sourceLanguage: string | null = null
   private changeListeners: (() => void)[] = []
-  private segmentUpdateListeners: ((
-    index: number,
-    segment: SubtitleSegment
-  ) => void)[] = []
+  private segmentUpdateListeners: ((index: number, segment: SubtitleSegment) => void)[] = []
 
   // UI State
   private _aiStatus: {
@@ -58,10 +55,7 @@ export class SubtitleStore {
     this._sourceLanguage = lang
   }
 
-  setAIStatus(
-    status: 'downloading' | 'ready' | 'error' | 'none',
-    message?: string
-  ) {
+  setAIStatus(status: 'downloading' | 'ready' | 'error' | 'none', message?: string) {
     this._aiStatus = { status, message }
     this.notifyListeners()
   }
@@ -86,9 +80,7 @@ export class SubtitleStore {
     this.changeListeners.push(callback)
   }
 
-  addSegmentUpdateListener(
-    callback: (index: number, segment: SubtitleSegment) => void
-  ) {
+  addSegmentUpdateListener(callback: (index: number, segment: SubtitleSegment) => void) {
     this.segmentUpdateListeners.push(callback)
   }
 
@@ -106,9 +98,7 @@ export class SubtitleStore {
     // Optimization: If the store is empty, just add
     if (this.segments.length === 0) {
       this.segments = newSegments.sort((a, b) => a.start - b.start)
-      console.log(
-        `[SI][SubtitleStore] Added ${newSegments.length} segments. Total: ${this.segments.length}`
-      )
+      console.log(`[SI][SubtitleStore] Added ${newSegments.length} segments. Total: ${this.segments.length}`)
       this.notifyListeners()
       return
     }
@@ -118,13 +108,8 @@ export class SubtitleStore {
       const firstOld = this.segments[0]
       const firstNew = newSegments[0]
       // Check if first segment matches, a strong heuristic for identical full track
-      if (
-        firstOld.start === firstNew.start &&
-        firstOld.text === firstNew.text
-      ) {
-        console.log(
-          '[SI][SubtitleStore] Duplicate subtitle track detected. Ignoring.'
-        )
+      if (firstOld.start === firstNew.start && firstOld.text === firstNew.text) {
+        console.log('[SI][SubtitleStore] Duplicate subtitle track detected. Ignoring.')
         return
       }
     }
@@ -149,21 +134,14 @@ export class SubtitleStore {
       return
     }
 
-    this.segments = Array.from(uniqueSegments.values()).sort(
-      (a, b) => a.start - b.start
-    )
-    console.log(
-      `[SI][SubtitleStore] Added ${addedCount} segments. Total: ${this.segments.length}`
-    )
+    this.segments = Array.from(uniqueSegments.values()).sort((a, b) => a.start - b.start)
+    console.log(`[SI][SubtitleStore] Added ${addedCount} segments. Total: ${this.segments.length}`)
     this.notifyListeners()
   }
 
   loadCustomSegments(data: any[]) {
     this.clear()
-    console.log(
-      '[SI] SubtitleStore: Loading custom segments, count:',
-      data.length
-    )
+    console.log('[SI] SubtitleStore: Loading custom segments, count:', data.length)
     this.segments = data
       .map(s => {
         const segment: SubtitleSegment = {
@@ -176,16 +154,12 @@ export class SubtitleStore {
         }
 
         if (Array.isArray(s.segmentation)) {
-          segment.segmentedData = s.segmentation.map((token: string) =>
-            this.parseFurigana(token)
-          )
+          segment.segmentedData = s.segmentation.map((token: string) => this.parseFurigana(token))
         }
         return segment
       })
       .sort((a, b) => a.start - b.start)
-    console.log(
-      `[SI][SubtitleStore] Loaded ${this.segments.length} custom segments.`
-    )
+    console.log(`[SI][SubtitleStore] Loaded ${this.segments.length} custom segments.`)
     this.notifyListeners()
   }
 
@@ -246,9 +220,7 @@ export class SubtitleStore {
       const parts = timeLine.split('-->').map(s => s.trim())
 
       if (parts.length !== 2) {
-        errors.push(
-          `Block ${index + 1}: Invalid timestamp format: "${timeLine}".`
-        )
+        errors.push(`Block ${index + 1}: Invalid timestamp format: "${timeLine}".`)
         return
       }
 
@@ -256,9 +228,7 @@ export class SubtitleStore {
       const end = this.parseTimestamp(parts[1])
 
       if (isNaN(start) || isNaN(end)) {
-        errors.push(
-          `Block ${index + 1}: Invalid timestamp format in "${timeLine}"`
-        )
+        errors.push(`Block ${index + 1}: Invalid timestamp format in "${timeLine}"`)
         return
       }
 
@@ -346,9 +316,7 @@ export class SubtitleStore {
 
   replaceSegments(newSegments: SubtitleSegment[]) {
     this.segments = newSegments.sort((a, b) => a.start - b.start)
-    console.log(
-      `[SI][SubtitleStore] Replaced with ${newSegments.length} segments.`
-    )
+    console.log(`[SI][SubtitleStore] Replaced with ${newSegments.length} segments.`)
     this.notifyListeners()
   }
 

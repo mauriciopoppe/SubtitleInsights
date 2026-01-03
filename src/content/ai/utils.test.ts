@@ -23,14 +23,11 @@ describe('trimThinkingProcess', () => {
   })
 
   it('should remove repeated original input at the beginning', () => {
-    const originalInput =
-      'お化けの音が聞こえる島に向かう前に、事件のことをざっくり、簡単に説明してもらえますか？'
+    const originalInput = 'お化けの音が聞こえる島に向かう前に、事件のことをざっくり、簡単に説明してもらえますか？'
     const aiResponse = `${originalInput}\n\nThe sentence employs 「前に」 to indicate a sequence of events...`
 
     const result = trimThinkingProcess(aiResponse, originalInput)
-    expect(result).toBe(
-      'The sentence employs 「前に」 to indicate a sequence of events...'
-    )
+    expect(result).toBe('The sentence employs 「前に」 to indicate a sequence of events...')
   })
 
   it('should handle both thinking block AND repeated input', () => {

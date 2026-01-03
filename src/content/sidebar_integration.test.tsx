@@ -74,14 +74,10 @@ describe('Integration: Background Message -> Sidebar Render', () => {
 
     const firstItem = items[0] as HTMLElement
     expect(firstItem.dataset.start).toBe('1000')
-    expect(firstItem.querySelector('.si-sidebar-original')?.textContent).toBe(
-      'Hello'
-    )
+    expect(firstItem.querySelector('.si-sidebar-original')?.textContent).toBe('Hello')
 
     const secondItem = items[1] as HTMLElement
     expect(secondItem.dataset.start).toBe('3500')
-    expect(secondItem.querySelector('.si-sidebar-original')?.textContent).toBe(
-      'World'
-    )
+    expect(secondItem.querySelector('.si-sidebar-original')?.textContent).toBe('World')
   })
 })

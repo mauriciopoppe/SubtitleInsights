@@ -1,10 +1,6 @@
 import { ProfileManager } from '../profiles'
 
-export type TranslationAvailability =
-  | 'available'
-  | 'downloadable'
-  | 'downloading'
-  | 'unavailable'
+export type TranslationAvailability = 'available' | 'downloadable' | 'downloading' | 'unavailable'
 
 export class MyTranslator {
   private translator: any = null
@@ -23,9 +19,7 @@ export class MyTranslator {
     })
   }
 
-  async initialize(
-    onProgress?: (loaded: number, total: number) => void
-  ): Promise<boolean> {
+  async initialize(onProgress?: (loaded: number, total: number) => void): Promise<boolean> {
     try {
       // @ts-ignore
       if (typeof Translator === 'undefined') {

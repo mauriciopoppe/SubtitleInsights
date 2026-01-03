@@ -8,12 +8,7 @@ interface SettingsDropdownProps {
   triggerRef?: RefObject<HTMLElement>
 }
 
-export function SettingsDropdown({
-  isOpen,
-  onClose,
-  children,
-  triggerRef
-}: SettingsDropdownProps) {
+export function SettingsDropdown({ isOpen, onClose, children, triggerRef }: SettingsDropdownProps) {
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -40,11 +35,7 @@ export function SettingsDropdown({
   if (!isOpen) return null
 
   return (
-    <div
-      ref={menuRef}
-      className="si-settings-dropdown"
-      onClick={e => e.stopPropagation()}
-    >
+    <div ref={menuRef} className="si-settings-dropdown" onClick={e => e.stopPropagation()}>
       {children}
     </div>
   )
@@ -60,15 +51,7 @@ interface SettingsItemProps {
   style?: any
 }
 
-export function SettingsItem({
-  label,
-  icon,
-  onClick,
-  status,
-  title,
-  isNested,
-  style
-}: SettingsItemProps) {
+export function SettingsItem({ label, icon, onClick, status, title, isNested, style }: SettingsItemProps) {
   const className = `si-settings-dropdown-item ${status || ''} ${isNested ? 'nested' : ''}`
 
   return (

@@ -9,10 +9,7 @@ declare global {
       listener: EventListenerOrEventListenerObject,
       options?: boolean | AddEventListenerOptions
     ): void
-    addEventListener(
-      type: 'downloadprogress',
-      listener: (event: { loaded: number; total: number }) => void
-    ): void
+    addEventListener(type: 'downloadprogress', listener: (event: { loaded: number; total: number }) => void): void
   }
 }
 
@@ -70,9 +67,7 @@ declare global {
 
   // --- The Core API ---
   interface LanguageModelStatic {
-    availability(
-      options?: LanguageModelCreateOptions
-    ): Promise<LanguageModelAvailability>
+    availability(options?: LanguageModelCreateOptions): Promise<LanguageModelAvailability>
     capabilities(): Promise<LanguageModelCapabilities>
     /** Older alias for capabilities(). */
     params(): Promise<LanguageModelCapabilities>
@@ -91,16 +86,10 @@ declare global {
     readonly inputUsage: number
 
     /** Sends a prompt and waits for the full response. */
-    prompt(
-      input: string | Array<string | Blob>,
-      options?: LanguageModelPromptOptions
-    ): Promise<string>
+    prompt(input: string | Array<string | Blob>, options?: LanguageModelPromptOptions): Promise<string>
 
     /** Sends a prompt and returns a stream of text chunks. */
-    promptStreaming(
-      input: string | Array<string | Blob>,
-      options?: LanguageModelPromptOptions
-    ): ReadableStream<string>
+    promptStreaming(input: string | Array<string | Blob>, options?: LanguageModelPromptOptions): ReadableStream<string>
 
     /** * Reports how much of the quota a specific input would consume
      * BEFORE you actually send it.
@@ -131,9 +120,7 @@ declare global {
     /** * Checks if the language detection model is available,
      * needs to be downloaded, or is unsupported.
      */
-    availability(
-      options?: LanguageDetectorCreateOptions
-    ): Promise<LanguageDetectorAvailability>
+    availability(options?: LanguageDetectorCreateOptions): Promise<LanguageDetectorAvailability>
 
     /** * Returns the capabilities of the detector, including availability status.
      */

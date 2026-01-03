@@ -67,10 +67,7 @@ export function SidebarHeader({
     }
     if (aiStatus.status !== 'none') {
       return (
-        <span
-          className={`si-sidebar-status-icon ai-${aiStatus.status}`}
-          title={aiStatus.message || aiStatus.status}
-        >
+        <span className={`si-sidebar-status-icon ai-${aiStatus.status}`} title={aiStatus.message || aiStatus.status}>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
             <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.08-.34.12-.57.12s-.41-.04-.57-.12l-7.9-4.44A1.001 1.001 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.08.34-.12.57-.12s.41.04.57.12l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.21v6.7zm14 0v-6.7l-6 3.37v6.71l6-3.38z" />
           </svg>
@@ -80,9 +77,7 @@ export function SidebarHeader({
     return null
   }
 
-  const getMasterStatus = (
-    ...children: boolean[]
-  ): 'enabled' | 'disabled' | 'indeterminate' => {
+  const getMasterStatus = (...children: boolean[]): 'enabled' | 'disabled' | 'indeterminate' => {
     if (children.every(c => c)) return 'enabled'
     if (children.every(c => !c)) return 'disabled'
     return 'indeterminate'
@@ -90,20 +85,13 @@ export function SidebarHeader({
 
   return (
     <div className="si-sidebar-header">
-      <div
-        className="si-sidebar-title-wrapper"
-        style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-      >
+      <div className="si-sidebar-title-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <div className="si-sidebar-title">Subtitle Insights</div>
         {getStatusIcon()}
       </div>
       <div className="si-sidebar-controls">
         {/* Jump to Active Button */}
-        <span
-          className="si-sidebar-jump-btn"
-          title="Jump to Active Segment"
-          onClick={onSync}
-        >
+        <span className="si-sidebar-jump-btn" title="Jump to Active Segment" onClick={onSync}>
           <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
             <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" />
           </svg>
@@ -113,11 +101,7 @@ export function SidebarHeader({
         {/* Upload Button */}
         <span
           className={`si-sidebar-upload-btn ${isUploadActive ? 'active' : ''}`}
-          title={
-            isUploadActive
-              ? `Loaded: ${uploadFilename}`
-              : 'Upload Subtitles (SRT)'
-          }
+          title={isUploadActive ? `Loaded: ${uploadFilename}` : 'Upload Subtitles (SRT)'}
           onClick={onUpload}
         >
           <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
@@ -153,12 +137,7 @@ export function SidebarHeader({
               title="Toggle overlay features"
               onClick={onToggleOverlayMaster}
               icon={
-                <svg
-                  viewBox="0 0 24 24"
-                  width="14"
-                  height="14"
-                  fill="currentColor"
-                >
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                   <path d="M19 4H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V6h14v14zM7 15h3v2H7v-2zm7 0h3v2h-3v-2zm-7-4h10v2H7v-2z" />
                 </svg>
               }
@@ -188,12 +167,7 @@ export function SidebarHeader({
               title="Automatically pause video when hovering over the overlay"
               onClick={onTogglePauseOnHover}
               icon={
-                <svg
-                  viewBox="0 0 24 24"
-                  width="14"
-                  height="14"
-                  fill="currentColor"
-                >
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                   <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                 </svg>
               }
@@ -201,19 +175,11 @@ export function SidebarHeader({
 
             <SettingsItem
               label="Sidebar"
-              status={getMasterStatus(
-                isTranslationVisibleInSidebar,
-                isInsightsVisibleInSidebar
-              )}
+              status={getMasterStatus(isTranslationVisibleInSidebar, isInsightsVisibleInSidebar)}
               title="Toggle sidebar features"
               onClick={onToggleSidebarMaster}
               icon={
-                <svg
-                  viewBox="0 0 24 24"
-                  width="14"
-                  height="14"
-                  fill="currentColor"
-                >
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                   <path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" />
                 </svg>
               }
@@ -236,17 +202,11 @@ export function SidebarHeader({
               title="Open full settings page"
               onClick={onOpenSettings}
               style={{
-                borderTop:
-                  '1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1))',
+                borderTop: '1px solid var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1))',
                 marginTop: '4px'
               }}
               icon={
-                <svg
-                  viewBox="0 0 24 24"
-                  width="14"
-                  height="14"
-                  fill="currentColor"
-                >
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                   <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
                 </svg>
               }

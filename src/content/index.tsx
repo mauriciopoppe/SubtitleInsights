@@ -38,9 +38,7 @@ chrome.runtime.onMessage.addListener(message => {
   if (message.type === 'SI_SUBTITLES_CAPTURED') {
     const currentVideoId = new URLSearchParams(window.location.search).get('v')
     if (message.videoId && message.videoId !== currentVideoId) {
-      console.log(
-        `[SI] Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`
-      )
+      console.log(`[SI] Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`)
       return
     }
 
@@ -124,9 +122,7 @@ const init = async () => {
   const checkVideoChange = () => {
     const newVideoId = new URLSearchParams(window.location.search).get('v')
     if (newVideoId !== currentVideoId) {
-      console.log(
-        `[SI] Video ID changed (${currentVideoId} -> ${newVideoId}). Clearing store.`
-      )
+      console.log(`[SI] Video ID changed (${currentVideoId} -> ${newVideoId}). Clearing store.`)
       currentVideoId = newVideoId
       store.clear()
       grammarExplainer.resetSession()
@@ -149,10 +145,7 @@ const init = async () => {
 }
 
 const run = () => {
-  if (
-    window.location.pathname === '/watch' ||
-    window.location.pathname.startsWith('/watch')
-  ) {
+  if (window.location.pathname === '/watch' || window.location.pathname.startsWith('/watch')) {
     init()
   }
 }

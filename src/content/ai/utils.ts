@@ -23,10 +23,7 @@ export function isComplexSentence(text: string): boolean {
  * or by repeating the original input text.
  * This function cleans the response by removing such leading content.
  */
-export function trimThinkingProcess(
-  text: string,
-  originalInput: string
-): string {
+export function trimThinkingProcess(text: string, originalInput: string): string {
   if (!text) return text
 
   let currentText = text.trim()

@@ -29,28 +29,21 @@ export function ProfileEditor({
       <h3>{profile.id ? 'Edit Profile' : 'New Profile'}</h3>
       <div className="form-group">
         <label>Name</label>
-        <input
-          value={form.name}
-          onInput={e => setForm({ ...form, name: e.currentTarget.value })}
-        />
+        <input value={form.name} onInput={e => setForm({ ...form, name: e.currentTarget.value })} />
       </div>
       <div className="form-row">
         <div className="form-group">
           <label>Source Language (ISO)</label>
           <input
             value={form.sourceLanguage}
-            onInput={e =>
-              setForm({ ...form, sourceLanguage: e.currentTarget.value })
-            }
+            onInput={e => setForm({ ...form, sourceLanguage: e.currentTarget.value })}
           />
         </div>
         <div className="form-group">
           <label>Target Language (ISO)</label>
           <input
             value={form.targetLanguage}
-            onInput={e =>
-              setForm({ ...form, targetLanguage: e.currentTarget.value })
-            }
+            onInput={e => setForm({ ...form, targetLanguage: e.currentTarget.value })}
           />
         </div>
       </div>
@@ -58,9 +51,7 @@ export function ProfileEditor({
         <label>System Prompt</label>
         <textarea
           value={form.systemPrompt}
-          onInput={e =>
-            setForm({ ...form, systemPrompt: e.currentTarget.value })
-          }
+          onInput={e => setForm({ ...form, systemPrompt: e.currentTarget.value })}
           rows={15}
         />
         <small>Instructions for the AI to explain grammar.</small>
@@ -71,11 +62,7 @@ export function ProfileEditor({
         </button>
         <button onClick={onCancel}>Cancel</button>
         {profile.id && (
-          <button
-            className="danger"
-            onClick={handleDelete}
-            style={{ marginLeft: 'auto' }}
-          >
+          <button className="danger" onClick={handleDelete} style={{ marginLeft: 'auto' }}>
             Delete
           </button>
         )}

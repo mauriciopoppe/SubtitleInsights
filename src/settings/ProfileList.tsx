@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
 import { Profile, ProfileManager } from '../content/profiles'
 
-export function ProfileList({
-  onEdit
-}: {
-  onEdit: (profile: Profile) => void
-}) {
+export function ProfileList({ onEdit }: { onEdit: (profile: Profile) => void }) {
   const [profiles, setProfiles] = useState<Profile[]>([])
   const [activeId, setActiveId] = useState<string | null>(null)
 
@@ -41,18 +37,13 @@ export function ProfileList({
       </div>
       <ul className="profile-items">
         {profiles.map(p => (
-          <li
-            key={p.id}
-            className={`profile-item ${p.id === activeId ? 'active-profile' : ''}`}
-          >
+          <li key={p.id} className={`profile-item ${p.id === activeId ? 'active-profile' : ''}`}>
             <div className="profile-info">
               <span className="profile-name">{p.name}</span>
               <span className="profile-lang">
                 {p.sourceLanguage} → {p.targetLanguage}
               </span>
-              {p.id === activeId && (
-                <span className="badge-active">Active</span>
-              )}
+              {p.id === activeId && <span className="badge-active">Active</span>}
             </div>
             <div className="profile-actions">
               <button onClick={() => onEdit(p)}>Edit</button>

@@ -1,8 +1,7 @@
 export class Config {
   private static MASTER_STORAGE_KEY = 'si_is_enabled'
   private static OVERLAY_STORAGE_KEY = 'si_is_overlay_enabled'
-  private static GRAMMAR_EXPLAINER_STORAGE_KEY =
-    'si_is_grammar_explainer_enabled'
+  private static GRAMMAR_EXPLAINER_STORAGE_KEY = 'si_is_grammar_explainer_enabled'
   private static PAUSE_ON_HOVER_STORAGE_KEY = 'si_is_pause_on_hover_enabled'
   private static INSIGHTS_IN_OVERLAY_KEY = 'si_is_insights_in_overlay'
   private static INSIGHTS_IN_SIDEBAR_KEY = 'si_is_insights_in_sidebar'
@@ -55,12 +54,9 @@ export class Config {
 
   static async setIsGrammarExplainerEnabled(value: boolean): Promise<void> {
     return new Promise(resolve => {
-      chrome.storage.local.set(
-        { [this.GRAMMAR_EXPLAINER_STORAGE_KEY]: value },
-        () => {
-          resolve()
-        }
-      )
+      chrome.storage.local.set({ [this.GRAMMAR_EXPLAINER_STORAGE_KEY]: value }, () => {
+        resolve()
+      })
     })
   }
 
@@ -75,12 +71,9 @@ export class Config {
 
   static async setIsPauseOnHoverEnabled(value: boolean): Promise<void> {
     return new Promise(resolve => {
-      chrome.storage.local.set(
-        { [this.PAUSE_ON_HOVER_STORAGE_KEY]: value },
-        () => {
-          resolve()
-        }
-      )
+      chrome.storage.local.set({ [this.PAUSE_ON_HOVER_STORAGE_KEY]: value }, () => {
+        resolve()
+      })
     })
   }
 
@@ -96,9 +89,7 @@ export class Config {
 
   static async setIsInsightsVisibleInOverlay(value: boolean): Promise<void> {
     return new Promise(resolve => {
-      chrome.storage.local.set({ [this.INSIGHTS_IN_OVERLAY_KEY]: value }, () =>
-        resolve()
-      )
+      chrome.storage.local.set({ [this.INSIGHTS_IN_OVERLAY_KEY]: value }, () => resolve())
     })
   }
 
@@ -112,9 +103,7 @@ export class Config {
 
   static async setIsInsightsVisibleInSidebar(value: boolean): Promise<void> {
     return new Promise(resolve => {
-      chrome.storage.local.set({ [this.INSIGHTS_IN_SIDEBAR_KEY]: value }, () =>
-        resolve()
-      )
+      chrome.storage.local.set({ [this.INSIGHTS_IN_SIDEBAR_KEY]: value }, () => resolve())
     })
   }
 
@@ -128,10 +117,7 @@ export class Config {
 
   static async setIsTranslationVisibleInOverlay(value: boolean): Promise<void> {
     return new Promise(resolve => {
-      chrome.storage.local.set(
-        { [this.TRANSLATION_IN_OVERLAY_KEY]: value },
-        () => resolve()
-      )
+      chrome.storage.local.set({ [this.TRANSLATION_IN_OVERLAY_KEY]: value }, () => resolve())
     })
   }
 
@@ -145,10 +131,7 @@ export class Config {
 
   static async setIsTranslationVisibleInSidebar(value: boolean): Promise<void> {
     return new Promise(resolve => {
-      chrome.storage.local.set(
-        { [this.TRANSLATION_IN_SIDEBAR_KEY]: value },
-        () => resolve()
-      )
+      chrome.storage.local.set({ [this.TRANSLATION_IN_SIDEBAR_KEY]: value }, () => resolve())
     })
   }
 
@@ -162,9 +145,7 @@ export class Config {
 
   static async setIsOriginalVisibleInOverlay(value: boolean): Promise<void> {
     return new Promise(resolve => {
-      chrome.storage.local.set({ [this.ORIGINAL_IN_OVERLAY_KEY]: value }, () =>
-        resolve()
-      )
+      chrome.storage.local.set({ [this.ORIGINAL_IN_OVERLAY_KEY]: value }, () => resolve())
     })
   }
 
@@ -176,9 +157,7 @@ export class Config {
     })
   }
 
-  static addOverlayChangeListener(
-    callback: (isOverlayEnabled: boolean) => void
-  ) {
+  static addOverlayChangeListener(callback: (isOverlayEnabled: boolean) => void) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'local' && changes[this.OVERLAY_STORAGE_KEY]) {
         callback(changes[this.OVERLAY_STORAGE_KEY].newValue as boolean)
@@ -186,14 +165,10 @@ export class Config {
     })
   }
 
-  static addGrammarExplainerChangeListener(
-    callback: (isEnabled: boolean) => void
-  ) {
+  static addGrammarExplainerChangeListener(callback: (isEnabled: boolean) => void) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'local' && changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY]) {
-        callback(
-          changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY].newValue as boolean
-        )
+        callback(changes[this.GRAMMAR_EXPLAINER_STORAGE_KEY].newValue as boolean)
       }
     })
   }
@@ -206,9 +181,7 @@ export class Config {
     })
   }
 
-  static addInsightsInOverlayChangeListener(
-    callback: (value: boolean) => void
-  ) {
+  static addInsightsInOverlayChangeListener(callback: (value: boolean) => void) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'local' && changes[this.INSIGHTS_IN_OVERLAY_KEY]) {
         callback(changes[this.INSIGHTS_IN_OVERLAY_KEY].newValue as boolean)
@@ -216,9 +189,7 @@ export class Config {
     })
   }
 
-  static addInsightsInSidebarChangeListener(
-    callback: (value: boolean) => void
-  ) {
+  static addInsightsInSidebarChangeListener(callback: (value: boolean) => void) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'local' && changes[this.INSIGHTS_IN_SIDEBAR_KEY]) {
         callback(changes[this.INSIGHTS_IN_SIDEBAR_KEY].newValue as boolean)
@@ -226,9 +197,7 @@ export class Config {
     })
   }
 
-  static addTranslationInOverlayChangeListener(
-    callback: (value: boolean) => void
-  ) {
+  static addTranslationInOverlayChangeListener(callback: (value: boolean) => void) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'local' && changes[this.TRANSLATION_IN_OVERLAY_KEY]) {
         callback(changes[this.TRANSLATION_IN_OVERLAY_KEY].newValue as boolean)
@@ -236,9 +205,7 @@ export class Config {
     })
   }
 
-  static addTranslationInSidebarChangeListener(
-    callback: (value: boolean) => void
-  ) {
+  static addTranslationInSidebarChangeListener(callback: (value: boolean) => void) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'local' && changes[this.TRANSLATION_IN_SIDEBAR_KEY]) {
         callback(changes[this.TRANSLATION_IN_SIDEBAR_KEY].newValue as boolean)
@@ -246,9 +213,7 @@ export class Config {
     })
   }
 
-  static addOriginalInOverlayChangeListener(
-    callback: (value: boolean) => void
-  ) {
+  static addOriginalInOverlayChangeListener(callback: (value: boolean) => void) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'local' && changes[this.ORIGINAL_IN_OVERLAY_KEY]) {
         callback(changes[this.ORIGINAL_IN_OVERLAY_KEY].newValue as boolean)

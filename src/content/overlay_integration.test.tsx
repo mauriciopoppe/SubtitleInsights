@@ -83,9 +83,7 @@ describe('Integration: Overlay Rendering', () => {
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
 
-    expect(document.querySelector('.si-original')?.textContent).toBe(
-      'Second Segment'
-    )
+    expect(document.querySelector('.si-original')?.textContent).toBe('Second Segment')
 
     // 6. Move to gap
     await act(async () => {

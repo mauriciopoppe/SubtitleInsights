@@ -2,11 +2,7 @@ import { RefObject } from 'preact'
 import { useEffect, useState, useRef, useCallback } from 'preact/hooks'
 import { store } from '../store'
 
-export function usePauseOnHover(
-  isEnabled: boolean,
-  overlayRef: RefObject<HTMLElement>,
-  isOverlayVisible: boolean
-) {
+export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLElement>, isOverlayVisible: boolean) {
   const [isHovering, setIsHovering] = useState(false)
   const wasPausedByHoverRef = useRef(false)
 

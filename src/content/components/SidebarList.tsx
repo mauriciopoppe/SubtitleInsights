@@ -9,9 +9,7 @@ interface SidebarListProps {
 
 export function SidebarList({ segments, currentTimeMs }: SidebarListProps) {
   const activeIndex = useMemo(() => {
-    return segments.findIndex(
-      seg => currentTimeMs >= seg.start && currentTimeMs <= seg.end
-    )
+    return segments.findIndex(seg => currentTimeMs >= seg.start && currentTimeMs <= seg.end)
   }, [segments, currentTimeMs])
 
   return (

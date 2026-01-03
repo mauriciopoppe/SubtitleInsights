@@ -5,13 +5,7 @@ import { act } from 'preact/test-utils'
 import { usePauseOnHover } from './usePauseOnHover'
 import { store } from '../store'
 
-function TestComponent({
-  isEnabled,
-  isOverlayVisible = true
-}: {
-  isEnabled: boolean
-  isOverlayVisible?: boolean
-}) {
+function TestComponent({ isEnabled, isOverlayVisible = true }: { isEnabled: boolean; isOverlayVisible?: boolean }) {
   const overlayRef = useRef<HTMLDivElement>(null)
   usePauseOnHover(isEnabled, overlayRef, isOverlayVisible)
   return isOverlayVisible ? (
@@ -31,28 +25,21 @@ describe('usePauseOnHover', () => {
     videoEl = document.createElement('video')
     vi.spyOn(document, 'querySelector').mockImplementation(selector => {
       if (selector === 'video') return videoEl
-      if (selector === '#test-overlay')
-        return document.getElementById('test-overlay')
+      if (selector === '#test-overlay') return document.getElementById('test-overlay')
       return null
     })
 
     // Mock paused property
     Object.defineProperty(videoEl, 'paused', {
       get: () => videoEl.hasAttribute('paused-mock'),
-      set: val =>
-        val
-          ? videoEl.setAttribute('paused-mock', 'true')
-          : videoEl.removeAttribute('paused-mock'),
+      set: val => (val ? videoEl.setAttribute('paused-mock', 'true') : videoEl.removeAttribute('paused-mock')),
       configurable: true
     })
 
     // Mock seeking property
     Object.defineProperty(videoEl, 'seeking', {
       get: () => videoEl.hasAttribute('seeking-mock'),
-      set: val =>
-        val
-          ? videoEl.setAttribute('seeking-mock', 'true')
-          : videoEl.removeAttribute('seeking-mock'),
+      set: val => (val ? videoEl.setAttribute('seeking-mock', 'true') : videoEl.removeAttribute('seeking-mock')),
       configurable: true
     })
 
@@ -275,10 +262,7 @@ describe('usePauseOnHover', () => {
     vi.spyOn(store, 'getSegmentAt').mockReturnValue(activeSegment)
 
     await act(() => {
-      render(
-        <TestComponent isEnabled isOverlayVisible />,
-        document.getElementById('root')!
-      )
+      render(<TestComponent isEnabled isOverlayVisible />, document.getElementById('root')!)
     })
 
     const overlayEl = document.getElementById('test-overlay')!
@@ -290,19 +274,13 @@ describe('usePauseOnHover', () => {
 
     // 2. Make overlay invisible
     await act(() => {
-      render(
-        <TestComponent isEnabled isOverlayVisible={false} />,
-        document.getElementById('root')!
-      )
+      render(<TestComponent isEnabled isOverlayVisible={false} />, document.getElementById('root')!)
     })
 
     // 3. Make overlay visible again (mouse is technically not "on" it unless we move it again)
     // In our logic, it should reset isHovering to false.
     await act(() => {
-      render(
-        <TestComponent isEnabled isOverlayVisible />,
-        document.getElementById('root')!
-      )
+      render(<TestComponent isEnabled isOverlayVisible />, document.getElementById('root')!)
     })
 
     // 4. Update time to trigger pause logic

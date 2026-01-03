@@ -13,12 +13,8 @@ export class GrammarExplainer {
       if (typeof window.LanguageModel !== 'undefined') {
         const profile = await ProfileManager.getActiveProfile()
 
-        const isSourceSupported = SUPPORTED_LANGUAGES.includes(
-          profile.sourceLanguage
-        )
-        const isTargetSupported = SUPPORTED_LANGUAGES.includes(
-          profile.targetLanguage
-        )
+        const isSourceSupported = SUPPORTED_LANGUAGES.includes(profile.sourceLanguage)
+        const isTargetSupported = SUPPORTED_LANGUAGES.includes(profile.targetLanguage)
 
         let sourceLangForModel = profile.sourceLanguage
         if (!isSourceSupported) {
@@ -60,9 +56,7 @@ export class GrammarExplainer {
 
       const profile = await ProfileManager.getActiveProfile()
 
-      const isSourceSupported = SUPPORTED_LANGUAGES.includes(
-        profile.sourceLanguage
-      )
+      const isSourceSupported = SUPPORTED_LANGUAGES.includes(profile.sourceLanguage)
 
       if (!isSourceSupported) {
         store.setWarning(
@@ -70,9 +64,7 @@ export class GrammarExplainer {
         )
       }
 
-      const sourceLangForModel = isSourceSupported
-        ? profile.sourceLanguage
-        : 'en'
+      const sourceLangForModel = isSourceSupported ? profile.sourceLanguage : 'en'
 
       const params = await window.LanguageModel.params()
       const options: LanguageModelCreateOptions = {
@@ -88,9 +80,7 @@ export class GrammarExplainer {
             languages: [profile.targetLanguage, sourceLangForModel]
           }
         ],
-        expectedOutputs: [
-          { type: 'text', languages: [profile.targetLanguage] }
-        ],
+        expectedOutputs: [{ type: 'text', languages: [profile.targetLanguage] }],
         temperature: 0.2,
         topK: params.defaultTopK || undefined
       }
@@ -147,9 +137,7 @@ export class GrammarExplainer {
     const { inputUsage, inputQuota } = this.workingSession
     if (inputUsage / inputQuota > 0.8) {
       // Reset if usage exceeds 80%
-      console.log(
-        `[SI] GrammarExplainer: Input usage at ${inputUsage}/${inputQuota}. Resetting session.`
-      )
+      console.log(`[SI] GrammarExplainer: Input usage at ${inputUsage}/${inputQuota}. Resetting session.`)
       await this.resetSession()
       if (!this.workingSession) {
         throw new Error('Language Model session failed to reset')

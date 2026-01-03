@@ -14,8 +14,7 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
 
         try {
           // We add a param to avoid intercepting our own fetch
-          const fetchUrl =
-            url + (url.includes('?') ? '&' : '?') + 'si_ignore=true'
+          const fetchUrl = url + (url.includes('?') ? '&' : '?') + 'si_ignore=true'
           const response = await fetch(fetchUrl)
           const data = await response.json()
 
@@ -47,9 +46,7 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
   )
   console.log('[SI] webRequest listener registered.')
 } else {
-  console.error(
-    '[SI] chrome.webRequest is not available. Check permissions in manifest.json.'
-  )
+  console.error('[SI] chrome.webRequest is not available. Check permissions in manifest.json.')
 }
 
 chrome.runtime.onMessage.addListener(message => {

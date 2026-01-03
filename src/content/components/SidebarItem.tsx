@@ -35,9 +35,7 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
 
       {/* Natural Translation */}
       {config.isTranslationVisibleInSidebar && (
-        <div className="si-sidebar-translation">
-          {segment.translation || ''}
-        </div>
+        <div className="si-sidebar-translation">{segment.translation || ''}</div>
       )}
 
       {/* Insights */}
@@ -45,9 +43,7 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
         <div
           className="si-sidebar-insights"
           dangerouslySetInnerHTML={{
-            __html: snarkdown(
-              trimThinkingProcess(segment.insights, segment.text)
-            )
+            __html: snarkdown(trimThinkingProcess(segment.insights, segment.text))
           }}
         />
       )}
