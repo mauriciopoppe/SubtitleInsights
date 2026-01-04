@@ -315,8 +315,15 @@ export class SubtitleStore {
   }
 
   getSegmentAt(timeMs: number): SubtitleSegment | undefined {
-    // simple linear search for MVP, can optimize with binary search later
-    return this.segments.find(seg => timeMs >= seg.start && timeMs <= seg.end)
+    // Search backwards to return the latest segment that contains the time
+    // This is important for rolling subtitles where segments might overlap in the raw data
+    for (let i = this.segments.length - 1; i >= 0; i--) {
+      const seg = this.segments[i]
+      if (timeMs >= seg.start && timeMs < seg.end) {
+        return seg
+      }
+    }
+    return undefined
   }
 
   getAllSegments(): SubtitleSegment[] {
@@ -344,19 +351,32 @@ export class SubtitleStore {
   static parseYouTubeJSON(json: any): SubtitleSegment[] {
     if (!json.events) return []
 
-    return json.events
-      .filter((e: any) => e.segs && e.segs[0] && e.segs[0].utf8)
+    const segments = json.events
       .map((e: any) => {
         const start = e.tStartMs
         const duration = e.dDurationMs || 0
         // Combine all text segments
-        const text = e.segs.map((s: any) => s.utf8).join('')
+        const text = (e.segs || []).map((s: any) => s.utf8 || '').join('')
         return {
           start,
           end: start + duration,
           text
         }
       })
+      .filter((segment: SubtitleSegment) => segment.text.trim().length > 0)
+      .sort((a, b) => a.start - b.start)
+
+    // Unroll overlapping segments (common in YouTube's rolling format)
+    // We truncate the previous segment's end time to the next segment's start time
+    // to ensure a clean sequence of "active" lines.
+    for (let i = 0; i < segments.length - 1; i++) {
+      if (segments[i].end > segments[i + 1].start) {
+        segments[i].end = segments[i + 1].start
+      }
+    }
+
+    // Filter out segments that ended up with 0 or negative duration after unrolling
+    return segments.filter((s: SubtitleSegment) => s.end > s.start)
   }
 }
 

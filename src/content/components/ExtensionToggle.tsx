@@ -8,8 +8,8 @@ export function ExtensionToggle() {
     await Config.update({ isEnabled: !isEnabled })
   }
 
-  const title = 'SubLayer: AI Subtitles & Insights'
-  const ariaLabel = 'Toggle SubLayer Extension'
+  const title = 'Subtitle Insights: AI powered subtitles insights'
+  const ariaLabel = 'Toggle Subtitle Insights Extension'
 
   // Use the same SVG from index.tsx
   const icon = (

@@ -88,7 +88,9 @@ describe('Integration: Overlay Rendering', () => {
       videoEl.dispatchEvent(new Event('timeupdate'))
     })
 
-    expect(document.querySelector('#si-overlay')).toBeNull()
+    const overlay = document.querySelector('#si-overlay') as HTMLElement
+    expect(overlay).not.toBeNull()
+    expect(overlay.style.display).toBe('none')
   })
 
   it('should display system messages when set', async () => {

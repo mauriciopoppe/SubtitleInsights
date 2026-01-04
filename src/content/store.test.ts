@@ -73,6 +73,113 @@ Hello`
     })
   })
 
+  describe('parseYouTubeJSON', () => {
+    it('should parse valid YouTube JSON correctly', () => {
+      const payload = {
+        events: [
+          {
+            tStartMs: 1000,
+            dDurationMs: 2000,
+            segs: [{ utf8: 'Hello' }, { utf8: ' World', tOffsetMs: 500 }]
+          }
+        ]
+      }
+
+      const result = SubtitleStore.parseYouTubeJSON(payload)
+
+      expect(result).toHaveLength(1)
+      expect(result[0]).toEqual({
+        start: 1000,
+        end: 3000,
+        text: 'Hello World'
+      })
+    })
+
+    it('should skip segments that contain only empty lines or whitespace', () => {
+      const payload = {
+        events: [
+          {
+            tStartMs: 1000,
+            dDurationMs: 1000,
+            segs: [{ utf8: 'Valid Text' }]
+          },
+          {
+            tStartMs: 2000,
+            dDurationMs: 1000,
+            segs: [{ utf8: '\n' }]
+          },
+          {
+            tStartMs: 3000,
+            dDurationMs: 1000,
+            segs: [{ utf8: ' ' }]
+          },
+          {
+            tStartMs: 4000,
+            dDurationMs: 1000,
+            segs: [{ utf8: '\n\n' }]
+          },
+          {
+            tStartMs: 5000,
+            dDurationMs: 1000,
+            segs: [{ utf8: 'More Text' }]
+          }
+        ]
+      }
+
+      const result = SubtitleStore.parseYouTubeJSON(payload)
+
+      expect(result).toHaveLength(2)
+      expect(result[0].text).toBe('Valid Text')
+      expect(result[1].text).toBe('More Text')
+    })
+
+    it('should handle events without segs or with empty segs', () => {
+      const payload = {
+        events: [
+          { tStartMs: 1000, dDurationMs: 1000 },
+          { tStartMs: 2000, dDurationMs: 1000, segs: [] },
+          { tStartMs: 3000, dDurationMs: 1000, segs: [{}] }
+        ]
+      }
+
+      const result = SubtitleStore.parseYouTubeJSON(payload)
+      expect(result).toHaveLength(0)
+    })
+
+    it('should handle rolling subtitles by truncating overlapping segments', () => {
+      const payload = {
+        events: [
+          {
+            tStartMs: 1000,
+            dDurationMs: 10000, // Normally ends at 11000
+            segs: [{ utf8: 'First Line' }]
+          },
+          {
+            tStartMs: 5000,
+            dDurationMs: 10000, // Normally ends at 15000
+            segs: [{ utf8: 'Second Line' }]
+          }
+        ]
+      }
+
+      const result = SubtitleStore.parseYouTubeJSON(payload)
+
+      expect(result).toHaveLength(2)
+      // First line should be truncated to end when second line starts
+      expect(result[0]).toEqual({
+        start: 1000,
+        end: 5000,
+        text: 'First Line'
+      })
+      // Second line should keep its duration as there's no third line
+      expect(result[1]).toEqual({
+        start: 5000,
+        end: 15000,
+        text: 'Second Line'
+      })
+    })
+  })
+
   describe('UI State Management', () => {
     it('should initialize with default values', () => {
       expect(store.aiStatus).toEqual({ status: 'none' })
