@@ -87,13 +87,11 @@ export function OverlayApp() {
 
   usePauseOnHover(config.isPauseOnHoverEnabled, overlayRef, isVisible)
 
-  if (!isVisible) return null
-
   return (
     <div
       id="si-overlay"
       ref={overlayRef}
-      style={{ display: 'flex' }}
+      style={{ display: isVisible ? 'flex' : 'none' }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >

@@ -8,11 +8,15 @@ import { store } from '../store'
 function TestComponent({ isEnabled, isOverlayVisible = true }: { isEnabled: boolean; isOverlayVisible?: boolean }) {
   const overlayRef = useRef<HTMLDivElement>(null)
   usePauseOnHover(isEnabled, overlayRef, isOverlayVisible)
-  return isOverlayVisible ? (
-    <div ref={overlayRef} id="test-overlay">
+  return (
+    <div
+      ref={overlayRef}
+      id="test-overlay"
+      style={{ display: isOverlayVisible ? 'block' : 'none' }}
+    >
       Overlay
     </div>
-  ) : null
+  )
 }
 
 describe('usePauseOnHover', () => {

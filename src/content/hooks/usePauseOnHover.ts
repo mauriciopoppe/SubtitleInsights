@@ -28,8 +28,15 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
     resetPauseLogic()
   }, [resetPauseLogic])
 
+  // Reset state when overlay becomes invisible
   useEffect(() => {
-    if (!isEnabled || !isOverlayVisible) {
+    if (!isOverlayVisible) {
+      resetHoverState()
+    }
+  }, [isOverlayVisible, resetHoverState])
+
+  useEffect(() => {
+    if (!isEnabled) {
       resetHoverState()
       return
     }
@@ -64,7 +71,7 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
       overlay.removeEventListener('mouseleave', handleMouseLeave)
       resizeObserver?.disconnect()
     }
-  }, [isEnabled, isOverlayVisible, overlayRef, resetHoverState])
+  }, [isEnabled, overlayRef, resetHoverState])
 
   // Resume playback when hover ends, if we paused it
   useEffect(() => {
