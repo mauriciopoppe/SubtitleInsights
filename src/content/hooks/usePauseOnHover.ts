@@ -42,25 +42,38 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
 
     const handleMouseLeave = () => {
       setIsHovering(false)
-      // We don't reset hasAlreadyPausedRef here because leaving the overlay
-      // shouldn't re-enable pausing for the *same* segment if we return to it immediately.
-      // It resets naturally when segment changes or seeks.
-
-      const video = document.querySelector('video')
-      if (video && wasPausedByHoverRef.current && video.paused) {
-        video.play()
-      }
-      wasPausedByHoverRef.current = false
     }
 
     overlay.addEventListener('mousemove', handleMouseMove)
     overlay.addEventListener('mouseleave', handleMouseLeave)
 
+    // ResizeObserver to handle content changes shrinking the overlay from under the mouse
+    let resizeObserver: ResizeObserver | null = null
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => {
+        if (overlay) {
+          setIsHovering(overlay.matches(':hover'))
+        }
+      })
+      resizeObserver.observe(overlay)
+    }
+
     return () => {
       overlay.removeEventListener('mousemove', handleMouseMove)
       overlay.removeEventListener('mouseleave', handleMouseLeave)
+      resizeObserver?.disconnect()
     }
   }, [isEnabled, isOverlayVisible, overlayRef, resetHoverState])
+
+  // Resume playback when hover ends, if we paused it
+  useEffect(() => {
+    if (!isHovering) {
+      const video = document.querySelector('video')
+      if (video && wasPausedByHoverRef.current && video.paused) {
+        video.play()
+      }
+    }
+  }, [isHovering])
 
   useEffect(() => {
     if (!isEnabled) return
