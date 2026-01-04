@@ -4,7 +4,13 @@ import { store } from '../store'
 
 export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLElement>, isOverlayVisible: boolean) {
   const [isHovering, setIsHovering] = useState(false)
+  const isHoveringRef = useRef(false)
   const wasPausedByHoverRef = useRef(false)
+
+  // Sync ref with state
+  useEffect(() => {
+    isHoveringRef.current = isHovering
+  }, [isHovering])
 
   // Track if we have already triggered the pause for the current segment
   // to prevent looping pauses when the user manually resumes.
@@ -30,11 +36,6 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
 
     const overlay = overlayRef.current
     if (!overlay) return
-
-    // Check if the mouse is already over the element (e.g. it just appeared under the cursor)
-    if (overlay.matches(':hover')) {
-      setIsHovering(true)
-    }
 
     const handleMouseMove = () => {
       setIsHovering(true)
@@ -75,6 +76,11 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
     }
   }, [isHovering])
 
+  // Optimization: use a ref for isHovering in the video event listeners
+  // This prevents the effect from tearing down and re-attaching listeners
+  // every time the mouse moves in/out of the overlay (isHovering changes).
+  // Attaching/detaching listeners frequently can cause performance stutters,
+  // especially when segments are ending.
   useEffect(() => {
     if (!isEnabled) return
 
@@ -87,7 +93,7 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
         wasPausedByHoverRef.current = false
       }
 
-      if (!isHovering) return
+      if (!isHoveringRef.current) return
 
       const currentTimeMs = video.currentTime * 1000
       const activeSegment = store.getSegmentAt(currentTimeMs)
@@ -139,7 +145,7 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
       video.removeEventListener('play', handlePlay)
       video.removeEventListener('seeking', handleSeeking)
     }
-  }, [isEnabled, isHovering, resetPauseLogic])
+  }, [isEnabled, resetPauseLogic])
 
   return { isHovering }
 }
