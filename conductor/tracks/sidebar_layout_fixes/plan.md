@@ -1,4 +1,4 @@
-# Plan: Sidebar Layout Fixes
+# Plan: Sidebar Layout Fixes [checkpoint: 04e0f8b]
 
 ## Goal
 Fix sidebar layout issues on YouTube:
