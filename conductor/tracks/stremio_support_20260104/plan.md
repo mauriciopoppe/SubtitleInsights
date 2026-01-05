@@ -15,7 +15,7 @@ Extend Subtitle Insights to support the Stremio web player (web.stremio.com), in
     - Implement `initStremio()` to wait for the video element and control bar on Stremio.
 - [ ] **Task: Conductor - User Manual Verification 'Foundation & Platform Detection' (Protocol in workflow.md)**
 
-### Phase 2: UI Injection & Layout
+### Phase 2: UI Injection & Layout [checkpoint: 4b3d0c7]
 - [x] **Task: Layout Styling (CSS)**
     - Add Stremio-specific CSS rules in `src/content/styles.css` for sidebar injection and player resizing.
 - [x] **Task: Toggle Button Injection**
