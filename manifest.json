@@ -6,14 +6,14 @@
   "content_scripts": [
     {
       "js": ["src/content/index.tsx"],
-      "matches": ["https://www.youtube.com/*"]
+      "matches": ["https://www.youtube.com/*", "https://web.stremio.com/*"]
     }
   ],
   "background": {
     "service_worker": "src/background/index.ts",
     "type": "module"
   },
-  "host_permissions": ["*://*.youtube.com/*"],
+  "host_permissions": ["*://*.youtube.com/*", "https://web.stremio.com/*"],
   "permissions": ["storage", "webRequest"],
   "options_ui": {
     "page": "src/settings/index.html",

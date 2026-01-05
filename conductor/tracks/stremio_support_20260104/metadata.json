@@ -1,0 +1,8 @@
+{
+  "track_id": "stremio_support_20260104",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-04T22:30:00Z",
+  "updated_at": "2026-01-04T22:30:00Z",
+  "description": "Extend the plugin to work with Stremio web player, including a toggleable sidebar and manual subtitle upload support."
+}

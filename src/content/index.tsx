@@ -1,10 +1,10 @@
-import './styles.css'
-import { store, SubtitleStore } from './store'
-import { grammarExplainer } from './ai/explainer'
-import { translationManager } from './ai/manager'
-
 import { render } from 'preact'
 import { App } from './components/App'
+import { grammarExplainer } from './ai/explainer'
+import { translationManager } from './ai/manager'
+import { store, SubtitleStore } from './store'
+import './styles.css'
+import { Platform } from './types'
 
 console.log('[SI] Content script injected.')
 
@@ -31,12 +31,22 @@ const waitForElement = (selector: string): Promise<HTMLElement> => {
   })
 }
 
+const detectPlatform = (): Platform => {
+  const host = window.location.hostname
+  if (host.includes('youtube.com')) return 'youtube'
+  if (host.includes('stremio.com')) return 'stremio'
+  return 'unknown'
+}
+
 let lastVideoId: string | null = null
 
 chrome.runtime.onMessage.addListener(message => {
   if (message.type === 'SI_SUBTITLES_CAPTURED') {
+    const platform = detectPlatform()
+    if (platform !== 'youtube') return
+
     const currentVideoId = new URLSearchParams(window.location.search).get('v')
-    
+
     // Safety check: ensure the message is for the current video
     if (message.videoId && message.videoId !== currentVideoId) {
       console.log(`[SI] Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`)
@@ -59,15 +69,9 @@ chrome.runtime.onMessage.addListener(message => {
     const segments = SubtitleStore.parseYouTubeJSON(message.payload)
 
     // Reset AI managers because content has changed
-    // Note: We might have just reset them above, but doing it here ensures
-    // consistency if this message arrives for the *same* video (e.g. language toggle).
     translationManager.reset()
-    if (currentVideoId === lastVideoId) { 
-        // Only reset session if we didn't just do it above (to avoid double reset log noise/overhead)
-        // actually grammarExplainer.resetSession() is cheap, but let's be clean.
-        // Wait, if it's the SAME video, we *might* want to keep the session? 
-        // No, new subtitles = new content context.
-        grammarExplainer.resetSession()
+    if (currentVideoId === lastVideoId) {
+      grammarExplainer.resetSession()
     }
 
     store.replaceSegments(segments)
@@ -88,12 +92,9 @@ const cleanup = () => {
   document.getElementById('si-toggle-root')?.remove()
 }
 
-const init = async () => {
-  if (isInitializing) return
-  isInitializing = true
-
+const initYouTube = async () => {
   const currentVideoId = new URLSearchParams(window.location.search).get('v')
-  
+
   // Clear store if video changed
   if (currentVideoId && currentVideoId !== lastVideoId) {
     console.log(`[SI] Video ID changed (${lastVideoId} -> ${currentVideoId}). Clearing store.`)
@@ -106,25 +107,22 @@ const init = async () => {
   const existingRoot = document.getElementById('si-root')
   if (existingRoot && existingRoot.isConnected) {
     console.log('[SI] UI exists and is valid. Skipping re-init.')
-    isInitializing = false
     return
   }
 
-  console.log('[SI] Initializing extension for watch page...')
-  
-  // Run cleanup to ensure a clean state
+  console.log('[SI] Initializing extension for YouTube watch page...')
+
   cleanup()
 
-  console.log('[SI] Waiting for video player...')
+  console.log('[SI] Waiting for YouTube elements...')
   const player = await waitForElement('#movie_player')
   const video = (await waitForElement('video')) as HTMLVideoElement
   const secondaryInner = await waitForElement('#secondary-inner')
-  console.log('[SI] Video player, element and secondary column found.')
 
   // Injection: Right Controls Toggle
   const rightControls = await waitForElement('.ytp-right-controls')
   const subtitlesBtn = document.querySelector('.ytp-subtitles-button')
-  
+
   const toggleContainer = document.createElement('div')
   toggleContainer.id = 'si-toggle-root'
   toggleContainer.style.display = 'contents'
@@ -163,19 +161,113 @@ const init = async () => {
     appRoot
   )
 
-  console.log('[SI] App injected.')
-
-  // AI Translation & Grammar Setup
+  console.log('[SI] App injected for YouTube.')
   translationManager.initializeAIServices()
+}
+
+const initStremio = async () => {
+  // Check if UI already exists and is connected
+  const existingRoot = document.getElementById('si-root')
+  if (existingRoot && existingRoot.isConnected) {
+    console.log('[SI] UI exists and is valid. Skipping re-init.')
+    return
+  }
+
+  console.log('[SI] Initializing extension for Stremio...')
+  
+  cleanup()
+
+  console.log('[SI] Waiting for Stremio video element...')
+  const video = (await waitForElement('video')) as HTMLVideoElement
+  
+  // Stremio's DOM is dynamic. We look for a container that holds the video and likely the controls.
+  // We'll try to find a parent with "player" in its class, or fallback to video parent.
+  let player = video.parentElement as HTMLElement
+  const playerContainer = video.closest('[class*="player"]') as HTMLElement
+  if (playerContainer) {
+    player = playerContainer
+  }
+
+  // Look for control bar to inject toggle
+  // Stremio often has a div with class containing "controls" or "bar"
+  let toggleContainer: HTMLElement | null = null
+  const controls = document.querySelector('[class*="control-bar"], [class*="controls-container"], [class*="buttons-container"]') as HTMLElement
+  
+  if (controls) {
+    toggleContainer = document.createElement('div')
+    toggleContainer.id = 'si-toggle-root'
+    toggleContainer.style.display = 'contents'
+    // Try to find a good spot in controls, maybe before the last few icons (fullscreen, settings)
+    if (controls.children.length > 0) {
+      controls.insertBefore(toggleContainer, controls.lastElementChild)
+    } else {
+      controls.appendChild(toggleContainer)
+    }
+  }
+
+  const sidebarContainer = document.createElement('div')
+  sidebarContainer.id = 'si-sidebar-root'
+  // For Stremio, we'll likely use flex/absolute layout which we'll handle in Phase 2 CSS
+  document.body.appendChild(sidebarContainer)
+
+  const overlayContainer = document.createElement('div')
+  overlayContainer.id = 'si-overlay-root'
+  player.appendChild(overlayContainer)
+
+  // Create Root for App
+  const appRoot = document.createElement('div')
+  appRoot.id = 'si-root'
+  appRoot.style.display = 'none'
+  document.body.appendChild(appRoot)
+
+  // Render App with Portals
+  render(
+    <App
+      player={player}
+      video={video}
+      secondaryInner={document.body} // Stremio doesn't have secondaryInner, we use body as anchor for mutation observer if needed
+      sidebarContainer={sidebarContainer}
+      overlayContainer={overlayContainer}
+      toggleContainer={toggleContainer || undefined}
+    />,
+    appRoot
+  )
+
+  console.log('[SI] App injected for Stremio.')
+  translationManager.initializeAIServices()
+}
+
+const init = async () => {
+  if (isInitializing) return
+  isInitializing = true
+
+  const platform = detectPlatform()
+  if (platform === 'youtube') {
+    if (window.location.pathname.startsWith('/watch')) {
+      await initYouTube()
+    }
+  } else if (platform === 'stremio') {
+    await initStremio()
+  }
 
   isInitializing = false
 }
 
 const run = () => {
-  if (window.location.pathname === '/watch' || window.location.pathname.startsWith('/watch')) {
+  const platform = detectPlatform()
+  if (platform === 'youtube') {
+    if (window.location.pathname.startsWith('/watch')) {
+      init()
+    }
+  } else if (platform === 'stremio') {
     init()
   }
 }
 
 window.addEventListener('yt-navigate-finish', run)
+// For Stremio or other SPAs that don't use yt-navigate-finish
+if (detectPlatform() === 'stremio') {
+  // Stremio might need a different trigger or just run once and handle internal navigation
+  // For now, let's just call run()
+}
 run()
