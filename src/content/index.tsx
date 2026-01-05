@@ -212,7 +212,6 @@ const initStremio = async () => {
 
   const sidebarContainer = document.createElement('div')
   sidebarContainer.id = 'si-sidebar-root'
-  // For Stremio, we'll likely use flex/absolute layout which we'll handle in Phase 2 CSS
   document.body.appendChild(sidebarContainer)
 
   const overlayContainer = document.createElement('div')
@@ -230,7 +229,7 @@ const initStremio = async () => {
     <App
       player={player}
       video={video}
-      secondaryInner={document.body} // Stremio doesn't have secondaryInner, we use body as anchor for mutation observer if needed
+      secondaryInner={document.body} // Stremio doesn't have secondaryInner, we use body as anchor
       sidebarContainer={sidebarContainer}
       overlayContainer={overlayContainer}
       toggleContainer={toggleContainer || undefined}
@@ -253,6 +252,7 @@ const init = async () => {
       await initYouTube()
     }
   } else if (platform === 'stremio') {
+    document.body.classList.add('si-platform-stremio')
     await initStremio()
   }
 

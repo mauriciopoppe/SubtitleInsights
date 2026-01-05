@@ -13,7 +13,7 @@ Extend Subtitle Insights to support the Stremio web player (web.stremio.com), in
     - Implement a `detectPlatform()` utility.
 - [x] **Task: Stremio Initialization Logic**
     - Implement `initStremio()` to wait for the video element and control bar on Stremio.
-- [x] **Task: Conductor - User Manual Verification 'Foundation & Platform Detection' (Protocol in workflow.md)**
+- [ ] **Task: Conductor - User Manual Verification 'Foundation & Platform Detection' (Protocol in workflow.md)**
 
 ### Phase 2: UI Injection & Layout [checkpoint: 4b3d0c7]
 - [x] **Task: Layout Styling (CSS)**
@@ -24,7 +24,7 @@ Extend Subtitle Insights to support the Stremio web player (web.stremio.com), in
 - [x] **Task: Sidebar Container Implementation**
     - Implement the logic to inject `#si-sidebar-root` and `#si-overlay-root` into the Stremio DOM.
     - Implement the CSS `calc()` logic to resize the player when the sidebar is enabled.
-- [x] **Task: Conductor - User Manual Verification 'UI Injection & Layout' (Protocol in workflow.md)**
+- [ ] **Task: Conductor - User Manual Verification 'UI Injection & Layout' (Protocol in workflow.md)**
 
 ### Phase 3: Feature Parity & Polish [checkpoint: 9412825]
 - [x] **Task: Verify Manual Upload Support**
@@ -35,4 +35,4 @@ Extend Subtitle Insights to support the Stremio web player (web.stremio.com), in
     - Ensure the `usePauseOnHover` hook works with the Stremio player.
 - [x] **Task: UI Polish**
     - Adjust colors and icons to better match Stremio's dark theme.
-- [x] **Task: Conductor - User Manual Verification 'Feature Parity & Polish' (Protocol in workflow.md)**
+- [ ] **Task: Conductor - User Manual Verification 'Feature Parity & Polish' (Protocol in workflow.md)**

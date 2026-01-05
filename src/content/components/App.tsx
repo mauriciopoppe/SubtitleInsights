@@ -64,9 +64,7 @@ export function App({
 
     const observer = new MutationObserver(() => {
         if (secondaryInner.firstChild !== sidebarContainer) {
-            if (sidebarContainer.isConnected) {
-                secondaryInner.prepend(sidebarContainer)
-            }
+            secondaryInner.prepend(sidebarContainer)
         }
     })
     observer.observe(secondaryInner, { childList: true })

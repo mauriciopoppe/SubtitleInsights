@@ -1,0 +1,8 @@
+{
+  "track_id": "manual_sync_20260104",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-04T22:30:00Z",
+  "updated_at": "2026-01-04T22:30:00Z",
+  "description": "Provide a small gear icon on every segment that shows on hover after 2s to allow syncing the subtitle timestamp to the current video time."
+}

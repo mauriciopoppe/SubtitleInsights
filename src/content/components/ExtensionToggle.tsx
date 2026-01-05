@@ -42,7 +42,6 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
         verticalAlign: 'middle',
         background: 'none',
         border: 'none',
-        padding: '0 8px',
         cursor: 'pointer'
       }}
     >
