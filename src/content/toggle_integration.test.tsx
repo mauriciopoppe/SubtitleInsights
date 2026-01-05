@@ -23,31 +23,40 @@ vi.mock('./config', () => ({
   }
 }))
 
+// Mock useSubtitleStore to avoid issues with SyncExternalStore in tests
+vi.mock('./hooks/useSubtitleStore', () => ({
+  useSubtitleStore: () => ({
+    aiStatus: { status: 'ready' },
+    warning: undefined,
+    isUploadActive: false,
+    uploadFilename: undefined,
+    segments: [],
+    systemMessage: undefined
+  })
+}))
+
 describe('Integration: ExtensionToggle', () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="toggle-root"></div>'
     vi.clearAllMocks()
   })
 
-  it('should render with initial enabled state', async () => {
-    // Default mock has isEnabled: true
+  it('should render with initial state and closed popup', async () => {
     await act(async () => {
       render(<ExtensionToggle />, document.getElementById('toggle-root')!)
     })
 
-    // Wait for useConfig useEffect to finish
     await act(async () => {
       await Promise.resolve()
     })
 
     const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement
     expect(button).not.toBeNull()
-    expect(button.getAttribute('aria-pressed')).toBe('true')
-    expect(button.style.opacity).toBe('1')
+    expect(button.getAttribute('aria-expanded')).toBe('false')
+    expect(document.querySelector('.si-settings-popup')).toBeNull()
   })
 
-  it('should call Config.update when clicked', async () => {
-    // Default mock has isEnabled: true
+  it('should toggle popup when clicked', async () => {
     await act(async () => {
       render(<ExtensionToggle />, document.getElementById('toggle-root')!)
     })
@@ -58,21 +67,24 @@ describe('Integration: ExtensionToggle', () => {
 
     const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement
 
+    // Open popup
     await act(async () => {
       button.click()
     })
 
-    // Since initial was true, click should set to false
-    expect(Config.update).toHaveBeenCalledWith({ isEnabled: false })
-  })
+    expect(button.getAttribute('aria-expanded')).toBe('true')
+    expect(document.querySelector('.si-settings-popup')).not.toBeNull()
 
-  it('should update appearance when config changes', async () => {
-    let changeCallback: (val: any) => void = () => {}
-    ;(Config.subscribe as any).mockImplementation((cb: any) => {
-      changeCallback = cb
-      return () => {}
+    // Close popup
+    await act(async () => {
+      button.click()
     })
 
+    expect(button.getAttribute('aria-expanded')).toBe('false')
+    expect(document.querySelector('.si-settings-popup')).toBeNull()
+  })
+
+  it('should navigate to sub-menu and call Config.update when a sub-item is clicked', async () => {
     await act(async () => {
       render(<ExtensionToggle />, document.getElementById('toggle-root')!)
     })
@@ -82,14 +94,37 @@ describe('Integration: ExtensionToggle', () => {
     })
 
     const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement
-    expect(button.getAttribute('aria-pressed')).toBe('true')
 
-    // Simulate external change to disabled
+    // Open popup
     await act(async () => {
-      changeCallback({ isEnabled: false })
+      button.click()
     })
 
-    expect(button.getAttribute('aria-pressed')).toBe('false')
-    expect(button.style.opacity).toBe('0.4')
+    // Find "Overlay" navigation link
+    const items = document.querySelectorAll('.si-settings-popup-item.link')
+    const overlayLink = Array.from(items).find(item => item.textContent?.includes('Overlay')) as HTMLElement
+    expect(overlayLink).not.toBeNull()
+
+    // Navigate to Overlay sub-menu
+    await act(async () => {
+      overlayLink.click()
+    })
+
+    // Sub-menu should show "Back" button and specific toggles
+    expect(document.querySelector('.si-settings-popup-item.back')).not.toBeNull()
+    
+    // Find "Show Original" toggle in sub-menu
+    const toggles = document.querySelectorAll('.si-settings-popup-item.toggle')
+    const originalToggle = Array.from(toggles).find(item => item.textContent?.includes('Show Original')) as HTMLElement
+    expect(originalToggle).not.toBeNull()
+
+    await act(async () => {
+      originalToggle.click()
+    })
+
+    // It should call Config.update with the opposite of initial (which was true)
+    expect(Config.update).toHaveBeenCalledWith({
+      isOriginalVisibleInOverlay: false
+    })
   })
 })

@@ -9,11 +9,14 @@
 1.  **In-Page Overlay**
     - Displays the current subtitle segment directly over the video player.
     - **Pause on Hover:** Automatically pauses the video when the user hovers over the overlay near the end of a segment, allowing time to read and process the information.
-    - **Interactive Controls:**
+    - **Overlay Controls (Proximity):**
       - **Replay Segment:** Instantly replay the current segment to listen again.
       - **Scroll Sync:** Button to sync the sidebar view to the current active segment.
-      - **Pause Toggle:** Easily enable/disable the pause-on-hover feature.
     - **Proximity Visibility:** Controls appear only when the mouse is near the top-left area to avoid distracting from the content or blocking interactions (e.g., with Yomitan).
+    - **Unified Settings Popup:**
+      - Triggered by the main extension icon in the video control bar.
+      - **Authentic Navigation:** Features a hierarchical sub-menu system (Overlay/Sidebar settings) that strictly mimics the native YouTube settings UI.
+      - **Live Status:** Displays AI model downloading and readiness status directly in the menu.
 
 2.  **Smart Sidebar**
     - Displays the full transcript of the video.

@@ -3,11 +3,10 @@ import { SidebarHeader } from './SidebarHeader'
 import { SidebarList } from './SidebarList'
 import { useSubtitleStore } from '../hooks/useSubtitleStore'
 import { useConfig } from '../hooks/useConfig'
-import { Config } from '../config'
 import { store } from '../store'
 
 export function SidebarApp() {
-  const { segments, aiStatus, warning, isUploadActive, uploadFilename } = useSubtitleStore()
+  const { segments, isUploadActive, uploadFilename } = useSubtitleStore()
   const config = useConfig()
   const [currentTimeMs, setCurrentTimeMs] = useState(0)
   const hasInitiallyScrolledRef = useRef(false)
@@ -104,81 +103,6 @@ export function SidebarApp() {
     reader.readAsText(file)
   }
 
-  const handleToggleOverlayMaster = async () => {
-    const config = await Config.get()
-    const { isTranslationVisibleInOverlay, isInsightsVisibleInOverlay, isOriginalVisibleInOverlay } = config
-
-    // If all are ON, turn OFF. Otherwise turn ON.
-    const areAllOn = isTranslationVisibleInOverlay && isInsightsVisibleInOverlay && isOriginalVisibleInOverlay
-
-    if (areAllOn) {
-      await Config.update({
-        isTranslationVisibleInOverlay: false,
-        isInsightsVisibleInOverlay: false,
-        isOriginalVisibleInOverlay: false
-      })
-    } else {
-      await Config.update({
-        isTranslationVisibleInOverlay: true,
-        isInsightsVisibleInOverlay: true,
-        isOriginalVisibleInOverlay: true
-      })
-    }
-  }
-
-  const handleToggleSidebarMaster = async () => {
-    const config = await Config.get()
-    const { isTranslationVisibleInSidebar, isInsightsVisibleInSidebar } = config
-
-    const areBothOn = isTranslationVisibleInSidebar && isInsightsVisibleInSidebar
-
-    if (areBothOn) {
-      await Config.update({
-        isTranslationVisibleInSidebar: false,
-        isInsightsVisibleInSidebar: false
-      })
-    } else {
-      await Config.update({
-        isTranslationVisibleInSidebar: true,
-        isInsightsVisibleInSidebar: true
-      })
-    }
-  }
-
-  const handleTogglePauseOnHover = async () => {
-    const { isPauseOnHoverEnabled } = await Config.get()
-    await Config.update({ isPauseOnHoverEnabled: !isPauseOnHoverEnabled })
-  }
-
-  const handleToggleInsightsOverlay = async () => {
-    const { isInsightsVisibleInOverlay } = await Config.get()
-    await Config.update({ isInsightsVisibleInOverlay: !isInsightsVisibleInOverlay })
-  }
-
-  const handleToggleInsightsSidebar = async () => {
-    const { isInsightsVisibleInSidebar } = await Config.get()
-    await Config.update({ isInsightsVisibleInSidebar: !isInsightsVisibleInSidebar })
-  }
-
-  const handleToggleTranslationOverlay = async () => {
-    const { isTranslationVisibleInOverlay } = await Config.get()
-    await Config.update({ isTranslationVisibleInOverlay: !isTranslationVisibleInOverlay })
-  }
-
-  const handleToggleTranslationSidebar = async () => {
-    const { isTranslationVisibleInSidebar } = await Config.get()
-    await Config.update({ isTranslationVisibleInSidebar: !isTranslationVisibleInSidebar })
-  }
-
-  const handleToggleOriginalOverlay = async () => {
-    const { isOriginalVisibleInOverlay } = await Config.get()
-    await Config.update({ isOriginalVisibleInOverlay: !isOriginalVisibleInOverlay })
-  }
-
-  const handleOpenSettings = () => {
-    chrome.runtime.sendMessage({ type: 'OPEN_OPTIONS_PAGE' })
-  }
-
   const handleWheel = (e: WheelEvent) => {
     e.stopPropagation()
   }
@@ -191,23 +115,6 @@ export function SidebarApp() {
       <SidebarHeader
         onSync={handleSync}
         onUpload={handleUploadClick}
-        onToggleOverlayMaster={handleToggleOverlayMaster}
-        onToggleSidebarMaster={handleToggleSidebarMaster}
-        onTogglePauseOnHover={handleTogglePauseOnHover}
-        onToggleInsightsOverlay={handleToggleInsightsOverlay}
-        onToggleInsightsSidebar={handleToggleInsightsSidebar}
-        onToggleTranslationOverlay={handleToggleTranslationOverlay}
-        onToggleTranslationSidebar={handleToggleTranslationSidebar}
-        onToggleOriginalOverlay={handleToggleOriginalOverlay}
-        onOpenSettings={handleOpenSettings}
-        pauseOnHoverEnabled={config.isPauseOnHoverEnabled}
-        isInsightsVisibleInOverlay={config.isInsightsVisibleInOverlay}
-        isInsightsVisibleInSidebar={config.isInsightsVisibleInSidebar}
-        isTranslationVisibleInOverlay={config.isTranslationVisibleInOverlay}
-        isTranslationVisibleInSidebar={config.isTranslationVisibleInSidebar}
-        isOriginalVisibleInOverlay={config.isOriginalVisibleInOverlay}
-        aiStatus={aiStatus}
-        warning={warning}
         isUploadActive={isUploadActive}
         uploadFilename={uploadFilename}
       />

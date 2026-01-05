@@ -1,5 +1,6 @@
+import { useState, useRef } from 'preact/hooks'
 import { useConfig } from '../hooks/useConfig'
-import { Config } from '../config'
+import { SettingsPopup } from './SettingsPopup'
 import { Platform } from '../types'
 
 interface ExtensionToggleProps {
@@ -8,13 +9,15 @@ interface ExtensionToggleProps {
 
 export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) {
   const { isEnabled, isLoading } = useConfig()
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
-  const handleClick = async () => {
-    await Config.update({ isEnabled: !isEnabled })
+  const handleClick = () => {
+    setIsPopupOpen(!isPopupOpen)
   }
 
-  const title = 'Subtitle Insights: AI powered subtitles insights'
-  const ariaLabel = 'Toggle Subtitle Insights Extension'
+  const title = 'Subtitle Insights Settings'
+  const ariaLabel = 'Open Subtitle Insights Settings'
 
   // Use the same SVG from index.tsx
   const icon = (
@@ -25,38 +28,49 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
 
   const className = [
     platform === 'youtube' ? 'ytp-button' : 'si-toggle-stremio',
-    'si-toggle-btn'
+    'si-toggle-btn',
+    isPopupOpen ? 'active' : ''
   ].join(' ')
 
   return (
-    <button
-      className={className}
-      aria-label={ariaLabel}
-      aria-pressed={isEnabled ? 'true' : 'false'}
-      title={title}
-      onClick={handleClick}
-      style={{
-        opacity: isEnabled ? 1 : 0.4,
-        color: isEnabled ? '#fff' : '#aaa',
-        display: isLoading ? 'none' : 'inline-block',
-        verticalAlign: 'middle',
-        background: 'none',
-        border: 'none',
-        cursor: 'pointer'
-      }}
-    >
-      <div
-        className="si-button-icon"
+    <div className="si-toggle-container" style={{ position: 'relative', display: 'inline-block' }}>
+      <button
+        ref={buttonRef}
+        className={className}
+        aria-label={ariaLabel}
+        aria-haspopup="true"
+        aria-expanded={isPopupOpen ? 'true' : 'false'}
+        title={title}
+        onClick={handleClick}
         style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
+          opacity: isEnabled ? 1 : 0.4,
+          color: isEnabled ? '#fff' : '#aaa',
+          display: isLoading ? 'none' : 'inline-block',
+          verticalAlign: 'middle',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer'
         }}
       >
-        {icon}
-      </div>
-    </button>
+        <div
+          className="si-button-icon"
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          {icon}
+        </div>
+      </button>
+
+      <SettingsPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        triggerRef={buttonRef}
+      />
+    </div>
   )
 }

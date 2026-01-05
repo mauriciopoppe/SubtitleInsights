@@ -1,0 +1,8 @@
+{
+  "track_id": "move_settings_to_toggle_20260104",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-04T23:35:00Z",
+  "updated_at": "2026-01-04T23:35:00Z",
+  "description": "Move sidebar settings to the video extension toggle with a YouTube-like popup menu."
+}

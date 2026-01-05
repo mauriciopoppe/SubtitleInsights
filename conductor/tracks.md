@@ -35,3 +35,8 @@ _Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tr
 
 ## [x] Track: Stremio Support Integration
 *Link: [./conductor/archive/stremio_support_20260104/](./conductor/archive/stremio_support_20260104/)*
+
+---
+
+## [x] Track: Move Sidebar Settings to Extension Toggle Popup
+*Link: [./conductor/archive/move_settings_to_toggle_20260104/](./conductor/archive/move_settings_to_toggle_20260104/)*
