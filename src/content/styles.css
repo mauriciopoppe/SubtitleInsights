@@ -416,3 +416,43 @@
   border-radius: 2px;
   font-family: monospace;
 }
+
+/* Stremio Specific Layout */
+:root {
+  --si-sidebar-width: 350px;
+}
+
+#si-sidebar-root {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: var(--si-sidebar-width);
+  z-index: 10000;
+  background-color: #0f0f0f;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  display: none;
+}
+
+/* When sidebar is active, we push the player to the left */
+body.si-sidebar-active {
+  overflow: hidden;
+}
+
+body.si-sidebar-active #si-sidebar-root {
+  display: block;
+}
+
+/* We target the likely player container on Stremio */
+body.si-sidebar-active .si-player-container-resized {
+  margin-right: var(--si-sidebar-width) !important;
+  width: calc(100% - var(--si-sidebar-width)) !important;
+  right: auto !important; /* Override potential absolute positioning */
+  transition: width 0.3s ease, margin-right 0.3s ease;
+}
+
+#si-sidebar-root #si-sidebar {
+  height: 100% !important;
+  border-radius: 0;
+  border: none;
+}

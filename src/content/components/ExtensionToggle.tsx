@@ -1,7 +1,12 @@
 import { useConfig } from '../hooks/useConfig'
 import { Config } from '../config'
+import { Platform } from '../types'
 
-export function ExtensionToggle() {
+interface ExtensionToggleProps {
+  platform?: Platform
+}
+
+export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) {
   const { isEnabled, isLoading } = useConfig()
 
   const handleClick = async () => {
@@ -18,9 +23,14 @@ export function ExtensionToggle() {
     </svg>
   )
 
+  const className = [
+    platform === 'youtube' ? 'ytp-button' : 'si-toggle-stremio',
+    'si-toggle-btn'
+  ].join(' ')
+
   return (
     <button
-      className="ytp-button si-toggle-btn"
+      className={className}
       aria-label={ariaLabel}
       aria-pressed={isEnabled ? 'true' : 'false'}
       title={title}
@@ -29,7 +39,11 @@ export function ExtensionToggle() {
         opacity: isEnabled ? 1 : 0.4,
         color: isEnabled ? '#fff' : '#aaa',
         display: isLoading ? 'none' : 'inline-block',
-        verticalAlign: 'top'
+        verticalAlign: 'middle',
+        background: 'none',
+        border: 'none',
+        padding: '0 8px',
+        cursor: 'pointer'
       }}
     >
       <div

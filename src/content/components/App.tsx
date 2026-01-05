@@ -6,6 +6,7 @@ import { ExtensionToggle } from './ExtensionToggle'
 import { store } from '../store'
 import { translationManager } from '../ai/manager'
 import { Config } from '../config'
+import { Platform } from '../types'
 
 interface AppProps {
   player: HTMLElement
@@ -14,6 +15,7 @@ interface AppProps {
   sidebarContainer?: HTMLElement
   overlayContainer: HTMLElement
   toggleContainer?: HTMLElement
+  platform: Platform
 }
 
 export function App({
@@ -22,7 +24,8 @@ export function App({
   secondaryInner,
   sidebarContainer,
   overlayContainer,
-  toggleContainer
+  toggleContainer,
+  platform
 }: AppProps) {
 
   // Layout Logic: Sidebar Height Sync
@@ -31,7 +34,8 @@ export function App({
 
     const updateSidebarHeight = () => {
         const hasSegments = store.getAllSegments().length > 0
-        if (hasSegments) {
+        // On YouTube we only show if segments. On Stremio we might want it always if enabled.
+        if (hasSegments || platform === 'stremio') {
             const rect = player.getBoundingClientRect()
             sidebarContainer.style.setProperty('--si-sidebar-height', `${rect.height}px`)
         } else {
@@ -52,11 +56,11 @@ export function App({
         resizeObserver.disconnect()
         unsubscribe()
     }
-  }, [player, sidebarContainer])
+  }, [player, sidebarContainer, platform])
 
-  // Layout Logic: Sidebar Position (MutationObserver)
+  // Layout Logic: Sidebar Position (MutationObserver - YouTube)
   useEffect(() => {
-    if (!sidebarContainer) return
+    if (platform !== 'youtube' || !sidebarContainer) return
 
     const observer = new MutationObserver(() => {
         if (secondaryInner.firstChild !== sidebarContainer) {
@@ -67,7 +71,47 @@ export function App({
     })
     observer.observe(secondaryInner, { childList: true })
     return () => observer.disconnect()
-  }, [secondaryInner, sidebarContainer])
+  }, [secondaryInner, sidebarContainer, platform])
+
+  // Layout Logic: Stremio Resizing
+  useEffect(() => {
+    if (platform !== 'stremio') return
+
+    let observer: MutationObserver | null = null
+    let isEnabled = false
+
+    const applyClass = () => {
+        if (isEnabled && !player.classList.contains('si-player-container-resized')) {
+            player.classList.add('si-player-container-resized')
+        }
+    }
+
+    observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                applyClass()
+            }
+        }
+    })
+    
+    observer.observe(player, { attributes: true, attributeFilter: ['class'] })
+
+    const unsubscribe = Config.subscribe(config => {
+      isEnabled = config.isEnabled
+      if (isEnabled) {
+        document.body.classList.add('si-sidebar-active')
+        applyClass()
+      } else {
+        document.body.classList.remove('si-sidebar-active')
+        player.classList.remove('si-player-container-resized')
+      }
+    })
+
+    return () => {
+        unsubscribe()
+        observer?.disconnect()
+    }
+  }, [platform, player])
 
   // Config Logic: Overlay Visibility
   useEffect(() => {
@@ -92,7 +136,7 @@ export function App({
 
   return (
     <>
-      {toggleContainer && createPortal(<ExtensionToggle />, toggleContainer)}
+      {toggleContainer && createPortal(<ExtensionToggle platform={platform} />, toggleContainer)}
       {sidebarContainer && createPortal(<SidebarApp />, sidebarContainer)}
       {createPortal(<OverlayApp />, overlayContainer)}
     </>

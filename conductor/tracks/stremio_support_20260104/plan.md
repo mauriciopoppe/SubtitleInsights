@@ -16,12 +16,12 @@ Extend Subtitle Insights to support the Stremio web player (web.stremio.com), in
 - [ ] **Task: Conductor - User Manual Verification 'Foundation & Platform Detection' (Protocol in workflow.md)**
 
 ### Phase 2: UI Injection & Layout
-- [ ] **Task: Layout Styling (CSS)**
+- [x] **Task: Layout Styling (CSS)**
     - Add Stremio-specific CSS rules in `src/content/styles.css` for sidebar injection and player resizing.
-- [ ] **Task: Toggle Button Injection**
+- [x] **Task: Toggle Button Injection**
     - Identify the selector for Stremio's player control bar.
     - Inject a `StremioToggle` (or adapt `ExtensionToggle`) into the controls.
-- [ ] **Task: Sidebar Container Implementation**
+- [x] **Task: Sidebar Container Implementation**
     - Implement the logic to inject `#si-sidebar-root` and `#si-overlay-root` into the Stremio DOM.
     - Implement the CSS `calc()` logic to resize the player when the sidebar is enabled.
 - [ ] **Task: Conductor - User Manual Verification 'UI Injection & Layout' (Protocol in workflow.md)**

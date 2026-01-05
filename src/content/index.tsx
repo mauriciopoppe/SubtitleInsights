@@ -157,6 +157,7 @@ const initYouTube = async () => {
       sidebarContainer={sidebarContainer}
       overlayContainer={overlayContainer}
       toggleContainer={toggleContainer}
+      platform="youtube"
     />,
     appRoot
   )
@@ -181,25 +182,36 @@ const initStremio = async () => {
   const video = (await waitForElement('video')) as HTMLVideoElement
   
   // Stremio's DOM is dynamic. We look for a container that holds the video and likely the controls.
-  // We'll try to find a parent with "player" in its class, or fallback to video parent.
+  // We'll target .route-content as it seems stable and wraps the player.
   let player = video.parentElement as HTMLElement
-  const playerContainer = video.closest('[class*="player"]') as HTMLElement
-  if (playerContainer) {
-    player = playerContainer
+  const routeContent = video.closest('.route-content') as HTMLElement
+  if (routeContent) {
+    player = routeContent
+  } else {
+      // Fallback to player-container if route-content not found
+      const playerContainer = video.closest('[class*="player-container"]') as HTMLElement
+      if (playerContainer) {
+        player = playerContainer
+      } else {
+          const layer = video.closest('.layer') as HTMLElement
+          if (layer) player = layer
+      }
   }
 
   // Look for control bar to inject toggle
   // Stremio often has a div with class containing "controls" or "bar"
   let toggleContainer: HTMLElement | null = null
-  const controls = document.querySelector('[class*="control-bar"], [class*="controls-container"], [class*="buttons-container"]') as HTMLElement
+  const controls = document.querySelector('[class*="buttons-container"], [class*="control-bar"], [class*="controls-container"]') as HTMLElement
   
   if (controls) {
     toggleContainer = document.createElement('div')
     toggleContainer.id = 'si-toggle-root'
-    toggleContainer.style.display = 'contents'
+    toggleContainer.style.display = 'inline-block'
+    toggleContainer.style.verticalAlign = 'middle'
     // Try to find a good spot in controls, maybe before the last few icons (fullscreen, settings)
-    if (controls.children.length > 0) {
-      controls.insertBefore(toggleContainer, controls.lastElementChild)
+    if (controls.children.length > 2) {
+      // Inject before the 3rd to last element (usually where settings/fullscreen are)
+      controls.insertBefore(toggleContainer, controls.children[controls.children.length - 2])
     } else {
       controls.appendChild(toggleContainer)
     }
@@ -229,6 +241,7 @@ const initStremio = async () => {
       sidebarContainer={sidebarContainer}
       overlayContainer={overlayContainer}
       toggleContainer={toggleContainer || undefined}
+      platform="stremio"
     />,
     appRoot
   )
