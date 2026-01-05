@@ -103,6 +103,17 @@ Before marking any task complete, verify:
 - [ ] Code is reasonably clean and readable
 - [ ] No blatant errors in console/logs
 
+### Track Completion Protocol
+
+**Trigger:** This protocol is executed after all tasks in a track's `plan.md` are completed, before updating the status in `conductor/tracks.md`.
+
+1.  **Verify Clean Working Tree:**
+    - Run `git status`.
+    - **CRITICAL:** If there are any uncommitted changes or untracked files (excluding the track's folder itself if not yet staged), they MUST be committed or stashed before proceeding.
+2.  **Synchronize Documentation:** Follow the `SYNCHRONIZE PROJECT DOCUMENTATION` protocol defined in the system instructions.
+3.  **Update Main Track List:** Change the track status from `[~]` to `[x]` in `conductor/tracks.md`.
+4.  **Final Cleanup:** Offer to archive or delete the track folder.
+
 ## Development Commands
 
 **AI AGENT INSTRUCTION: This section should be adapted to the project's specific language, framework, and build tools.**
