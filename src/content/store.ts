@@ -364,7 +364,7 @@ export class SubtitleStore {
         }
       })
       .filter((segment: SubtitleSegment) => segment.text.trim().length > 0)
-      .sort((a, b) => a.start - b.start)
+      .sort((a: SubtitleSegment, b: SubtitleSegment) => a.start - b.start)
 
     // Unroll overlapping segments (common in YouTube's rolling format)
     // We truncate the previous segment's end time to the next segment's start time
