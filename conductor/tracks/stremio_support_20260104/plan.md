@@ -26,7 +26,7 @@ Extend Subtitle Insights to support the Stremio web player (web.stremio.com), in
     - Implement the CSS `calc()` logic to resize the player when the sidebar is enabled.
 - [ ] **Task: Conductor - User Manual Verification 'UI Injection & Layout' (Protocol in workflow.md)**
 
-### Phase 3: Feature Parity & Polish
+### Phase 3: Feature Parity & Polish [checkpoint: 9412825]
 - [x] **Task: Verify Manual Upload Support**
     - Verify that the "Upload Subtitles" button correctly populates the store and displays segments in the sidebar on Stremio.
 - [x] **Task: Verify AI Features**
