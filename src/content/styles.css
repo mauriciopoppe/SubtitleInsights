@@ -332,6 +332,12 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.si-settings-popup-item.si-item-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: default;
+}
+
 .si-settings-popup-item.back {
   font-weight: 500;
 }

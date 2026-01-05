@@ -76,10 +76,10 @@ export function App({
     if (platform !== 'stremio') return
 
     let observer: MutationObserver | null = null
-    let isEnabled = false
+    let isSidebarActive = false
 
     const applyClass = () => {
-        if (isEnabled && !player.classList.contains('si-player-container-resized')) {
+        if (isSidebarActive && !player.classList.contains('si-player-container-resized')) {
             player.classList.add('si-player-container-resized')
         }
     }
@@ -95,8 +95,8 @@ export function App({
     observer.observe(player, { attributes: true, attributeFilter: ['class'] })
 
     const unsubscribe = Config.subscribe(config => {
-      isEnabled = config.isEnabled
-      if (isEnabled) {
+      isSidebarActive = config.isEnabled && config.isSidebarEnabled
+      if (isSidebarActive) {
         document.body.classList.add('si-sidebar-active')
         applyClass()
       } else {
@@ -110,6 +110,18 @@ export function App({
         observer?.disconnect()
     }
   }, [platform, player])
+
+  // Config Logic: Sidebar Visibility
+  useEffect(() => {
+    if (!sidebarContainer) return
+    return Config.subscribe(config => {
+        if (!config.isEnabled || !config.isSidebarEnabled) {
+            sidebarContainer.style.display = 'none'
+        } else {
+            sidebarContainer.style.display = 'flex'
+        }
+    })
+  }, [sidebarContainer])
 
   // Config Logic: Overlay Visibility
   useEffect(() => {

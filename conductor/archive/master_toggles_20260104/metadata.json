@@ -1,0 +1,8 @@
+{
+  "track_id": "master_toggles_20260104",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-04T23:58:00Z",
+  "updated_at": "2026-01-04T23:58:00Z",
+  "description": "Add master toggles for overlay and sidebar render areas."
+}

@@ -4,6 +4,7 @@ import { Config, AppConfig } from '../config'
 const DEFAULT_CONFIG: AppConfig = {
   isEnabled: true,
   isOverlayEnabled: true,
+  isSidebarEnabled: false,
   isGrammarEnabled: true,
   isPauseOnHoverEnabled: false,
   isInsightsVisibleInOverlay: true,

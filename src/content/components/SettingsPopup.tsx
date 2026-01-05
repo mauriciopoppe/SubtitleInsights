@@ -17,6 +17,7 @@ interface SettingsItemProps {
   style?: any
   type?: 'toggle' | 'link' | 'back'
   subLabel?: string
+  disabled?: boolean
 }
 
 export function SettingsItem({
@@ -28,12 +29,13 @@ export function SettingsItem({
   isNested,
   style,
   type = 'toggle',
-  subLabel
+  subLabel,
+  disabled
 }: SettingsItemProps) {
-  const className = `si-settings-popup-item ${type} ${status || ''} ${isNested ? 'nested' : ''}`
+  const className = `si-settings-popup-item ${type} ${status || ''} ${isNested ? 'nested' : ''} ${disabled ? 'si-item-disabled' : ''}`
 
   return (
-    <div className={className} title={title} onClick={onClick} style={style}>
+    <div className={className} title={title} onClick={disabled ? undefined : onClick} style={style}>
       {type === 'back' && (
         <span className="si-settings-item-icon back">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
@@ -144,6 +146,16 @@ export function SettingsPopup({ isOpen, onClose, triggerRef }: SettingsPopupProp
     await Config.update({ isInsightsVisibleInSidebar: !isInsightsVisibleInSidebar })
   }
 
+  const handleToggleOverlayActive = async () => {
+    const { isOverlayEnabled } = await Config.get()
+    await Config.update({ isOverlayEnabled: !isOverlayEnabled })
+  }
+
+  const handleToggleSidebarActive = async () => {
+    const { isSidebarEnabled } = await Config.get()
+    await Config.update({ isSidebarEnabled: !isSidebarEnabled })
+  }
+
   const handleOpenSettings = () => {
     chrome.runtime.sendMessage({ type: 'OPEN_OPTIONS_PAGE' })
     onClose()
@@ -218,13 +230,13 @@ export function SettingsPopup({ isOpen, onClose, triggerRef }: SettingsPopupProp
     return 'Extension Active'
   }
 
-  const overlayStatus = getMasterStatus(
+  const overlayStatusSummary = getMasterStatus(
     config.isOriginalVisibleInOverlay,
     config.isTranslationVisibleInOverlay,
     config.isInsightsVisibleInOverlay
   )
 
-  const sidebarStatus = getMasterStatus(config.isTranslationVisibleInSidebar, config.isInsightsVisibleInSidebar)
+  const sidebarStatusSummary = getMasterStatus(config.isTranslationVisibleInSidebar, config.isInsightsVisibleInSidebar)
 
   return (
     <div ref={menuRef} className="si-settings-popup" onClick={e => e.stopPropagation()}>
@@ -243,7 +255,7 @@ export function SettingsPopup({ isOpen, onClose, triggerRef }: SettingsPopupProp
           {/* Overlay Navigation */}
           <SettingsItem
             label="Overlay"
-            subLabel={getSummary(overlayStatus)}
+            subLabel={config.isOverlayEnabled ? getSummary(overlayStatusSummary) : 'Off'}
             type="link"
             onClick={() => setView('overlay')}
             icon={
@@ -256,24 +268,12 @@ export function SettingsPopup({ isOpen, onClose, triggerRef }: SettingsPopupProp
           {/* Sidebar Navigation */}
           <SettingsItem
             label="Sidebar"
-            subLabel={getSummary(sidebarStatus)}
+            subLabel={config.isSidebarEnabled ? getSummary(sidebarStatusSummary) : 'Off'}
             type="link"
             onClick={() => setView('sidebar')}
             icon={
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                 <path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" />
-              </svg>
-            }
-          />
-
-          {/* Pause on Hover Inline */}
-          <SettingsItem
-            label="Pause on Hover"
-            status={config.isPauseOnHoverEnabled ? 'enabled' : 'disabled'}
-            onClick={handleTogglePauseOnHover}
-            icon={
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
               </svg>
             }
           />
@@ -315,19 +315,33 @@ export function SettingsPopup({ isOpen, onClose, triggerRef }: SettingsPopupProp
           <SettingsItem label="Overlay" type="back" onClick={() => setView('main')} />
           <div className="si-settings-popup-divider" />
           <SettingsItem
+            label="Show Overlay"
+            status={config.isOverlayEnabled ? 'enabled' : 'disabled'}
+            onClick={handleToggleOverlayActive}
+          />
+          <SettingsItem
             label="Show Original"
+            disabled={!config.isOverlayEnabled}
             status={config.isOriginalVisibleInOverlay ? 'enabled' : 'disabled'}
             onClick={handleToggleOriginalOverlay}
           />
           <SettingsItem
             label="Show Translation"
+            disabled={!config.isOverlayEnabled}
             status={config.isTranslationVisibleInOverlay ? 'enabled' : 'disabled'}
             onClick={handleToggleTranslationOverlay}
           />
           <SettingsItem
             label="Show Insights"
+            disabled={!config.isOverlayEnabled}
             status={config.isInsightsVisibleInOverlay ? 'enabled' : 'disabled'}
             onClick={handleToggleInsightsOverlay}
+          />
+          <SettingsItem
+            label="Pause on Hover"
+            disabled={!config.isOverlayEnabled}
+            status={config.isPauseOnHoverEnabled ? 'enabled' : 'disabled'}
+            onClick={handleTogglePauseOnHover}
           />
         </div>
       )}
@@ -337,12 +351,19 @@ export function SettingsPopup({ isOpen, onClose, triggerRef }: SettingsPopupProp
           <SettingsItem label="Sidebar" type="back" onClick={() => setView('main')} />
           <div className="si-settings-popup-divider" />
           <SettingsItem
+            label="Show Sidebar"
+            status={config.isSidebarEnabled ? 'enabled' : 'disabled'}
+            onClick={handleToggleSidebarActive}
+          />
+          <SettingsItem
             label="Show Translation"
+            disabled={!config.isSidebarEnabled}
             status={config.isTranslationVisibleInSidebar ? 'enabled' : 'disabled'}
             onClick={handleToggleTranslationSidebar}
           />
           <SettingsItem
             label="Show Insights"
+            disabled={!config.isSidebarEnabled}
             status={config.isInsightsVisibleInSidebar ? 'enabled' : 'disabled'}
             onClick={handleToggleInsightsSidebar}
           />

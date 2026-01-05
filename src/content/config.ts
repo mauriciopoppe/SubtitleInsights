@@ -1,6 +1,7 @@
 export interface AppConfig {
   isEnabled: boolean
   isOverlayEnabled: boolean
+  isSidebarEnabled: boolean
   isGrammarEnabled: boolean
   isPauseOnHoverEnabled: boolean
   isInsightsVisibleInOverlay: boolean
@@ -14,6 +15,7 @@ export class Config {
   private static KEYS = {
     isEnabled: 'si_is_enabled',
     isOverlayEnabled: 'si_is_overlay_enabled',
+    isSidebarEnabled: 'si_is_sidebar_enabled',
     isGrammarEnabled: 'si_is_grammar_explainer_enabled',
     isPauseOnHoverEnabled: 'si_is_pause_on_hover_enabled',
     isInsightsVisibleInOverlay: 'si_is_insights_in_overlay',
@@ -26,6 +28,7 @@ export class Config {
   private static DEFAULTS: AppConfig = {
     isEnabled: true,
     isOverlayEnabled: true,
+    isSidebarEnabled: false,
     isGrammarEnabled: true,
     isPauseOnHoverEnabled: false,
     isInsightsVisibleInOverlay: true,
