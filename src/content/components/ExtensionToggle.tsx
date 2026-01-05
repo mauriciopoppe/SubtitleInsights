@@ -32,8 +32,18 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
     isPopupOpen ? 'active' : ''
   ].join(' ')
 
+  const isYouTube = platform === 'youtube'
+
   return (
-    <div className="si-toggle-container" style={{ position: 'relative', display: 'inline-block' }}>
+    <div
+      className="si-toggle-container"
+      style={{
+        position: 'relative',
+        display: 'inline-block',
+        verticalAlign: isYouTube ? 'top' : 'middle',
+        height: isYouTube ? '100%' : 'auto'
+      }}
+    >
       <button
         ref={buttonRef}
         className={className}
@@ -45,11 +55,15 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
         style={{
           opacity: isEnabled ? 1 : 0.4,
           color: isEnabled ? '#fff' : '#aaa',
-          display: isLoading ? 'none' : 'inline-block',
-          verticalAlign: 'middle',
+          display: isLoading ? 'none' : 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           background: 'none',
           border: 'none',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          width: isYouTube ? '46px' : 'auto',
+          height: '100%',
+          padding: 0
         }}
       >
         <div
