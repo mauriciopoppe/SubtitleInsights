@@ -7,16 +7,16 @@ Fix sidebar layout issues on YouTube:
 
 ## Implementation Steps
 
-- [ ] **Fix 1: Height Synchronization**
-    - [ ] Identify the correct video player container element (`#movie_player` or `#player-container`).
-    - [ ] Use `ResizeObserver` to monitor its height.
-    - [ ] Update the sidebar container (`#si-sidebar-root` or `#si-sidebar`) to match this height.
-    - [ ] Handle window resize events.
+- [x] **Fix 1: Height Synchronization**
+    - [x] Identify the correct video player container element (`#movie_player` or `#player-container`).
+    - [x] Use `ResizeObserver` to monitor its height.
+    - [x] Update the sidebar container (`#si-sidebar-root` or `#si-sidebar`) to match this height.
+    - [x] Handle window resize events.
 
-- [ ] **Fix 2: Playlist Positioning**
-    - [ ] Verify the injection target (`#secondary-inner`).
-    - [ ] Implement a persistent check (MutationObserver or existing navigation listeners) to ensure `#si-sidebar-root` remains the *first* child of `#secondary-inner`.
-    - [ ] Handle SPA navigation events (`yt-navigate-finish`) to re-assert position if YouTube clears/re-renders the secondary column.
+- [x] **Fix 2: Playlist Positioning**
+    - [x] Verify the injection target (`#secondary-inner`).
+    - [x] Implement a persistent check (MutationObserver or existing navigation listeners) to ensure `#si-sidebar-root` remains the *first* child of `#secondary-inner`.
+    - [x] Handle SPA navigation events (`yt-navigate-finish`) to re-assert position if YouTube clears/re-renders the secondary column.
 
 ## Verification
 - [ ] Sidebar height matches video in default view.
