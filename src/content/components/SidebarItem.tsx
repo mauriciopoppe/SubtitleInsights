@@ -1,4 +1,5 @@
-import { SubtitleSegment } from '../store'
+import { useState, useRef, useEffect } from 'preact/hooks'
+import { SubtitleSegment, store } from '../store'
 import { renderSegmentedText } from '../render'
 import snarkdown from 'snarkdown'
 import { trimThinkingProcess } from '../ai/utils'
@@ -12,6 +13,45 @@ interface SidebarItemProps {
 
 export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
   const config = useConfig()
+  const [showSync, setShowSync] = useState(false)
+  const hoverTimerRef = useRef<number | null>(null)
+
+  const handleMouseEnter = () => {
+    hoverTimerRef.current = window.setTimeout(() => {
+      setShowSync(true)
+    }, 2000)
+  }
+
+  const handleMouseLeave = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current)
+      hoverTimerRef.current = null
+    }
+    setShowSync(false)
+  }
+
+  const handleSyncClick = (e: MouseEvent) => {
+    e.stopPropagation()
+    const video = document.querySelector('video')
+    if (!video) return
+
+    const videoTimeMs = video.currentTime * 1000
+    const offsetMs = Math.round(videoTimeMs - segment.start)
+
+    if (confirm(`Shift all subtitles by ${offsetMs}ms?`)) {
+      store.applyOffset(offsetMs)
+      store.setSystemMessage('Subtitles synchronized')
+      setTimeout(() => {
+        store.setSystemMessage(null)
+      }, 3000)
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
+    }
+  }, [])
 
   return (
     <div
@@ -19,7 +59,21 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
       data-index={index}
       data-start={segment.start}
       data-end={segment.end}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
+      {showSync && (
+        <button
+          className="si-sidebar-sync-btn"
+          title="Sync subtitles to current video time"
+          onClick={handleSyncClick}
+        >
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+            <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z" />
+          </svg>
+        </button>
+      )}
+
       {/* Original text with Furigana */}
       <div className="si-sidebar-original">
         {segment.segmentedData ? (

@@ -248,4 +248,58 @@ Hello`
       expect(store.uploadFilename).toBeUndefined()
     })
   })
+
+  describe('applyOffset', () => {
+    it('should shift all segments by the given positive offset', () => {
+      const segments = [
+        { start: 1000, end: 3000, text: 'First' },
+        { start: 5000, end: 7000, text: 'Second' }
+      ]
+      store.replaceSegments(segments)
+
+      const listener = vi.fn()
+      store.addChangeListener(listener)
+
+      store.applyOffset(2000)
+
+      const updated = store.getAllSegments()
+      expect(updated[0]).toEqual({ start: 3000, end: 5000, text: 'First' })
+      expect(updated[1]).toEqual({ start: 7000, end: 9000, text: 'Second' })
+      expect(listener).toHaveBeenCalled()
+    })
+
+    it('should shift all segments by the given negative offset', () => {
+      const segments = [
+        { start: 3000, end: 5000, text: 'First' },
+        { start: 7000, end: 9000, text: 'Second' }
+      ]
+      store.replaceSegments(segments)
+
+      store.applyOffset(-1000)
+
+      const updated = store.getAllSegments()
+      expect(updated[0]).toEqual({ start: 2000, end: 4000, text: 'First' })
+      expect(updated[1]).toEqual({ start: 6000, end: 8000, text: 'Second' })
+    })
+
+    it('should handle negative start times after shift (should just shift blindly)', () => {
+      const segments = [{ start: 1000, end: 3000, text: 'First' }]
+      store.replaceSegments(segments)
+
+      store.applyOffset(-2000)
+
+      const updated = store.getAllSegments()
+      expect(updated[0]).toEqual({ start: -1000, end: 1000, text: 'First' })
+    })
+
+    it('should do nothing if there are no segments', () => {
+      const listener = vi.fn()
+      store.addChangeListener(listener)
+
+      store.applyOffset(1000)
+
+      expect(store.getAllSegments()).toHaveLength(0)
+      expect(listener).not.toHaveBeenCalled()
+    })
+  })
 })

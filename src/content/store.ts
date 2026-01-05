@@ -314,6 +314,19 @@ export class SubtitleStore {
     return parts
   }
 
+  applyOffset(offsetMs: number) {
+    if (this.segments.length === 0) return
+
+    this.segments = this.segments.map(seg => ({
+      ...seg,
+      start: seg.start + offsetMs,
+      end: seg.end + offsetMs
+    }))
+
+    console.log(`[SI][SubtitleStore] Applied offset of ${offsetMs}ms to ${this.segments.length} segments.`)
+    this.notifyListeners()
+  }
+
   getSegmentAt(timeMs: number): SubtitleSegment | undefined {
     // Search backwards to return the latest segment that contains the time
     // This is important for rolling subtitles where segments might overlap in the raw data

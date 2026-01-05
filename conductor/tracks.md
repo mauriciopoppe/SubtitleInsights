@@ -45,3 +45,4 @@ _Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tr
 
 ## [x] Track: Master Toggles for Overlay and Sidebar
 *Link: [./conductor/archive/master_toggles_20260104/](./conductor/archive/master_toggles_20260104/)*
+\n---\n\n## [x] Track: Manual Subtitle Synchronization\n*Link: [./conductor/tracks/manual_sync_20260104/](./conductor/tracks/manual_sync_20260104/)*

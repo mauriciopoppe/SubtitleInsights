@@ -391,10 +391,33 @@
   padding: 12px 16px;
   border-bottom: 1px solid var(--yt-spec-5-percent-layer, rgba(255, 255, 255, 0.05));
   transition: background-color 0.2s;
+  position: relative;
 }
 
 .si-sidebar-item:hover {
   background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
+}
+
+.si-sidebar-sync-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--yt-spec-badge-chip-background, rgba(255, 255, 255, 0.1));
+  border: none;
+  border-radius: 4px;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--yt-spec-text-secondary, #aaa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s, color 0.1s;
+  z-index: 10;
+}
+
+.si-sidebar-sync-btn:hover {
+  background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.2));
+  color: var(--yt-spec-text-primary, #fff);
 }
 
 .si-sidebar-item.active {
@@ -445,15 +468,22 @@
 }
 
 .si-platform-stremio #si-sidebar-root {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   height: 100vh;
   width: var(--si-sidebar-width);
-  z-index: 10000;
+  z-index: 2147483647; /* Ensure it's on top */
   background-color: #0f0f0f;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
-  display: none;
+  visibility: hidden;
+}
+
+.si-platform-stremio #si-sidebar-root #si-sidebar {
+  height: 100% !important;
+  border-radius: 0;
+  border: none;
+  background-color: #0f0f0f !important;
 }
 
 /* When sidebar is active, we push the player to the left */
@@ -462,7 +492,7 @@ body.si-platform-stremio.si-sidebar-active {
 }
 
 body.si-platform-stremio.si-sidebar-active #si-sidebar-root {
-  display: block;
+  visibility: visible;
 }
 
 /* We target the likely player container on Stremio */

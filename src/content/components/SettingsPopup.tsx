@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useEffect, useRef, useState, useLayoutEffect } from 'preact/hooks'
 import { useConfig } from '../hooks/useConfig'
 import { Config } from '../config'
 import { useSubtitleStore } from '../hooks/useSubtitleStore'
 import { store } from '../store'
 import { ComponentChildren, RefObject } from 'preact'
+import { createPortal } from 'preact/compat'
 
 type View = 'main' | 'overlay' | 'sidebar'
 
@@ -71,19 +72,41 @@ interface SettingsPopupProps {
   isOpen: boolean
   onClose: () => void
   triggerRef?: RefObject<HTMLElement>
+  platform?: Platform
 }
 
-export function SettingsPopup({ isOpen, onClose, triggerRef }: SettingsPopupProps) {
+export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube' }: SettingsPopupProps) {
   const config = useConfig()
   const { aiStatus, warning, isUploadActive, uploadFilename } = useSubtitleStore()
   const [view, setView] = useState<View>('main')
   const menuRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [position, setPosition] = useState({ bottom: 0, right: 0 })
+
+  const isStremio = platform === 'stremio'
 
   // Reset view to main when opened
   useEffect(() => {
     if (isOpen) setView('main')
   }, [isOpen])
+
+  // Dynamic positioning logic (only for Stremio)
+  useLayoutEffect(() => {
+    if (!isOpen || !triggerRef?.current || !isStremio) return
+
+    const updatePosition = () => {
+      const rect = triggerRef.current!.getBoundingClientRect()
+      // Calculate position relative to viewport
+      setPosition({
+        bottom: window.innerHeight - rect.top + 12, // 12px gap
+        right: window.innerWidth - rect.right
+      })
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    return () => window.removeEventListener('resize', updatePosition)
+  }, [isOpen, triggerRef, isStremio])
 
   useEffect(() => {
     if (!isOpen) return
@@ -238,8 +261,19 @@ export function SettingsPopup({ isOpen, onClose, triggerRef }: SettingsPopupProp
 
   const sidebarStatusSummary = getMasterStatus(config.isTranslationVisibleInSidebar, config.isInsightsVisibleInSidebar)
 
-  return (
-    <div ref={menuRef} className="si-settings-popup" onClick={e => e.stopPropagation()}>
+  const style: any = isStremio ? {
+    position: 'fixed',
+    bottom: `${position.bottom}px`,
+    right: `${position.right}px`
+  } : {}
+
+  const popupContent = (
+    <div 
+      ref={menuRef} 
+      className="si-settings-popup" 
+      onClick={e => e.stopPropagation()}
+      style={style}
+    >
       <input type="file" accept=".srt" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange} />
 
       {view === 'main' && (
@@ -371,4 +405,6 @@ export function SettingsPopup({ isOpen, onClose, triggerRef }: SettingsPopupProp
       )}
     </div>
   )
+
+  return isStremio ? createPortal(popupContent, document.body) : popupContent
 }

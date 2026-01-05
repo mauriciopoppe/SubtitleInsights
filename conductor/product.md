@@ -22,6 +22,7 @@
     - Displays the full transcript of the video.
     - Highlights the active segment in real-time.
     - **Sync Button:** Instantly scrolls the sidebar to the currently playing segment.
+    - **Manual Synchronization:** Allows shifting all subtitle timestamps by aligning a specific segment to the current video time (revealed after a 2-second hover).
 
 3.  **Local AI Translation**
     - **Single High-Quality Translation:** Provides a context-aware translation for each segment using Chrome's built-in AI Translation API.

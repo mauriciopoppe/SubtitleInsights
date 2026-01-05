@@ -70,6 +70,7 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         triggerRef={buttonRef}
+        platform={platform}
       />
     </div>
   )
