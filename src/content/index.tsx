@@ -199,22 +199,15 @@ const initStremio = async () => {
   }
 
   // Look for control bar to inject toggle
-  // Stremio often has a div with class containing "controls" or "bar"
   let toggleContainer: HTMLElement | null = null
-  const controls = document.querySelector('[class*="buttons-container"], [class*="control-bar"], [class*="controls-container"]') as HTMLElement
+  const controls = document.querySelector('[class*="control-bar-buttons-menu-container"]') as HTMLElement
   
   if (controls) {
     toggleContainer = document.createElement('div')
     toggleContainer.id = 'si-toggle-root'
-    toggleContainer.style.display = 'inline-block'
+    toggleContainer.style.display = 'flex'
     toggleContainer.style.verticalAlign = 'middle'
-    // Try to find a good spot in controls, maybe before the last few icons (fullscreen, settings)
-    if (controls.children.length > 2) {
-      // Inject before the 3rd to last element (usually where settings/fullscreen are)
-      controls.insertBefore(toggleContainer, controls.children[controls.children.length - 2])
-    } else {
-      controls.appendChild(toggleContainer)
-    }
+    controls.prepend(toggleContainer)
   }
 
   const sidebarContainer = document.createElement('div')

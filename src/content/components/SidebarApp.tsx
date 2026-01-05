@@ -179,10 +179,14 @@ export function SidebarApp() {
     chrome.runtime.sendMessage({ type: 'OPEN_OPTIONS_PAGE' })
   }
 
+  const handleWheel = (e: WheelEvent) => {
+    e.stopPropagation()
+  }
+
   if (!config.isEnabled) return null
 
   return (
-    <div id="si-sidebar" style={{ display: 'flex' }}>
+    <div id="si-sidebar" style={{ display: 'flex' }} onWheel={handleWheel}>
       <input type="file" accept=".srt" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange} />
       <SidebarHeader
         onSync={handleSync}

@@ -27,12 +27,12 @@ Extend Subtitle Insights to support the Stremio web player (web.stremio.com), in
 - [ ] **Task: Conductor - User Manual Verification 'UI Injection & Layout' (Protocol in workflow.md)**
 
 ### Phase 3: Feature Parity & Polish
-- [ ] **Task: Verify Manual Upload Support**
+- [x] **Task: Verify Manual Upload Support**
     - Verify that the "Upload Subtitles" button correctly populates the store and displays segments in the sidebar on Stremio.
-- [ ] **Task: Verify AI Features**
+- [x] **Task: Verify AI Features**
     - Confirm Translation and Insights work correctly on manually uploaded segments.
-- [ ] **Task: Verify Pause on Hover**
+- [x] **Task: Verify Pause on Hover**
     - Ensure the `usePauseOnHover` hook works with the Stremio player.
-- [ ] **Task: UI Polish**
+- [x] **Task: UI Polish**
     - Adjust colors and icons to better match Stremio's dark theme.
 - [ ] **Task: Conductor - User Manual Verification 'Feature Parity & Polish' (Protocol in workflow.md)**
