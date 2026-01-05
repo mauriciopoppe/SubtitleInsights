@@ -5,7 +5,7 @@ Extend Subtitle Insights to support the Stremio web player (web.stremio.com), in
 
 ## Phases
 
-### Phase 1: Foundation & Platform Detection
+### Phase 1: Foundation & Platform Detection [checkpoint: 50c56cc]
 - [x] **Task: Manifest Update**
     - Add `https://web.stremio.com/*` to `content_scripts` matches in `manifest.json`.
 - [x] **Task: Refactor Content Script Entry**
