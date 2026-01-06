@@ -1,0 +1,28 @@
+:root {
+  --vp-c-brand-1: #3ea6ff;
+  --vp-c-brand-2: #65b8ff;
+  --vp-c-brand-3: #8bcaff;
+  
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f6f6f7;
+  --vp-c-bg-soft: #f6f6f7;
+  
+  --vp-c-text-1: #0f0f0f;
+  --vp-c-text-2: rgba(15, 15, 15, 0.7);
+}
+
+.dark {
+  --vp-c-brand-1: #3ea6ff;
+  --vp-c-brand-2: #65b8ff;
+  --vp-c-brand-3: #8bcaff;
+
+  --vp-c-bg: #0f0f0f;
+  --vp-c-bg-alt: #1a1a1a;
+  --vp-c-bg-soft: #1a1a1a;
+
+  --vp-c-text-1: #ffffff;
+  --vp-c-text-2: rgba(255, 255, 255, 0.7);
+
+  --vp-c-border: rgba(255, 255, 255, 0.1);
+  --vp-c-divider: rgba(255, 255, 255, 0.1);
+}

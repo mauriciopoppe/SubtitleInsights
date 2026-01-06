@@ -10,7 +10,10 @@
     "lint": "eslint . && npm run type-check",
     "format": "prettier --write .",
     "type-check": "tsc --noEmit",
-    "test": "vitest"
+    "test": "vitest",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +35,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.51.0",
     "vite": "^7.3.0",
+    "vitepress": "^1.6.4",
     "vitest": "^4.0.16"
   },
   "dependencies": {

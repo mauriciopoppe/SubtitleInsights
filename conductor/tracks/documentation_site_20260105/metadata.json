@@ -1,0 +1,8 @@
+{
+  "track_id": "documentation_site_20260105",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-05T00:00:00Z",
+  "updated_at": "2026-01-05T00:00:00Z",
+  "description": "Create a documentation website using VitePress with a YouTube-inspired dark theme and comprehensive guides."
+}
