@@ -324,7 +324,7 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
             onClick={() => setView('sidebar')}
             icon={
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                <path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z" />
+                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-2 14h-4V6h4v12z" />
               </svg>
             }
           />

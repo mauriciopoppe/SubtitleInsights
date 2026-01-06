@@ -1,4 +1,4 @@
-# Tech Stack - Language Learning Extension
+# Tech Stack - Subtitle Insights
 
 ## Core Technologies
 

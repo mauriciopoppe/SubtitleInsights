@@ -13,7 +13,7 @@ export function App() {
   return (
     <div className="settings-container single-page">
       <div className="settings-header">
-        <h1>Extension Settings</h1>
+        <h1>Subtitle Insights Settings</h1>
       </div>
 
       <div className="settings-section" id="profiles">
@@ -38,7 +38,7 @@ export function App() {
       <div className="settings-section" id="about">
         <h2>About</h2>
         <div className="placeholder-card">
-          <p>Language Learning Extension v1.0.0</p>
+          <p>Subtitle Insights v1.0.0</p>
           <p>Built with Chrome Prompt API</p>
         </div>
       </div>
