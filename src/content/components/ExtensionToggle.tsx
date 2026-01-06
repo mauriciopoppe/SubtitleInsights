@@ -53,7 +53,7 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
         title={title}
         onClick={handleClick}
         style={{
-          opacity: isEnabled ? 1 : 0.4,
+          opacity: isEnabled ? 1 : 0.7,
           color: isEnabled ? '#fff' : '#aaa',
           display: isLoading ? 'none' : 'flex',
           alignItems: 'center',

@@ -127,4 +127,21 @@ describe('Integration: ExtensionToggle', () => {
       isOriginalVisibleInOverlay: false
     })
   })
+
+  it('should apply grayed out style when disabled', async () => {
+    vi.mocked(Config.get).mockResolvedValue({
+      isEnabled: false
+    } as any)
+
+    await act(async () => {
+      render(<ExtensionToggle />, document.getElementById('toggle-root')!)
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement
+    expect(button.style.opacity).toBe('0.7')
+  })
 })

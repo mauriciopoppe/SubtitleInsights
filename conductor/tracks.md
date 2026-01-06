@@ -54,4 +54,4 @@ _Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tr
 ---
 
 ## [x] Track: Documentation Site (VitePress)
-*Link: [./conductor/archive/documentation_site_20260105/](./conductor/archive/documentation_site_20260105/)*
+*Link: [./conductor/archive/documentation_site_20260105/](./conductor/archive/documentation_site_20260105/)*\n---\n\n## [~] Track: Master Extension Toggle in Popup\n*Link: [./conductor/tracks/master_toggle_20260106/](./conductor/tracks/master_toggle_20260106/)*

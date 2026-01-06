@@ -19,6 +19,8 @@ interface SettingsItemProps {
   type?: 'toggle' | 'link' | 'back'
   subLabel?: string
   disabled?: boolean
+  showArrow?: boolean
+  iconSpace?: boolean
 }
 
 export function SettingsItem({
@@ -31,27 +33,30 @@ export function SettingsItem({
   style,
   type = 'toggle',
   subLabel,
-  disabled
+  disabled,
+  showArrow = true,
+  iconSpace = false
 }: SettingsItemProps) {
   const className = `si-settings-popup-item ${type} ${status || ''} ${isNested ? 'nested' : ''} ${disabled ? 'si-item-disabled' : ''}`
 
   return (
     <div className={className} title={title} onClick={disabled ? undefined : onClick} style={style}>
-      {type === 'back' && (
+      {type === 'back' ? (
         <span className="si-settings-item-icon back">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
             <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
           </svg>
         </span>
+      ) : (
+        (icon || iconSpace) && <span className="si-settings-item-icon">{icon}</span>
       )}
-      {icon && <span className="si-settings-item-icon">{icon}</span>}
       
       <span className="si-settings-item-label">{label}</span>
 
       {(type === 'link' || subLabel) && (
         <span className="si-settings-item-value">
           {subLabel}
-          {type === 'link' && (
+          {type === 'link' && showArrow && (
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style={{ marginLeft: '4px' }}>
               <path d="M9.29 15.88L13.17 12 9.29 8.12c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0l4.59 4.59c.39.39.39 1.02 0 1.41L10.7 17.29c-.39.39-1.02.39-1.41 0-.38-.39-.38-1.03 0-1.41z" />
             </svg>
@@ -152,6 +157,11 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
     if (status === 'enabled') return 'On'
     if (status === 'disabled') return 'Off'
     return 'Partial'
+  }
+
+  const handleToggleMaster = async () => {
+    const { isEnabled } = await Config.get()
+    await Config.update({ isEnabled: !isEnabled })
   }
 
   const handleToggleOriginalOverlay = async () => {
@@ -303,11 +313,55 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
 
           <div className="si-settings-popup-divider" />
 
-          {/* Overlay Navigation */}
+          {/* General Controls */}
+          <SettingsItem
+            label="Extension Enabled"
+            type="toggle"
+            status={config.isEnabled ? 'enabled' : 'disabled'}
+            onClick={handleToggleMaster}
+            icon={
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z" />
+              </svg>
+            }
+          />
+
+          <SettingsItem
+            label="Upload Subtitles"
+            subLabel={isUploadActive ? uploadFilename : undefined}
+            disabled={!config.isEnabled}
+            onClick={handleUploadClick}
+            type="link"
+            showArrow={false}
+            icon={
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
+              </svg>
+            }
+          />
+
+          <SettingsItem
+            label="Detailed Settings"
+            title="Open full settings page"
+            disabled={!config.isEnabled}
+            onClick={handleOpenSettings}
+            type="link"
+            showArrow={false}
+            icon={
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49.84c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 13.95 2h-4c-.3 0-.51.18-.54.45l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-.84c-.22-.08-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-.84c.52.4 1.08.73 1.69.98l.38 2.65c.03.27.24.45.54.45h4c.3 0 .51-.18.54-.45l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49.84c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
+              </svg>
+            }
+          />
+
+          <div className="si-settings-popup-divider" />
+
+          {/* Feature Navigation */}
           <SettingsItem
             label="Overlay"
             subLabel={config.isOverlayEnabled ? getSummary(overlayStatusSummary) : 'Off'}
             type="link"
+            disabled={!config.isEnabled}
             onClick={() => setView('overlay')}
             icon={
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
@@ -316,45 +370,15 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
             }
           />
 
-          {/* Sidebar Navigation */}
           <SettingsItem
             label="Sidebar"
             subLabel={config.isSidebarEnabled ? getSummary(sidebarStatusSummary) : 'Off'}
             type="link"
+            disabled={!config.isEnabled}
             onClick={() => setView('sidebar')}
             icon={
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                 <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-2 14h-4V6h4v12z" />
-              </svg>
-            }
-          />
-
-          <div className="si-settings-popup-divider" />
-
-          {/* Upload Section */}
-          <SettingsItem
-            label="Upload Subtitles"
-            subLabel={isUploadActive ? uploadFilename : undefined}
-            onClick={handleUploadClick}
-            type="link"
-            icon={
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
-              </svg>
-            }
-          />
-
-          <div className="si-settings-popup-divider" />
-
-          {/* Detailed Settings */}
-          <SettingsItem
-            label="Detailed Settings"
-            title="Open full settings page"
-            onClick={handleOpenSettings}
-            type="link"
-            icon={
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
               </svg>
             }
           />
@@ -367,30 +391,31 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
           <div className="si-settings-popup-divider" />
           <SettingsItem
             label="Show Overlay"
+            disabled={!config.isEnabled}
             status={config.isOverlayEnabled ? 'enabled' : 'disabled'}
             onClick={handleToggleOverlayActive}
           />
           <SettingsItem
             label="Show Original"
-            disabled={!config.isOverlayEnabled}
+            disabled={!config.isEnabled || !config.isOverlayEnabled}
             status={config.isOriginalVisibleInOverlay ? 'enabled' : 'disabled'}
             onClick={handleToggleOriginalOverlay}
           />
           <SettingsItem
             label="Show Translation"
-            disabled={!config.isOverlayEnabled}
+            disabled={!config.isEnabled || !config.isOverlayEnabled}
             status={config.isTranslationVisibleInOverlay ? 'enabled' : 'disabled'}
             onClick={handleToggleTranslationOverlay}
           />
           <SettingsItem
             label="Show Insights"
-            disabled={!config.isOverlayEnabled}
+            disabled={!config.isEnabled || !config.isOverlayEnabled}
             status={config.isInsightsVisibleInOverlay ? 'enabled' : 'disabled'}
             onClick={handleToggleInsightsOverlay}
           />
           <SettingsItem
             label="Pause on Hover"
-            disabled={!config.isOverlayEnabled}
+            disabled={!config.isEnabled || !config.isOverlayEnabled}
             status={config.isPauseOnHoverEnabled ? 'enabled' : 'disabled'}
             onClick={handleTogglePauseOnHover}
           />
@@ -403,18 +428,19 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
           <div className="si-settings-popup-divider" />
           <SettingsItem
             label="Show Sidebar"
+            disabled={!config.isEnabled}
             status={config.isSidebarEnabled ? 'enabled' : 'disabled'}
             onClick={handleToggleSidebarActive}
           />
           <SettingsItem
             label="Show Translation"
-            disabled={!config.isSidebarEnabled}
+            disabled={!config.isEnabled || !config.isSidebarEnabled}
             status={config.isTranslationVisibleInSidebar ? 'enabled' : 'disabled'}
             onClick={handleToggleTranslationSidebar}
           />
           <SettingsItem
             label="Show Insights"
-            disabled={!config.isSidebarEnabled}
+            disabled={!config.isEnabled || !config.isSidebarEnabled}
             status={config.isInsightsVisibleInSidebar ? 'enabled' : 'disabled'}
             onClick={handleToggleInsightsSidebar}
           />

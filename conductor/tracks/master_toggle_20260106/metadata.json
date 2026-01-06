@@ -1,0 +1,8 @@
+{
+  "track_id": "master_toggle_20260106",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-06T10:00:00Z",
+  "updated_at": "2026-01-06T10:00:00Z",
+  "description": "Add an option to the popup to control if the extension is enabled or not. When it's disabled there should not be any AI processing or DOM rendering/updates. The toolbar icon should also be grayed out."
+}
