@@ -43,7 +43,7 @@ Create a flat, professional documentation site for Subtitle Insights using ViteP
 - [x] **Task: "Mining words with Yomitan" Page**
     - Create `docs/guides/yomitan-mining.md`.
 
-### Phase 5: Build & Final Review
+### Phase 5: Build & Final Review [checkpoint: 2b4b5c7]
 - [x] **Task: Link & Build Verification**
     - Verify all internal navigation and run `npm run docs:build` to ensure no broken links.
 - [x] **Task: Conductor - User Manual Verification 'Subtitle Insights Documentation' (Protocol in workflow.md)**
