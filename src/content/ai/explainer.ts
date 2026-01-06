@@ -135,9 +135,12 @@ export class GrammarExplainer {
     }
 
     const { inputUsage, inputQuota } = this.workingSession
-    if (inputUsage / inputQuota > 0.8) {
-      // Reset if usage exceeds 80%
-      console.log(`[SI] GrammarExplainer: Input usage at ${inputUsage}/${inputQuota}. Resetting session.`)
+    const quotaLimit = 0.5
+    if (inputUsage / inputQuota > quotaLimit) {
+      // Reset if usage exceeds 50%
+      console.log(
+        `[SI] GrammarExplainer: Input usage is ${inputUsage}/${inputQuota} at around ${quotaLimit * 100}%. Resetting session.`
+      )
       await this.resetSession()
       if (!this.workingSession) {
         throw new Error('Language Model session failed to reset')
