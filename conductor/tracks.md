@@ -53,5 +53,5 @@ _Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tr
 
 ---
 
-## [~] Track: Documentation Site (VitePress)
-*Link: [./conductor/tracks/documentation_site_20260105/](./conductor/tracks/documentation_site_20260105/)*
+## [x] Track: Documentation Site (VitePress)
+*Link: [./conductor/archive/documentation_site_20260105/](./conductor/archive/documentation_site_20260105/)*
