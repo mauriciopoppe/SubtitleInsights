@@ -14,10 +14,10 @@
 - [x] **Task: Conductor - User Manual Verification 'Phase 1: UI Implementation' (Protocol in workflow.md)**
 
 ## Phase 2: Logic & Process Halted
-- [ ] **Task: Halt Subtitle Processing**
-    - [ ] Create a test ensuring AI processing does not fire when `isEnabled` is false.
-    - [ ] Update `src/content/ai/manager.ts` (or relevant managers) to check `Config.get().isEnabled` before initiating translations or insights.
-- [ ] **Task: Verify DOM Cleanup**
-    - [ ] Verify `App.tsx` already handles hiding the Sidebar/Overlay when disabled.
-    - [ ] Ensure any other injected elements (except the toggle button itself) are hidden/removed.
-- [ ] **Task: Conductor - User Manual Verification 'Phase 2: Logic & Process Halted' (Protocol in workflow.md)**
+- [x] **Task: Halt Subtitle Processing**
+    - [x] Create a test ensuring AI processing does not fire when `isEnabled` is false.
+    - [x] Update `src/content/ai/manager.ts` (or relevant managers) to check `Config.get().isEnabled` before initiating translations or insights.
+- [x] **Task: Verify DOM Cleanup**
+    - [x] Verify `App.tsx` already handles hiding the Sidebar/Overlay when disabled.
+    - [x] Ensure any other injected elements (except the toggle button itself) are hidden/removed.
+- [x] **Task: Conductor - User Manual Verification 'Phase 2: Logic & Process Halted' (Protocol in workflow.md)**

@@ -95,6 +95,9 @@ export class AIManager {
   }
 
   public async onTimeUpdate(currentTimeMs: number) {
+    const { isEnabled } = await Config.get()
+    if (!isEnabled) return
+
     const allSegments = store.getAllSegments()
     if (allSegments.length === 0) return
 

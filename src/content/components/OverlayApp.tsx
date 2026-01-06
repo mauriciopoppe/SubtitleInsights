@@ -87,6 +87,8 @@ export function OverlayApp() {
 
   usePauseOnHover(config.isPauseOnHoverEnabled, overlayRef, isVisible)
 
+  if (!config.isEnabled) return null
+
   return (
     <div
       id="si-overlay"
