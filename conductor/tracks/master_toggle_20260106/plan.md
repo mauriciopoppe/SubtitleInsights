@@ -13,7 +13,7 @@
     - [x] Verify the icon looks distinct (active vs. inactive) in the YouTube player toolbar.
 - [x] **Task: Conductor - User Manual Verification 'Phase 1: UI Implementation' (Protocol in workflow.md)**
 
-## Phase 2: Logic & Process Halted
+## Phase 2: Logic & Process Halted [checkpoint: 8d3f40c]
 - [x] **Task: Halt Subtitle Processing**
     - [x] Create a test ensuring AI processing does not fire when `isEnabled` is false.
     - [x] Update `src/content/ai/manager.ts` (or relevant managers) to check `Config.get().isEnabled` before initiating translations or insights.
