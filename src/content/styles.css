@@ -284,16 +284,14 @@
   right: 0;
   margin-bottom: 12px;
   width: 280px;
-  background-color: rgba(28, 28, 28, 0.9);
-  backdrop-filter: blur(20px);
+  /* backdrop-filter: blur(16px); */
+  background: var(--yt-spec-overlay-background-medium, rgba(0, 0, 0, .6));
   color: white;
   border-radius: 12px;
   padding: 8px 0;
   font-family: Roboto, Arial, sans-serif;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   z-index: 10000;
   user-select: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
 }
 

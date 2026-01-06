@@ -84,29 +84,44 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
   const [position, setPosition] = useState({ bottom: 0, right: 0 })
 
   const isStremio = platform === 'stremio'
+  const isYouTube = platform === 'youtube'
 
   // Reset view to main when opened
   useEffect(() => {
     if (isOpen) setView('main')
   }, [isOpen])
 
-  // Dynamic positioning logic (only for Stremio)
+  // Dynamic positioning logic
   useLayoutEffect(() => {
-    if (!isOpen || !triggerRef?.current || !isStremio) return
+    if (!isOpen || !triggerRef?.current) return
 
     const updatePosition = () => {
       const rect = triggerRef.current!.getBoundingClientRect()
-      // Calculate position relative to viewport
-      setPosition({
-        bottom: window.innerHeight - rect.top + 12, // 12px gap
-        right: window.innerWidth - rect.right
-      })
+      
+      if (isStremio) {
+        // Stremio: Fixed position relative to viewport
+        setPosition({
+          bottom: window.innerHeight - rect.top + 12, // 12px gap
+          right: window.innerWidth - rect.right
+        })
+      } else if (isYouTube) {
+        // YouTube: Absolute position relative to toggle button
+        const player = document.querySelector('#movie_player')
+        if (player) {
+          const playerRect = player.getBoundingClientRect()
+          // Shift popup right to align with player edge minus 12px padding
+          const offset = playerRect.right - rect.right - 12
+          setPosition(prev => ({ ...prev, right: -offset }))
+        } else {
+          setPosition(prev => ({ ...prev, right: 0 }))
+        }
+      }
     }
 
     updatePosition()
     window.addEventListener('resize', updatePosition)
     return () => window.removeEventListener('resize', updatePosition)
-  }, [isOpen, triggerRef, isStremio])
+  }, [isOpen, triggerRef, isStremio, isYouTube])
 
   useEffect(() => {
     if (!isOpen) return
@@ -265,7 +280,9 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
     position: 'fixed',
     bottom: `${position.bottom}px`,
     right: `${position.right}px`
-  } : {}
+  } : {
+    right: `${position.right}px`
+  }
 
   const popupContent = (
     <div 
