@@ -1,6 +1,6 @@
 # Plan: Master Extension Toggle in Popup
 
-## Phase 1: UI Implementation
+## Phase 1: UI Implementation [checkpoint: 318f760]
 - [x] **Task: Update Settings Popup Component**
     - [x] Create a test for `SettingsPopup` verifying the "Master Toggle" exists and is the first item.
     - [x] Add the "Master Enable" toggle to `src/content/components/SettingsPopup.tsx`.
