@@ -71,7 +71,7 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
       overlay.removeEventListener('mouseleave', handleMouseLeave)
       resizeObserver?.disconnect()
     }
-  }, [isEnabled, overlayRef, resetHoverState])
+  }, [isEnabled, overlayRef, resetHoverState, isOverlayVisible])
 
   // Resume playback when hover ends, if we paused it
   useEffect(() => {

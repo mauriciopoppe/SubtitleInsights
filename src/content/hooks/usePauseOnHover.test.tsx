@@ -299,4 +299,70 @@ describe('usePauseOnHover', () => {
     // Should NOT pause because hover state was reset
     expect(videoEl.pause).not.toHaveBeenCalled()
   })
+
+  it('should re-attach listeners when overlay is re-mounted after being disabled', async () => {
+    function ReMountComponent({ isEnabled }: { isEnabled: boolean }) {
+      const overlayRef = useRef<HTMLDivElement>(null)
+      // Pass isVisible=isEnabled to simulate the relationship
+      usePauseOnHover(isEnabled, overlayRef, isEnabled)
+
+      if (!isEnabled) return null
+
+      return (
+        <div ref={overlayRef} id="remount-overlay">
+          Overlay
+        </div>
+      )
+    }
+
+    const activeSegment = { start: 1000, end: 2000, text: 'Test' }
+    vi.spyOn(store, 'getSegmentAt').mockReturnValue(activeSegment)
+
+    // 1. Initial Render (Enabled)
+    await act(() => {
+      render(<ReMountComponent isEnabled={true} />, document.getElementById('root')!)
+    })
+
+    let overlayEl = document.getElementById('remount-overlay')!
+    expect(overlayEl).not.toBeNull()
+
+    // Verify it works
+    await act(() => {
+      overlayEl.dispatchEvent(new MouseEvent('mousemove'))
+    })
+    await act(() => {
+      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true })
+      videoEl.dispatchEvent(new Event('timeupdate'))
+    })
+    expect(videoEl.pause).toHaveBeenCalledTimes(1)
+
+    // Reset mocks for next step
+    ;(videoEl.pause as any).mockClear()
+    ;(videoEl as any).paused = false
+
+    // 2. Disable (Unmount)
+    await act(() => {
+      render(<ReMountComponent isEnabled={false} />, document.getElementById('root')!)
+    })
+    expect(document.getElementById('remount-overlay')).toBeNull()
+
+    // 3. Re-enable (Remount)
+    await act(() => {
+      render(<ReMountComponent isEnabled={true} />, document.getElementById('root')!)
+    })
+
+    overlayEl = document.getElementById('remount-overlay')!
+    expect(overlayEl).not.toBeNull()
+
+    // 4. Verify it works again
+    await act(() => {
+      overlayEl.dispatchEvent(new MouseEvent('mousemove'))
+    })
+    await act(() => {
+      Object.defineProperty(videoEl, 'currentTime', { value: 1.8, configurable: true })
+      videoEl.dispatchEvent(new Event('timeupdate'))
+    })
+
+    expect(videoEl.pause).toHaveBeenCalledTimes(1)
+  })
 })
