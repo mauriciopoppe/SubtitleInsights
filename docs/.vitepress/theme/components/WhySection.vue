@@ -63,7 +63,7 @@ const features = [
 }
 
 .container {
-  max-width: 1152px;
+  max-width: 100%;
   width: 100%;
   margin: 0 auto;
   text-align: center;
@@ -73,7 +73,7 @@ const features = [
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  background: -webkit-linear-gradient(120deg, #bd34fe 30%, #41d1ff);
+  background: -webkit-linear-gradient(120deg, var(--vp-c-brand-1) 30%, var(--vp-c-accent-1));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
