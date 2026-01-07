@@ -38,5 +38,3 @@ Since Subtitle Insights is in active development, you must install it in develop
 2. **AI Ready:** Check the extension menu to confirm the AI status. "AI Ready" indicates the models are loaded and functional.
 3. **Downloading Models:** If you see "Downloading Models," Chrome is currently fetching the necessary AI components. This may take several minutes.
 4. **Enable Captions:** Make sure Closed Captions (CC) are enabled in the video player. Subtitle Insights scans these captions to provide the overlay, translations, and insights.
-
-[Screenshot Placeholder: Extension Status Menu]

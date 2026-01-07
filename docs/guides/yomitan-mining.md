@@ -9,8 +9,6 @@ Subtitle Insights is designed to be a companion to powerful pop-up dictionaries 
 3. **Analyze context:** Use the Subtitle Insights translation to understand how the word functions in that specific sentence.
 4. **Create Flashcards:** Quickly add the word to Anki via Yomitan's integration.
 
-[Screenshot Placeholder: Using Yomitan to hover over text in the Sidebar]
-
 ## Why use both?
 
 - **Yomitan** is excellent for word-level lookups (definitions, pitch accent, kanji).

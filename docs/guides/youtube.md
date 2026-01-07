@@ -12,8 +12,6 @@ YouTube is the primary platform for Subtitle Insights, offering the most integra
    - Use the sidebar to review complex sentences.
    - Hover over the overlay to pause and digest a difficult line.
 
-[Screenshot Placeholder: Extension toggle in YouTube control bar]
-
 ## Tips for YouTube
 
 - **Native Controls:** You can still use all native YouTube controls (J/K/L for seeking, space for pausing).

@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: "Subtitle Insights",
-  description: "Smart AI insights and translations for YouTube subtitles",
+  title: 'Subtitle Insights',
+  description: 'Smart AI insights and translations for YouTube subtitles',
   appearance: 'dark',
   themeConfig: {
     nav: [
@@ -22,7 +22,6 @@ export default defineConfig({
         text: 'User Manual',
         items: [
           { text: 'UI Overview', link: '/user-manual/' },
-          { text: 'Extension Settings', link: '/user-manual/extension-settings' },
           { text: 'Selecting Subtitles', link: '/user-manual/selecting-subtitles' },
           { text: 'Overlay', link: '/user-manual/overlay' },
           { text: 'Sidebar', link: '/user-manual/sidebar' },
@@ -41,13 +40,9 @@ export default defineConfig({
       },
       {
         text: 'Architecture',
-        items: [
-          { text: 'Design Decisions', link: '/architecture/' }
-        ]
+        items: [{ text: 'Design Decisions', link: '/architecture/' }]
       }
     ],
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/mauriciopoppe/SubtitleInsights' }
-    ]
+    socialLinks: [{ icon: 'github', link: 'https://github.com/mauriciopoppe/SubtitleInsights' }]
   }
 })

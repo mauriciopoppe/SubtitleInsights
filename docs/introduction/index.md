@@ -2,13 +2,18 @@
 
 Subtitle Insights turns YouTube and Stremio videos into an interactive language learning playground. It uses the latest AI models built right into the Chrome browser to provide real-time translations and deep grammatical insights, all while keeping data private and on the device.
 
+::: raw
+<video controls loop muted playsinline>
+  <source src="./overlay_controls.webm" type="video/webm">
+  <source src="./overlay_controls.mp4" type="video/mp4">
+</video>
+:::
+
 ## Core Value Proposition
 
 - **Private Local AI:** Leverages Chrome's built-in AI tools (Translator and Prompt APIs) to process all data locally on your device. Your data stays private and never leaves your browser.
 - **Native Feel:** Designed to look and feel just like YouTube and Stremio, ensuring a seamless and distraction-free viewing experience.
 - **Language Agnostic:** Supports multiple source and target languages for a versatile learning experience.
-
-[Screenshot Placeholder: Extension in action on YouTube]
 
 ## How it Works
 

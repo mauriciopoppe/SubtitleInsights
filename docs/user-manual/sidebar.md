@@ -2,13 +2,20 @@
 
 The sidebar provides a comprehensive view of the entire video transcript, allowing for easy review of past segments and a look at what's coming next.
 
+::: raw
+
+<video controls loop muted playsinline>
+  <source src="./sidebar.webm" type="video/webm">
+  <source src="./sidebar.mp4" type="video/mp4">
+</video>
+
+:::
+
 ## Smart Sidebar
 
 - **Full Transcript:** Displays every captured subtitle segment with its original text and translation.
 - **Active Highlighting:** The currently playing segment is automatically highlighted in the sidebar, making it easy to identify the current line.
-- **Initial Positioning:** When the sidebar is first rendered, it automatically scrolls to the current segment to get things started. 
-
-[Screenshot Placeholder: Sidebar transcript with highlighting]
+- **Initial Positioning:** When the sidebar is first rendered, it automatically scrolls to the current segment to get things started.
 
 ## Sync Button
 

@@ -8,8 +8,6 @@ Subtitle Insights supports `web.stremio.com`, allowing you to apply AI analysis 
 - **Player Resizing:** The video player automatically shrinks to accommodate the sidebar when it is active, ensuring nothing is hidden.
 - **Overlay:** The overlay works identically to the YouTube version, appearing directly over the Stremio player.
 
-[Screenshot Placeholder: Subtitle Insights on Stremio Web]
-
 ## How to Use
 
 1. Navigate to [web.stremio.com](https://web.stremio.com) and start a video.

@@ -6,7 +6,14 @@ Subtitle Insights provides a flexible way to manage subtitles, ensuring the exte
 
 When watching on **YouTube**, the extension automatically intercepts subtitle tracks as they are loaded by the player. If Closed Captions (CC) are enabled, the text is captured and processed immediately for translations and insights. If the subtitle track is changed through the native YouTube settings, the extension will automatically re-initialize and begin processing the new track.
 
-[Screenshot Placeholder: Automatic capture on YouTube]
+::: raw
+
+<video controls loop muted playsinline>
+  <source src="./subtitles_automatic_capture.webm" type="video/webm">
+  <source src="./subtitles_automatic_capture.mp4" type="video/mp4">
+</video>
+
+:::
 
 ## Manual Upload (YouTube & Stremio)
 
@@ -16,8 +23,6 @@ For videos without native captions or when using custom translation files, subti
 2. Select **Upload Subtitles**.
 3. Choose an `.srt` file from the device.
 4. The extension will then use the uploaded file as the source for all features.
-
-[Screenshot Placeholder: Manual upload button]
 
 ## Adjusting Subtitle Timing
 
@@ -29,8 +34,6 @@ If subtitles are out of sync with the video—which often happens with manual up
 2. **Find the Segment:** In the sidebar, locate the segment that *should* be playing at that exact moment.
 3. **Reveal the Sync Icon:** Hover over that sidebar item for **2 seconds**. A "Sync" icon (refresh symbol) will appear in the top-right corner.
 4. **Apply the Shift:** Click the icon and confirm the shift. The extension calculates the offset and moves **all subtitles** to match the current video time.
-
-[Screenshot Placeholder: Sync button in sidebar]
 
 ## FAQ
 

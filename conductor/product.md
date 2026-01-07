@@ -13,10 +13,11 @@
       - **Replay Segment:** Instantly replay the current segment to listen again.
       - **Scroll Sync:** Button to sync the sidebar view to the current active segment.
     - **Proximity Visibility:** Controls appear only when the mouse is near the top-left area to avoid distracting from the content or blocking interactions (e.g., with Yomitan).
-    - **Unified Settings Popup:**
-      - Triggered by the main extension icon in the video control bar.
-      - **Authentic Navigation:** Features a hierarchical sub-menu system (Overlay/Sidebar settings) that strictly mimics the native YouTube settings UI.
-      - **Live Status:** Displays AI model downloading and readiness status directly in the menu.
+          - **Unified Settings Popup:**
+          - Triggered by the main extension icon in the video control bar.
+          - **Global Enable/Disable:** A master "Extension Enabled" toggle allows users to completely deactivate the extension's UI and AI processing with a single click.
+          - **Visual Indicators:** The extension icon in the player toolbar dims (reduced opacity) when disabled, providing instant visual feedback.
+          - **Authentic Navigation:** Features a hierarchical sub-menu system (Overlay/Sidebar settings) that strictly mimics the native YouTube settings UI.      - **Live Status:** Displays AI model downloading and readiness status directly in the menu.
 
 2.  **Smart Sidebar**
     - Displays the full transcript of the video.

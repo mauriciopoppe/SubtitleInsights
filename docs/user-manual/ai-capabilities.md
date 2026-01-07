@@ -11,8 +11,6 @@ The extension uses the [Chrome Translation API](https://developer.chrome.com/doc
 - **Look-ahead Processing:** To ensure a smooth experience without lag, the extension pre-translates upcoming segments in the background.
 - **Privacy:** Translations are generated entirely on the device. No subtitle data is sent to cloud-based translation services.
 
-[Screenshot Placeholder: AI translation in the overlay]
-
 ## AI Insights
 
 Powered by **Gemini Nano** (via the [Chrome Prompt API](https://developer.chrome.com/docs/ai/prompt-api)), AI Insights provides a deep dive into the structure and meaning of complex sentences.
@@ -23,8 +21,6 @@ Powered by **Gemini Nano** (via the [Chrome Prompt API](https://developer.chrome
 ::: tip Note: Language Support
 The Prompt API officially supports three primary languages: **English ("en")**, **Japanese ("ja")**, and **Spanish ("es")**. While the AI can often process inputs from other languages—for example, **French ("fr") to English ("en")** is known to work—the final output must be in one of the three officially supported languages.
 :::
-
-[Screenshot Placeholder: Detailed insights in the sidebar]
 
 ## Buffering & Performance
 
