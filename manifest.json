@@ -3,6 +3,11 @@
   "name": "Subtitle Insights",
   "version": "1.0.0",
   "description": "Smart AI insights and translations for YouTube subtitles",
+  "icons": {
+    "16": "public/icon16.png",
+    "48": "public/icon48.png",
+    "128": "public/icon128.png"
+  },
   "content_scripts": [
     {
       "js": ["src/content/index.tsx"],

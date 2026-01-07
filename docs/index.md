@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Subtitle Insights
   text: Smart AI insights and translations for video subtitles
-  tagline: Transform your language learning experience with free, local, and privacy-first AI.
+  tagline: "Subtitle data, clarified. Transform your language learning experience with free, local, and privacy-first AI."
   image:
     src: /logo.svg
     alt: Subtitle Insights Logo
@@ -50,6 +50,9 @@ hero:
 }
 
 @media (max-width: 640px) {
+  :deep(.VPHero .container) {
+    padding: 0 24px;
+  }
   :deep(.VPHero .image-container img) {
     max-width: 240px !important;
     max-height: 240px !important;
@@ -57,9 +60,24 @@ hero:
     height: 100% !important;
   }
 }
+
+.waveform-separator {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(62, 166, 255, 0.2) 20%,
+    var(--vp-c-brand-1) 50%,
+    rgba(62, 166, 255, 0.2) 80%,
+    transparent 100%
+  );
+  margin: 4rem 0;
+}
 </style>
 
 <WhySection />
+
+<div class="waveform-separator"></div>
 
 <FeatureRow
   title="Experience the AI-Powered Overlay"
@@ -67,16 +85,17 @@ hero:
   videoSrc="./overlay.mp4"
 />
 
+<div class="waveform-separator"></div>
+
 <FeatureRow
   title="Stay in Sync with the Smart Sidebar"
   description="Navigate the entire video transcript effortlessly. The sidebar stays perfectly synchronized with playback, allowing for quick reference of the current segment within the larger context."
   videoSrc="./sidebar.mp4"
 />
 
-<div style="padding: 10rem 0; text-align: center; border-top: 1px solid var(--vp-c-divider); max-width: 1152px; margin: 0 auto;">
+<div class="waveform-separator"></div>
 
 ### Powered by Chrome Built-in AI
 
 <TechBadges />
 
-</div>

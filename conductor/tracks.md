@@ -76,3 +76,12 @@ _Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tr
 ## [x] Track: Brand & Identity Definition
 *Link: [./conductor/archive/brand_identity_20260107/](./conductor/archive/brand_identity_20260107/)*
 
+---
+
+## [x] Track: Implement Brand Visual Identity in Extension CSS
+*Link: [./conductor/archive/brand_css_20260107/](./conductor/archive/brand_css_20260107/)*
+
+---
+
+## [x] Track: Brand Asset Integration & Extension Theming
+*Link: [./conductor/tracks/brand_assets_20260107/](./conductor/tracks/brand_assets_20260107/)*

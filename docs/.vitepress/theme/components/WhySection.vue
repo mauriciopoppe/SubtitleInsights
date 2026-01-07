@@ -70,6 +70,7 @@ const features = [
   background: -webkit-linear-gradient(120deg, var(--vp-c-brand-1) 30%, var(--vp-c-accent-1));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  border: none;
 }
 
 .section-subtitle {

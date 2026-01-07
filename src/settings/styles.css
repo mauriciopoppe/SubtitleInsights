@@ -1,8 +1,15 @@
+:root {
+  --si-color-brand-blue: #3ea6ff;
+  --si-color-accent-yellow: #ffd600;
+  --si-color-bg-canvas: #0f0f0f;
+  --si-color-text-primary: #f8fafc;
+}
+
 body {
   margin: 0;
   font-family: Roboto, Arial, sans-serif;
-  background-color: #0f0f0f;
-  color: #fff;
+  background-color: var(--si-color-bg-canvas);
+  color: var(--si-color-text-primary);
 }
 
 .settings-container.single-page {
@@ -12,19 +19,61 @@ body {
 }
 
 .settings-header {
-  margin-bottom: 40px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 20px;
+  margin-bottom: 48px;
+  text-align: center;
+  position: relative;
 }
 
-.settings-header h1 {
-  font-size: 24px;
-  font-weight: 500;
+.settings-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.settings-logo {
+  width: 80px;
+  height: 80px;
+}
+
+.settings-header-text h1 {
+  font-size: 32px;
+  font-weight: 700;
   margin: 0;
+  color: #fff;
+}
+
+.settings-motto {
+  font-size: 16px;
+  color: var(--si-color-brand-blue);
+  margin: 8px 0 0 0;
+  font-weight: 500;
 }
 
 .settings-section {
-  margin-bottom: 48px;
+  margin-bottom: 64px;
+  position: relative;
+}
+
+/* Waveform Separator */
+.settings-section::before {
+  content: '';
+  position: absolute;
+  top: -32px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(62, 166, 255, 0.2) 20%, 
+    var(--si-color-brand-blue) 50%, 
+    rgba(62, 166, 255, 0.2) 80%, 
+    transparent 100%
+  );
+}
+
+.settings-section:first-of-type::before {
+  display: none;
 }
 
 .settings-section h2 {
@@ -79,7 +128,7 @@ body {
 
 .profile-item.active-profile {
   background-color: rgba(62, 166, 255, 0.1);
-  border-left: 4px solid #3ea6ff;
+  border-left: 4px solid var(--si-color-brand-blue);
 }
 
 .profile-info {
@@ -101,7 +150,7 @@ body {
 
 .badge-active {
   display: inline-block;
-  background-color: #3ea6ff;
+  background-color: var(--si-color-brand-blue);
   color: #000;
   font-size: 11px;
   font-weight: 500;
@@ -182,7 +231,7 @@ textarea {
 
 input:focus,
 textarea:focus {
-  border-color: #3ea6ff;
+  border-color: var(--si-color-brand-blue);
   outline: none;
 }
 
@@ -211,7 +260,7 @@ button:hover {
 button.primary,
 button.create-btn {
   background-color: rgba(62, 166, 255, 0.1);
-  color: #3ea6ff;
+  color: var(--si-color-brand-blue);
 }
 
 button.primary:hover,

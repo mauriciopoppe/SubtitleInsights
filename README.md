@@ -1,10 +1,25 @@
-# Subtitle Insights
+<p align="center">
+  <img src="public/logo.svg" width="128" height="128" alt="Subtitle Insights Logo">
+</p>
 
-> Smart AI insights and translations for video subtitles. Transform your language learning experience with free, local, and privacy-first AI.
+<h1 align="center">Subtitle Insights</h1>
 
-![Chrome AI](https://img.shields.io/badge/Chrome_AI-Built--in-4285F4?logo=googlechrome&logoColor=white)
-![Gemini Nano](https://img.shields.io/badge/Gemini_Nano-In--Device-8E75B2?logo=google&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+<p align="center">
+  <strong>Subtitle data, clarified.</strong><br>
+  Transform your language learning experience with free, local, and privacy-first AI.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Chrome_AI-Built--in-4285F4?logo=googlechrome&logoColor=white" alt="Chrome AI">
+  <img src="https://img.shields.io/badge/Gemini_Nano-In--Device-8E75B2?logo=google&logoColor=white" alt="Gemini Nano">
+  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
+</p>
+
+<p align="center">
+  <a href="https://mauriciopoppe.github.io/SubtitleInsights/"><strong>Explore the Documentation »</strong></a>
+</p>
+
+---
 
 https://github.com/user-attachments/assets/67310b05-6341-4edf-9bea-1f0e1466d05d
 
