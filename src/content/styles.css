@@ -396,10 +396,24 @@
   background-color: var(--yt-spec-10-percent-layer, rgba(255, 255, 255, 0.1));
 }
 
-.si-sidebar-sync-btn {
+.si-sidebar-item-controls {
   position: absolute;
   top: 8px;
   right: 8px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.si-sidebar-item-controls.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.si-sidebar-sync-btn {
   background: var(--yt-spec-badge-chip-background, rgba(255, 255, 255, 0.1));
   border: none;
   border-radius: 4px;
@@ -410,7 +424,6 @@
   align-items: center;
   justify-content: center;
   transition: background-color 0.1s, color 0.1s;
-  z-index: 10;
 }
 
 .si-sidebar-sync-btn:hover {

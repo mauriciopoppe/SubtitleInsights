@@ -6,7 +6,7 @@ import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default [
   ...neostandard({
-    ignores: ['dist'],
+    ignores: ['dist', 'docs/**'],
     ts: true
   }),
   eslintConfigPrettier,

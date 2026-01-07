@@ -28,7 +28,7 @@ describe('SettingsPopup', () => {
   it('should render "Extension Enabled" toggle at the correct position', async () => {
     await act(async () => {
       render(
-        <SettingsPopup isOpen={true} onClose={() => {}} triggerRef={{ current: null }} />,
+        <SettingsPopup isOpen onClose={() => {}} triggerRef={{ current: null }} />,
         document.getElementById('root')!
       )
     })
@@ -51,7 +51,7 @@ describe('SettingsPopup', () => {
   it('should call Config.update when Extension Enabled toggle is clicked', async () => {
     await act(async () => {
       render(
-        <SettingsPopup isOpen={true} onClose={() => {}} triggerRef={{ current: null }} />,
+        <SettingsPopup isOpen onClose={() => {}} triggerRef={{ current: null }} />,
         document.getElementById('root')!
       )
     })
@@ -81,7 +81,7 @@ describe('SettingsPopup', () => {
 
     await act(async () => {
       render(
-        <SettingsPopup isOpen={true} onClose={() => {}} triggerRef={{ current: null }} />,
+        <SettingsPopup isOpen onClose={() => {}} triggerRef={{ current: null }} />,
         document.getElementById('root')!
       )
     })

@@ -5,6 +5,7 @@ import { useSubtitleStore } from '../hooks/useSubtitleStore'
 import { store } from '../store'
 import { ComponentChildren, RefObject } from 'preact'
 import { createPortal } from 'preact/compat'
+import { Platform } from '../types'
 
 type View = 'main' | 'overlay' | 'sidebar'
 

@@ -28,4 +28,6 @@ To avoid a distracting experience while watching, the sidebar does not continuou
 
 - **Review at Your Own Pace:** The sidebar is perfect for scrolling back to re-read difficult sections or analyzing complex grammar without interrupting the video playback.
 - **Copy Text:** Text can be selected and copied directly from the sidebar, which is great for creating flashcards or taking notes in other apps.
-- **Timing Adjustment:** Hovering over a segment for 2 seconds reveals a sync icon that allows for global subtitle timing shifts. For more details on how this works, see the [Selecting Subtitles](/user-manual/selecting-subtitles) page.
+- **Proximity Controls:** Hovering near the right edge of any segment reveals interactive controls:
+  - **Jump to Segment:** Click the play icon to seek the video to the beginning of that segment and start playback.
+  - **Timing Adjustment:** Click the sync icon to align all subtitles to the current video time. For more details, see [Selecting Subtitles](/user-manual/selecting-subtitles).

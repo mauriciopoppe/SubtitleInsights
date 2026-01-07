@@ -60,3 +60,13 @@ _Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tr
 
 ## [x] Track: Landing Page Documentation
 *Link: [./conductor/archive/landing_page_documentation_20260106/](./conductor/archive/landing_page_documentation_20260106/)*
+
+---
+
+## [x] Track: Sidebar Proximity Controls
+*Link: [./conductor/archive/sidebar_proximity_20260107/](./conductor/archive/sidebar_proximity_20260107/)*
+
+---
+
+## [x] Track: Sidebar Seek-to-Start Button
+*Link: [./conductor/archive/sidebar_jump_20260107/](./conductor/archive/sidebar_jump_20260107/)*
