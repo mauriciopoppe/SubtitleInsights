@@ -6,7 +6,7 @@
 ![Gemini Nano](https://img.shields.io/badge/Gemini_Nano-In--Device-8E75B2?logo=google&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-![Overlay Controls](docs/introduction/overlay_controls.mp4)
+![Overlay Controls](https://github.com/user-attachments/assets/243f0507-71cd-40b9-a567-15d6829476cf)
 
 ---
 
@@ -31,13 +31,13 @@ Subtitle Insights bridges the gap between passive watching and active learning o
 
 The overlay appears exactly when you need it, providing instant context for the current subtitle segment. Hover to pause, click to replay segments.
 
-![AI-Powered Overlay](docs/public/overlay.mp4)
+![AI-Powered Overlay](https://github.com/user-attachments/assets/9f2ebbb5-b13c-4abb-839e-5b83a0a33834)
 
 ### Stay in Sync with the Smart Sidebar
 
 Navigate the entire video transcript effortlessly. The sidebar stays perfectly synchronized with playback, allowing for quick reference of the current segment within the larger context.
 
-![Smart Sidebar](docs/public/sidebar.mp4)
+![Smart Sidebar](https://github.com/user-attachments/assets/13ac4347-4ef7-4405-8035-691f1a3f74dc)
 
 ---
 
