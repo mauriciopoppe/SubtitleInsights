@@ -37,13 +37,13 @@ features:
 <FeatureRow
   title="Experience the AI-Powered Overlay"
   description="The overlay appears exactly when you need it, providing instant context for the current subtitle segment. Hover to pause, click to replay segments."
-  videoSrc="/overlay.mp4"
+  videoSrc="./overlay.mp4"
 />
 
 <FeatureRow
   title="Stay in Sync with the Smart Sidebar"
   description="Navigate the entire video transcript effortlessly. The sidebar stays perfectly synchronized with playback, allowing for quick reference of the current segment within the larger context."
-  videoSrc="/sidebar.mp4"
+  videoSrc="./sidebar.mp4"
 />
 
 <div style="padding: 10rem 0; text-align: center; border-top: 1px solid var(--vp-c-divider); max-width: 1152px; margin: 0 auto;">
