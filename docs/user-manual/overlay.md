@@ -8,6 +8,7 @@ The in-page overlay is the heart of the Subtitle Insights experience, providing 
   <source src="./overlay.webm" type="video/webm">
   <source src="./overlay.mp4" type="video/mp4">
 </video>
+<p align="center">Source: <a href="https://www.youtube.com/watch?v=Oeo-18ik6Hs">Comprehensible Japanese</a></p>
 
 :::
 

@@ -3,6 +3,7 @@
 Below is an overview of the main UI components you will interact with while using Subtitle Insights.
 
 ![ui](./ui.jpg)
+<p align="center">Source: <a href="https://www.youtube.com/watch?v=IC5RHt8unAI">Comprehensible Japanese</a></p>
 
 Click on a component in the list below to learn more about how it works:
 

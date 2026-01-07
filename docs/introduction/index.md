@@ -7,6 +7,7 @@ Subtitle Insights turns YouTube and Stremio videos into an interactive language 
   <source src="./overlay_controls.webm" type="video/webm">
   <source src="./overlay_controls.mp4" type="video/mp4">
 </video>
+<p align="center">Source: <a href="https://www.youtube.com/watch?v=uZYQDJRDRsU">Comprehensible Japanese</a></p>
 :::
 
 ## Core Value Proposition
