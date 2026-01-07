@@ -320,7 +320,7 @@ describe('usePauseOnHover', () => {
 
     // 1. Initial Render (Enabled)
     await act(() => {
-      render(<ReMountComponent isEnabled={true} />, document.getElementById('root')!)
+      render(<ReMountComponent isEnabled />, document.getElementById('root')!)
     })
 
     let overlayEl = document.getElementById('remount-overlay')!
@@ -348,7 +348,7 @@ describe('usePauseOnHover', () => {
 
     // 3. Re-enable (Remount)
     await act(() => {
-      render(<ReMountComponent isEnabled={true} />, document.getElementById('root')!)
+      render(<ReMountComponent isEnabled />, document.getElementById('root')!)
     })
 
     overlayEl = document.getElementById('remount-overlay')!

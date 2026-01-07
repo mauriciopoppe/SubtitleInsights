@@ -70,3 +70,9 @@ _Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tr
 
 ## [x] Track: Sidebar Seek-to-Start Button
 *Link: [./conductor/archive/sidebar_jump_20260107/](./conductor/archive/sidebar_jump_20260107/)*
+
+---
+
+## [x] Track: Brand & Identity Definition
+*Link: [./conductor/archive/brand_identity_20260107/](./conductor/archive/brand_identity_20260107/)*
+

@@ -2,11 +2,15 @@
   --vp-c-brand-1: #3ea6ff;
   --vp-c-brand-2: #65b8ff;
   --vp-c-brand-3: #8bcaff;
-  
+
+  --vp-c-accent-1: #ffd600;
+  --vp-c-accent-2: #ffea00; /* Lighter/Hover */
+  --vp-c-accent-3: #c7a700; /* Darker/Active */
+
   --vp-c-bg: #ffffff;
   --vp-c-bg-alt: #f6f6f7;
   --vp-c-bg-soft: #f6f6f7;
-  
+
   --vp-c-text-1: #0f0f0f;
   --vp-c-text-2: rgba(15, 15, 15, 0.7);
 }
@@ -15,6 +19,10 @@
   --vp-c-brand-1: #3ea6ff;
   --vp-c-brand-2: #65b8ff;
   --vp-c-brand-3: #8bcaff;
+
+  --vp-c-accent-1: #ffd600;
+  /* In dark mode, you might want a slightly softer yellow to prevent 'vibrating' text */
+  --vp-c-accent-soft: rgba(255, 214, 0, 0.15);
 
   --vp-c-bg: #0f0f0f;
   --vp-c-bg-alt: #1a1a1a;
@@ -25,4 +33,15 @@
 
   --vp-c-border: rgba(255, 255, 255, 0.1);
   --vp-c-divider: rgba(255, 255, 255, 0.1);
+}
+
+.subtitle-preview {
+  background-color: rgba(8, 8, 8, 0.75); /* YouTube's caption background */
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: sans-serif;
+  border-left: 3px solid var(--vp-c-brand-1); /* Your blue */
+  display: inline-block;
+  margin: 10px 0;
 }
