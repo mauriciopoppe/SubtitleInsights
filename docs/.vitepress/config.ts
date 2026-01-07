@@ -5,7 +5,9 @@ export default defineConfig({
   description: 'Smart AI insights and translations for YouTube subtitles',
   appearance: 'dark',
   base: '/SubtitleInsights/',
+  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/SubtitleInsights/logo.svg' }]],
   themeConfig: {
+    logo: '/logo.svg',
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/introduction/' }

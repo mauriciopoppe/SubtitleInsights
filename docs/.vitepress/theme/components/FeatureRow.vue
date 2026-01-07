@@ -31,20 +31,20 @@ defineProps<{
   padding: 8rem 0;
   min-height: 80vh;
   justify-content: center;
-  max-width: 1152px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .text-content {
   text-align: center;
   max-width: 800px;
+  padding: 0 2rem;
 }
 
 .title {
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  background: -webkit-linear-gradient(120deg, #bd34fe 30%, #41d1ff);
+  background: -webkit-linear-gradient(120deg, var(--vp-c-brand-1) 30%, var(--vp-c-accent-1));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.2;
@@ -58,6 +58,8 @@ defineProps<{
 
 .media-content {
   width: 100%;
+  max-width: 1152px;
+  padding: 0 2rem;
 }
 
 .video {
@@ -72,7 +74,10 @@ defineProps<{
     font-size: 2rem;
   }
   .feature-row {
-    padding: 4rem 1rem;
+    padding: 4rem 0;
+  }
+  .text-content, .media-content {
+    padding: 0 1rem;
   }
 }
 </style>

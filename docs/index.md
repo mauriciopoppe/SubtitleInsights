@@ -5,6 +5,9 @@ hero:
   name: Subtitle Insights
   text: Smart AI insights and translations for video subtitles
   tagline: Transform your language learning experience with free, local, and privacy-first AI.
+  image:
+    src: /logo.svg
+    alt: Subtitle Insights Logo
   actions:
     - theme: brand
       text: Get Started
@@ -13,22 +16,46 @@ hero:
       text: View on GitHub
       link: https://github.com/mauriciopoppe/SubtitleInsights
 
-features:
-  - icon: 🎯
-    title: AI-Powered Overlay
-    details: Real-time translations and grammatical insights directly over your video player.
-  - icon: 📜
-    title: Smart Transcript Sidebar
-    details: Full video transcript with automatic scroll sync and manual timing adjustments.
-  - icon: 🔒
-    title: Free & Privacy-First
-    details: Powered by Chrome's built-in AI APIs (Gemini Nano). All processing happens on-device for free, with zero data sent to the cloud.
 ---
 
 <style>
 :root {
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe 30%, #41d1ff);
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, var(--vp-c-brand-1) 30%, var(--vp-c-accent-1));
+}
+
+:deep(.VPHero) {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+:deep(.VPHero .image-container img) {
+  max-width: 480px !important;
+  max-height: 480px !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 960px) {
+  :deep(.VPHero .image-container img) {
+    max-width: 320px !important;
+    max-height: 320px !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+@media (max-width: 640px) {
+  :deep(.VPHero .image-container img) {
+    max-width: 240px !important;
+    max-height: 240px !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
 }
 </style>
 

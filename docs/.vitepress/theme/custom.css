@@ -33,6 +33,9 @@
 
   --vp-c-border: rgba(255, 255, 255, 0.1);
   --vp-c-divider: rgba(255, 255, 255, 0.1);
+
+  --vp-button-brand-text: #0f0f0f;
+  --vp-button-brand-hover-text: #0f0f0f;
 }
 
 .subtitle-preview {

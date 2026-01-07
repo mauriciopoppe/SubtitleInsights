@@ -35,18 +35,16 @@ const features = [
 
 <template>
   <section class="why-section">
-    <div class="container">
-      <h2 class="section-title">Why Subtitle Insights?</h2>
-      <p class="section-subtitle">
-        Bridging the gap between passive watching and active learning on <strong>YouTube</strong> and <strong>Stremio</strong>.
-      </p>
-      
-      <div class="grid">
-        <div v-for="feature in features" :key="feature.title" class="card">
-          <div class="card-icon">{{ feature.icon }}</div>
-          <h3 class="card-title">{{ feature.title }}</h3>
-          <p class="card-description">{{ feature.description }}</p>
-        </div>
+    <h2 class="section-title">Why Subtitle Insights?</h2>
+    <p class="section-subtitle">
+      Bridging the gap between passive watching and active learning on <strong>YouTube</strong> and <strong>Stremio</strong>.
+    </p>
+    
+    <div class="grid">
+      <div v-for="feature in features" :key="feature.title" class="card">
+        <div class="card-icon">{{ feature.icon }}</div>
+        <h3 class="card-title">{{ feature.title }}</h3>
+        <p class="card-description">{{ feature.description }}</p>
       </div>
     </div>
   </section>
@@ -56,17 +54,13 @@ const features = [
 .why-section {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
+  padding: 4rem 0;
   background-color: var(--vp-c-bg);
-}
-
-.container {
-  max-width: 100%;
-  width: 100%;
-  margin: 0 auto;
   text-align: center;
+  width: 100%;
 }
 
 .section-title {
@@ -91,6 +85,9 @@ const features = [
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
+  width: 100%;
+  max-width: 1152px;
+  padding: 0 2rem;
 }
 
 .card {
@@ -104,7 +101,7 @@ const features = [
 
 .card:hover {
   transform: translateY(-8px);
-  border-color: var(--vp-c-brand);
+  border-color: var(--vp-c-brand-1);
 }
 
 .card-icon {
@@ -131,9 +128,13 @@ const features = [
   }
   
   .why-section {
-    padding: 2rem 1rem;
+    padding: 2rem 0;
     height: auto;
     min-height: auto;
+  }
+
+  .grid {
+    padding: 0 1rem;
   }
 }
 </style>
