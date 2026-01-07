@@ -13,6 +13,7 @@ The Profile Manager is accessible through the **Detailed Settings** link in the 
 ## Customizing AI Behavior
 
 The **System Prompt** field in the Profile Editor is the most powerful tool for customization. By adjusting the prompt, it is possible to:
+
 - Instruct the AI to include Romaji/IPA for pronunciation.
 - Request explanations tailored to specific levels (such as JLPT levels for Japanese).
 - Control the length and complexity of the AI's explanations.

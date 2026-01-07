@@ -12,13 +12,13 @@
 
 ### Color Palette
 
--   **Brand Blue (`#3ea6ff`):** Cool and trustworthy.
-    -   *Usage:* Action & Structure (Links, Primary Buttons, Navbar).
--   **Accent Yellow (`#ffd600`):** Urgent, Intelligence & Focus.
-    -   *Usage:* Highlights, Error warnings, Active segments, "Pro" features.
--   **Background (`#0f0f0f`):** The "Canvas" (Main workspace, Sidebar).
--   **Neutral (`#f8fafc`):** Paper White.
-    -   *Usage:* Primary text to ensure readability (WCAG AAA compliance).
+- **Brand Blue (`#3ea6ff`):** Cool and trustworthy.
+  - _Usage:_ Action & Structure (Links, Primary Buttons, Navbar).
+- **Accent Yellow (`#ffd600`):** Urgent, Intelligence & Focus.
+  - _Usage:_ Highlights, Error warnings, Active segments, "Pro" features.
+- **Background (`#0f0f0f`):** The "Canvas" (Main workspace, Sidebar).
+- **Neutral (`#f8fafc`):** Paper White.
+  - _Usage:_ Primary text to ensure readability (WCAG AAA compliance).
 
 ### Design Guidelines: Yellow on Dark
 
@@ -36,12 +36,7 @@ To maintain a high-end feel when using the bright accent yellow on the dark back
     - **Overlay Controls (Proximity):**
       - **Replay Segment:** Instantly replay the current segment to listen again.
       - **Scroll Sync:** Button to sync the sidebar view to the current active segment.
-    - **Proximity Visibility:** Controls appear only when the mouse is near the top-left area to avoid distracting from the content or blocking interactions (e.g., with Yomitan).
-          - **Unified Settings Popup:**
-          - Triggered by the main extension icon in the video control bar.
-          - **Global Enable/Disable:** A master "Extension Enabled" toggle allows users to completely deactivate the extension's UI and AI processing with a single click.
-          - **Visual Indicators:** The extension icon in the player toolbar dims (reduced opacity) when disabled, providing instant visual feedback.
-          - **Authentic Navigation:** Features a hierarchical sub-menu system (Overlay/Sidebar settings) that strictly mimics the native YouTube settings UI.      - **Live Status:** Displays AI model downloading and readiness status directly in the menu.
+    - **Proximity Visibility:** Controls appear only when the mouse is near the top-left area to avoid distracting from the content or blocking interactions (e.g., with Yomitan). - **Unified Settings Popup:** - Triggered by the main extension icon in the video control bar. - **Global Enable/Disable:** A master "Extension Enabled" toggle allows users to completely deactivate the extension's UI and AI processing with a single click. - **Visual Indicators:** The extension icon in the player toolbar dims (reduced opacity) when disabled, providing instant visual feedback. - **Authentic Navigation:** Features a hierarchical sub-menu system (Overlay/Sidebar settings) that strictly mimics the native YouTube settings UI. - **Live Status:** Displays AI model downloading and readiness status directly in the menu.
 
 2.  **Smart Sidebar**
     - Displays the full transcript of the video.

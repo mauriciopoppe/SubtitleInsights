@@ -3,31 +3,36 @@ const features = [
   {
     icon: '🔒',
     title: 'Private, Local AI',
-    description: 'Data never leaves your browser. All translations and insights are processed on-device using Chrome\'s built-in AI.'
+    description:
+      "Data never leaves your browser. All translations and insights are processed on-device using Chrome's built-in AI."
   },
   {
     icon: '🧠',
     title: 'Automated Insights',
-    description: 'Beyond word lookups. Gemini Nano analyzes entire sentences to explain complex grammar and cultural nuances.'
+    description:
+      'Beyond word lookups. Gemini Nano analyzes entire sentences to explain complex grammar and cultural nuances.'
   },
   {
     icon: '⏯️',
     title: 'Smart Controls',
-    description: 'Interactive controls appear only when needed. Hover to pause, replay segments instantly, and focus on learning without distractions.'
+    description:
+      'Interactive controls appear only when needed. Hover to pause, replay segments instantly, and focus on learning without distractions.'
   },
   {
     icon: '🎬',
     title: 'Integrated Experience',
-    description: 'Designed to blend perfectly with YouTube and Stremio Web. Feels like a native feature, not an added layer.'
+    description:
+      'Designed to blend perfectly with YouTube and Stremio Web. Feels like a native feature, not an added layer.'
   },
   {
     icon: '📁',
     title: 'Flexible Subtitles',
-    description: 'Automatically capture YouTube captions or upload your own .srt files. Use the manual sync tool to align timing perfectly.'
+    description:
+      'Automatically capture YouTube captions or upload your own .srt files. Use the manual sync tool to align timing perfectly.'
   },
   {
     icon: '💰',
-    title: '<strong style="color: var(--vp-c-brand-1)">100% Free</strong>',
+    title: '100% Free',
     description: 'No subscriptions, no API keys, no hidden costs. Leveraging the power of your own hardware via Chrome.'
   }
 ]
@@ -37,9 +42,10 @@ const features = [
   <section class="why-section">
     <h2 class="section-title">Why Subtitle Insights?</h2>
     <p class="section-subtitle">
-      Bridging the gap between passive watching and active learning on <strong>YouTube</strong> and <strong>Stremio</strong>.
+      Bridging the gap between passive watching and active learning on <strong>YouTube</strong> and
+      <strong>Stremio</strong>.
     </p>
-    
+
     <div class="grid">
       <div v-for="feature in features" :key="feature.title" class="card">
         <div class="card-icon">{{ feature.icon }}</div>
@@ -96,7 +102,9 @@ const features = [
   padding: 2rem;
   border-radius: 16px;
   border: 1px solid var(--vp-c-divider);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
   text-align: left;
 }
 
@@ -127,7 +135,7 @@ const features = [
   .section-title {
     font-size: 2rem;
   }
-  
+
   .why-section {
     padding: 2rem 0;
     height: auto;

@@ -31,7 +31,7 @@ If subtitles are out of sync with the video—which often happens with manual up
 ### How to Synchronize
 
 1. **Find a Reference:** Play the video and wait for a clear line of dialogue.
-2. **Find the Segment:** In the sidebar, locate the segment that *should* be playing at that exact moment.
+2. **Find the Segment:** In the sidebar, locate the segment that _should_ be playing at that exact moment.
 3. **Reveal the Sync Icon:** Hover over that sidebar item **near the right edge**. A "Sync" icon (refresh symbol) will appear instantly.
 4. **Apply the Shift:** Click the icon and confirm the shift. The extension calculates the offset and moves **all subtitles** to match the current video time.
 

@@ -21,6 +21,7 @@ The sidebar provides a comprehensive view of the entire video transcript, allowi
 ## Sync Button
 
 To avoid a distracting experience while watching, the sidebar does not continuously auto-scroll as the video plays. If the transcript has been scrolled to review a previous part, jumping back to the current time is simple:
+
 1. Locate the **Sync Button** (target icon) in the sidebar header.
 2. Clicking it will immediately scroll the sidebar back to the active segment.
 

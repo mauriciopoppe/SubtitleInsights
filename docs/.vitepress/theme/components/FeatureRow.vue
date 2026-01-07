@@ -16,7 +16,7 @@ defineProps<{
     </div>
     <div class="media-content">
       <video controls autoplay loop muted playsinline class="video">
-        <source :src="videoSrc" type="video/mp4">
+        <source :src="videoSrc" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <p v-if="sourceLink" class="source-attribution">
@@ -100,7 +100,8 @@ defineProps<{
   .feature-row {
     padding: 4rem 0;
   }
-  .text-content, .media-content {
+  .text-content,
+  .media-content {
     padding: 0 1rem;
   }
 }

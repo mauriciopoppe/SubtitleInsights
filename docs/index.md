@@ -15,7 +15,6 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/mauriciopoppe/SubtitleInsights
-
 ---
 
 <style>
@@ -112,4 +111,3 @@ hero:
 ### Powered by Chrome Built-in AI
 
 <TechBadges />
-

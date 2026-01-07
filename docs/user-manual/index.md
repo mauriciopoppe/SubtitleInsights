@@ -3,6 +3,7 @@
 Below is an overview of the main UI components you will interact with while using Subtitle Insights.
 
 ![ui](./ui.jpg)
+
 <p align="center">Source: <a href="https://www.youtube.com/watch?v=IC5RHt8unAI">Comprehensible Japanese</a></p>
 
 Click on a component in the list below to learn more about how it works:
@@ -22,6 +23,7 @@ The extension settings are accessed through the unified popup menu, which is des
 The popup menu is triggered by clicking the Subtitle Insights icon in the video player's control bar. It provides quick access to high-level toggles and sub-menus for deeper customization.
 
 #### Main Menu Toggles
+
 - **Global Visibility:** Choose whether the Overlay or the Sidebar is active.
 - **AI Toggles:** Individually enable or disable Translation and Insights.
 - **Live Status:** View the current readiness of the AI models directly at the top of the menu.
@@ -31,12 +33,14 @@ The popup menu is triggered by clicking the Subtitle Insights icon in the video 
 The popup features a hierarchical structure for detailed control:
 
 #### Overlay Settings
+
 - **Original Text Visibility:** Toggle the display of the original subtitle text.
 - **Translation Visibility:** Toggle the display of the AI-generated translation.
 - **Insights Visibility:** Toggle the display of the AI insights.
 - **Pause on Hover:** Enable or disable the automatic pausing feature.
 
 #### Sidebar Settings
+
 - **Translation Visibility:** Toggle translations within the transcript view.
 - **Insights Visibility:** Toggle detailed insights within the transcript view.
 

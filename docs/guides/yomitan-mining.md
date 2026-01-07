@@ -13,7 +13,7 @@ Subtitle Insights is designed to be a companion to powerful pop-up dictionaries 
 
 - **Yomitan** is excellent for word-level lookups (definitions, pitch accent, kanji).
 - **Subtitle Insights** provides the sentence-level "big picture" (grammar structure, cultural nuances, fluid translation).
-- **Synergy:** By having both, you never have to guess *why* a word is being used in a specific grammatical form.
+- **Synergy:** By having both, you never have to guess _why_ a word is being used in a specific grammatical form.
 
 ## Configuration Tips
 

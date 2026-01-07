@@ -1,9 +1,11 @@
 # Specification: Brand Asset Integration & Extension Theming
 
 ## Overview
+
 Integrate the newly defined brand assets (logo, colors, motto) into the extension's core UI components, including the YouTube toolbar enabler, the manifest icon, and the settings page. This also includes aligning the settings page and documentation site with the full brand identity.
 
 ## Functional Requirements
+
 - **Manifest Integration:**
   - Update `manifest.json` to use `docs/public/logo.svg` as the extension icon (assuming modern Chrome support).
 - **YouTube Toolbar Enabler:**
@@ -22,10 +24,12 @@ Integrate the newly defined brand assets (logo, colors, motto) into the extensio
   - Integrate the waveform concept as a stylized separator or background element.
 
 ## Non-Functional Requirements
+
 - **Visual Consistency:** The grayscale filter on the toolbar should feel native to YouTube's "Off" state for features like CC.
 - **Grayscale Clarity:** Ensure the logo remains recognizable even when grayscale.
 
 ## Acceptance Criteria
+
 - [ ] Extension icon in Chrome's extension manager is the new logo.
 - [ ] YouTube toolbar icon uses the new logo and turns grayscale when disabled.
 - [ ] Settings page features the centered logo, motto, and brand colors.
@@ -33,5 +37,6 @@ Integrate the newly defined brand assets (logo, colors, motto) into the extensio
 - [ ] Documentation site header or home page includes the motto.
 
 ## Out of Scope
+
 - Creating a separate grayscale SVG file.
 - Changes to the internal AI processing logic.

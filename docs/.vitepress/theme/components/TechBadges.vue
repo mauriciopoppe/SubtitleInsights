@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="tech-badges">
@@ -50,7 +49,9 @@
   border: 1px solid var(--vp-c-divider);
   font-size: 0.9rem;
   font-weight: 600;
-  transition: transform 0.2s, background-color 0.2s;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
 }
 
 .badge:hover {

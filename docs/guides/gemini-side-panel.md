@@ -14,7 +14,7 @@ While Subtitle Insights provides immediate, automated explanations, sometimes yo
 Japanese has multiple ways to express causality (like `から - kara` vs `ので - node`), and choosing the right one depends on politeness and sentence structure.
 
 - **Automated Insight:** Might briefly identify the particle as a causal marker.
-- **Deep Dive:** You can ask Gemini: *"Why is 'kara' used here instead of 'node'? How does it change the politeness of the sentence?"*
+- **Deep Dive:** You can ask Gemini: _"Why is 'kara' used here instead of 'node'? How does it change the politeness of the sentence?"_
 - **Contextual Awareness:** The great thing is that Gemini knows the context of the sentence, the surrounding subtitles, and even the video you are watching, allowing it to give much more precise explanations than a general LLM.
 
 ## Why use this workflow?
