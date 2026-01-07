@@ -58,5 +58,5 @@ _Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tr
 
 ---
 
-## [~] Track: Landing Page Documentation
-*Link: [./conductor/tracks/landing_page_documentation_20260106/](./conductor/tracks/landing_page_documentation_20260106/)*
+## [x] Track: Landing Page Documentation
+*Link: [./conductor/archive/landing_page_documentation_20260106/](./conductor/archive/landing_page_documentation_20260106/)*

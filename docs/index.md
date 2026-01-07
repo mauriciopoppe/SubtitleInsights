@@ -36,13 +36,13 @@ features:
 
 <FeatureRow
   title="Experience the AI-Powered Overlay"
-  description="The overlay appears exactly when you need it, providing instant context for the current subtitle segment. Hover to pause, click to get deep grammatical insights."
+  description="The overlay appears exactly when you need it, providing instant context for the current subtitle segment. Hover to pause, click to replay segments."
   videoSrc="/overlay.mp4"
 />
 
 <FeatureRow
   title="Stay in Sync with the Smart Sidebar"
-  description="Navigate the entire video transcript effortlessly. The sidebar stays perfectly synchronized with your playback, allowing you to jump to any sentence instantly."
+  description="Navigate the entire video transcript effortlessly. The sidebar stays perfectly synchronized with playback, allowing for quick reference of the current segment within the larger context."
   videoSrc="/sidebar.mp4"
 />
 
