@@ -3,6 +3,8 @@ defineProps<{
   title: string
   description: string
   videoSrc: string
+  sourceLink?: string
+  sourceName?: string
 }>()
 </script>
 
@@ -17,6 +19,9 @@ defineProps<{
         <source :src="videoSrc" type="video/mp4">
         Your browser does not support the video tag.
       </video>
+      <p v-if="sourceLink" class="source-attribution">
+        Source: <a :href="sourceLink" target="_blank" rel="noopener">{{ sourceName || 'YouTube' }}</a>
+      </p>
     </div>
   </div>
 </template>
@@ -48,6 +53,7 @@ defineProps<{
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.2;
+  border: none;
 }
 
 .description {
@@ -60,6 +66,9 @@ defineProps<{
   width: 100%;
   max-width: 1152px;
   padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .video {
@@ -67,6 +76,21 @@ defineProps<{
   border-radius: 12px;
   box-shadow: var(--vp-shadow-4);
   border: 1px solid var(--vp-c-divider);
+}
+
+.source-attribution {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--vp-c-text-2);
+}
+
+.source-attribution a {
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+}
+
+.source-attribution a:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 640px) {

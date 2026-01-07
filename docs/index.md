@@ -75,6 +75,16 @@ hero:
 }
 </style>
 
+<FeatureRow
+  title="Subtitle data, clarified."
+  description="Subtitle Insights transforms your favorite videos into interactive lessons. Get real-time translations and grammatical breakdowns without leaving the player."
+  videoSrc="./intro_web.mp4"
+  sourceLink="https://www.youtube.com/@cijapanese"
+  sourceName="Comprehensible Japanese"
+/>
+
+<div class="waveform-separator"></div>
+
 <WhySection />
 
 <div class="waveform-separator"></div>
@@ -83,6 +93,8 @@ hero:
   title="Experience the AI-Powered Overlay"
   description="The overlay appears exactly when you need it, providing instant context for the current subtitle segment. Hover to pause, click to replay segments."
   videoSrc="./overlay.mp4"
+  sourceLink="https://www.youtube.com/@cijapanese"
+  sourceName="Comprehensible Japanese"
 />
 
 <div class="waveform-separator"></div>
@@ -91,6 +103,8 @@ hero:
   title="Stay in Sync with the Smart Sidebar"
   description="Navigate the entire video transcript effortlessly. The sidebar stays perfectly synchronized with playback, allowing for quick reference of the current segment within the larger context."
   videoSrc="./sidebar.mp4"
+  sourceLink="https://www.youtube.com/@cijapanese"
+  sourceName="Comprehensible Japanese"
 />
 
 <div class="waveform-separator"></div>
