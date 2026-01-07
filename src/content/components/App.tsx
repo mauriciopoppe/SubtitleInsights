@@ -7,6 +7,7 @@ import { store } from '../store'
 import { translationManager } from '../ai/manager'
 import { Config } from '../config'
 import { Platform } from '../types'
+import { useConfig } from '../hooks/useConfig'
 
 interface AppProps {
   player: HTMLElement
@@ -27,6 +28,7 @@ export function App({
   toggleContainer,
   platform
 }: AppProps) {
+  const config = useConfig()
 
   // Layout Logic: Sidebar Height Sync
   useEffect(() => {
@@ -136,13 +138,15 @@ export function App({
 
   // Sync Logic: Time Update
   useEffect(() => {
+    if (!config.isEnabled) return
+
     const handleTimeUpdate = () => {
         const currentTimeMs = video.currentTime * 1000
         translationManager.onTimeUpdate(currentTimeMs)
     }
     video.addEventListener('timeupdate', handleTimeUpdate)
     return () => video.removeEventListener('timeupdate', handleTimeUpdate)
-  }, [video])
+  }, [video, config.isEnabled])
 
   return (
     <>
