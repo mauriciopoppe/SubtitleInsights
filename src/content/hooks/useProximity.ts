@@ -3,10 +3,7 @@ import { useState, useEffect } from 'preact/hooks'
 
 type ProximityPredicate = (x: number, y: number, rect: DOMRect) => boolean
 
-export function useProximity(
-  ref: RefObject<HTMLElement>,
-  predicate: ProximityPredicate
-) {
+export function useProximity(ref: RefObject<HTMLElement>, predicate: ProximityPredicate) {
   const [isProximate, setIsProximate] = useState(false)
 
   useEffect(() => {
@@ -17,7 +14,7 @@ export function useProximity(
       const rect = element.getBoundingClientRect()
       const x = e.clientX - rect.left
       const y = e.clientY - rect.top
-      
+
       const isInside = predicate(x, y, rect)
       setIsProximate(isInside)
     }

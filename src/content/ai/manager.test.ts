@@ -51,25 +51,27 @@ describe('AIManager', () => {
     vi.mocked(Config.get).mockResolvedValue({ isEnabled: false } as any)
     vi.mocked(store.getAllSegments).mockReturnValue([{ start: 0, end: 1000, text: 'Hello' }])
     vi.mocked(translatorService.isReady).mockReturnValue(true)
-    
+
     await manager.onTimeUpdate(500)
-    
+
     expect(translatorService.translate).not.toHaveBeenCalled()
   })
 
   it('should trigger prefetch if isEnabled is true', async () => {
     vi.mocked(Config.get).mockResolvedValue({ isEnabled: true, isGrammarEnabled: true } as any)
-    vi.mocked(store.getAllSegments).mockReturnValue([{ start: 0, end: 1000, text: 'This is a complex sentence that should trigger insights.' }])
+    vi.mocked(store.getAllSegments).mockReturnValue([
+      { start: 0, end: 1000, text: 'This is a complex sentence that should trigger insights.' }
+    ])
     vi.mocked(translatorService.isReady).mockReturnValue(true)
     vi.mocked(grammarExplainer.isReady).mockReturnValue(true)
-    
+
     // Complex sentence detection mock
     vi.mock('./utils', () => ({
       isComplexSentence: () => true
     }))
 
     await manager.onTimeUpdate(500)
-    
+
     expect(translatorService.translate).toHaveBeenCalled()
   })
 })

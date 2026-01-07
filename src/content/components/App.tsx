@@ -35,28 +35,28 @@ export function App({
     if (!sidebarContainer) return
 
     const updateSidebarHeight = () => {
-        const hasSegments = store.getAllSegments().length > 0
-        // On YouTube we only show if segments. On Stremio we might want it always if enabled.
-        if (hasSegments || platform === 'stremio') {
-            const rect = player.getBoundingClientRect()
-            sidebarContainer.style.setProperty('--si-sidebar-height', `${rect.height}px`)
-        } else {
-            sidebarContainer.style.removeProperty('--si-sidebar-height')
-        }
+      const hasSegments = store.getAllSegments().length > 0
+      // On YouTube we only show if segments. On Stremio we might want it always if enabled.
+      if (hasSegments || platform === 'stremio') {
+        const rect = player.getBoundingClientRect()
+        sidebarContainer.style.setProperty('--si-sidebar-height', `${rect.height}px`)
+      } else {
+        sidebarContainer.style.removeProperty('--si-sidebar-height')
+      }
     }
 
     const resizeObserver = new ResizeObserver(updateSidebarHeight)
     resizeObserver.observe(player)
-    
+
     // Store listener
     const unsubscribe = store.subscribe(updateSidebarHeight)
-    
+
     // Initial call
     updateSidebarHeight()
 
     return () => {
-        resizeObserver.disconnect()
-        unsubscribe()
+      resizeObserver.disconnect()
+      unsubscribe()
     }
   }, [player, sidebarContainer, platform])
 
@@ -65,9 +65,9 @@ export function App({
     if (platform !== 'youtube' || !sidebarContainer) return
 
     const observer = new MutationObserver(() => {
-        if (secondaryInner.firstChild !== sidebarContainer) {
-            secondaryInner.prepend(sidebarContainer)
-        }
+      if (secondaryInner.firstChild !== sidebarContainer) {
+        secondaryInner.prepend(sidebarContainer)
+      }
     })
     observer.observe(secondaryInner, { childList: true })
     return () => observer.disconnect()
@@ -81,19 +81,19 @@ export function App({
     let isSidebarActive = false
 
     const applyClass = () => {
-        if (isSidebarActive && !player.classList.contains('si-player-container-resized')) {
-            player.classList.add('si-player-container-resized')
-        }
+      if (isSidebarActive && !player.classList.contains('si-player-container-resized')) {
+        player.classList.add('si-player-container-resized')
+      }
     }
 
-    observer = new MutationObserver((mutations) => {
-        for (const mutation of mutations) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                applyClass()
-            }
+    observer = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          applyClass()
         }
+      }
     })
-    
+
     observer.observe(player, { attributes: true, attributeFilter: ['class'] })
 
     const unsubscribe = Config.subscribe(config => {
@@ -108,8 +108,8 @@ export function App({
     })
 
     return () => {
-        unsubscribe()
-        observer?.disconnect()
+      unsubscribe()
+      observer?.disconnect()
     }
   }, [platform, player])
 
@@ -117,22 +117,22 @@ export function App({
   useEffect(() => {
     if (!sidebarContainer) return
     return Config.subscribe(config => {
-        if (!config.isEnabled || !config.isSidebarEnabled) {
-            sidebarContainer.style.display = 'none'
-        } else {
-            sidebarContainer.style.display = 'flex'
-        }
+      if (!config.isEnabled || !config.isSidebarEnabled) {
+        sidebarContainer.style.display = 'none'
+      } else {
+        sidebarContainer.style.display = 'flex'
+      }
     })
   }, [sidebarContainer])
 
   // Config Logic: Overlay Visibility
   useEffect(() => {
     return Config.subscribe(config => {
-        if (!config.isEnabled || !config.isOverlayEnabled) {
-            overlayContainer.style.display = 'none'
-        } else {
-            overlayContainer.style.display = 'block'
-        }
+      if (!config.isEnabled || !config.isOverlayEnabled) {
+        overlayContainer.style.display = 'none'
+      } else {
+        overlayContainer.style.display = 'block'
+      }
     })
   }, [overlayContainer])
 
@@ -141,8 +141,8 @@ export function App({
     if (!config.isEnabled) return
 
     const handleTimeUpdate = () => {
-        const currentTimeMs = video.currentTime * 1000
-        translationManager.onTimeUpdate(currentTimeMs)
+      const currentTimeMs = video.currentTime * 1000
+      translationManager.onTimeUpdate(currentTimeMs)
     }
     video.addEventListener('timeupdate', handleTimeUpdate)
     return () => video.removeEventListener('timeupdate', handleTimeUpdate)

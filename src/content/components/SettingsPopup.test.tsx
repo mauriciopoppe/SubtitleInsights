@@ -12,7 +12,7 @@ vi.mock('../config', () => ({
       isOverlayEnabled: true,
       isSidebarEnabled: false,
       isGrammarEnabled: true,
-      isPauseOnHoverEnabled: false,
+      isPauseOnHoverEnabled: false
     }),
     update: vi.fn().mockResolvedValue(undefined),
     subscribe: vi.fn().mockReturnValue(() => {})
@@ -40,7 +40,7 @@ describe('SettingsPopup', () => {
 
     const items = document.querySelectorAll('.si-settings-popup-item')
     expect(items.length).toBeGreaterThan(0)
-    
+
     // Check if the item at index 0 is the Extension Enabled toggle
     // 0: Extension Enabled, 1: Upload, 2: Detailed Settings, 3: Overlay, 4: Sidebar
     const extensionEnabledItem = items[0]
@@ -76,7 +76,7 @@ describe('SettingsPopup', () => {
       isOverlayEnabled: true,
       isSidebarEnabled: false,
       isGrammarEnabled: true,
-      isPauseOnHoverEnabled: false,
+      isPauseOnHoverEnabled: false
     } as any)
 
     await act(async () => {
@@ -98,7 +98,7 @@ describe('SettingsPopup', () => {
 
     // Item 0 is Extension Enabled, should NOT be disabled
     expect(items[0].classList.contains('si-item-disabled')).toBe(false)
-    
+
     // Other items should be disabled
     expect(items[1].classList.contains('si-item-disabled')).toBe(true)
     expect(items[2].classList.contains('si-item-disabled')).toBe(true)

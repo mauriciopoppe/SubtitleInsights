@@ -51,7 +51,7 @@ export function SettingsItem({
       ) : (
         (icon || iconSpace) && <span className="si-settings-item-icon">{icon}</span>
       )}
-      
+
       <span className="si-settings-item-label">{label}</span>
 
       {(type === 'link' || subLabel) && (
@@ -67,7 +67,7 @@ export function SettingsItem({
 
       {type === 'toggle' && status !== undefined && (
         <div className="si-settings-item-value">
-           <div className={`si-toggle-switch ${status}`} />
+          <div className={`si-toggle-switch ${status}`} />
         </div>
       )}
     </div>
@@ -103,7 +103,7 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
 
     const updatePosition = () => {
       const rect = triggerRef.current!.getBoundingClientRect()
-      
+
       if (isStremio) {
         // Stremio: Fixed position relative to viewport
         setPosition({
@@ -287,21 +287,18 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
 
   const sidebarStatusSummary = getMasterStatus(config.isTranslationVisibleInSidebar, config.isInsightsVisibleInSidebar)
 
-  const style: any = isStremio ? {
-    position: 'fixed',
-    bottom: `${position.bottom}px`,
-    right: `${position.right}px`
-  } : {
-    right: `${position.right}px`
-  }
+  const style: any = isStremio
+    ? {
+        position: 'fixed',
+        bottom: `${position.bottom}px`,
+        right: `${position.right}px`
+      }
+    : {
+        right: `${position.right}px`
+      }
 
   const popupContent = (
-    <div 
-      ref={menuRef} 
-      className="si-settings-popup" 
-      onClick={e => e.stopPropagation()}
-      style={style}
-    >
+    <div ref={menuRef} className="si-settings-popup" onClick={e => e.stopPropagation()} style={style}>
       <input type="file" accept=".srt" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange} />
 
       {view === 'main' && (

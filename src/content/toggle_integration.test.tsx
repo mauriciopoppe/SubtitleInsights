@@ -112,7 +112,7 @@ describe('Integration: ExtensionToggle', () => {
 
     // Sub-menu should show "Back" button and specific toggles
     expect(document.querySelector('.si-settings-popup-item.back')).not.toBeNull()
-    
+
     // Find "Show Original" toggle in sub-menu
     const toggles = document.querySelectorAll('.si-settings-popup-item.toggle')
     const originalToggle = Array.from(toggles).find(item => item.textContent?.includes('Show Original')) as HTMLElement

@@ -292,7 +292,7 @@
   margin-bottom: 12px;
   width: 280px;
   /* backdrop-filter: blur(16px); */
-  background: var(--yt-spec-overlay-background-medium, rgba(0, 0, 0, .6));
+  background: var(--yt-spec-overlay-background-medium, rgba(0, 0, 0, 0.6));
   color: white;
   border-radius: 12px;
   padding: 8px 0;
@@ -381,10 +381,18 @@
   justify-content: center;
 }
 
-.si-status-icon.warning { color: var(--si-color-accent-yellow); }
-.si-status-icon.ai-downloading { color: var(--si-color-brand-blue); }
-.si-status-icon.ai-ready { color: #2ba640; }
-.si-status-icon.ai-error { color: #ff4e43; }
+.si-status-icon.warning {
+  color: var(--si-color-accent-yellow);
+}
+.si-status-icon.ai-downloading {
+  color: var(--si-color-brand-blue);
+}
+.si-status-icon.ai-ready {
+  color: #2ba640;
+}
+.si-status-icon.ai-error {
+  color: #ff4e43;
+}
 
 .si-sidebar-upload-btn,
 .si-sidebar-list {
@@ -430,7 +438,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.1s, color 0.1s;
+  transition:
+    background-color 0.1s,
+    color 0.1s;
 }
 
 .si-sidebar-sync-btn:hover {
@@ -518,7 +528,9 @@ body.si-platform-stremio.si-sidebar-active #si-sidebar-root {
   margin-right: var(--si-sidebar-width) !important;
   width: calc(100% - var(--si-sidebar-width)) !important;
   right: auto !important; /* Override potential absolute positioning */
-  transition: width 0.3s ease, margin-right 0.3s ease;
+  transition:
+    width 0.3s ease,
+    margin-right 0.3s ease;
 }
 
 .si-platform-stremio #si-sidebar-root #si-sidebar {

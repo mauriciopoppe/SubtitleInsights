@@ -56,7 +56,9 @@ chrome.runtime.onMessage.addListener(message => {
     // Race condition fix: If subtitles arrive before 'yt-navigate-finish' or 'init' runs,
     // we must reset the store NOW to prepare for the new video.
     if (currentVideoId && currentVideoId !== lastVideoId) {
-      console.log(`[SI] New video detected via subtitles message (${lastVideoId} -> ${currentVideoId}). Clearing store.`)
+      console.log(
+        `[SI] New video detected via subtitles message (${lastVideoId} -> ${currentVideoId}). Clearing store.`
+      )
       store.clear()
       grammarExplainer.resetSession()
       lastVideoId = currentVideoId
@@ -175,12 +177,12 @@ const initStremio = async () => {
   }
 
   console.log('[SI] Initializing extension for Stremio...')
-  
+
   cleanup()
 
   console.log('[SI] Waiting for Stremio video element...')
   const video = (await waitForElement('video')) as HTMLVideoElement
-  
+
   // Stremio's DOM is dynamic. We look for a container that holds the video and likely the controls.
   // We'll target .route-content as it seems stable and wraps the player.
   let player = video.parentElement as HTMLElement
@@ -188,20 +190,20 @@ const initStremio = async () => {
   if (routeContent) {
     player = routeContent
   } else {
-      // Fallback to player-container if route-content not found
-      const playerContainer = video.closest('[class*="player-container"]') as HTMLElement
-      if (playerContainer) {
-        player = playerContainer
-      } else {
-          const layer = video.closest('.layer') as HTMLElement
-          if (layer) player = layer
-      }
+    // Fallback to player-container if route-content not found
+    const playerContainer = video.closest('[class*="player-container"]') as HTMLElement
+    if (playerContainer) {
+      player = playerContainer
+    } else {
+      const layer = video.closest('.layer') as HTMLElement
+      if (layer) player = layer
+    }
   }
 
   // Look for control bar to inject toggle
   let toggleContainer: HTMLElement | null = null
   const controls = document.querySelector('[class*="control-bar-buttons-menu-container"]') as HTMLElement
-  
+
   if (controls) {
     toggleContainer = document.createElement('div')
     toggleContainer.id = 'si-toggle-root'

@@ -25,7 +25,7 @@ describe('SidebarItem', () => {
     document.body.appendChild(container)
     videoEl = document.createElement('video')
     document.body.appendChild(videoEl)
-    
+
     // Mock video methods
     videoEl.play = vi.fn().mockResolvedValue(undefined)
   })
@@ -36,15 +36,8 @@ describe('SidebarItem', () => {
 
   it('should render the Jump to Segment button', () => {
     const segment = { start: 5000, end: 7000, text: 'Test Segment' }
-    
-    render(
-      <SidebarItem 
-        segment={segment} 
-        index={0} 
-        isActive={false} 
-      />, 
-      container
-    )
+
+    render(<SidebarItem segment={segment} index={0} isActive={false} />, container)
 
     const controls = container.querySelector('.si-sidebar-item-controls')
     expect(controls).not.toBeNull()
@@ -55,22 +48,15 @@ describe('SidebarItem', () => {
 
   it('should seek video to start time and play when Jump button is clicked', () => {
     const segment = { start: 5000, end: 7000, text: 'Test Segment' }
-    
-    render(
-      <SidebarItem 
-        segment={segment} 
-        index={0} 
-        isActive={false} 
-      />, 
-      container
-    )
+
+    render(<SidebarItem segment={segment} index={0} isActive={false} />, container)
 
     const jumpBtn = container.querySelector('button[title="Jump to segment"]') as HTMLButtonElement
     expect(jumpBtn).not.toBeNull()
 
     // Ensure video is "paused" initially
     Object.defineProperty(videoEl, 'paused', { value: true, writable: true })
-    
+
     // Click button
     jumpBtn.click()
 
