@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Subtitle Insights
   text: Smart AI insights and translations for video subtitles
-  tagline: "Subtitle data, clarified. Transform your language learning experience with free, local, and privacy-first AI."
+  tagline: "Subtitle data, clarified. Transform your language learning experience with <strong style='color: var(--vp-c-brand-1)'>free, local, and privacy-first AI</strong>."
   image:
     src: /logo.svg
     alt: Subtitle Insights Logo

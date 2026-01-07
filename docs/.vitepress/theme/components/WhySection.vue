@@ -27,7 +27,7 @@ const features = [
   },
   {
     icon: '💰',
-    title: '100% Free',
+    title: '<strong style="color: var(--vp-c-brand-1)">100% Free</strong>',
     description: 'No subscriptions, no API keys, no hidden costs. Leveraging the power of your own hardware via Chrome.'
   }
 ]
