@@ -4,6 +4,7 @@ export default defineConfig({
   title: 'Subtitle Insights',
   description: 'Smart AI insights and translations for YouTube subtitles',
   appearance: 'dark',
+  base: '/SubtitleInsights/',
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
