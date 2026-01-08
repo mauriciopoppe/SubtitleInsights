@@ -2,13 +2,23 @@ import { useState, useEffect } from 'preact/hooks'
 import { ProfileList } from './ProfileList'
 import { ProfileEditor } from './ProfileEditor'
 import { Profile, ProfileManager } from '../content/profiles'
+import { Config, AppConfig } from '../content/config'
 
 export function App() {
   const [editingProfile, setEditingProfile] = useState<Profile | null>(null)
+  const [config, setConfig] = useState<AppConfig | null>(null)
 
   useEffect(() => {
     ProfileManager.initializeDefaults()
+    Config.get().then(setConfig)
+    return Config.subscribe(setConfig)
   }, [])
+
+  const toggleDebugMode = () => {
+    if (config) {
+      Config.update({ isDebugMode: !config.isDebugMode })
+    }
+  }
 
   return (
     <div className="settings-container single-page">
@@ -40,7 +50,25 @@ export function App() {
         )}
       </div>
 
-      <footer className="settings-footer" style={{ textAlign: 'center', marginTop: '60px', color: '#aaa', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '20px' }}>
+      {!editingProfile && (
+        <div className="settings-section developer-section" id="developer">
+          <div className="developer-header">
+            <h2>Developer Settings</h2>
+          </div>
+          <div className="settings-item">
+            <div className="settings-item-info">
+              <div className="settings-item-title">Debug Mode</div>
+              <div className="settings-item-description">Enable detailed logging in the console for all si:* namespaces.</div>
+            </div>
+            <div
+              className={`si-toggle-switch ${config?.isDebugMode ? 'enabled' : ''}`}
+              onClick={toggleDebugMode}
+            />
+          </div>
+        </div>
+      )}
+
+      <footer className="settings-footer" style={{ textAlign: 'center', marginTop: '60px', color: '#aaa', borderTop: 'var(--si-border-standard)', paddingTop: '20px' }}>
         <a href="https://mauriciopoppe.github.io/SubtitleInsights/" target="_blank" rel="noopener noreferrer" style={{ color: '#3ea6ff', textDecoration: 'none' }}>Subtitle Insights</a>
         {' • '}
         Made with <span style={{ color: 'deeppink', fontSize: '1.5em', verticalAlign: 'middle', margin: '0 4px' }}>♥</span> by <a href="https://mauriciopoppe.com" target="_blank" rel="noopener noreferrer" style={{ color: '#3ea6ff', textDecoration: 'none' }}>Mauricio Poppe</a>

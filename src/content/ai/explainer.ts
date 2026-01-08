@@ -1,6 +1,7 @@
 import { ProfileManager } from '../profiles'
 import { store } from '../store'
 import { trimThinkingProcess } from './utils'
+import { aiLogger } from '../logger'
 
 const SUPPORTED_LANGUAGES = ['en', 'ja', 'es']
 
@@ -39,7 +40,7 @@ export class GrammarExplainer {
       }
       return 'unavailable'
     } catch (error) {
-      console.error('Error checking language model availability:', error)
+      aiLogger('ERROR: Error checking language model availability:', error)
       return 'unavailable'
     }
   }
@@ -94,7 +95,7 @@ export class GrammarExplainer {
 
       return false
     } catch (error) {
-      console.error('Error initializing language model:', error)
+      aiLogger('ERROR: Error initializing language model:', error)
       return false
     }
   }
@@ -112,9 +113,9 @@ export class GrammarExplainer {
       }
 
       this.workingSession = await this.rootSession.clone()
-      console.log('[SI] GrammarExplainer: Session reset via clone.')
+      aiLogger('GrammarExplainer: Session reset via clone.')
     } catch (error) {
-      console.error('Error resetting grammar explainer session:', error)
+      aiLogger('ERROR: Error resetting grammar explainer session:', error)
     }
   }
 
@@ -138,8 +139,8 @@ export class GrammarExplainer {
     const quotaLimit = 0.5
     if (inputUsage / inputQuota > quotaLimit) {
       // Reset if usage exceeds 50%
-      console.log(
-        `[SI] GrammarExplainer: Input usage is ${inputUsage}/${inputQuota} at around ${quotaLimit * 100}%. Resetting session.`
+      aiLogger(
+        `GrammarExplainer: Input usage is ${inputUsage}/${inputQuota} at around ${quotaLimit * 100}%. Resetting session.`
       )
       await this.resetSession()
       if (!this.workingSession) {
@@ -152,7 +153,7 @@ export class GrammarExplainer {
       const processedResponse = trimThinkingProcess(rawResponse, text)
       return processedResponse
     } catch (error) {
-      console.error('Error explaining grammar:', error)
+      aiLogger('ERROR: Error explaining grammar:', error)
       throw error
     }
   }

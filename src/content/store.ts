@@ -1,4 +1,5 @@
 import { AISegment } from './types'
+import { storeLogger } from './logger'
 
 export interface SubtitleSegment {
   start: number
@@ -107,7 +108,7 @@ export class SubtitleStore {
     // Optimization: If the store is empty, just add
     if (this.segments.length === 0) {
       this.segments = newSegments.sort((a, b) => a.start - b.start)
-      console.log(`[SI][SubtitleStore] Added ${newSegments.length} segments. Total: ${this.segments.length}`)
+      storeLogger(`Added ${newSegments.length} segments. Total: ${this.segments.length}`)
       this.notifyListeners()
       return
     }
@@ -118,7 +119,7 @@ export class SubtitleStore {
       const firstNew = newSegments[0]
       // Check if first segment matches, a strong heuristic for identical full track
       if (firstOld.start === firstNew.start && firstOld.text === firstNew.text) {
-        console.log('[SI][SubtitleStore] Duplicate subtitle track detected. Ignoring.')
+        storeLogger('Duplicate subtitle track detected. Ignoring.')
         return
       }
     }
@@ -139,18 +140,18 @@ export class SubtitleStore {
     })
 
     if (addedCount === 0) {
-      console.log('[SI][SubtitleStore] No new unique segments found.')
+      storeLogger('No new unique segments found.')
       return
     }
 
     this.segments = Array.from(uniqueSegments.values()).sort((a, b) => a.start - b.start)
-    console.log(`[SI][SubtitleStore] Added ${addedCount} segments. Total: ${this.segments.length}`)
+    storeLogger(`Added ${addedCount} segments. Total: ${this.segments.length}`)
     this.notifyListeners()
   }
 
   loadCustomSegments(data: any[]) {
     this.clear()
-    console.log('[SI] SubtitleStore: Loading custom segments, count:', data.length)
+    storeLogger('Loading custom segments, count:', data.length)
     this.segments = data
       .map(s => {
         const segment: SubtitleSegment = {
@@ -168,7 +169,7 @@ export class SubtitleStore {
         return segment
       })
       .sort((a, b) => a.start - b.start)
-    console.log(`[SI][SubtitleStore] Loaded ${this.segments.length} custom segments.`)
+    storeLogger(`Loaded ${this.segments.length} custom segments.`)
     this.notifyListeners()
   }
 
@@ -335,7 +336,7 @@ export class SubtitleStore {
       end: seg.end + offsetMs
     }))
 
-    console.log(`[SI][SubtitleStore] Applied offset of ${offsetMs}ms to ${this.segments.length} segments.`)
+    storeLogger(`Applied offset of ${offsetMs}ms to ${this.segments.length} segments.`)
     this.notifyListeners()
   }
 
@@ -357,7 +358,7 @@ export class SubtitleStore {
 
   replaceSegments(newSegments: SubtitleSegment[]) {
     this.segments = newSegments.sort((a, b) => a.start - b.start)
-    console.log(`[SI][SubtitleStore] Replaced with ${newSegments.length} segments.`)
+    storeLogger(`Replaced with ${newSegments.length} segments.`)
     this.notifyListeners()
   }
 

@@ -1,5 +1,6 @@
 import { signal, computed, Signal } from '@preact/signals'
 import { SubtitleStore, store } from './store'
+import { videoLogger } from './logger'
 
 export class VideoController {
   public currentTimeMs = signal(0)
@@ -58,6 +59,8 @@ export class VideoController {
   public setVideo(video: HTMLVideoElement) {
     if (this.video === video) return
     
+    videoLogger('Setting video element', video)
+
     if (this.video) {
       this.removeListeners()
     }
@@ -97,20 +100,24 @@ export class VideoController {
   }
 
   private handlePlay = () => {
+    videoLogger('Video playing')
     this.isPlaying.value = true
   }
 
   private handlePause = () => {
+    videoLogger('Video paused')
     this.isPlaying.value = false
   }
 
   private handleSeeking = () => {
+    videoLogger('Video seeking')
     this.isSeeking.value = true
   }
 
   private handleSeeked = () => {
     this.isSeeking.value = false
     if (this.video) {
+      videoLogger('Video seeked to', this.video.currentTime)
       this.currentTimeMs.value = this.video.currentTime * 1000
     }
   }
@@ -142,6 +149,7 @@ export class VideoController {
     }
 
     if (nextIndex !== -1 && nextIndex < segments.length) {
+      videoLogger('Seeking to next segment', nextIndex)
       this.seekTo(segments[nextIndex].start)
     }
   }
@@ -161,6 +169,7 @@ export class VideoController {
     }
 
     if (prevIndex >= 0) {
+      videoLogger('Seeking to previous segment', prevIndex)
       this.seekTo(segments[prevIndex].start)
     }
   }
@@ -170,12 +179,14 @@ export class VideoController {
     const active = this.activeSegmentIndex.value
 
     if (active !== -1) {
+      videoLogger('Replaying current segment', active)
       this.seekTo(segments[active].start, true)
     }
   }
 
   public seekTo(timeMs: number, forcePlay: boolean = false) {
     if (this.video) {
+      videoLogger('Seeking to time', timeMs, 'forcePlay:', forcePlay)
       this.video.currentTime = timeMs / 1000
       if (forcePlay) {
         this.video.play()

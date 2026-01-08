@@ -3,6 +3,7 @@
   --si-color-accent-yellow: #ffd600;
   --si-color-bg-canvas: #0f0f0f;
   --si-color-text-primary: #f8fafc;
+  --si-border-standard: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 body {
@@ -96,7 +97,7 @@ body {
   list-style: none;
   padding: 0;
   margin: 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: var(--si-border-standard);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.02);
   overflow: hidden;
@@ -104,7 +105,7 @@ body {
 
 .profile-item {
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: var(--si-border-standard);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -176,7 +177,7 @@ body {
 .profile-editor {
   background: rgba(255, 255, 255, 0.05);
   padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: var(--si-border-standard);
   border-radius: 12px;
 }
 
@@ -275,4 +276,64 @@ small {
   margin-top: 8px;
   color: #717171;
   font-size: 12px;
+}
+
+/* Developer Settings */
+.developer-section {
+  margin-top: 40px;
+}
+
+.developer-header {
+  margin-bottom: 20px;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-item-info {
+  flex: 1;
+}
+
+.settings-item-title {
+  font-weight: 500;
+}
+
+.settings-item-description {
+  font-size: 0.9em;
+  color: #aaa;
+}
+
+/* Reusable Toggle Switch */
+.si-toggle-switch {
+  width: 40px;
+  height: 24px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  position: relative;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.si-toggle-switch.enabled {
+  background-color: var(--si-color-brand-blue);
+}
+
+.si-toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.si-toggle-switch.enabled::after {
+  transform: translateX(16px);
 }

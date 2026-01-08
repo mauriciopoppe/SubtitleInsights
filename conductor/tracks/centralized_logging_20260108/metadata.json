@@ -1,0 +1,8 @@
+{
+  "track_id": "centralized_logging_20260108",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-08T18:32:00Z",
+  "updated_at": "2026-01-08T18:32:00Z",
+  "description": "I would like to make all the logging in the system controllable through a centralized logging library, that way we don't pollute the global logs but have a way to enable debug logging if wanted through some enablement flag. For example https://www.npmjs.com/package/debug uses local storage to decide which log prefix to enable."
+}

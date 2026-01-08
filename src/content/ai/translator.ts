@@ -1,4 +1,5 @@
 import { ProfileManager } from '../profiles'
+import { aiLogger } from '../logger'
 
 export type TranslationAvailability = 'available' | 'downloadable' | 'downloading' | 'unavailable'
 
@@ -45,7 +46,7 @@ export class MyTranslator {
 
       return true
     } catch (error) {
-      console.error('Error initializing translator:', error)
+      aiLogger('ERROR: Error initializing translator:', error)
       return false
     }
   }
@@ -58,7 +59,7 @@ export class MyTranslator {
     try {
       return await this.translator.translate(text)
     } catch (error) {
-      console.error('Error translating text:', error)
+      aiLogger('ERROR: Error translating text:', error)
       throw error
     }
   }

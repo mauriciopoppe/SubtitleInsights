@@ -52,3 +52,7 @@ _No active tracks at the moment._
   _Link: [./conductor/archive/documentation_site_20260105/](./conductor/archive/documentation_site_20260105/)_
 - [x] **Stremio Support Integration**
   _Link: [./conductor/archive/stremio_support_20260104/](./conductor/archive/stremio_support_20260104/)_
+---
+
+## [~] Track: Centralized Logging with 'debug' Library
+*Link: [./conductor/tracks/centralized_logging_20260108/](./conductor/tracks/centralized_logging_20260108/)*

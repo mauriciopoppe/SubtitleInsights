@@ -25,6 +25,7 @@
     "@eslint/js": "^9.39.2",
     "@preact/preset-vite": "^2.10.2",
     "@types/chrome": "^0.1.32",
+    "@types/debug": "^4.1.12",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -41,6 +42,7 @@
   },
   "dependencies": {
     "@preact/signals": "^2.5.1",
+    "debug": "^4.4.3",
     "preact": "^10.28.1",
     "snarkdown": "^2.0.0"
   }

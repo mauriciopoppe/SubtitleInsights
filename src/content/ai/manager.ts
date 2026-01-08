@@ -4,6 +4,7 @@ import { isComplexSentence } from './utils'
 import { Config } from '../config'
 import { store } from '../store'
 import { videoController } from '../VideoController'
+import { aiLogger } from '../logger'
 
 export class AIManager {
   private isTranslationProcessing = false
@@ -16,7 +17,7 @@ export class AIManager {
   private unsubscribe: (() => void) | null = null
 
   public reset() {
-    console.log('[SI] Resetting AIManager queues.')
+    aiLogger('Resetting AIManager queues.')
     this.pendingTranslationIndices.clear()
     this.pendingInsightsIndices.clear()
     this.lastTriggerIndex = -1
@@ -25,22 +26,22 @@ export class AIManager {
   public async initializeAIServices() {
     // Translator Setup
     const translationAvailability = await translatorService.checkAvailability()
-    console.log('[SI] AI Translation availability:', translationAvailability)
+    aiLogger('AI Translation availability:', translationAvailability)
 
     if (translationAvailability === 'available') {
       store.setAIStatus('ready', 'AI Translator Ready')
       await translatorService.initialize()
-      console.log('[SI] AI Translator initialized.')
+      aiLogger('AI Translator initialized.')
     } else if (translationAvailability === 'downloadable') {
       this.initiateDownloadFlow()
     }
 
     // Grammar Explainer Setup
     const grammarAvailability = await grammarExplainer.checkAvailability()
-    console.log('[SI] AI Grammar Explainer availability:', grammarAvailability)
+    aiLogger('AI Grammar Explainer availability:', grammarAvailability)
     if (grammarAvailability === 'available') {
       await grammarExplainer.initialize()
-      console.log('[SI] AI Grammar Explainer initialized.')
+      aiLogger('AI Grammar Explainer initialized.')
     }
 
     // Setup subscription to segment changes
@@ -53,7 +54,7 @@ export class AIManager {
 
   private initiateDownloadFlow() {
     store.setAIStatus('none')
-    console.log('[SI] AI models need download.')
+    aiLogger('AI models need download.')
 
     const initDownload = async () => {
       store.setAIStatus('downloading', 'Downloading AI models...')
@@ -62,13 +63,13 @@ export class AIManager {
         const percent = Math.round((loaded / total) * 100)
         store.setAIStatus('downloading', `Downloading AI models: ${percent}%`)
         store.setSystemMessage(`Downloading AI models: ${percent}%`)
-        console.log(`[SI] AI Download progress: ${percent}%`)
+        aiLogger(`AI Download progress: ${percent}%`)
       })
 
       if (success) {
         store.setAIStatus('ready', 'AI Translator Ready')
         store.setSystemMessage(null)
-        console.log('[SI] AI Translator initialized after download.')
+        aiLogger('AI Translator initialized after download.')
       } else {
         store.setAIStatus('error', 'AI Initialization Failed')
         store.setSystemMessage('AI Translation Failed to initialize')
@@ -76,10 +77,10 @@ export class AIManager {
     }
 
     if (navigator.userActivation?.isActive) {
-      console.log('[SI] User activation active. Starting download immediately.')
+      aiLogger('User activation active. Starting download immediately.')
       initDownload()
     } else {
-      console.log('[SI] Waiting for user interaction to start download...')
+      aiLogger('Waiting for user interaction to start download...')
       const onUserInteraction = (e: Event) => {
         if (e.type === 'keydown' && (e as KeyboardEvent).key === 'Escape') {
           return
@@ -91,7 +92,7 @@ export class AIManager {
         document.removeEventListener('touchend', onUserInteraction)
         document.removeEventListener('keydown', onUserInteraction)
 
-        console.log(`[SI] User interaction detected (${e.type}). Starting download...`)
+        aiLogger(`User interaction detected (${e.type}). Starting download...`)
         initDownload()
       }
 
@@ -113,7 +114,7 @@ export class AIManager {
     // Note: With targetSegmentIndex, a "jump" is an index shift.
     // If we move from segment 5 to segment 50, we clear.
     if (this.lastTriggerIndex !== -1 && Math.abs(targetIndex - this.lastTriggerIndex) > 5) {
-      console.log(`[SI] Significant jump detected (${this.lastTriggerIndex} -> ${targetIndex}). Clearing queues.`)
+      aiLogger(`Significant jump detected (${this.lastTriggerIndex} -> ${targetIndex}). Clearing queues.`)
       this.pendingTranslationIndices.clear()
       this.pendingInsightsIndices.clear()
     }
@@ -209,7 +210,7 @@ export class AIManager {
           const translation = await withTimeout(translatorService.translate(segment.text), 10000)
           store.updateSegmentTranslation(index, translation)
         } catch (e) {
-          console.error(`[SI] Translation failed for ${index}:`, e)
+          aiLogger(`ERROR: Translation failed for ${index}:`, e)
         }
       }
 
@@ -218,11 +219,11 @@ export class AIManager {
           const analysis = await withTimeout(grammarExplainer.explainGrammar(segment.text), 10000)
           store.updateSegmentInsights(index, analysis)
         } catch (e) {
-          console.error(`[SI] Insights explanation failed for ${index}:`, e)
+          aiLogger(`ERROR: Insights explanation failed for ${index}:`, e)
         }
       }
     } catch (error) {
-      console.error(`[SI][AIManager] Execution error for segment ${index}`, error)
+      aiLogger(`ERROR: Execution error for segment ${index}`, error)
     } finally {
       // We don't remove from pendingIndices here to prevent re-processing the same index
       // until the video changes or a jump occurs.

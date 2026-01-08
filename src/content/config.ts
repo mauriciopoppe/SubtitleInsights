@@ -9,6 +9,7 @@ export interface AppConfig {
   isTranslationVisibleInOverlay: boolean
   isTranslationVisibleInSidebar: boolean
   isOriginalVisibleInOverlay: boolean
+  isDebugMode: boolean
 }
 
 export class Config {
@@ -22,7 +23,8 @@ export class Config {
     isInsightsVisibleInSidebar: 'si_is_insights_in_sidebar',
     isTranslationVisibleInOverlay: 'si_is_translation_in_overlay',
     isTranslationVisibleInSidebar: 'si_is_translation_in_sidebar',
-    isOriginalVisibleInOverlay: 'si_is_original_in_overlay'
+    isOriginalVisibleInOverlay: 'si_is_original_in_overlay',
+    isDebugMode: 'si_is_debug_mode'
   }
 
   private static DEFAULTS: AppConfig = {
@@ -35,7 +37,8 @@ export class Config {
     isInsightsVisibleInSidebar: true,
     isTranslationVisibleInOverlay: true,
     isTranslationVisibleInSidebar: true,
-    isOriginalVisibleInOverlay: true
+    isOriginalVisibleInOverlay: true,
+    isDebugMode: false
   }
 
   private static listeners: Set<(config: AppConfig) => void> = new Set()

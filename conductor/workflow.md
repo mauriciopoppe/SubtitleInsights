@@ -140,6 +140,9 @@ npm test
 # Run tests once (one-shot)
 npm test -- run
 
+# Run tests with debug output (requires 'debug' library)
+DEBUG=si:* npm test -- run
+
 # Run a single test file once (one-shot)
 npm test -- run <test file>
 ```
@@ -147,8 +150,8 @@ npm test -- run <test file>
 ### Before Committing
 
 ```bash
-# Run all checks (format, lint, type check, tests)
-npm test -- run && npm run build
+# Run checks (lint, type check, tests)
+npm test -- run && npm run lint && npm run type-check
 ```
 
 ## Testing Requirements

@@ -1,4 +1,25 @@
-console.log('[SI] Background script loading...', new Date().toISOString())
+import { Config } from '../content/config'
+import { enableDebug, disableDebug, bgLogger } from '../content/logger'
+
+bgLogger('Background script loading...', new Date().toISOString())
+
+// Initialize logging
+Config.get().then(config => {
+  if (config.isDebugMode) {
+    enableDebug()
+  } else {
+    disableDebug()
+  }
+})
+
+// Subscribe to logging changes
+Config.subscribe(config => {
+  if (config.isDebugMode) {
+    enableDebug()
+  } else {
+    disableDebug()
+  }
+})
 
 if (typeof chrome !== 'undefined' && chrome.webRequest) {
   chrome.webRequest.onCompleted.addListener(
@@ -6,7 +27,7 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
       const { url, tabId } = details
 
       if (url.includes('/api/timedtext') && !url.includes('si_ignore=true')) {
-        console.log('[SI] Detected subtitle URL:', url)
+        bgLogger('Detected subtitle URL:', url)
 
         const urlObj = new URL(url)
         const lang = urlObj.searchParams.get('lang')
@@ -29,8 +50,8 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
               },
               () => {
                 if (chrome.runtime.lastError) {
-                  console.warn(
-                    '[SI] Could not send subtitles to tab. Content script might not be ready yet.',
+                  bgLogger(
+                    'WARN: Could not send subtitles to tab. Content script might not be ready yet.',
                     chrome.runtime.lastError.message
                   )
                 }
@@ -38,15 +59,15 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
             )
           }
         } catch (e) {
-          console.error('[SI] Background fetch failed', e)
+          bgLogger('ERROR: Background fetch failed', e)
         }
       }
     },
     { urls: ['*://*.youtube.com/api/timedtext*'] }
   )
-  console.log('[SI] webRequest listener registered.')
+  bgLogger('webRequest listener registered.')
 } else {
-  console.error('[SI] chrome.webRequest is not available. Check permissions in manifest.json.')
+  bgLogger('ERROR: chrome.webRequest is not available. Check permissions in manifest.json.')
 }
 
 chrome.runtime.onMessage.addListener(message => {
@@ -56,7 +77,7 @@ chrome.runtime.onMessage.addListener(message => {
 })
 
 chrome.commands.onCommand.addListener(async command => {
-  console.log('[SI] Received command:', command)
+  bgLogger('Received command:', command)
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
   if (tab?.id) {

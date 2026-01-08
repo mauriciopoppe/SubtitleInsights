@@ -5,10 +5,30 @@ import { translationManager } from './ai/manager'
 import { store, SubtitleStore } from './store'
 import { Config } from './config'
 import { videoController } from './VideoController'
+import { enableDebug, disableDebug, contentLogger } from './logger'
 import './styles.css'
 import { Platform } from './types'
 
-console.log('[SI] Content script injected.')
+contentLogger('Content script injected.')
+
+// Initialize logging
+Config.get().then(config => {
+  if (config.isDebugMode) {
+    enableDebug()
+  } else {
+    disableDebug()
+  }
+})
+
+// Subscribe to logging changes
+Config.subscribe(config => {
+  if (config.isDebugMode) {
+    enableDebug()
+    contentLogger('Debug logging enabled')
+  } else {
+    disableDebug()
+  }
+})
 
 const waitForElement = (selector: string): Promise<HTMLElement> => {
   return new Promise(resolve => {
@@ -69,22 +89,22 @@ chrome.runtime.onMessage.addListener(message => {
 
     // Safety check: ensure the message is for the current video
     if (message.videoId && message.videoId !== currentVideoId) {
-      console.log(`[SI] Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`)
+      contentLogger(`Ignoring subtitles for different video (got ${message.videoId}, expected ${currentVideoId})`)
       return
     }
 
     // Race condition fix: If subtitles arrive before 'yt-navigate-finish' or 'init' runs,
     // we must reset the store NOW to prepare for the new video.
     if (currentVideoId && currentVideoId !== lastVideoId) {
-      console.log(
-        `[SI] New video detected via subtitles message (${lastVideoId} -> ${currentVideoId}). Clearing store.`
+      contentLogger(
+        `New video detected via subtitles message (${lastVideoId} -> ${currentVideoId}). Clearing store.`
       )
       store.clear()
       grammarExplainer.resetSession()
       lastVideoId = currentVideoId
     }
 
-    console.log('[SI] Accepted message to process from background:', message)
+    contentLogger('Accepted message to process from background:', message)
     if (message.language) {
       store.setSourceLanguage(message.language)
     }
@@ -119,7 +139,7 @@ const initYouTube = async () => {
 
   // Clear store if video changed
   if (currentVideoId && currentVideoId !== lastVideoId) {
-    console.log(`[SI] Video ID changed (${lastVideoId} -> ${currentVideoId}). Clearing store.`)
+    contentLogger(`Video ID changed (${lastVideoId} -> ${currentVideoId}). Clearing store.`)
     store.clear()
     grammarExplainer.resetSession()
     lastVideoId = currentVideoId
@@ -128,15 +148,15 @@ const initYouTube = async () => {
   // Check if UI already exists and is connected
   const existingRoot = document.getElementById('si-root')
   if (existingRoot && existingRoot.isConnected) {
-    console.log('[SI] UI exists and is valid. Skipping re-init.')
+    contentLogger('UI exists and is valid. Skipping re-init.')
     return
   }
 
-  console.log('[SI] Initializing extension for YouTube watch page...')
+  contentLogger('Initializing extension for YouTube watch page...')
 
   cleanup()
 
-  console.log('[SI] Waiting for YouTube elements...')
+  contentLogger('Waiting for YouTube elements...')
   const player = await waitForElement('#movie_player')
   const video = (await waitForElement('video')) as HTMLVideoElement
   const secondaryInner = await waitForElement('#secondary-inner')
@@ -184,7 +204,7 @@ const initYouTube = async () => {
     appRoot
   )
 
-  console.log('[SI] App injected for YouTube.')
+  contentLogger('App injected for YouTube.')
   translationManager.initializeAIServices()
 }
 
@@ -192,15 +212,15 @@ const initStremio = async () => {
   // Check if UI already exists and is connected
   const existingRoot = document.getElementById('si-root')
   if (existingRoot && existingRoot.isConnected) {
-    console.log('[SI] UI exists and is valid. Skipping re-init.')
+    contentLogger('UI exists and is valid. Skipping re-init.')
     return
   }
 
-  console.log('[SI] Initializing extension for Stremio...')
+  contentLogger('Initializing extension for Stremio...')
 
   cleanup()
 
-  console.log('[SI] Waiting for Stremio video element...')
+  contentLogger('Waiting for Stremio video element...')
   const video = (await waitForElement('video')) as HTMLVideoElement
 
   // Stremio's DOM is dynamic. We look for a container that holds the video and likely the controls.
@@ -260,7 +280,7 @@ const initStremio = async () => {
     appRoot
   )
 
-  console.log('[SI] App injected for Stremio.')
+  contentLogger('App injected for Stremio.')
   translationManager.initializeAIServices()
 }
 
