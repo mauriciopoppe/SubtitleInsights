@@ -8,6 +8,7 @@ import { translationManager } from '../ai/manager'
 import { Config } from '../config'
 import { Platform } from '../types'
 import { useConfig } from '../hooks/useConfig'
+import { videoController } from '../VideoController'
 
 interface AppProps {
   player: HTMLElement
@@ -29,6 +30,17 @@ export function App({
   platform
 }: AppProps) {
   const config = useConfig()
+
+  // Video Controller Integration
+  useEffect(() => {
+    videoController.setVideo(video)
+    return () => {
+      // We don't necessarily dispose here because the video element might outlive this component mount,
+      // but if the App unmounts, we should probably stop listening to *this* video.
+      // However, VideoController handles setVideo nicely.
+      // For now, let's leave it as is, or add a cleanup if needed.
+    }
+  }, [video])
 
   // Layout Logic: Sidebar Height Sync
   useEffect(() => {
@@ -140,13 +152,12 @@ export function App({
   useEffect(() => {
     if (!config.isEnabled) return
 
-    const handleTimeUpdate = () => {
-      const currentTimeMs = video.currentTime * 1000
+    // Subscribe to the signal
+    const unsubscribe = videoController.currentTimeMs.subscribe(currentTimeMs => {
       translationManager.onTimeUpdate(currentTimeMs)
-    }
-    video.addEventListener('timeupdate', handleTimeUpdate)
-    return () => video.removeEventListener('timeupdate', handleTimeUpdate)
-  }, [video, config.isEnabled])
+    })
+    return unsubscribe
+  }, [config.isEnabled])
 
   return (
     <>
