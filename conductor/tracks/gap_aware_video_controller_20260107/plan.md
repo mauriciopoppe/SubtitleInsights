@@ -21,6 +21,6 @@ This plan refactors the `VideoController` to compute a stable `targetSegmentInde
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md) [checkpoint: cdb7d58]
 
 ## Phase 4: Final Verification
-- [ ] Task: Manual verification on YouTube to ensure AI pre-fetching works across gaps and jumps
-- [ ] Task: Verify performance improvement (fewer renders/calls during playback)
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Verification' (Protocol in workflow.md)
+- [x] Task: Manual verification on YouTube to ensure AI pre-fetching works across gaps and jumps
+- [x] Task: Verify performance improvement (fewer renders/calls during playback)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Final Verification' (Protocol in workflow.md) [checkpoint: 194019f]
