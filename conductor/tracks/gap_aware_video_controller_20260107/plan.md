@@ -16,9 +16,9 @@ This plan refactors the `VideoController` to compute a stable `targetSegmentInde
 - [x] Task: Conductor - User Manual Verification 'Phase 2: AIManager Refactoring' (Protocol in workflow.md) [checkpoint: 61d7592]
 
 ## Phase 3: Integration & Cleanup
-- [ ] Task: Remove `currentTimeMs` subscription and `translationManager.onTimeUpdate` call from `App.tsx`
-- [ ] Task: Update `OverlayApp` or other components if they can benefit from the stable `targetSegmentIndex`
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md)
+- [x] Task: Remove `currentTimeMs` subscription and `translationManager.onTimeUpdate` call from `App.tsx`
+- [x] Task: Update `OverlayApp` or other components if they can benefit from the stable `targetSegmentIndex` (None found, Overlay correctly uses activeSegmentIndex)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Integration & Cleanup' (Protocol in workflow.md) [checkpoint: cdb7d58]
 
 ## Phase 4: Final Verification
 - [ ] Task: Manual verification on YouTube to ensure AI pre-fetching works across gaps and jumps
