@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render } from 'preact'
 import { SidebarItem } from './SidebarItem'
-import { signal } from '@preact/signals'
 
 // Mock VideoController
 vi.mock('../VideoController', () => ({
   videoController: {
-    activeSegmentIndex: signal(-1)
+    activeSegmentIndex: {
+      value: -1
+    }
   }
 }))
 

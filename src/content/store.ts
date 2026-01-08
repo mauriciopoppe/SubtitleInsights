@@ -174,14 +174,26 @@ export class SubtitleStore {
 
   updateSegmentTranslation(index: number, translation: string) {
     if (this.segments[index]) {
-      this.segments[index].translation = translation
+      this.segments[index] = {
+        ...this.segments[index],
+        translation
+      }
+      // Force array reference change for reactivity
+      this.segments = [...this.segments]
+      this.notifyListeners()
       this.notifySegmentUpdate(index, this.segments[index])
     }
   }
 
   updateSegmentInsights(index: number, insights: string) {
     if (this.segments[index]) {
-      this.segments[index].insights = insights
+      this.segments[index] = {
+        ...this.segments[index],
+        insights
+      }
+      // Force array reference change for reactivity
+      this.segments = [...this.segments]
+      this.notifyListeners()
       this.notifySegmentUpdate(index, this.segments[index])
     }
   }
