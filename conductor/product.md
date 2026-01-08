@@ -8,7 +8,7 @@
 
 **Motto:** "Subtitle data, clarified."
 
-**Logo Concept:** The "Waveform Text" (Minimalist). Three horizontal lines of varying lengths (representing subtitle lines) where the middle line turns into a bar chart or a pulse/waveform.
+**Logo Concept:** The "Waveform Text" (Minimalist). Three horizontal lines of varying heights (representing subtitle lines) where the bottom line represents the insights.
 
 ### Color Palette
 
@@ -30,28 +30,43 @@ To maintain a high-end feel when using the bright accent yellow on the dark back
 
 ## Key Features
 
-1.  **In-Page Overlay**
+1.  **Platform Support**
+    - **YouTube:** Automatic subtitle capture and seamless player integration.
+    - **Stremio:** Full support via manual subtitle upload and overlay injection.
+
+2.  **In-Page Overlay**
     - Displays the current subtitle segment directly over the video player.
     - **Pause on Hover:** Automatically pauses the video when the user hovers over the overlay near the end of a segment, allowing time to read and process the information.
-    - **Overlay Controls (Proximity):**
+    - **Overlay Controls (Proximity):** Controls appear only when the mouse is near the top-left area to avoid distraction.
       - **Replay Segment:** Instantly replay the current segment to listen again.
       - **Scroll Sync:** Button to sync the sidebar view to the current active segment.
-    - **Proximity Visibility:** Controls appear only when the mouse is near the top-left area to avoid distracting from the content or blocking interactions (e.g., with Yomitan). - **Unified Settings Popup:** - Triggered by the main extension icon in the video control bar. - **Global Enable/Disable:** A master "Extension Enabled" toggle allows users to completely deactivate the extension's UI and AI processing with a single click. - **Visual Indicators:** The extension icon in the player toolbar dims (reduced opacity) when disabled, providing instant visual feedback. - **Authentic Navigation:** Features a hierarchical sub-menu system (Overlay/Sidebar settings) that strictly mimics the native YouTube settings UI. - **Live Status:** Displays AI model downloading and readiness status directly in the menu.
+      - **Pause on Hover Toggle:** Quickly enable/disable the pause-on-hover behavior.
 
-2.  **Smart Sidebar**
-    - Displays the full transcript of the video.
-    - Highlights the active segment in real-time.
+3.  **Smart Sidebar**
+    - Displays the full transcript of the video with real-time active segment highlighting.
     - **Sync Button:** Instantly scrolls the sidebar to the currently playing segment.
-    - **Jump to Segment:** Instantly seeks the video to the start of the specific segment (revealed in proximity controls).
-    - **Manual Synchronization:** Allows shifting all subtitle timestamps by aligning a specific segment to the current video time (revealed instantly when hovering near the right edge of a segment).
+    - **Sidebar Controls (Proximity):** Hovering near the right edge of any segment reveals:
+      - **Jump to Segment:** Instantly seeks the video to the start of that specific segment.
+      - **Manual Synchronization:** Align a specific segment to the current video time, shifting all subtitles to fix sync issues.
 
-3.  **Local AI Translation**
-    - **Single High-Quality Translation:** Provides a context-aware translation for each segment using Chrome's built-in AI Translation API.
+4.  **Extension Popup & Settings**
+    - **Native Aesthetic:** Designed to strictly mimic the native YouTube settings UI for a seamless feel.
+    - **Master Toggles:** Global enable/disable switches for the Overlay and Sidebar.
+    - **Live AI Status:** Visual indicators for AI model status (Downloading, Ready, Error).
+    - **Detailed Settings:** Access to advanced configurations and **Language Profiles**.
+
+5.  **Language Profiles**
+    - Create and save custom profiles for different learning goals (e.g., "Japanese - Grammar Focus", "Spanish - Vocabulary").
+    - Customize the **System Prompt** for the AI to get specific types of insights.
+    - Switch between profiles instantly.
+
+6.  **Local AI Translation**
+    - **Single High-Quality Translation:** Context-aware translation using Chrome's built-in AI Translation API.
     - **Privacy-First:** All processing happens locally on the device.
-    - **Look-ahead Processing:** Pre-fetches translations for the next **10 segments** to ensure seamless playback.
+    - **Look-ahead Processing:** Pre-fetches translations for the next **10 segments**.
 
-4.  **AI Insights (Grammar Explanation)**
-    - analyzes complex sentences to provide grammatical breakdowns and cultural context.
+7.  **AI Insights (Grammar Explanation)**
+    - Analyzes complex sentences to provide grammatical breakdowns and cultural context.
     - Powered by Chrome's built-in Prompt API (Gemini Nano).
     - **Look-ahead Processing:** Pre-fetches insights for the next **5 segments**.
 
@@ -69,7 +84,9 @@ To maintain a high-end feel when using the bright accent yellow on the dark back
   - [Prompt API](https://github.com/explainers-by-googlers/prompt-api) for grammatical insights.
 - **Framework:** Preact for a lightweight, performant UI.
 - **Architecture:**
-  - `SubtitleStore`: Centralized state management for segments and playback status.
+  - `VideoController`: A reactive controller using signals (`currentTimeMs`, `isPlaying`) to sync the application state with the native HTML5 video player, handling time updates and seek events efficiently.
+  - `SubtitleStore`: Centralized state management for subtitle segments, translations, and AI processing status. Handles parsing (SRT, JSON) and notifies listeners of updates.
+  - `ProfileManager`: Manages user settings and language profiles, persisting configuration (system prompts, source/target languages) to Chrome's local storage.
   - `AIManager`: Orchestrates AI tasks with buffering (10 segments for translation, 5 for insights).
   - `OverlayApp`: Handles the visual presentation and user interactions on top of the video.
 
