@@ -15,11 +15,11 @@ This plan introduces a centralized `VideoController` using `@preact/signals` to 
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Integration & Global State' (Protocol in workflow.md) [checkpoint: ddc486c]
 
 ## Phase 3: Sidebar Optimization
-- [ ] Task: Refactor `SidebarItem` to use signals for the `active` state (avoiding parent re-render)
-- [ ] Task: Refactor `SidebarList` to accept `VideoController` signals instead of `currentTimeMs` prop
-- [ ] Task: Update `SidebarApp` to pass the `VideoController` to its children
-- [ ] Task: Verify `SidebarList` does not re-render on video `timeupdate`
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Sidebar Optimization' (Protocol in workflow.md)
+- [x] Task: Refactor `SidebarItem` to use signals for the `active` state (avoiding parent re-render)
+- [x] Task: Refactor `SidebarList` to accept `VideoController` signals instead of `currentTimeMs` prop
+- [x] Task: Update `SidebarApp` to pass the `VideoController` to its children
+- [x] Task: Verify `SidebarList` does not re-render on video `timeupdate`
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Sidebar Optimization' (Protocol in workflow.md) [checkpoint: 38cf52f]
 
 ## Phase 4: Overlay & Hook Optimization
 - [ ] Task: Refactor `OverlayApp` to use `VideoController` signals
