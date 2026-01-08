@@ -1,4 +1,3 @@
-import { h } from 'preact'
 
 export function App() {
   const openOptionsPage = () => {

@@ -40,6 +40,7 @@
     "vitest": "^4.0.16"
   },
   "dependencies": {
+    "@preact/signals": "^2.5.1",
     "preact": "^10.28.1",
     "snarkdown": "^2.0.0"
   }
