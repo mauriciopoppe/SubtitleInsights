@@ -22,9 +22,9 @@ This plan introduces a centralized `VideoController` using `@preact/signals` to 
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Sidebar Optimization' (Protocol in workflow.md) [checkpoint: 38cf52f]
 
 ## Phase 4: Overlay & Hook Optimization
-- [ ] Task: Refactor `OverlayApp` to use `VideoController` signals
-- [ ] Task: Refactor `usePauseOnHover` to use `VideoController` signals
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Overlay & Hook Optimization' (Protocol in workflow.md)
+- [x] Task: Refactor `OverlayApp` to use `VideoController` signals
+- [x] Task: Refactor `usePauseOnHover` to use `VideoController` signals
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Overlay & Hook Optimization' (Protocol in workflow.md) [checkpoint: d98832b]
 
 ## Phase 5: Verification & Cleanup
 - [ ] Task: Manual verification on YouTube and other supported platforms
