@@ -95,3 +95,8 @@ _Link: [./conductor/archive/brand_css_20260107/](./conductor/archive/brand_css_2
 ## [x] Track: Brand Asset Integration & Extension Theming
 
 _Link: [./conductor/tracks/brand_assets_20260107/](./conductor/tracks/brand_assets_20260107/)_
+
+---
+
+## [x] Track: Optimize SidebarList rendering by centralizing video timeupdates and using signals for fine-grained UI updates.
+*Link: [./conductor/tracks/video_controller_signals_20260107/](./conductor/tracks/video_controller_signals_20260107/)*
