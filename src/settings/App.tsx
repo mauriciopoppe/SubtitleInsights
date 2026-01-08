@@ -40,14 +40,6 @@ export function App() {
         )}
       </div>
 
-      <div className="settings-section" id="about">
-        <h2>About</h2>
-        <div className="placeholder-card">
-          <p>Subtitle Insights v0.1.0</p>
-          <p>Built with Chrome Prompt API</p>
-        </div>
-      </div>
-
       <footer className="settings-footer" style={{ textAlign: 'center', marginTop: '60px', color: '#aaa', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '20px' }}>
         <a href="https://mauriciopoppe.github.io/SubtitleInsights/" target="_blank" rel="noopener noreferrer" style={{ color: '#3ea6ff', textDecoration: 'none' }}>Subtitle Insights</a>
         {' • '}
