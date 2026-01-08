@@ -88,4 +88,43 @@ describe('VideoController', () => {
     store.addSegments([{ start: 0, end: 1000, text: 'Late arrival' }])
     expect(controller.activeSegmentIndex.value).toBe(0)
   })
+
+  it('should update targetSegmentIndex correctly during gaps', () => {
+    store.addSegments([
+      { start: 1000, end: 2000, text: 'First' },
+      { start: 3000, end: 4000, text: 'Second' }
+    ])
+    
+    controller.setVideo(mockVideo)
+    
+    // Before first segment
+    mockVideo.currentTime = 0.5
+    mockVideo.dispatchEvent(new Event('timeupdate'))
+    expect(controller.activeSegmentIndex.value).toBe(-1)
+    expect(controller.targetSegmentIndex.value).toBe(0) // Should point to "First"
+    
+    // Inside first segment
+    mockVideo.currentTime = 1.5
+    mockVideo.dispatchEvent(new Event('timeupdate'))
+    expect(controller.activeSegmentIndex.value).toBe(0)
+    expect(controller.targetSegmentIndex.value).toBe(0)
+    
+    // In gap between first and second
+    mockVideo.currentTime = 2.5
+    mockVideo.dispatchEvent(new Event('timeupdate'))
+    expect(controller.activeSegmentIndex.value).toBe(-1)
+    expect(controller.targetSegmentIndex.value).toBe(1) // Should point to "Second"
+    
+    // Inside second segment
+    mockVideo.currentTime = 3.5
+    mockVideo.dispatchEvent(new Event('timeupdate'))
+    expect(controller.activeSegmentIndex.value).toBe(1)
+    expect(controller.targetSegmentIndex.value).toBe(1)
+    
+    // After last segment
+    mockVideo.currentTime = 4.5
+    mockVideo.dispatchEvent(new Event('timeupdate'))
+    expect(controller.activeSegmentIndex.value).toBe(-1)
+    expect(controller.targetSegmentIndex.value).toBe(-1) // No next segment
+  })
 })

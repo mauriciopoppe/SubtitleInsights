@@ -12,6 +12,9 @@ export class VideoController {
   // Note: if store.segments is not a signal, we might need a way to force re-computation
   // when segments are added/removed.
   public activeSegmentIndex: Signal<number>
+  // targetSegmentIndex points to the active segment, or if none, the next upcoming segment.
+  // This is used for pre-fetching AI data even during gaps.
+  public targetSegmentIndex: Signal<number>
 
   constructor(store: SubtitleStore) {
     this.store = store
@@ -29,6 +32,26 @@ export class VideoController {
       const segments = this.store.getAllSegments()
       const index = segments.findIndex(seg => time >= seg.start && time < seg.end)
       return version >= 0 ? index : -1
+    })
+
+    this.targetSegmentIndex = computed(() => {
+      const active = this.activeSegmentIndex.value
+      if (active !== -1) return active
+
+      // If no active segment, we are in a gap or outside boundaries.
+      // Find the next segment.
+      // We access dependencies again to be safe, though activeSegmentIndex change usually implies time/store change.
+      const version = storeVersion.value
+      const time = this.currentTimeMs.value
+      const segments = this.store.getAllSegments()
+      
+      // Optimization: findIndex is O(N), but necessary if we don't assume sorted/non-overlapping perfect structure.
+      // Given segments are sorted by start time:
+      const nextIndex = segments.findIndex(seg => seg.start >= time)
+      
+      // If found, return it. If not found (end of video), return -1.
+      // If nextIndex is 0, it means we are before the first segment.
+      return version >= 0 ? nextIndex : -1
     })
   }
 
