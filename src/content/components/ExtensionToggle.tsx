@@ -20,18 +20,40 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
   const ariaLabel = 'Open Subtitle Insights Settings'
 
   const icon = (
-    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="22" y="14" width="20" height="4" rx="2" fill="#3EA6FF" fill-opacity="0.6" />
-      <rect x="16" y="26" width="32" height="4" rx="2" fill="#3EA6FF" />
-      <rect x="10" y="38" width="44" height="14" rx="4" fill="#FFD600" />
-      <circle cx="48" cy="45" r="3" fill="#0F0F0F" fill-opacity="0.3" />
+    <svg viewBox="0 -4 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect
+        x="22"
+        y="14"
+        width="20"
+        height="4"
+        rx="2"
+        stroke="currentColor"
+      />
+      <rect
+        x="16"
+        y="26"
+        width="32"
+        height="4"
+        rx="2"
+        stroke="currentColor"
+      />
+      <rect
+        x="10"
+        y="38"
+        width="44"
+        height="14"
+        rx="4"
+        stroke="currentColor"
+      />
+      <circle cx="48" cy="45" r="3" />
     </svg>
   )
 
   const className = [
     platform === 'youtube' ? 'ytp-button' : 'si-toggle-stremio',
     'si-toggle-btn',
-    isPopupOpen ? 'active' : ''
+    isPopupOpen ? 'active' : '',
+    isEnabled ? 'si-icon-enabled' : 'si-icon-disabled'
   ].join(' ')
 
   const isYouTube = platform === 'youtube'
@@ -55,9 +77,6 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
         title={title}
         onClick={handleClick}
         style={{
-          opacity: isEnabled ? 1 : 0.5,
-          filter: 'grayscale(1)',
-          color: isEnabled ? '#fff' : '#aaa',
           display: isLoading ? 'none' : 'flex',
           alignItems: 'center',
           justifyContent: 'center',

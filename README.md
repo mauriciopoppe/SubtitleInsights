@@ -24,6 +24,10 @@
 
 https://github.com/user-attachments/assets/67dc9158-ab53-49ba-9d8a-5bf84b2b456c
 
+<p align="center">
+  <a href="https://www.youtube.com/@cijapanese"><strong>Comprehensible Japanese on YouTube</strong></a>
+</p>
+
 ---
 
 ## Why Subtitle Insights?
@@ -32,7 +36,7 @@ Subtitle Insights bridges the gap between passive watching and active learning o
 
 | Feature                      | Description                                                                                                                          |
 | :--------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| **🔒 Private, Local AI**     | Data never leaves your browser. All translations and insights are processed on-device using Chrome's built-in AI.                    |
+| **🔒 Private, Local AI**     | All translations and insights are processed on-device using [Chrome's built-in AI](https://developer.chrome.com/docs/ai/built-in).                    |
 | **🧠 Automated Insights**    | Beyond word lookups. Gemini Nano analyzes entire sentences to explain complex grammar and cultural nuances.                          |
 | **⏯️ Smart Controls**        | Interactive controls appear only when needed. Hover to pause, replay segments instantly, and focus on learning without distractions. |
 | **🎬 Integrated Experience** | Designed to blend perfectly with YouTube and Stremio Web. Feels like a native feature, not an added layer.                           |

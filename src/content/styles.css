@@ -133,10 +133,6 @@
   transition: opacity 0.1s;
 }
 
-.si-toggle-btn.active {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
 .si-toggle-btn.active::after {
   content: '';
   position: absolute;
@@ -146,6 +142,57 @@
   width: 12px;
   height: 2px;
   background-color: #f00; /* Red underline for active state, matching CC */
+}
+
+/* Icon States */
+.si-toggle-btn svg rect {
+  transition:
+    fill 0.2s,
+    fill-opacity 0.2s;
+}
+
+.si-toggle-btn svg circle {
+  transition:
+    fill 0.2s,
+    fill-opacity 0.2s,
+    stroke 0.2s;
+}
+
+.si-icon-enabled {
+  opacity: 1;
+  color: #fff;
+}
+
+.si-icon-enabled svg rect {
+  fill: currentColor;
+  fill-opacity: 1;
+  stroke-width: 3px;
+}
+
+.si-icon-enabled svg circle {
+  fill: #0f0f0f;
+  fill-opacity: 0.6;
+  stroke: none;
+}
+
+.si-icon-disabled {
+  opacity: 0.5;
+  color: #eee;
+}
+
+.si-icon-disabled svg rect {
+  fill: transparent;
+  stroke-width: 2.5px;
+}
+
+.si-icon-disabled svg rect:nth-of-type(3) {
+  stroke-width: 4px;
+}
+
+.si-icon-disabled svg circle {
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 2px;
 }
 
 .si-upload-btn {

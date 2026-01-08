@@ -1,0 +1,8 @@
+{
+  "track_id": "icon_visibility_20260107",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-07T12:00:00Z",
+  "updated_at": "2026-01-07T12:00:00Z",
+  "description": "Improve the extension icon visibility in the YouTube toolbar by adding outlines and standardizing CSS-based state styling."
+}
