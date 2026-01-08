@@ -100,7 +100,4 @@ _Link: [./conductor/tracks/brand_assets_20260107/](./conductor/tracks/brand_asse
 
 
 
----
 
-## [x] Track: Restore sidebar item updates when asynchronous data (translations/insights) arrives.
-*Link: [./conductor/tracks/sidebar_reactivity_fix_20260107/](./conductor/tracks/sidebar_reactivity_fix_20260107/)*
