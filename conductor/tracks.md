@@ -97,3 +97,8 @@ _Link: [./conductor/archive/brand_css_20260107/](./conductor/archive/brand_css_2
 _Link: [./conductor/tracks/brand_assets_20260107/](./conductor/tracks/brand_assets_20260107/)_
 
 
+
+---
+
+## [x] Track: Optimize AI pre-fetching by introducing gap-aware segment tracking in the VideoController and direct signal subscription in AIManager.
+*Link: [./conductor/tracks/gap_aware_video_controller_20260107/](./conductor/tracks/gap_aware_video_controller_20260107/)*
