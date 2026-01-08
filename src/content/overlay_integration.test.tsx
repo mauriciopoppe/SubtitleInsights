@@ -4,6 +4,7 @@ import { act } from 'preact/test-utils'
 import { store } from './store'
 import { OverlayApp } from './components/OverlayApp'
 import { Config } from './config'
+import { videoController } from './VideoController'
 
 // Mock Config
 vi.mock('./config', () => ({
@@ -37,6 +38,7 @@ describe('Integration: Overlay Rendering', () => {
     // Create mock video element
     videoEl = document.createElement('video')
     document.body.appendChild(videoEl)
+    videoController.setVideo(videoEl)
   })
 
   it('should display the correct segment based on video time', async () => {

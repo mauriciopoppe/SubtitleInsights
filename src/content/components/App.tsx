@@ -154,7 +154,8 @@ export function App({
 
     // Subscribe to the signal
     const unsubscribe = videoController.currentTimeMs.subscribe(currentTimeMs => {
-      translationManager.onTimeUpdate(currentTimeMs)
+      const activeIndex = videoController.activeSegmentIndex.value
+      translationManager.onTimeUpdate(currentTimeMs, activeIndex)
     })
     return unsubscribe
   }, [config.isEnabled])

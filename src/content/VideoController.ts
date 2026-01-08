@@ -96,6 +96,13 @@ export class VideoController {
     this.removeListeners()
     this.video = null
   }
+
+  public reset() {
+    this.dispose()
+    this.currentTimeMs.value = 0
+    this.isPlaying.value = false
+    this.isSeeking.value = false
+  }
 }
 
 export const videoController = new VideoController(store)

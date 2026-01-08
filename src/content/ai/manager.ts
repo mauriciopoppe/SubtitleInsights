@@ -94,19 +94,24 @@ export class AIManager {
     }
   }
 
-  public async onTimeUpdate(currentTimeMs: number) {
+  public async onTimeUpdate(currentTimeMs: number, preCalculatedIndex: number = -1) {
     const { isEnabled } = await Config.get()
     if (!isEnabled) return
 
     const allSegments = store.getAllSegments()
     if (allSegments.length === 0) return
 
-    // Find current segment index
-    const currentIndex = allSegments.findIndex(s => currentTimeMs >= s.start && currentTimeMs <= s.end)
+    // Use pre-calculated index if valid, otherwise scan
+    let currentIndex = preCalculatedIndex
+    if (currentIndex === -1) {
+      // Only scan if we weren't given a valid index (or if the caller passed -1 because it didn't know)
+      currentIndex = allSegments.findIndex(s => currentTimeMs >= s.start && currentTimeMs <= s.end)
+    }
 
     let targetIndex = currentIndex
     if (currentIndex === -1) {
       // If no current segment, find the next upcoming one to start prefetching from
+      // This is a "forward scan" optimization which is still useful even if we have an index of -1
       targetIndex = allSegments.findIndex(s => s.start > currentTimeMs)
       if (targetIndex === -1) targetIndex = 0 // Fallback to start
     }
