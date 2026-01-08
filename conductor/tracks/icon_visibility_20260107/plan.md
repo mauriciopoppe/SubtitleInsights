@@ -9,8 +9,8 @@ This plan refactors the YouTube toolbar extension icon to improve its visibility
 - [x] Task: Implement filled vs outlined state logic (Refinement)
 - [x] Task: Conductor - User Manual Verification 'Phase 1: SVG & CSS Refactoring' (Protocol in workflow.md)
 
-## Phase 2: Refinement & Verification
-- [ ] Task: Manually verify visibility on both dark and light YouTube themes
+## Phase 2: Refinement & Verification [checkpoint: 46a83a3]
+- [x] Task: Manually verify visibility on dark YouTube theme (Light theme deferred)
 - [x] Task: Adjust `stroke-width` if necessary to match neighboring icons
 - [x] Task: Ensure the `.active` red underline still works correctly
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Refinement & Verification' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Refinement & Verification' (Protocol in workflow.md)
