@@ -12,6 +12,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Chrome_AI-Built--in-4285F4?logo=googlechrome&logoColor=white" alt="Chrome AI">
   <img src="https://img.shields.io/badge/Gemini_Nano-In--Device-8E75B2?logo=google&logoColor=white" alt="Gemini Nano">
+  <a href="https://buymeacoffee.com/d7pj0jyto6"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Donate-ffdd00?style=flat&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me a Coffee"></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
 </p>
 
