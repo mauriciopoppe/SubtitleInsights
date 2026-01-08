@@ -174,7 +174,7 @@ export class VideoController {
     }
   }
 
-  private seekTo(timeMs: number, forcePlay: boolean = false) {
+  public seekTo(timeMs: number, forcePlay: boolean = false) {
     if (this.video) {
       this.video.currentTime = timeMs / 1000
       if (forcePlay) {

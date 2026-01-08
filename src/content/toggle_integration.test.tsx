@@ -142,6 +142,6 @@ describe('Integration: ExtensionToggle', () => {
     })
 
     const button = document.querySelector('.si-toggle-btn') as HTMLButtonElement
-    expect(button.style.opacity).toBe('0.7')
+    expect(button.classList.contains('si-icon-disabled')).toBe(true)
   })
 })

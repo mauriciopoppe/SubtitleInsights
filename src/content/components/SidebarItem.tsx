@@ -36,13 +36,7 @@ export function SidebarItem({ segment, index }: SidebarItemProps) {
 
   const handleJumpClick = (e: MouseEvent) => {
     e.stopPropagation()
-    const video = document.querySelector('video')
-    if (video) {
-      video.currentTime = segment.start / 1000
-      if (video.paused) {
-        video.play()
-      }
-    }
+    videoController.seekTo(segment.start, true)
   }
 
   const handleSyncClick = (e: MouseEvent) => {

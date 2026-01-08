@@ -51,13 +51,7 @@ export function OverlayApp() {
 
   const replayActiveSegment = (e: MouseEvent) => {
     e.stopPropagation()
-    if (activeSegment) {
-      const video = document.querySelector('video')
-      if (video) {
-        video.currentTime = activeSegment.start / 1000
-        video.play()
-      }
-    }
+    videoController.replayCurrent()
   }
 
   // The overlay is visible if the extension is enabled AND there is actual content to show

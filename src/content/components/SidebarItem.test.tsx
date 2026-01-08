@@ -1,13 +1,15 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render } from 'preact'
 import { SidebarItem } from './SidebarItem'
+import { videoController } from '../VideoController'
 
 // Mock VideoController
 vi.mock('../VideoController', () => ({
   videoController: {
     activeSegmentIndex: {
       value: -1
-    }
+    },
+    seekTo: vi.fn()
   }
 }))
 
@@ -63,13 +65,9 @@ describe('SidebarItem', () => {
     const jumpBtn = container.querySelector('button[title="Jump to segment"]') as HTMLButtonElement
     expect(jumpBtn).not.toBeNull()
 
-    // Ensure video is "paused" initially
-    Object.defineProperty(videoEl, 'paused', { value: true, writable: true })
-
     // Click button
     jumpBtn.click()
 
-    expect(videoEl.currentTime).toBe(5) // 5000ms / 1000
-    expect(videoEl.play).toHaveBeenCalled()
+    expect(videoController.seekTo).toHaveBeenCalledWith(5000, true)
   })
 })
