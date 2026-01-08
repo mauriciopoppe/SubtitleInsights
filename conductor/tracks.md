@@ -104,5 +104,5 @@ _Link: [./conductor/tracks/brand_assets_20260107/](./conductor/tracks/brand_asse
 
 ---
 
-## [~] Track: Improve the extension icon visibility in the YouTube toolbar by adding outlines and standardizing CSS-based state styling.
-*Link: [./conductor/tracks/icon_visibility_20260107/](./conductor/tracks/icon_visibility_20260107/)*
+## [x] Track: Improve the extension icon visibility in the YouTube toolbar by adding outlines and standardizing CSS-based state styling.
+*Link: [./conductor/archive/icon_visibility_20260107/](./conductor/archive/icon_visibility_20260107/)*
