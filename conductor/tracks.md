@@ -28,7 +28,7 @@ _Link: [./conductor/archive/rebrand_subtitle_insights_20251231/](./conductor/arc
 
 ## [ ] Track: Chrome Side Panel Migration (Future Idea)
 
-_Link: [./conductor/tracks/chrome_side_panel_migration_20251231/](./conductor/tracks/chrome_side_panel_migration_20251231/)_
+_Link: [./conductor/archive/chrome_side_panel_migration_20251231/](./conductor/archive/chrome_side_panel_migration_20251231/)_
 
 ---
 
@@ -52,7 +52,7 @@ _Link: [./conductor/archive/master_toggles_20260104/](./conductor/archive/master
 
 ## [x] Track: Manual Subtitle Synchronization
 
-_Link: [./conductor/tracks/manual_sync_20260104/](./conductor/tracks/manual_sync_20260104/)_
+_Link: [./conductor/archive/manual_sync_20260104/](./conductor/archive/manual_sync_20260104/)_
 
 ---
 
@@ -94,7 +94,7 @@ _Link: [./conductor/archive/brand_css_20260107/](./conductor/archive/brand_css_2
 
 ## [x] Track: Brand Asset Integration & Extension Theming
 
-_Link: [./conductor/tracks/brand_assets_20260107/](./conductor/tracks/brand_assets_20260107/)_
+_Link: [./conductor/archive/brand_assets_20260107/](./conductor/archive/brand_assets_20260107/)_
 
 
 
