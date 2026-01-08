@@ -23,6 +23,17 @@
   },
   "host_permissions": ["*://*.youtube.com/*", "https://web.stremio.com/*"],
   "permissions": ["storage", "webRequest"],
+  "commands": {
+    "prev_segment": {
+      "description": "Move to previous segment"
+    },
+    "next_segment": {
+      "description": "Move to next segment"
+    },
+    "replay_segment": {
+      "description": "Replay segment"
+    }
+  },
   "options_ui": {
     "page": "src/settings/index.html",
     "open_in_tab": true
