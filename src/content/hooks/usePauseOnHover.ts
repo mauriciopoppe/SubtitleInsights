@@ -1,6 +1,7 @@
 import { RefObject } from 'preact'
 import { useEffect, useState, useRef, useCallback } from 'preact/hooks'
 import { store } from '../store'
+import { videoController } from '../VideoController'
 
 export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLElement>, isOverlayVisible: boolean) {
   const [isHovering, setIsHovering] = useState(false)
@@ -94,7 +95,7 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
     const video = document.querySelector('video')
     if (!video) return
 
-    const handleTimeUpdate = () => {
+    const unsubscribe = videoController.currentTimeMs.subscribe(currentTimeMs => {
       // If the video is playing, it's no longer "paused by hover"
       if (!video.paused && wasPausedByHoverRef.current) {
         wasPausedByHoverRef.current = false
@@ -102,8 +103,9 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
 
       if (!isHoveringRef.current) return
 
-      const currentTimeMs = video.currentTime * 1000
-      const activeSegment = store.getSegmentAt(currentTimeMs)
+      const activeIndex = videoController.activeSegmentIndex.value
+      const segments = store.getAllSegments()
+      const activeSegment = segments[activeIndex]
 
       if (activeSegment) {
         // Detect segment change
@@ -132,7 +134,7 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
         // No active segment, reset state
         resetPauseLogic()
       }
-    }
+    })
 
     const handlePlay = () => {
       wasPausedByHoverRef.current = false
@@ -143,12 +145,11 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
       resetPauseLogic()
     }
 
-    video.addEventListener('timeupdate', handleTimeUpdate)
     video.addEventListener('play', handlePlay)
     video.addEventListener('seeking', handleSeeking)
 
     return () => {
-      video.removeEventListener('timeupdate', handleTimeUpdate)
+      unsubscribe()
       video.removeEventListener('play', handlePlay)
       video.removeEventListener('seeking', handleSeeking)
     }

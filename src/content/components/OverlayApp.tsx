@@ -1,18 +1,17 @@
 import { Fragment } from 'preact'
-import { useState, useEffect, useMemo, useRef } from 'preact/hooks'
+import { useState, useRef } from 'preact/hooks'
 import { useSubtitleStore } from '../hooks/useSubtitleStore'
 import { useConfig } from '../hooks/useConfig'
 import { usePauseOnHover } from '../hooks/usePauseOnHover'
 import { renderSegmentedText } from '../render'
-import { store } from '../store'
 import { Config } from '../config'
 import snarkdown from 'snarkdown'
 import { trimThinkingProcess } from '../ai/utils'
+import { videoController } from '../VideoController'
 
 export function OverlayApp() {
   const { segments, systemMessage } = useSubtitleStore()
   const config = useConfig()
-  const [currentTimeMs, setCurrentTimeMs] = useState(0)
   const overlayRef = useRef<HTMLDivElement>(null)
 
   const [isHoveringControls, setIsHoveringControls] = useState(false)
@@ -34,21 +33,8 @@ export function OverlayApp() {
     setIsHoveringControls(false)
   }
 
-  useEffect(() => {
-    const video = document.querySelector('video')
-    if (!video) return
-
-    const handleTimeUpdate = () => {
-      setCurrentTimeMs(video.currentTime * 1000)
-    }
-
-    video.addEventListener('timeupdate', handleTimeUpdate)
-    return () => video.removeEventListener('timeupdate', handleTimeUpdate)
-  }, [])
-
-  const activeSegment = useMemo(() => {
-    return store.getSegmentAt(currentTimeMs)
-  }, [segments, currentTimeMs])
+  const activeIndex = videoController.activeSegmentIndex.value
+  const activeSegment = segments[activeIndex]
 
   const togglePauseOnHover = (e: MouseEvent) => {
     e.stopPropagation()
