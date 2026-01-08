@@ -24,7 +24,7 @@
   "host_permissions": ["*://*.youtube.com/*", "https://web.stremio.com/*"],
   "permissions": ["storage", "webRequest"],
   "commands": {
-    "prev_segment": {
+    "previous_segment": {
       "description": "Move to previous segment"
     },
     "next_segment": {

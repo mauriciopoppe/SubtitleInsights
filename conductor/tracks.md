@@ -30,6 +30,8 @@ _No active tracks at the moment._
   _Link: [./conductor/archive/brand_identity_20260107/](./conductor/archive/brand_identity_20260107/)_
 
 ### User Controls & Settings
+- [x] **Keyboard Shortcuts for Segment Navigation**
+  _Link: [./conductor/archive/keyboard_shortcuts_20260108/](./conductor/archive/keyboard_shortcuts_20260108/)_
 - [x] **Sidebar Seek-to-Start Button**
   _Link: [./conductor/archive/sidebar_jump_20260107/](./conductor/archive/sidebar_jump_20260107/)_
 - [x] **Sidebar Proximity Controls**

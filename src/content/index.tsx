@@ -3,6 +3,8 @@ import { App } from './components/App'
 import { grammarExplainer } from './ai/explainer'
 import { translationManager } from './ai/manager'
 import { store, SubtitleStore } from './store'
+import { Config } from './config'
+import { videoController } from './VideoController'
 import './styles.css'
 import { Platform } from './types'
 
@@ -41,6 +43,24 @@ const detectPlatform = (): Platform => {
 let lastVideoId: string | null = null
 
 chrome.runtime.onMessage.addListener(message => {
+  if (message.type === 'SI_COMMAND') {
+    Config.get().then(config => {
+      if (!config.isEnabled) return
+
+      switch (message.command) {
+        case 'next_segment':
+          videoController.seekToNext()
+          break
+        case 'previous_segment':
+          videoController.seekToPrev()
+          break
+        case 'replay_segment':
+          videoController.replayCurrent()
+          break
+      }
+    })
+  }
+
   if (message.type === 'SI_SUBTITLES_CAPTURED') {
     const platform = detectPlatform()
     if (platform !== 'youtube') return

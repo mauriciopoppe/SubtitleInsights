@@ -1,0 +1,8 @@
+{
+  "track_id": "keyboard_shortcuts_20260108",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-08T14:45:00Z",
+  "updated_at": "2026-01-08T14:45:00Z",
+  "description": "I want to add keyboard shortcuts to the program, there should be 3: move to next segment, move to previous segment and replay segment. They should be defined but have no defaults (the user must set them in the keyboard shortcuts). When the extension is disabled, the keyboard shortcut should also be disabled. We should update the documentation at the end of the implementation."
+}

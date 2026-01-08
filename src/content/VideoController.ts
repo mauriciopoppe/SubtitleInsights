@@ -126,6 +126,62 @@ export class VideoController {
     this.isPlaying.value = false
     this.isSeeking.value = false
   }
+
+  public seekToNext() {
+    const segments = this.store.getAllSegments()
+    if (segments.length === 0) return
+
+    const active = this.activeSegmentIndex.value
+    const target = this.targetSegmentIndex.value
+    let nextIndex = -1
+
+    if (active !== -1) {
+      nextIndex = active + 1
+    } else if (target !== -1) {
+      nextIndex = target
+    }
+
+    if (nextIndex !== -1 && nextIndex < segments.length) {
+      this.seekTo(segments[nextIndex].start)
+    }
+  }
+
+  public seekToPrev() {
+    const segments = this.store.getAllSegments()
+    if (segments.length === 0) return
+
+    const active = this.activeSegmentIndex.value
+    const target = this.targetSegmentIndex.value
+    let prevIndex = -1
+
+    if (active !== -1) {
+      prevIndex = active - 1
+    } else if (target !== -1) {
+      prevIndex = target - 1
+    }
+
+    if (prevIndex >= 0) {
+      this.seekTo(segments[prevIndex].start)
+    }
+  }
+
+  public replayCurrent() {
+    const segments = this.store.getAllSegments()
+    const active = this.activeSegmentIndex.value
+
+    if (active !== -1) {
+      this.seekTo(segments[active].start, true)
+    }
+  }
+
+  private seekTo(timeMs: number, forcePlay: boolean = false) {
+    if (this.video) {
+      this.video.currentTime = timeMs / 1000
+      if (forcePlay) {
+        this.video.play()
+      }
+    }
+  }
 }
 
 export const videoController = new VideoController(store)

@@ -24,5 +24,5 @@
 ## Architecture
 
 - **Content Scripts (ISOLATED):** Main extension logic, DOM injection, and subtitle synchronization.
-- **Background Service Worker:** Intercepts YouTube subtitle requests via `chrome.webRequest`, re-fetches data, and broadcasts to content scripts. Also manages Prompt API sessions.
+- **Background Service Worker:** Intercepts YouTube subtitle requests via `chrome.webRequest`, handles native `chrome.commands` for keyboard shortcuts, re-fetches data, and broadcasts events to content scripts. Also manages Prompt API sessions.
 - **Offscreen Documents:** (Optional) If the Prompt API requires a DOM context not available in the worker.

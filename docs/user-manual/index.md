@@ -47,3 +47,19 @@ The popup features a hierarchical structure for detailed control:
 ## Detailed Settings
 
 At the bottom of the popup, the **Detailed Settings** link opens a full-page interface for managing [Profiles](/user-manual/profiles) and other advanced configurations.
+
+## Keyboard Shortcuts
+
+Subtitle Insights supports native browser shortcuts for segment navigation. These shortcuts are **not assigned by default** to avoid conflicts with your browser or site-specific keys.
+
+### Available Commands
+- **Next Segment:** Seek to the beginning of the next subtitle segment. (Preserves playback state).
+- **Previous Segment:** Seek to the beginning of the previous subtitle segment. (Preserves playback state).
+- **Replay Segment:** Seek to the start of the current segment and **force playback**.
+
+### How to Configure
+1. Open Chrome and navigate to `chrome://extensions/shortcuts`.
+2. Find **Subtitle Insights** in the list.
+3. Click the pencil icon next to each command and press your desired key combination.
+
+> **Note:** Keyboard shortcuts are automatically disabled whenever the extension is toggled **OFF** in the settings menu.

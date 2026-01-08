@@ -54,3 +54,15 @@ chrome.runtime.onMessage.addListener(message => {
     chrome.runtime.openOptionsPage()
   }
 })
+
+chrome.commands.onCommand.addListener(async command => {
+  console.log('[SI] Received command:', command)
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+
+  if (tab?.id) {
+    chrome.tabs.sendMessage(tab.id, {
+      type: 'SI_COMMAND',
+      command
+    })
+  }
+})

@@ -55,17 +55,23 @@ To maintain a high-end feel when using the bright accent yellow on the dark back
     - **Live AI Status:** Visual indicators for AI model status (Downloading, Ready, Error).
     - **Detailed Settings:** Access to advanced configurations and **Language Profiles**.
 
-5.  **Language Profiles**
+5.  **Keyboard Shortcuts**
+    - **Native Integration:** Uses `chrome.commands` for low-latency, browser-level interaction.
+    - **Navigation:** Configurable shortcuts for Next Segment, Previous Segment, and Replay Segment.
+    - **State Aware:** Shortcuts are automatically disabled when the extension is toggled OFF.
+    - **Playback Control:** Intelligently preserves playing/paused state during navigation, while forcing playback for Replays.
+
+6.  **Language Profiles**
     - Create and save custom profiles for different learning goals (e.g., "Japanese - Grammar Focus", "Spanish - Vocabulary").
     - Customize the **System Prompt** for the AI to get specific types of insights.
     - Switch between profiles instantly.
 
-6.  **Local AI Translation**
+7.  **Local AI Translation**
     - **Single High-Quality Translation:** Context-aware translation using Chrome's built-in AI Translation API.
     - **Privacy-First:** All processing happens locally on the device.
     - **Look-ahead Processing:** Pre-fetches translations for the next **10 segments**.
 
-7.  **AI Insights (Grammar Explanation)**
+8.  **AI Insights (Grammar Explanation)**
     - Analyzes complex sentences to provide grammatical breakdowns and cultural context.
     - Powered by Chrome's built-in Prompt API (Gemini Nano).
     - **Look-ahead Processing:** Pre-fetches insights for the next **5 segments**.

@@ -127,4 +127,69 @@ describe('VideoController', () => {
     expect(controller.activeSegmentIndex.value).toBe(-1)
     expect(controller.targetSegmentIndex.value).toBe(-1) // No next segment
   })
+
+  describe('Navigation', () => {
+    beforeEach(() => {
+      store.addSegments([
+        { start: 1000, end: 2000, text: 'First' },
+        { start: 3000, end: 4000, text: 'Second' },
+        { start: 5000, end: 6000, text: 'Third' }
+      ])
+      controller.setVideo(mockVideo)
+    })
+
+    it('seekToNext should seek to the next segment and preserve playback state (paused)', () => {
+      mockVideo.currentTime = 0.5 // before First
+      mockVideo.dispatchEvent(new Event('timeupdate'))
+      Object.defineProperty(mockVideo, 'paused', { value: true })
+
+      controller.seekToNext()
+      expect(mockVideo.currentTime).toBe(1) // Start of First
+      expect(mockVideo.play).not.toHaveBeenCalled()
+    })
+
+    it('seekToNext should seek to the next segment and preserve playback state (playing)', () => {
+      mockVideo.currentTime = 1.5 // in First
+      mockVideo.dispatchEvent(new Event('timeupdate'))
+      Object.defineProperty(mockVideo, 'paused', { value: false })
+
+      controller.seekToNext()
+      expect(mockVideo.currentTime).toBe(3) // Start of Second
+      // We don't necessarily call play() if it was already playing, but it should stay playing.
+    })
+
+    it('seekToPrev should seek to the previous segment and preserve state', () => {
+      mockVideo.currentTime = 3.5 // in Second
+      mockVideo.dispatchEvent(new Event('timeupdate'))
+      Object.defineProperty(mockVideo, 'paused', { value: true })
+
+      controller.seekToPrev()
+      expect(mockVideo.currentTime).toBe(1) // Start of First
+      expect(mockVideo.play).not.toHaveBeenCalled()
+    })
+
+    it('replayCurrent should seek to current segment start and FORCE play', () => {
+      mockVideo.currentTime = 3.5 // in Second
+      mockVideo.dispatchEvent(new Event('timeupdate'))
+      Object.defineProperty(mockVideo, 'paused', { value: true })
+
+      controller.replayCurrent()
+      expect(mockVideo.currentTime).toBe(3) // Start of Second
+      expect(mockVideo.play).toHaveBeenCalled()
+    })
+
+    it('seekToNext should seek to segment at index 1 when at index 0', () => {
+      mockVideo.currentTime = 1.5
+      mockVideo.dispatchEvent(new Event('timeupdate'))
+      controller.seekToNext()
+      expect(mockVideo.currentTime).toBe(3)
+    })
+
+    it('seekToPrev should seek to segment at index 0 when at index 1', () => {
+      mockVideo.currentTime = 3.5
+      mockVideo.dispatchEvent(new Event('timeupdate'))
+      controller.seekToPrev()
+      expect(mockVideo.currentTime).toBe(1)
+    })
+  })
 })
