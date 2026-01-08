@@ -40,20 +40,19 @@ export function App() {
         )}
       </div>
 
-      <div className="settings-section" id="general">
-        <h2>General</h2>
-        <div className="placeholder-card">
-          <p>Global configuration options will appear here.</p>
-        </div>
-      </div>
-
       <div className="settings-section" id="about">
         <h2>About</h2>
         <div className="placeholder-card">
-          <p>Subtitle Insights v1.0.0</p>
+          <p>Subtitle Insights v0.1.0</p>
           <p>Built with Chrome Prompt API</p>
         </div>
       </div>
+
+      <footer className="settings-footer" style={{ textAlign: 'center', marginTop: '60px', color: '#aaa', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '20px' }}>
+        <a href="https://mauriciopoppe.github.io/SubtitleInsights/" target="_blank" rel="noopener noreferrer" style={{ color: '#3ea6ff', textDecoration: 'none' }}>Subtitle Insights</a>
+        {' • '}
+        Made with <span style={{ color: 'deeppink', fontSize: '1.5em', verticalAlign: 'middle', margin: '0 4px' }}>♥</span> by <a href="https://mauriciopoppe.com" target="_blank" rel="noopener noreferrer" style={{ color: '#3ea6ff', textDecoration: 'none' }}>Mauricio Poppe</a>
+      </footer>
     </div>
   )
 }

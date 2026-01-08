@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Subtitle Insights",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Smart AI insights and translations for YouTube subtitles",
   "icons": {
     "16": "public/icon16.png",
@@ -14,6 +14,9 @@
       "matches": ["https://www.youtube.com/*", "https://web.stremio.com/*"]
     }
   ],
+  "action": {
+    "default_popup": "src/popup/index.html"
+  },
   "background": {
     "service_worker": "src/background/index.ts",
     "type": "module"
