@@ -27,6 +27,7 @@ This plan introduces a centralized `VideoController` using `@preact/signals` to 
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Overlay & Hook Optimization' (Protocol in workflow.md) [checkpoint: d98832b]
 
 ## Phase 5: Verification & Cleanup
-- [ ] Task: Manual verification on YouTube and other supported platforms
-- [ ] Task: Remove any remaining redundant `timeupdate` listeners or old state management
-- [ ] Task: Conductor - User Manual Verification 'Phase 5: Verification & Cleanup' (Protocol in workflow.md)
+- [x] Task: Manual verification on YouTube and other supported platforms
+- [x] Task: Remove any remaining redundant `timeupdate` listeners or old state management
+- [x] Task: Optimize `translationManager` to use `activeSegmentIndex` instead of re-scanning
+- [x] Task: Conductor - User Manual Verification 'Phase 5: Verification & Cleanup' (Protocol in workflow.md) [checkpoint: 86f78c3]
