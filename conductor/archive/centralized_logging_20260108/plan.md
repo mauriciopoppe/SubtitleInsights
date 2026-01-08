@@ -13,7 +13,7 @@ Integration of the `debug` library to manage scoped logging across the extension
 - [x] Task: Verify that all refactored logs appear/disappear correctly when the toggle is flipped
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Core Refactoring (TDD)' (Protocol in workflow.md)
 
-## Phase 3: Final Verification & Documentation
-- [ ] Task: Scan entire `src/` directory for any remaining `console.log` statements and replace or remove them
-- [ ] Task: Verify logging behavior on both YouTube and Stremio
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Verification & Documentation' (Protocol in workflow.md)
+## Phase 3: Final Verification & Documentation [checkpoint: 1af9997]
+- [x] Task: Scan entire `src/` directory for any remaining `console.log` statements and replace or remove them
+- [x] Task: Verify logging behavior on both YouTube and Stremio
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Verification & Documentation' (Protocol in workflow.md)

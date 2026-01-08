@@ -19,6 +19,7 @@
 - **Package Manager:** NPM
 - **Linter:** ESLint (with TypeScript recommended rules)
 - **Formatter:** Prettier
+- **Logging:** [debug](https://www.npmjs.com/package/debug) (Scoped, namespace-based logging with developer-controlled toggles)
 - **Testing:** Vitest (for utility logic)
 
 ## Architecture

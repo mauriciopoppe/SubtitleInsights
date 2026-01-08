@@ -30,6 +30,8 @@ _No active tracks at the moment._
   _Link: [./conductor/archive/brand_identity_20260107/](./conductor/archive/brand_identity_20260107/)_
 
 ### User Controls & Settings
+- [x] **Centralized Logging with 'debug' Library**
+  _Link: [./conductor/archive/centralized_logging_20260108/](./conductor/archive/centralized_logging_20260108/)_
 - [x] **Keyboard Shortcuts for Segment Navigation**
   _Link: [./conductor/archive/keyboard_shortcuts_20260108/](./conductor/archive/keyboard_shortcuts_20260108/)_
 - [x] **Sidebar Seek-to-Start Button**
@@ -52,7 +54,7 @@ _No active tracks at the moment._
   _Link: [./conductor/archive/documentation_site_20260105/](./conductor/archive/documentation_site_20260105/)_
 - [x] **Stremio Support Integration**
   _Link: [./conductor/archive/stremio_support_20260104/](./conductor/archive/stremio_support_20260104/)_
----
 
-## [~] Track: Centralized Logging with 'debug' Library
-*Link: [./conductor/tracks/centralized_logging_20260108/](./conductor/tracks/centralized_logging_20260108/)*
+### Other
+- [ ] **Rebrand to 'Subtitle Insights' and Prefix Migration** (Archived)
+  _Link: [./conductor/archive/rebrand_subtitle_insights_20251231/](./conductor/archive/rebrand_subtitle_insights_20251231/)_

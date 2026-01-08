@@ -94,6 +94,7 @@ To maintain a high-end feel when using the bright accent yellow on the dark back
   - `SubtitleStore`: Centralized state management for subtitle segments, translations, and AI processing status. Handles parsing (SRT, JSON) and notifies listeners of updates.
   - `ProfileManager`: Manages user settings and language profiles, persisting configuration (system prompts, source/target languages) to Chrome's local storage.
   - `AIManager`: Orchestrates AI tasks with buffering (10 segments for translation, 5 for insights).
+  - `Centralized Logging`: Uses the `debug` library to provide scoped, controllable logs for developers, accessible via a "Debug Mode" toggle.
   - `OverlayApp`: Handles the visual presentation and user interactions on top of the video.
 
 ## Future Direction

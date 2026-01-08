@@ -11,7 +11,8 @@ const DEFAULT_CONFIG: AppConfig = {
   isInsightsVisibleInSidebar: true,
   isTranslationVisibleInOverlay: true,
   isTranslationVisibleInSidebar: true,
-  isOriginalVisibleInOverlay: true
+  isOriginalVisibleInOverlay: true,
+  isDebugMode: false
 }
 
 export function useConfig() {

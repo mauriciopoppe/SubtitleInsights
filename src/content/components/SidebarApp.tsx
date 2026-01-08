@@ -3,7 +3,7 @@ import { SidebarHeader } from './SidebarHeader'
 import { SidebarList } from './SidebarList'
 import { useSubtitleStore } from '../hooks/useSubtitleStore'
 import { useConfig } from '../hooks/useConfig'
-import { store } from '../store'
+import { store, storeLogger } from '../store'
 
 export function SidebarApp() {
   const { segments, isUploadActive, uploadFilename } = useSubtitleStore()
@@ -66,9 +66,7 @@ export function SidebarApp() {
         const { segments: newSegments, errors } = store.parseSRTData(content)
 
         if (errors.length > 0) {
-          console.group('[SI] Import Errors')
-          errors.forEach(err => console.error(err))
-          console.groupEnd()
+          storeLogger('Import Errors:', errors)
           store.setWarning('Import errors occurred. Check console for details.')
         } else {
           store.setWarning(undefined)
@@ -77,12 +75,12 @@ export function SidebarApp() {
         if (newSegments && newSegments.length > 0) {
           store.loadCustomSegments(newSegments)
           store.setUploadStatus(true, file.name)
-          console.log(`[SI] Successfully loaded ${newSegments.length} segments from ${file.name}`)
+          storeLogger(`Successfully loaded ${newSegments.length} segments from ${file.name}`)
         } else {
           alert('No valid segments found in the SRT file.')
         }
       } catch (err) {
-        console.error('[SI] Failed to parse SRT file', err)
+        storeLogger('ERROR: Failed to parse SRT file', err)
         alert('Failed to parse SRT file.')
       } 
     }

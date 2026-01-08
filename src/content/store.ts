@@ -1,6 +1,8 @@
 import { AISegment } from './types'
 import { storeLogger } from './logger'
 
+export { storeLogger }
+
 export interface SubtitleSegment {
   start: number
   end: number

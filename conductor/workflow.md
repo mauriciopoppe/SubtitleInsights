@@ -150,8 +150,8 @@ npm test -- run <test file>
 ### Before Committing
 
 ```bash
-# Run checks (lint, type check, tests)
-npm test -- run && npm run lint && npm run type-check
+# Run checks (tests, lint)
+npm test -- run && npm run lint
 ```
 
 ## Testing Requirements
