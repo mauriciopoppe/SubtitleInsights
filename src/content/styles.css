@@ -133,6 +133,10 @@
   transition: opacity 0.1s;
 }
 
+.si-toggle-btn.active {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
 .si-toggle-btn.active::after {
   content: '';
   position: absolute;
@@ -240,7 +244,7 @@
   position: relative;
   width: 40px;
   height: 24px;
-  background-color: var(--si-color-bg-canvas);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   transition: background-color 0.2s;
   flex-shrink: 0;
