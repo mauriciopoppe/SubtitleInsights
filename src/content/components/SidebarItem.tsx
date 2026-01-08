@@ -1,22 +1,33 @@
 import { useRef, useCallback } from 'preact/hooks'
+import { useComputed } from '@preact/signals'
 import { SubtitleSegment, store } from '../store'
 import { renderSegmentedText } from '../render'
 import snarkdown from 'snarkdown'
 import { trimThinkingProcess } from '../ai/utils'
 import { useConfig } from '../hooks/useConfig'
 import { useProximity } from '../hooks/useProximity'
+import { videoController } from '../VideoController'
 
 interface SidebarItemProps {
   segment: SubtitleSegment
   index: number
-  isActive: boolean
 }
 
-export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
+export function SidebarItem({ segment, index }: SidebarItemProps) {
+
   const config = useConfig()
+
   const itemRef = useRef<HTMLDivElement>(null)
 
+
+
+  const isActive = useComputed(() => videoController.activeSegmentIndex.value === index)
+
+
+
   const checkProximity = useCallback((x: number, _y: number, rect: DOMRect) => {
+
+
     // Show if within 60px of the right edge
     return x >= rect.width - 60
   }, [])
@@ -54,7 +65,7 @@ export function SidebarItem({ segment, index, isActive }: SidebarItemProps) {
   return (
     <div
       ref={itemRef}
-      className={`si-sidebar-item ${isActive ? 'active' : ''}`}
+      className={`si-sidebar-item ${isActive.value ? 'active' : ''}`}
       data-index={index}
       data-start={segment.start}
       data-end={segment.end}

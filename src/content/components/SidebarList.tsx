@@ -1,26 +1,15 @@
 import { SubtitleSegment } from '../store'
 import { SidebarItem } from './SidebarItem'
-import { useMemo } from 'preact/hooks'
 
 interface SidebarListProps {
   segments: SubtitleSegment[]
-  currentTimeMs: number
 }
 
-export function SidebarList({ segments, currentTimeMs }: SidebarListProps) {
-  const activeIndex = useMemo(() => {
-    return segments.findIndex(seg => currentTimeMs >= seg.start && currentTimeMs <= seg.end)
-  }, [segments, currentTimeMs])
-
+export function SidebarList({ segments }: SidebarListProps) {
   return (
     <div className="si-sidebar-list">
       {segments.map((segment, index) => (
-        <SidebarItem
-          key={`${segment.start}-${index}`}
-          segment={segment}
-          index={index}
-          isActive={index === activeIndex}
-        />
+        <SidebarItem key={`${segment.start}-${index}`} segment={segment} index={index} />
       ))}
     </div>
   )

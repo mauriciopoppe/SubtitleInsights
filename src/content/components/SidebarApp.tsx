@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'preact/hooks'
+import { useEffect, useRef } from 'preact/hooks'
 import { SidebarHeader } from './SidebarHeader'
 import { SidebarList } from './SidebarList'
 import { useSubtitleStore } from '../hooks/useSubtitleStore'
@@ -8,7 +8,6 @@ import { store } from '../store'
 export function SidebarApp() {
   const { segments, isUploadActive, uploadFilename } = useSubtitleStore()
   const config = useConfig()
-  const [currentTimeMs, setCurrentTimeMs] = useState(0)
   const hasInitiallyScrolledRef = useRef(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -44,19 +43,6 @@ export function SidebarApp() {
       }
     }
   }, [segments])
-
-  // Sync with video time
-  useEffect(() => {
-    const video = document.querySelector('video')
-    if (!video) return
-
-    const handleTimeUpdate = () => {
-      setCurrentTimeMs(video.currentTime * 1000)
-    }
-
-    video.addEventListener('timeupdate', handleTimeUpdate)
-    return () => video.removeEventListener('timeupdate', handleTimeUpdate)
-  }, [])
 
   const handleSync = () => {
     const activeItem = document.querySelector('.si-sidebar-item.active')
@@ -98,7 +84,7 @@ export function SidebarApp() {
       } catch (err) {
         console.error('[SI] Failed to parse SRT file', err)
         alert('Failed to parse SRT file.')
-      }
+      } 
     }
     reader.readAsText(file)
   }
@@ -118,7 +104,7 @@ export function SidebarApp() {
         isUploadActive={isUploadActive}
         uploadFilename={uploadFilename}
       />
-      <SidebarList segments={segments} currentTimeMs={currentTimeMs} />
+      <SidebarList segments={segments} />
     </div>
   )
 }
