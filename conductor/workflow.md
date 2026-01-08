@@ -139,6 +139,9 @@ npm test
 
 # Run tests once (one-shot)
 npm test -- run
+
+# Run a single test file once (one-shot)
+npm test -- run <test file>
 ```
 
 ### Before Committing
