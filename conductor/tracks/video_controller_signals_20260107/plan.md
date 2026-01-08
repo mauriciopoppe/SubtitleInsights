@@ -9,10 +9,10 @@ This plan introduces a centralized `VideoController` using `@preact/signals` to 
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Core Logic' (Protocol in workflow.md) [checkpoint: be4de29]
 
 ## Phase 2: Integration & Global State
-- [ ] Task: Initialize `VideoController` singleton in `App.tsx`
-- [ ] Task: Connect `VideoController` to the active video element discovered by the content script
-- [ ] Task: Replace `App.tsx` local `timeupdate` logic with `VideoController` signal subscriptions
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Integration & Global State' (Protocol in workflow.md)
+- [x] Task: Initialize `VideoController` singleton in `App.tsx`
+- [x] Task: Connect `VideoController` to the active video element discovered by the content script
+- [x] Task: Replace `App.tsx` local `timeupdate` logic with `VideoController` signal subscriptions
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Integration & Global State' (Protocol in workflow.md) [checkpoint: ddc486c]
 
 ## Phase 3: Sidebar Optimization
 - [ ] Task: Refactor `SidebarItem` to use signals for the `active` state (avoiding parent re-render)
