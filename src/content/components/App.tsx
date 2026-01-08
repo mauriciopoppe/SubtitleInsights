@@ -4,10 +4,8 @@ import { SidebarApp } from './SidebarApp'
 import { OverlayApp } from './OverlayApp'
 import { ExtensionToggle } from './ExtensionToggle'
 import { store } from '../store'
-import { translationManager } from '../ai/manager'
 import { Config } from '../config'
 import { Platform } from '../types'
-import { useConfig } from '../hooks/useConfig'
 import { videoController } from '../VideoController'
 
 interface AppProps {
@@ -29,8 +27,6 @@ export function App({
   toggleContainer,
   platform
 }: AppProps) {
-  const config = useConfig()
-
   // Video Controller Integration
   useEffect(() => {
     videoController.setVideo(video)
@@ -147,18 +143,6 @@ export function App({
       }
     })
   }, [overlayContainer])
-
-  // Sync Logic: Time Update
-  useEffect(() => {
-    if (!config.isEnabled) return
-
-    // Subscribe to the signal
-    const unsubscribe = videoController.currentTimeMs.subscribe(currentTimeMs => {
-      const activeIndex = videoController.activeSegmentIndex.value
-      translationManager.onTimeUpdate(currentTimeMs, activeIndex)
-    })
-    return unsubscribe
-  }, [config.isEnabled])
 
   return (
     <>

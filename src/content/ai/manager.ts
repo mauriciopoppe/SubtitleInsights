@@ -3,6 +3,7 @@ import { grammarExplainer } from './explainer'
 import { isComplexSentence } from './utils'
 import { Config } from '../config'
 import { store } from '../store'
+import { videoController } from '../VideoController'
 
 export class AIManager {
   private isTranslationProcessing = false
@@ -12,6 +13,7 @@ export class AIManager {
   private translateBuffer = 10
   private insightsBuffer = 5
   private lastTriggerIndex = -1
+  private unsubscribe: (() => void) | null = null
 
   public reset() {
     console.log('[SI] Resetting AIManager queues.')
@@ -39,6 +41,13 @@ export class AIManager {
     if (grammarAvailability === 'available') {
       await grammarExplainer.initialize()
       console.log('[SI] AI Grammar Explainer initialized.')
+    }
+
+    // Setup subscription to segment changes
+    if (!this.unsubscribe) {
+      this.unsubscribe = videoController.targetSegmentIndex.subscribe(index => {
+        this.handleSegmentChange(index)
+      })
     }
   }
 
@@ -94,34 +103,19 @@ export class AIManager {
     }
   }
 
-  public async onTimeUpdate(currentTimeMs: number, preCalculatedIndex: number = -1) {
+  private async handleSegmentChange(targetIndex: number) {
+    if (targetIndex === -1) return
+
     const { isEnabled } = await Config.get()
     if (!isEnabled) return
 
-    const allSegments = store.getAllSegments()
-    if (allSegments.length === 0) return
-
-    // Use pre-calculated index if valid, otherwise scan
-    let currentIndex = preCalculatedIndex
-    if (currentIndex === -1) {
-      // Only scan if we weren't given a valid index (or if the caller passed -1 because it didn't know)
-      currentIndex = allSegments.findIndex(s => currentTimeMs >= s.start && currentTimeMs <= s.end)
-    }
-
-    let targetIndex = currentIndex
-    if (currentIndex === -1) {
-      // If no current segment, find the next upcoming one to start prefetching from
-      // This is a "forward scan" optimization which is still useful even if we have an index of -1
-      targetIndex = allSegments.findIndex(s => s.start > currentTimeMs)
-      if (targetIndex === -1) targetIndex = 0 // Fallback to start
-    }
-
     // Detect significant jumps to clear queues
+    // Note: With targetSegmentIndex, a "jump" is an index shift.
+    // If we move from segment 5 to segment 50, we clear.
     if (this.lastTriggerIndex !== -1 && Math.abs(targetIndex - this.lastTriggerIndex) > 5) {
       console.log(`[SI] Significant jump detected (${this.lastTriggerIndex} -> ${targetIndex}). Clearing queues.`)
       this.pendingTranslationIndices.clear()
       this.pendingInsightsIndices.clear()
-      // We don't reset processing flags here, they'll resolve naturally or stay locked if active
     }
     this.lastTriggerIndex = targetIndex
 

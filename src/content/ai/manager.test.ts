@@ -17,7 +17,16 @@ vi.mock('../store', () => ({
     getAllSegments: vi.fn(),
     setAIStatus: vi.fn(),
     updateSegmentTranslation: vi.fn(),
-    updateSegmentInsights: vi.fn()
+    updateSegmentInsights: vi.fn(),
+    addChangeListener: vi.fn()
+  }
+}))
+
+vi.mock('../VideoController', () => ({
+  videoController: {
+    targetSegmentIndex: {
+      subscribe: vi.fn()
+    }
   }
 }))
 
@@ -52,7 +61,8 @@ describe('AIManager', () => {
     vi.mocked(store.getAllSegments).mockReturnValue([{ start: 0, end: 1000, text: 'Hello' }])
     vi.mocked(translatorService.isReady).mockReturnValue(true)
 
-    await manager.onTimeUpdate(500)
+    // Using private method for testing or we could trigger the signal
+    await (manager as any).handleSegmentChange(0)
 
     expect(translatorService.translate).not.toHaveBeenCalled()
   })
@@ -70,7 +80,7 @@ describe('AIManager', () => {
       isComplexSentence: () => true
     }))
 
-    await manager.onTimeUpdate(500)
+    await (manager as any).handleSegmentChange(0)
 
     expect(translatorService.translate).toHaveBeenCalled()
   })
