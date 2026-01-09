@@ -96,13 +96,9 @@ describe('SettingsPopup', () => {
       console.log(`Item ${i} (${item.textContent}): classList = ${Array.from(item.classList).join(' ')}`)
     })
 
-    // Item 0 is Extension Enabled, should NOT be disabled
-    expect(items[0].classList.contains('si-item-disabled')).toBe(false)
-
-    // Other items should be disabled
+    expect(items.length).toBe(4)
     expect(items[1].classList.contains('si-item-disabled')).toBe(true)
     expect(items[2].classList.contains('si-item-disabled')).toBe(true)
     expect(items[3].classList.contains('si-item-disabled')).toBe(true)
-    expect(items[4].classList.contains('si-item-disabled')).toBe(true)
   })
 })

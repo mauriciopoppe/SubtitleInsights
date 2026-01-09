@@ -149,13 +149,19 @@ export function App({
 
   // Config Logic: Overlay Visibility
   useEffect(() => {
-    return Config.subscribe(config => {
-      if (!config.isEnabled || !config.isOverlayEnabled) {
+    const checkOverlayVisibility = async (config?: any) => {
+      const cfg = config || (await Config.get())
+      if (!cfg.isEnabled || !cfg.isOverlayEnabled) {
         overlayContainer.style.display = 'none'
       } else {
         overlayContainer.style.display = 'block'
       }
-    })
+    }
+
+    const unsubscribe = Config.subscribe(config => checkOverlayVisibility(config))
+    checkOverlayVisibility()
+
+    return () => unsubscribe()
   }, [overlayContainer])
 
   return (
