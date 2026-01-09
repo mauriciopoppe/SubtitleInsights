@@ -2,7 +2,7 @@
 
 Fix the rendering condition in `SidebarApp.tsx` to ensure it returns `null` when `isSidebarEnabled` is false, preventing content from leaking into the UI when disabled.
 
-## Phase 1: Implementation & Verification [checkpoint: ]
+## Phase 1: Implementation & Verification [checkpoint: 3e2a183]
 - [x] Task: Create or update a test for `SidebarApp` to verify it returns `null` when `isEnabled` is true but `isSidebarEnabled` is false.
 - [x] Task: Modify `src/content/components/SidebarApp.tsx` to include the `isSidebarEnabled` check in its rendering logic.
 - [x] Task: Audit `src/content/components/App.tsx` visibility logic to ensure no conflicting styles are applied to the container on initial mount.
