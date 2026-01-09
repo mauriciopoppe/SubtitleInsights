@@ -358,13 +358,18 @@
   height: 40px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
   background-color: rgba(255, 255, 255, 0.05);
-}
-
-.si-settings-popup-status-text {
   font-size: 14px;
   color: #aaa;
+}
+
+.si-status-icon {
+  width: 24px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .si-settings-popup-divider {
@@ -426,14 +431,11 @@
   margin-left: 8px;
 }
 
-.si-status-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .si-status-icon.warning {
   color: var(--si-color-accent-yellow);
+}
+.si-status-icon.info {
+  color: var(--si-color-brand-blue);
 }
 .si-status-icon.ai-downloading {
   color: var(--si-color-brand-blue);

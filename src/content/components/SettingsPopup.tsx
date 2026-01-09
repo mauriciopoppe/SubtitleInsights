@@ -83,7 +83,7 @@ interface SettingsPopupProps {
 
 export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube' }: SettingsPopupProps) {
   const config = useConfig()
-  const { aiStatus, warning, isUploadActive, uploadFilename } = useSubtitleStore()
+  const { aiStatus, warning, isUploadActive, uploadFilename, segments } = useSubtitleStore()
   const [view, setView] = useState<View>('main')
   const menuRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -257,23 +257,34 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
         </span>
       )
     }
-    if (aiStatus.status !== 'none') {
+    if (aiStatus.status === 'error') {
       return (
-        <span className={`si-status-icon ai-${aiStatus.status}`} title={aiStatus.message || aiStatus.status}>
+        <span className="si-status-icon ai-error" title={aiStatus.message || 'AI Error'}>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-            <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.08-.34.12-.57.12s-.41-.04-.57-.12l-7.9-4.44A1.001 1.001 0 013 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.08.34-.12.57-.12s.41.04.57.12l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.21v6.7zm14 0v-6.7l-6 3.37v6.71l6-3.38z" />
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
           </svg>
         </span>
       )
     }
-    return null
+
+    // Default: Grayscale Logo
+    return (
+      <span className="si-status-icon logo-grayscale" title={getStatusText()}>
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+          <rect x="22" y="14" width="20" height="4" rx="2" fill="currentColor" fill-opacity="0.6" />
+          <rect x="16" y="26" width="32" height="4" rx="2" fill="currentColor" />
+          <rect x="10" y="38" width="44" height="14" rx="4" fill="currentColor" />
+          <circle cx="48" cy="45" r="3" fill="#000" fill-opacity="0.3" />
+        </svg>
+      </span>
+    )
   }
 
   const getStatusText = () => {
     if (warning) return 'Warning'
-    if (aiStatus.status === 'downloading') return 'Downloading Models'
-    if (aiStatus.status === 'ready') return 'AI Ready'
     if (aiStatus.status === 'error') return 'AI Error'
+    if (aiStatus.status === 'downloading') return 'Downloading Models'
+    if (segments.length === 0) return 'Waiting for subtitles'
     return 'Extension Active'
   }
 
@@ -303,8 +314,21 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
         <div className="si-settings-view main">
           {/* Status Section */}
           <div className="si-settings-popup-status">
-            {getStatusIcon()}
-            <span className="si-settings-popup-status-text">{getStatusText()}</span>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {getStatusIcon()}
+              {getStatusText()}
+            </div>
+            <div
+              onClick={handleOpenSettings}
+              title="Detailed Settings"
+              style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', opacity: 0.7 }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '0.7')}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49.84c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 13.95 2h-4c-.3 0-.51.18-.54.45l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-.84c-.22-.08-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-.84c.52.4 1.08.73 1.69.98l.38 2.65c.03.27.24.45.54.45h4c.3 0 .51-.18.54-.45l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49.84c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
+              </svg>
+            </div>
           </div>
 
           <div className="si-settings-popup-divider" />
@@ -329,25 +353,7 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
             onClick={handleUploadClick}
             type="link"
             showArrow={false}
-            icon={
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
-              </svg>
-            }
-          />
-
-          <SettingsItem
-            label="Detailed Settings"
-            title="Open full settings page"
-            disabled={!config.isEnabled}
-            onClick={handleOpenSettings}
-            type="link"
-            showArrow={false}
-            icon={
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49.84c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 13.95 2h-4c-.3 0-.51.18-.54.45l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-.84c-.22-.08-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-.84c.52.4 1.08.73 1.69.98l.38 2.65c.03.27.24.45.54.45h4c.3 0 .51-.18.54-.45l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49.84c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
-              </svg>
-            }
+            iconSpace={true}
           />
 
           <div className="si-settings-popup-divider" />

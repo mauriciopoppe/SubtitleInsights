@@ -8,6 +8,7 @@ vi.mock('./config', () => ({
   Config: {
     get: vi.fn().mockResolvedValue({
       isEnabled: true,
+      isSidebarEnabled: true,
       isOverlayEnabled: true,
       isGrammarEnabled: true,
       isPauseOnHoverEnabled: false,
