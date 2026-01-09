@@ -30,6 +30,8 @@ _No active tracks at the moment._
   _Link: [./conductor/archive/brand_identity_20260107/](./conductor/archive/brand_identity_20260107/)_
 
 ### User Controls & Settings
+- [x] **Fix Sidebar Rendering when Disabled**
+  _Link: [./conductor/archive/fix_sidebar_rendering_20260108/](./conductor/archive/fix_sidebar_rendering_20260108/)_
 - [x] **Centralized Logging with 'debug' Library**
   _Link: [./conductor/archive/centralized_logging_20260108/](./conductor/archive/centralized_logging_20260108/)_
 - [x] **Keyboard Shortcuts for Segment Navigation**
@@ -58,7 +60,3 @@ _No active tracks at the moment._
 ### Other
 - [ ] **Rebrand to 'Subtitle Insights' and Prefix Migration** (Archived)
   _Link: [./conductor/archive/rebrand_subtitle_insights_20251231/](./conductor/archive/rebrand_subtitle_insights_20251231/)_
----
-
-## [~] Track: Fix Sidebar Rendering when Disabled
-*Link: [./conductor/tracks/fix_sidebar_rendering_20260108/](./conductor/tracks/fix_sidebar_rendering_20260108/)*
