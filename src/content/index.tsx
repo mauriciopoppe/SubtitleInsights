@@ -178,10 +178,12 @@ const initYouTube = async () => {
   const sidebarContainer = document.createElement('div')
   sidebarContainer.id = 'si-sidebar-root'
   sidebarContainer.style.marginBottom = '12px'
+  sidebarContainer.style.display = 'none'
   secondaryInner.prepend(sidebarContainer)
 
   const overlayContainer = document.createElement('div')
   overlayContainer.id = 'si-overlay-root'
+  overlayContainer.style.display = 'none'
   player.appendChild(overlayContainer)
 
   // Create Root for App
@@ -254,10 +256,12 @@ const initStremio = async () => {
 
   const sidebarContainer = document.createElement('div')
   sidebarContainer.id = 'si-sidebar-root'
+  sidebarContainer.style.display = 'none'
   document.body.appendChild(sidebarContainer)
 
   const overlayContainer = document.createElement('div')
   overlayContainer.id = 'si-overlay-root'
+  overlayContainer.style.display = 'none'
   player.appendChild(overlayContainer)
 
   // Create Root for App

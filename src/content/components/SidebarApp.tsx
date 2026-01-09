@@ -91,7 +91,7 @@ export function SidebarApp() {
     e.stopPropagation()
   }
 
-  if (!config.isEnabled) return null
+  if (!config.isEnabled || !config.isSidebarEnabled) return null
 
   return (
     <div id="si-sidebar" style={{ display: 'flex' }} onWheel={handleWheel}>

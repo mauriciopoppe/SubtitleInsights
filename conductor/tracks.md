@@ -58,3 +58,7 @@ _No active tracks at the moment._
 ### Other
 - [ ] **Rebrand to 'Subtitle Insights' and Prefix Migration** (Archived)
   _Link: [./conductor/archive/rebrand_subtitle_insights_20251231/](./conductor/archive/rebrand_subtitle_insights_20251231/)_
+---
+
+## [~] Track: Fix Sidebar Rendering when Disabled
+*Link: [./conductor/tracks/fix_sidebar_rendering_20260108/](./conductor/tracks/fix_sidebar_rendering_20260108/)*

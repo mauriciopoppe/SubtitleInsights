@@ -1,0 +1,8 @@
+{
+  "track_id": "fix_sidebar_rendering_20260108",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-01-08T19:15:00Z",
+  "updated_at": "2026-01-08T19:15:00Z",
+  "description": "I think there's a bug. Sometimes, when the app is rendered, it's possible that the extension is turned on but that the sidebar is turned off, I see that sometimes the sidebar gets rendered even when the sidebar toggle is off."
+}
