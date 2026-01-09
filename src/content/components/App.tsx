@@ -124,13 +124,27 @@ export function App({
   // Config Logic: Sidebar Visibility
   useEffect(() => {
     if (!sidebarContainer) return
-    return Config.subscribe(config => {
-      if (!config.isEnabled || !config.isSidebarEnabled) {
+
+    const checkVisibility = async (config?: any) => {
+      const cfg = config || (await Config.get())
+      const hasSegments = store.getAllSegments().length > 0
+
+      if (!cfg.isEnabled || !cfg.isSidebarEnabled || !hasSegments) {
         sidebarContainer.style.display = 'none'
       } else {
         sidebarContainer.style.display = 'flex'
       }
-    })
+    }
+
+    const unsubConfig = Config.subscribe(config => checkVisibility(config))
+    const unsubStore = store.subscribe(() => checkVisibility())
+
+    checkVisibility()
+
+    return () => {
+      unsubConfig()
+      unsubStore()
+    }
   }, [sidebarContainer])
 
   // Config Logic: Overlay Visibility
