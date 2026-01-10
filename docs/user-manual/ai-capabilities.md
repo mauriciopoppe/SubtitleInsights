@@ -19,6 +19,7 @@ Powered by **Gemini Nano** (via the [Chrome Prompt API](https://developer.chrome
 - **Beyond Literal Translation:** Explains idiomatic expressions and nuances that a simple translation might overlook.
 
 ::: tip Note: Language Support
+
 <div style="display: flex; gap: 20px; align-items: center;">
   <div style="flex: 0 0 30%;">
     <img src="./insights_warning_lang.jpg" alt="Language Support Warning" style="width: 100%;" />

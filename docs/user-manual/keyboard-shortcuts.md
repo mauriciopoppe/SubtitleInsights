@@ -4,20 +4,11 @@ Subtitle Insights supports native browser shortcuts for seamless navigation. To 
 
 ## Available Shortcuts
 
-| Command | Description | Playback Behavior |
-| :--- | :--- | :--- |
-| **Next Segment** | Jump to the beginning of the *next* subtitle segment. | **Preserves State:** If paused, stays paused. If playing, keeps playing. |
-| **Previous Segment** | Jump to the beginning of the *previous* subtitle segment. | **Preserves State:** If paused, stays paused. If playing, keeps playing. |
-| **Replay Segment** | Jump to the beginning of the *current* subtitle segment. | **Force Play:** Always resumes playback, even if currently paused. |
-
-## Built-in Shortcuts (Non-configurable)
-
-These shortcuts are always available when the extension is active and the overlay is enabled.
-
-| Command | Key | Description |
-| :--- | :--- | :--- |
-| **Increase Font Size** | `+` or `=` | Increase the overlay font size (cycles through 18px, 24px, 32px, 44px). |
-| **Decrease Font Size** | `-` or `_` | Decrease the overlay font size (cycles through 44px, 32px, 24px, 18px). |
+| Command              | Description                                               | Playback Behavior                                                        |
+| :------------------- | :-------------------------------------------------------- | :----------------------------------------------------------------------- |
+| **Next Segment**     | Jump to the beginning of the _next_ subtitle segment.     | **Preserves State:** If paused, stays paused. If playing, keeps playing. |
+| **Previous Segment** | Jump to the beginning of the _previous_ subtitle segment. | **Preserves State:** If paused, stays paused. If playing, keeps playing. |
+| **Replay Segment**   | Jump to the beginning of the _current_ subtitle segment.  | **Force Play:** Always resumes playback, even if currently paused.       |
 
 ## How to Configure
 
@@ -28,15 +19,24 @@ Since these are native Chrome commands, they work globally within the tab when t
 3.  Click the pencil icon next to the command you want to assign (e.g., "Move to next segment").
 4.  Press your desired key combination (e.g., `Alt+Right`, `Ctrl+Shift+L`, etc.).
 
+## Built-in Shortcuts (Non-configurable)
+
+These shortcuts are always available when the extension is active and the overlay is enabled.
+
+| Command                | Key        | Description                                                             |
+| :--------------------- | :--------- | :---------------------------------------------------------------------- |
+| **Increase Font Size** | `+` or `=` | Increase the overlay font size (cycles through 18px, 24px, 32px, 44px). |
+| **Decrease Font Size** | `-` or `_` | Decrease the overlay font size (cycles through 44px, 32px, 24px, 18px). |
+
 ## Suggested Workflow
 
 For an efficient learning experience, we suggest mappings that minimize hand movement and follow common playback patterns:
 
-| Command | Suggested Mapping |
-| :--- | :--- |
-| **Previous Segment** | `Ctrl + J` |
-| **Next Segment** | `Ctrl + L` |
-| **Replay Segment** | `Ctrl + R` |
+| Command              | Suggested Mapping |
+| :------------------- | :---------------- |
+| **Previous Segment** | `Ctrl + J`        |
+| **Next Segment**     | `Ctrl + L`        |
+| **Replay Segment**   | `Ctrl + R`        |
 
 Using these mappings allows you to navigate the video flow almost entirely from your keyboard, using `J` and `L` for backward/forward navigation (mirroring standard YouTube behavior) while holding `Ctrl`.
 
@@ -47,6 +47,7 @@ If a shortcut doesn't work, ensure it isn't already reserved by the browser or a
 ## Disabling Shortcuts
 
 To temporarily disable these shortcuts without removing the keybindings:
+
 1.  Open the Subtitle Insights extension popup.
 2.  Toggle **Extension Enabled** to **OFF**.
 
