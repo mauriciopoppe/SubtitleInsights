@@ -2,7 +2,7 @@
 
 Subtitle Insights leverages the power of [Chrome's built-in AI](https://developer.chrome.com/docs/ai/built-in) to provide a high-quality, privacy-focused learning experience.
 
-> **Important:** The first time the extension is triggered, an internet connection is required for Chrome to download the Gemini Nano model. Once the models are downloaded, all processing happens locally on the device.
+> **Important:** The first time the extension is triggered, an internet connection is required for Chrome to download the Gemini Nano model. Once the models are downloaded, all processing happens locally on the device. For more details on how Chrome handles these downloads and updates, see the [Built-in Model Management](https://developer.chrome.com/docs/ai/understand-built-in-model-management) documentation.
 
 ## Local AI Translation
 
