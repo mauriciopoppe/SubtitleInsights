@@ -10,6 +10,7 @@ export interface AppConfig {
   isTranslationVisibleInSidebar: boolean
   isOriginalVisibleInOverlay: boolean
   isDebugMode: boolean
+  overlayFontSize: number
 }
 
 export class Config {
@@ -23,8 +24,9 @@ export class Config {
     isInsightsVisibleInSidebar: 'si_is_insights_in_sidebar',
     isTranslationVisibleInOverlay: 'si_is_translation_in_overlay',
     isTranslationVisibleInSidebar: 'si_is_translation_in_sidebar',
-    isOriginalVisibleInOverlay: 'si_is_original_in_overlay',
-    isDebugMode: 'si_is_debug_mode'
+    isOriginalVisibleInOverlay: 'si_original_in_overlay',
+    isDebugMode: 'si_is_debug_mode',
+    overlayFontSize: 'si_overlay_font_size'
   }
 
   private static DEFAULTS: AppConfig = {
@@ -38,7 +40,8 @@ export class Config {
     isTranslationVisibleInOverlay: true,
     isTranslationVisibleInSidebar: true,
     isOriginalVisibleInOverlay: true,
-    isDebugMode: false
+    isDebugMode: false,
+    overlayFontSize: 24
   }
 
   private static listeners: Set<(config: AppConfig) => void> = new Set()
