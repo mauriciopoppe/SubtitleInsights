@@ -150,7 +150,12 @@ describe('GrammarExplainer', () => {
     )
     expect(vi.mocked(window.LanguageModel.availability)).toHaveBeenCalledWith(
       expect.objectContaining({
-        languages: ['en', 'en'] // Target 'en', Fallback source 'en'
+        expectedInputs: [
+          {
+            type: 'text',
+            languages: ['en', 'en'] // Target 'en', Fallback source 'en'
+          }
+        ]
       })
     )
   })

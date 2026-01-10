@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@preact/signals": "^2.5.1",
+    "@types/dom-chromium-ai": "^0.0.13",
     "debug": "^4.4.3",
     "preact": "^10.28.1",
     "snarkdown": "^2.0.0"

@@ -1,19 +1,19 @@
 import { ProfileManager } from '../profiles'
 import { aiLogger } from '../logger'
 
-export type TranslationAvailability = 'available' | 'downloadable' | 'downloading' | 'unavailable'
-
 export class MyTranslator {
-  private translator: any = null
+  private translator: Translator | null = null
 
-  async checkAvailability(): Promise<TranslationAvailability> {
-    // @ts-ignore
+  async checkAvailability(): Promise<Availability> {
     if (typeof Translator === 'undefined') {
       return 'unavailable'
     }
 
     const profile = await ProfileManager.getActiveProfile()
-    // @ts-ignore
+    aiLogger('Checking Translator availability:', {
+      sourceLanguage: profile.sourceLanguage,
+      targetLanguage: profile.targetLanguage
+    })
     return await Translator.availability({
       sourceLanguage: profile.sourceLanguage,
       targetLanguage: profile.targetLanguage
@@ -22,26 +22,28 @@ export class MyTranslator {
 
   async initialize(onProgress?: (loaded: number, total: number) => void): Promise<boolean> {
     try {
-      // @ts-ignore
       if (typeof Translator === 'undefined') {
         return false
       }
 
       const profile = await ProfileManager.getActiveProfile()
-      const options: any = {
+      aiLogger('Initializing Translator:', {
+        sourceLanguage: profile.sourceLanguage,
+        targetLanguage: profile.targetLanguage
+      })
+      const options: TranslatorCreateOptions = {
         sourceLanguage: profile.sourceLanguage,
         targetLanguage: profile.targetLanguage
       }
 
       if (onProgress) {
-        options.monitor = (m: any) => {
-          m.addEventListener('downloadprogress', (e: any) => {
+        options.monitor = (m: CreateMonitor) => {
+          m.addEventListener('downloadprogress', (e: { loaded: number; total: number }) => {
             onProgress(e.loaded, e.total)
           })
         }
       }
 
-      // @ts-ignore
       this.translator = await Translator.create(options)
 
       return true

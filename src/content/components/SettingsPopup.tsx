@@ -353,7 +353,7 @@ export function SettingsPopup({ isOpen, onClose, triggerRef, platform = 'youtube
             onClick={handleUploadClick}
             type="link"
             showArrow={false}
-            iconSpace={true}
+            iconSpace
           />
 
           <div className="si-settings-popup-divider" />

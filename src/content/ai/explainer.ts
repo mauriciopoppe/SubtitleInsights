@@ -6,10 +6,10 @@ import { aiLogger } from '../logger'
 const SUPPORTED_LANGUAGES = ['en', 'ja', 'es']
 
 export class GrammarExplainer {
-  private rootSession: LanguageModelSession | null = null
-  private workingSession: LanguageModelSession | null = null
+  private rootSession: LanguageModel | null = null
+  private workingSession: LanguageModel | null = null
 
-  async checkAvailability(): Promise<LanguageModelAvailability> {
+  async checkAvailability(): Promise<Availability> {
     try {
       if (typeof window.LanguageModel !== 'undefined') {
         const profile = await ProfileManager.getActiveProfile()
@@ -34,8 +34,13 @@ export class GrammarExplainer {
           )
         }
 
+        aiLogger('Checking LanguageModel availability:', {
+          targetLanguage: profile.targetLanguage,
+          sourceLanguage: sourceLangForModel
+        })
+
         return await window.LanguageModel.availability({
-          languages: [profile.targetLanguage, sourceLangForModel]
+          expectedInputs: [{ type: 'text', languages: [profile.targetLanguage, sourceLangForModel] }]
         })
       }
       return 'unavailable'
@@ -66,6 +71,11 @@ export class GrammarExplainer {
       }
 
       const sourceLangForModel = isSourceSupported ? profile.sourceLanguage : 'en'
+
+      aiLogger('Initializing LanguageModel:', {
+        targetLanguage: profile.targetLanguage,
+        sourceLanguage: sourceLangForModel
+      })
 
       const params = await window.LanguageModel.params()
       const options: LanguageModelCreateOptions = {
