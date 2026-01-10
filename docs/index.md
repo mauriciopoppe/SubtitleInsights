@@ -135,7 +135,7 @@ hero:
         <a href="./introduction/" class="action-btn primary">Get Started</a>
         <p class="donation-text">Finding it useful?</p>
         <a href="https://buymeacoffee.com/d7pj0jyto6" target="_blank" class="action-btn donation">
-          ☕ Buy me a coffee
+          ☕ Buy me a chai
         </a>
       </div>
     </div>
@@ -290,7 +290,7 @@ hero:
   padding: 0.8rem 1.5rem;
   border-radius: 8px;
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: none !important;
   transition: all 0.2s;
 }
 
