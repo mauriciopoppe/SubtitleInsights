@@ -23,6 +23,7 @@
   align-items: center;
   gap: 4px;
   user-select: text;
+  max-width: 50%;
 }
 
 .si-overlay-controls {
@@ -96,7 +97,7 @@
 .si-insights {
   font-size: 0.75em;
   color: #aaa;
-  max-width: 600px;
+  max-width: 100%;
   margin-top: 4px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding-top: 4px;

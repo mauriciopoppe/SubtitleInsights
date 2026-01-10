@@ -10,6 +10,15 @@ Subtitle Insights supports native browser shortcuts for seamless navigation. To 
 | **Previous Segment** | Jump to the beginning of the *previous* subtitle segment. | **Preserves State:** If paused, stays paused. If playing, keeps playing. |
 | **Replay Segment** | Jump to the beginning of the *current* subtitle segment. | **Force Play:** Always resumes playback, even if currently paused. |
 
+## Built-in Shortcuts (Non-configurable)
+
+These shortcuts are always available when the extension is active and the overlay is enabled.
+
+| Command | Key | Description |
+| :--- | :--- | :--- |
+| **Increase Font Size** | `+` or `=` | Increase the overlay font size (cycles through 18px, 24px, 32px, 44px). |
+| **Decrease Font Size** | `-` or `_` | Decrease the overlay font size (cycles through 44px, 32px, 24px, 18px). |
+
 ## How to Configure
 
 Since these are native Chrome commands, they work globally within the tab when the extension is active.
