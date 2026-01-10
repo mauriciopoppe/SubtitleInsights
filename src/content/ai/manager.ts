@@ -1,5 +1,5 @@
 import { translatorService } from './translator'
-import { grammarExplainer } from './explainer'
+import { aiInsights } from './insights'
 import { isComplexSentence } from './utils'
 import { Config } from '../config'
 import { store } from '../store'
@@ -36,12 +36,12 @@ export class AIManager {
       this.initiateDownloadFlow()
     }
 
-    // Grammar Explainer Setup
-    const grammarAvailability = await grammarExplainer.checkAvailability()
-    aiLogger('AI Grammar Explainer availability:', grammarAvailability)
+    // AI Insights Setup
+    const grammarAvailability = await aiInsights.checkAvailability()
+    aiLogger('AI Insights availability:', grammarAvailability)
     if (grammarAvailability === 'available') {
-      await grammarExplainer.initialize()
-      aiLogger('AI Grammar Explainer initialized.')
+      await aiInsights.initialize()
+      aiLogger('AI Insights initialized.')
     }
 
     // Setup subscription to segment changes
@@ -142,7 +142,7 @@ export class AIManager {
       const needsInsights =
         !this.pendingInsightsIndices.has(i) &&
         isGrammarEnabled &&
-        grammarExplainer.isReady() &&
+        aiInsights.isReady() &&
         !seg.insights &&
         isComplexSentence(seg.text) &&
         inInsightsRange
@@ -216,7 +216,7 @@ export class AIManager {
 
       if (insights) {
         try {
-          const analysis = await withTimeout(grammarExplainer.explainGrammar(segment.text), 10000)
+          const analysis = await withTimeout(aiInsights.explainGrammar(segment.text), 10000)
           store.updateSegmentInsights(index, analysis)
         } catch (e) {
           aiLogger(`ERROR: Insights explanation failed for ${index}:`, e)

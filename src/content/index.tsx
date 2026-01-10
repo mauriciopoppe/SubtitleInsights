@@ -1,6 +1,6 @@
 import { render } from 'preact'
 import { App } from './components/App'
-import { grammarExplainer } from './ai/explainer'
+import { aiInsights } from './ai/insights'
 import { translationManager } from './ai/manager'
 import { store, SubtitleStore } from './store'
 import { Config } from './config'
@@ -100,7 +100,7 @@ chrome.runtime.onMessage.addListener(message => {
         `New video detected via subtitles message (${lastVideoId} -> ${currentVideoId}). Clearing store.`
       )
       store.clear()
-      grammarExplainer.resetSession()
+      aiInsights.resetSession()
       lastVideoId = currentVideoId
     }
 
@@ -113,7 +113,7 @@ chrome.runtime.onMessage.addListener(message => {
     // Reset AI managers because content has changed
     translationManager.reset()
     if (currentVideoId === lastVideoId) {
-      grammarExplainer.resetSession()
+      aiInsights.resetSession()
     }
 
     store.replaceSegments(segments)
@@ -141,7 +141,7 @@ const initYouTube = async () => {
   if (currentVideoId && currentVideoId !== lastVideoId) {
     contentLogger(`Video ID changed (${lastVideoId} -> ${currentVideoId}). Clearing store.`)
     store.clear()
-    grammarExplainer.resetSession()
+    aiInsights.resetSession()
     lastVideoId = currentVideoId
   }
 

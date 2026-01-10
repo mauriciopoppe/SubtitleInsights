@@ -5,7 +5,7 @@ import { aiLogger } from '../logger'
 
 const SUPPORTED_LANGUAGES = ['en', 'ja', 'es']
 
-export class GrammarExplainer {
+export class AIInsights {
   private rootSession: LanguageModel | null = null
   private workingSession: LanguageModel | null = null
 
@@ -24,13 +24,13 @@ export class GrammarExplainer {
 
         if (!isTargetSupported) {
           store.setWarning(
-            `Target language "${profile.targetLanguage}" not supported by Explainer. Only en, ja, es are supported.`
+            `Target language "${profile.targetLanguage}" not supported by Insights. Only en, ja, es are supported.`
           )
           return 'unavailable'
         }
         if (!isSourceSupported) {
           store.setWarning(
-            `Source language "${profile.sourceLanguage}" not supported by Explainer. Falling back to "en" for analysis.`
+            `Source language "${profile.sourceLanguage}" not supported by Insights. Falling back to "en" for analysis.`
           )
         }
 
@@ -66,7 +66,7 @@ export class GrammarExplainer {
 
       if (!isSourceSupported) {
         store.setWarning(
-          `Source language "${profile.sourceLanguage}" not supported by Explainer. Falling back to "en".`
+          `Source language "${profile.sourceLanguage}" not supported by Insights. Falling back to "en".`
         )
       }
 
@@ -123,9 +123,9 @@ export class GrammarExplainer {
       }
 
       this.workingSession = await this.rootSession.clone()
-      aiLogger('GrammarExplainer: Session reset via clone.')
+      aiLogger('AIInsights: Session reset via clone.')
     } catch (error) {
-      aiLogger('ERROR: Error resetting grammar explainer session:', error)
+      aiLogger('ERROR: Error resetting insights session:', error)
     }
   }
 
@@ -150,7 +150,7 @@ export class GrammarExplainer {
     if (inputUsage / inputQuota > quotaLimit) {
       // Reset if usage exceeds 50%
       aiLogger(
-        `GrammarExplainer: Input usage is ${inputUsage}/${inputQuota} at around ${quotaLimit * 100}%. Resetting session.`
+        `AIInsights: Input usage is ${inputUsage}/${inputQuota} at around ${quotaLimit * 100}%. Resetting session.`
       )
       await this.resetSession()
       if (!this.workingSession) {
@@ -173,4 +173,4 @@ export class GrammarExplainer {
   }
 }
 
-export const grammarExplainer = new GrammarExplainer()
+export const aiInsights = new AIInsights()

@@ -3,7 +3,7 @@ import { AIManager } from './manager'
 import { Config } from '../config'
 import { store } from '../store'
 import { translatorService } from './translator'
-import { grammarExplainer } from './explainer'
+import { aiInsights } from './insights'
 
 // Mock dependencies
 vi.mock('../config', () => ({
@@ -39,8 +39,8 @@ vi.mock('./translator', () => ({
   }
 }))
 
-vi.mock('./explainer', () => ({
-  grammarExplainer: {
+vi.mock('./insights', () => ({
+  aiInsights: {
     checkAvailability: vi.fn(),
     initialize: vi.fn(),
     isReady: vi.fn(),
@@ -73,7 +73,7 @@ describe('AIManager', () => {
       { start: 0, end: 1000, text: 'This is a complex sentence that should trigger insights.' }
     ])
     vi.mocked(translatorService.isReady).mockReturnValue(true)
-    vi.mocked(grammarExplainer.isReady).mockReturnValue(true)
+    vi.mocked(aiInsights.isReady).mockReturnValue(true)
 
     // Complex sentence detection mock
     vi.mock('./utils', () => ({
