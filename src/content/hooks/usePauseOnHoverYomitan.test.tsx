@@ -53,11 +53,11 @@ describe('usePauseOnHover Yomitan Awareness', () => {
     videoController.setVideo(videoEl)
 
     // Mock chrome.dom
-    ;(global as any).chrome = {
+    vi.stubGlobal('chrome', {
       dom: {
         openOrClosedShadowRoot: vi.fn()
       }
-    }
+    })
   })
 
   afterEach(() => {
@@ -66,7 +66,6 @@ describe('usePauseOnHover Yomitan Awareness', () => {
       render(null, root)
     }
     vi.restoreAllMocks()
-    delete (global as any).chrome
   })
 
   it('should not resume playback if mouse moves from overlay to Yomitan popup', async () => {

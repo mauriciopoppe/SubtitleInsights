@@ -18,7 +18,8 @@ vi.mock('./config', () => ({
       isInsightsVisibleInSidebar: true,
       isTranslationVisibleInOverlay: true,
       isTranslationVisibleInSidebar: true,
-      isOriginalVisibleInOverlay: true
+      isOriginalVisibleInOverlay: true,
+      overlayFontSize: 24
     }),
     update: vi.fn().mockResolvedValue(undefined),
     subscribe: vi.fn().mockReturnValue(() => {})
@@ -263,5 +264,23 @@ describe('Integration: Overlay Rendering', () => {
       )
     })
     expect(controls?.classList.contains('visible')).toBe(false)
+  })
+
+  it('should adjust font size when +/- keys are pressed', async () => {
+    await act(async () => {
+      render(<OverlayApp />, document.getElementById('overlay-root')!)
+    })
+
+    // Press '+' to increase (from 24 to 32)
+    await act(async () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '+' }))
+    })
+    expect(Config.update).toHaveBeenCalledWith({ overlayFontSize: 32 })
+
+    // Press '-' to decrease (from 24 to 18)
+    await act(async () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '-' }))
+    })
+    expect(Config.update).toHaveBeenCalledWith({ overlayFontSize: 18 })
   })
 })

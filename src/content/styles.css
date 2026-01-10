@@ -23,7 +23,7 @@
   align-items: center;
   gap: 4px;
   user-select: text;
-  max-width: 50%;
+  max-width: 80%;
 }
 
 .si-overlay-controls {

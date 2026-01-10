@@ -1,0 +1,8 @@
+{
+  "track_id": "overlay_font_size_20260110",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-10T12:00:00Z",
+  "updated_at": "2026-01-10T12:00:00Z",
+  "description": "Implement keyboard shortcuts (-/_ and =/+) to adjust the overlay font size, similar to YouTube's native subtitle controls."
+}

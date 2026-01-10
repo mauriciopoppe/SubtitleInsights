@@ -12,7 +12,8 @@ const DEFAULT_CONFIG: AppConfig = {
   isTranslationVisibleInOverlay: true,
   isTranslationVisibleInSidebar: true,
   isOriginalVisibleInOverlay: true,
-  isDebugMode: false
+  isDebugMode: false,
+  overlayFontSize: 24
 }
 
 export function useConfig() {

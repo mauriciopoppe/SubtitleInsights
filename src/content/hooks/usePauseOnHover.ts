@@ -10,7 +10,7 @@ import { videoController } from '../VideoController'
 function isMouseOverYomitan(e: MouseEvent): boolean {
   try {
     const hosts = document.querySelectorAll('div[style*="all: initial"]')
-    for (const host of hosts) {
+    for (const host of Array.from(hosts)) {
       // @ts-ignore - chrome.dom.openOrClosedShadowRoot is a browser-specific API
       const shadowRoot = typeof chrome !== 'undefined' && chrome.dom ? chrome.dom.openOrClosedShadowRoot(host) : null
       if (shadowRoot) {

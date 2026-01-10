@@ -1,5 +1,5 @@
 import { Fragment } from 'preact'
-import { useState, useRef } from 'preact/hooks'
+import { useState, useRef, useEffect } from 'preact/hooks'
 import { useSubtitleStore } from '../hooks/useSubtitleStore'
 import { useConfig } from '../hooks/useConfig'
 import { usePauseOnHover } from '../hooks/usePauseOnHover'
@@ -67,13 +67,46 @@ export function OverlayApp() {
 
   usePauseOnHover(config.isPauseOnHoverEnabled, overlayRef, isVisible)
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input or textarea
+      const target = e.target as HTMLElement
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+        return
+      }
+
+      const FONT_SIZES = [18, 24, 32, 44]
+      const currentIndex = FONT_SIZES.indexOf(config.overlayFontSize)
+
+      if (e.key === '-' || e.key === '_') {
+        const nextIndex = Math.max(0, currentIndex === -1 ? 1 : currentIndex - 1)
+        const newSize = FONT_SIZES[nextIndex]
+        if (newSize !== config.overlayFontSize) {
+          Config.update({ overlayFontSize: newSize })
+        }
+      } else if (e.key === '=' || e.key === '+') {
+        const nextIndex = Math.min(FONT_SIZES.length - 1, currentIndex === -1 ? 1 : currentIndex + 1)
+        const newSize = FONT_SIZES[nextIndex]
+        if (newSize !== config.overlayFontSize) {
+          Config.update({ overlayFontSize: newSize })
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [config.overlayFontSize])
+
   if (!config.isEnabled) return null
 
   return (
     <div
       id="si-overlay"
       ref={overlayRef}
-      style={{ display: isVisible ? 'flex' : 'none' }}
+      style={{
+        display: isVisible ? 'flex' : 'none',
+        fontSize: `${config.overlayFontSize}px`
+      }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -126,7 +159,9 @@ export function OverlayApp() {
           )}
 
           {config.isTranslationVisibleInOverlay && (
-            <div className="si-translation">{activeSegment.translation || ''}</div>
+            <div className="si-translation" style={{ fontSize: '0.8em' }}>
+              {activeSegment.translation || ''}
+            </div>
           )}
 
           {activeSegment.insights && config.isInsightsVisibleInOverlay && (

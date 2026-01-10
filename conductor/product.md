@@ -41,6 +41,7 @@ To maintain a high-end feel when using the bright accent yellow on the dark back
       - **Replay Segment:** Instantly replay the current segment to listen again.
       - **Scroll Sync:** Button to sync the sidebar view to the current active segment.
       - **Pause on Hover Toggle:** Quickly enable/disable the pause-on-hover behavior.
+      - **Appearance Control:** Dynamic font size adjustment via keyboard shortcuts (`-`/`+`) with discrete levels (18px, 24px, 32px, 44px) and intelligent layout constraints (max-width 80%).
 
 3.  **Smart Sidebar**
     - Displays the full transcript of the video with real-time active segment highlighting.
