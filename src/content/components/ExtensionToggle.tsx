@@ -20,7 +20,7 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
   const ariaLabel = 'Open Subtitle Insights Settings'
 
   const icon = (
-    <svg viewBox="0 -4 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 -4 64 72" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
       <rect
         x="22"
         y="14"
@@ -63,7 +63,9 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
       className="si-toggle-container"
       style={{
         position: 'relative',
-        display: 'inline-block',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         verticalAlign: isYouTube ? 'top' : 'middle',
         height: isYouTube ? '100%' : 'auto'
       }}
@@ -83,8 +85,8 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
           background: 'none',
           border: 'none',
           cursor: 'pointer',
-          width: isYouTube ? '46px' : 'auto',
-          height: '100%',
+          width: isYouTube ? '46px' : '36px',
+          height: isYouTube ? '100%' : '36px',
           padding: 0
         }}
       >

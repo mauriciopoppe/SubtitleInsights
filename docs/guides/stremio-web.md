@@ -4,6 +4,7 @@ Subtitle Insights supports `web.stremio.com`, allowing you to apply AI analysis 
 
 ## Integration Details
 
+- **Supported Domains:** Only `web.stremio.com` is supported. If you are using `app.strem.io`, you must change the URL in your browser's address bar to `web.stremio.com` for the extension to activate.
 - **Sidebar Positioning:** On Stremio, the sidebar is fixed to the right side of the screen.
 - **Player Resizing:** The video player automatically shrinks to accommodate the sidebar when it is active, ensuring nothing is hidden.
 - **Overlay:** The overlay works identically to the YouTube version, appearing directly over the Stremio player.

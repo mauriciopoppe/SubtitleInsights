@@ -1,0 +1,8 @@
+{
+  "track_id": "app_strem_io_support_20260109",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-09T21:30:00Z",
+  "updated_at": "2026-01-09T21:30:00Z",
+  "description": "Add support for the website https://app.strem.io/ (alias of web.stremio.com)."
+}

@@ -60,3 +60,7 @@ _No active tracks at the moment._
 ### Other
 - [ ] **Rebrand to 'Subtitle Insights' and Prefix Migration** (Archived)
   _Link: [./conductor/archive/rebrand_subtitle_insights_20251231/](./conductor/archive/rebrand_subtitle_insights_20251231/)_
+---
+
+## [ ] Track: Support for app.strem.io (Cancelled)
+*Link: [./conductor/tracks/app_strem_io_support_20260109/](./conductor/tracks/app_strem_io_support_20260109/)*
