@@ -11,9 +11,13 @@ Subtitle Insights supports `web.stremio.com`, allowing you to apply AI analysis 
 ## How to Use
 
 1. Navigate to [web.stremio.com](https://web.stremio.com) and start a video.
-2. Select a subtitle track from the native Stremio subtitle menu.
+2. Select a subtitle track from the native Stremio subtitle menu, or upload your own `.srt` file.
 3. The Subtitle Insights toggle will appear in the Stremio control bar.
 4. Click the toggle to enable the Sidebar or Overlay.
+
+::: tip
+If your uploaded subtitles are out of sync with the audio, you can use the [Adjusting Subtitle Timing](/user-manual/selecting-subtitles#adjusting-subtitle-timing) feature in the Sidebar to align them globally with a single click.
+:::
 
 ## Known Limitations
 

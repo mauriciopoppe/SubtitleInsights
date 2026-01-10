@@ -5,7 +5,18 @@ export default defineConfig({
   description: 'Smart AI insights and translations for YouTube subtitles',
   appearance: 'dark',
   base: '/SubtitleInsights/',
-  head: [['link', { rel: 'icon', type: 'image/svg+xml', href: '/SubtitleInsights/logo.svg' }]],
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/SubtitleInsights/logo.svg' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    [
+      'link',
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap'
+      }
+    ]
+  ],
   themeConfig: {
     logo: '/logo.svg',
     nav: [
@@ -29,7 +40,8 @@ export default defineConfig({
           { text: 'Overlay', link: '/user-manual/overlay' },
           { text: 'Sidebar', link: '/user-manual/sidebar' },
           { text: 'AI Capabilities', link: '/user-manual/ai-capabilities' },
-          { text: 'Profiles', link: '/user-manual/profiles' }
+          { text: 'Profiles', link: '/user-manual/profiles' },
+          { text: 'Keyboard Shortcuts', link: '/user-manual/keyboard-shortcuts' }
         ]
       },
       {

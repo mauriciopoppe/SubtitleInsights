@@ -37,7 +37,7 @@ To keep the viewing experience clean, interactive controls only appear when the 
 When enabled, hovering over the overlay near the end of a subtitle segment will automatically pause the video.
 
 - **Learning Impact:** This provides extra time to digest complex sentences or check the translation without the pressure of the video continuing to play.
-- **Recommended Workflow:** A common and effective workflow is to listen to the dialogue first, attempt to read along with the original text, and then use the paused time to review the translation and insights if needed. Once ready, simply press the **Space bar** to resume playback and continue the video. Moving the mouse away can also be configured to resume playback automatically.
+- **Recommended Workflow:** A common and effective workflow is to listen to the dialogue first, attempt to read along with the original text, and then use the paused time to review the translation and insights if needed. Once ready, simply press the **Space bar** to resume playback and continue the video, or move the mouse away from the overlay to resume playback.
 
 ### Scroll to Segment
 
@@ -50,6 +50,10 @@ If the sidebar is visible, clicking this control will instantly scroll the trans
 This control allows for the instant replaying of the current subtitle segment.
 
 - **Learning Impact:** Repetition is key to listening comprehension. This feature makes it easy to hear a tricky phrase multiple times without fumbling with the video player's seek bar.
+
+::: tip
+For even faster repetition, you can configure a [keyboard shortcut](/user-manual/keyboard-shortcuts) (e.g., `Ctrl + R`) to replay the segment without using your mouse.
+:::
 
 ## Settings Popup (Native Aesthetic)
 

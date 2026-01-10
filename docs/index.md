@@ -108,6 +108,16 @@ hero:
 
 <div class="waveform-separator"></div>
 
+<FeatureRow
+  title="Customize for Any Language"
+  description="Subtitle Insights is designed to be language-agnostic. Easily create new language profiles, configure source/target languages, and customize the AI system prompt to focus on grammar, vocabulary, or cultural nuances."
+  videoSrc="./multi-lingual-support_optimized.mp4"
+  sourceLink="https://www.youtube.com/@Frenchinmotion"
+  sourceName="French in Motion"
+/>
+
+<div class="waveform-separator"></div>
+
 <div class="pricing-section">
   <div class="pricing-container">
     <div class="pricing-annotation-wrapper">
