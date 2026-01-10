@@ -19,7 +19,18 @@ Powered by **Gemini Nano** (via the [Chrome Prompt API](https://developer.chrome
 - **Beyond Literal Translation:** Explains idiomatic expressions and nuances that a simple translation might overlook.
 
 ::: tip Note: Language Support
+<div style="display: flex; gap: 20px; align-items: center;">
+  <div style="flex: 0 0 30%;">
+    <img src="./insights_warning_lang.jpg" alt="Language Support Warning" style="width: 100%;" />
+  </div>
+  <div>
+
 The Prompt API officially supports three primary languages: **English ("en")**, **Japanese ("ja")**, and **Spanish ("es")**. While the AI can often process inputs from other languages—for example, **French ("fr") to English ("en")** is known to work—the final output must be in one of the three officially supported languages.
+
+If a language is not supported by the Prompt API, a warning will be displayed in the extension popup to notify you that AI Insights may not be available for the current profile.
+
+  </div>
+</div>
 :::
 
 ## Buffering & Performance
