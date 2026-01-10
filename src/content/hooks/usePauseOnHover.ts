@@ -3,10 +3,42 @@ import { useEffect, useState, useRef, useCallback } from 'preact/hooks'
 import { store } from '../store'
 import { videoController } from '../VideoController'
 
+/**
+ * Checks if the mouse is currently over a Yomitan definition popup.
+ * Yomitan popups are typically inside a shadow root of a div with 'all: initial' style.
+ */
+function isMouseOverYomitan(e: MouseEvent): boolean {
+  try {
+    const hosts = document.querySelectorAll('div[style*="all: initial"]')
+    for (const host of hosts) {
+      // @ts-ignore - chrome.dom.openOrClosedShadowRoot is a browser-specific API
+      const shadowRoot = typeof chrome !== 'undefined' && chrome.dom ? chrome.dom.openOrClosedShadowRoot(host) : null
+      if (shadowRoot) {
+        const popup = shadowRoot.querySelector('.yomitan-popup')
+        if (popup instanceof HTMLElement) {
+          const rect = popup.getBoundingClientRect()
+          if (
+            e.clientX >= rect.left &&
+            e.clientX <= rect.right &&
+            e.clientY >= rect.top &&
+            e.clientY <= rect.bottom
+          ) {
+            return true
+          }
+        }
+      }
+    }
+  } catch (err) {
+    // Gracefully handle errors (e.g. if chrome.dom is restricted)
+  }
+  return false
+}
+
 export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLElement>, isOverlayVisible: boolean) {
   const [isHovering, setIsHovering] = useState(false)
   const isHoveringRef = useRef(false)
   const wasPausedByHoverRef = useRef(false)
+  const isOverYomitanRef = useRef(false)
 
   // Sync ref with state
   useEffect(() => {
@@ -26,6 +58,7 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
 
   const resetHoverState = useCallback(() => {
     setIsHovering(false)
+    isOverYomitanRef.current = false
     resetPauseLogic()
   }, [resetPauseLogic])
 
@@ -49,19 +82,39 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
       setIsHovering(true)
     }
 
-    const handleMouseLeave = () => {
+    const handleMouseLeave = (e: MouseEvent) => {
+      // If the mouse left the overlay but is now over Yomitan, don't set isHovering to false yet
+      if (isMouseOverYomitan(e)) {
+        isOverYomitanRef.current = true
+        return
+      }
       setIsHovering(false)
     }
 
     overlay.addEventListener('mousemove', handleMouseMove)
     overlay.addEventListener('mouseleave', handleMouseLeave)
 
+    // Global mouse listener to detect when leaving Yomitan
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (isOverYomitanRef.current) {
+        const overYomitan = isMouseOverYomitan(e)
+        const overOverlay = e.target instanceof Node && overlay.contains(e.target)
+
+        if (!overYomitan && !overOverlay) {
+          isOverYomitanRef.current = false
+          setIsHovering(false)
+        }
+      }
+    }
+
+    window.addEventListener('mousemove', handleGlobalMouseMove)
+
     // ResizeObserver to handle content changes shrinking the overlay from under the mouse
     let resizeObserver: ResizeObserver | null = null
     if (typeof ResizeObserver !== 'undefined') {
       resizeObserver = new ResizeObserver(() => {
         if (overlay) {
-          setIsHovering(overlay.matches(':hover'))
+          setIsHovering(overlay.matches(':hover') || isOverYomitanRef.current)
         }
       })
       resizeObserver.observe(overlay)
@@ -70,6 +123,7 @@ export function usePauseOnHover(isEnabled: boolean, overlayRef: RefObject<HTMLEl
     return () => {
       overlay.removeEventListener('mousemove', handleMouseMove)
       overlay.removeEventListener('mouseleave', handleMouseLeave)
+      window.removeEventListener('mousemove', handleGlobalMouseMove)
       resizeObserver?.disconnect()
     }
   }, [isEnabled, overlayRef, resetHoverState, isOverlayVisible])

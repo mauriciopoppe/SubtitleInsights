@@ -1,0 +1,8 @@
+{
+  "track_id": "yomitan_aware_pause_20260109",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-09T21:45:00Z",
+  "updated_at": "2026-01-09T21:45:00Z",
+  "description": "Integrate Yomitan popup detection into the 'Pause on Hover' feature to prevent playback resumption when hovering over the Yomitan definition popup."
+}
