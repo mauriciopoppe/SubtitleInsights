@@ -21,30 +21,9 @@ export function ExtensionToggle({ platform = 'youtube' }: ExtensionToggleProps) 
 
   const icon = (
     <svg viewBox="0 -4 64 72" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-      <rect
-        x="22"
-        y="14"
-        width="20"
-        height="4"
-        rx="2"
-        stroke="currentColor"
-      />
-      <rect
-        x="16"
-        y="26"
-        width="32"
-        height="4"
-        rx="2"
-        stroke="currentColor"
-      />
-      <rect
-        x="10"
-        y="38"
-        width="44"
-        height="14"
-        rx="4"
-        stroke="currentColor"
-      />
+      <rect x="22" y="14" width="20" height="4" rx="2" stroke="currentColor" />
+      <rect x="16" y="26" width="32" height="4" rx="2" stroke="currentColor" />
+      <rect x="10" y="38" width="44" height="14" rx="4" stroke="currentColor" />
       <circle cx="48" cy="45" r="3" />
     </svg>
   )

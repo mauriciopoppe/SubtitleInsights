@@ -58,20 +58,46 @@ export function App() {
           <div className="settings-item">
             <div className="settings-item-info">
               <div className="settings-item-title">Debug Mode</div>
-              <div className="settings-item-description">Enable detailed logging in the console for all si:* namespaces.</div>
+              <div className="settings-item-description">
+                Enable detailed logging in the console for all si:* namespaces.
+              </div>
             </div>
-            <div
-              className={`si-toggle-switch ${config?.isDebugMode ? 'enabled' : ''}`}
-              onClick={toggleDebugMode}
-            />
+            <div className={`si-toggle-switch ${config?.isDebugMode ? 'enabled' : ''}`} onClick={toggleDebugMode} />
           </div>
         </div>
       )}
 
-      <footer className="settings-footer" style={{ textAlign: 'center', marginTop: '60px', color: '#aaa', borderTop: 'var(--si-border-standard)', paddingTop: '20px' }}>
-        <a href="https://mauriciopoppe.github.io/SubtitleInsights/" target="_blank" rel="noopener noreferrer" style={{ color: '#3ea6ff', textDecoration: 'none' }}>Subtitle Insights</a>
+      <footer
+        className="settings-footer"
+        style={{
+          textAlign: 'center',
+          marginTop: '60px',
+          color: '#aaa',
+          borderTop: 'var(--si-border-standard)',
+          paddingTop: '20px'
+        }}
+      >
+        <a
+          href="https://mauriciopoppe.github.io/SubtitleInsights/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#3ea6ff', textDecoration: 'none' }}
+        >
+          Subtitle Insights
+        </a>
         {' • '}
-        Made with <span style={{ color: 'deeppink', fontSize: '1.5em', verticalAlign: 'middle', margin: '0 4px' }}>♥</span> by <a href="https://mauriciopoppe.com" target="_blank" rel="noopener noreferrer" style={{ color: '#3ea6ff', textDecoration: 'none' }}>Mauricio Poppe</a>
+        Made with{' '}
+        <span style={{ color: 'deeppink', fontSize: '1.5em', verticalAlign: 'middle', margin: '0 4px' }}>
+          ♥
+        </span> by{' '}
+        <a
+          href="https://mauriciopoppe.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#3ea6ff', textDecoration: 'none' }}
+        >
+          Mauricio Poppe
+        </a>
       </footer>
     </div>
   )

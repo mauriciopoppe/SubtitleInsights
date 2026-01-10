@@ -19,7 +19,7 @@ export class VideoController {
 
   constructor(store: SubtitleStore) {
     this.store = store
-    
+
     // We create a signal that tracks store updates to force computed re-evaluation
     const storeVersion = signal(0)
     this.store.addChangeListener(() => {
@@ -45,11 +45,11 @@ export class VideoController {
       const version = storeVersion.value
       const time = this.currentTimeMs.value
       const segments = this.store.getAllSegments()
-      
+
       // Optimization: findIndex is O(N), but necessary if we don't assume sorted/non-overlapping perfect structure.
       // Given segments are sorted by start time:
       const nextIndex = segments.findIndex(seg => seg.start >= time)
-      
+
       // If found, return it. If not found (end of video), return -1.
       // If nextIndex is 0, it means we are before the first segment.
       return version >= 0 ? nextIndex : -1
@@ -58,7 +58,7 @@ export class VideoController {
 
   public setVideo(video: HTMLVideoElement) {
     if (this.video === video) return
-    
+
     videoLogger('Setting video element', video)
 
     if (this.video) {
@@ -66,7 +66,7 @@ export class VideoController {
     }
     this.video = video
     this.addListeners()
-    
+
     // Initial state
     this.currentTimeMs.value = video.currentTime * 1000
     this.isPlaying.value = !video.paused

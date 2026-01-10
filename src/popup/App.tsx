@@ -1,4 +1,3 @@
-
 export function App() {
   const openOptionsPage = () => {
     if (chrome.runtime.openOptionsPage) {

@@ -17,12 +17,7 @@ function isMouseOverYomitan(e: MouseEvent): boolean {
         const popup = shadowRoot.querySelector('.yomitan-popup')
         if (popup instanceof HTMLElement) {
           const rect = popup.getBoundingClientRect()
-          if (
-            e.clientX >= rect.left &&
-            e.clientX <= rect.right &&
-            e.clientY >= rect.top &&
-            e.clientY <= rect.bottom
-          ) {
+          if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
             return true
           }
         }

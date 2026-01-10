@@ -14,20 +14,13 @@ interface SidebarItemProps {
 }
 
 export function SidebarItem({ segment, index }: SidebarItemProps) {
-
   const config = useConfig()
 
   const itemRef = useRef<HTMLDivElement>(null)
 
-
-
   const isActive = useComputed(() => videoController.activeSegmentIndex.value === index)
 
-
-
   const checkProximity = useCallback((x: number, _y: number, rect: DOMRect) => {
-
-
     // Show if within 60px of the right edge
     return x >= rect.width - 60
   }, [])

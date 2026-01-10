@@ -116,7 +116,6 @@ describe('usePauseOnHover Yomitan Awareness', () => {
       toJSON: () => {}
     })
     yomitanShadowRoot.appendChild(yomitanIframe)
-
     ;(chrome.dom.openOrClosedShadowRoot as any).mockReturnValue(yomitanShadowRoot)
     vi.spyOn(document, 'querySelectorAll').mockImplementation(selector => {
       if (selector === 'div[style*="all: initial"]') {
@@ -128,17 +127,21 @@ describe('usePauseOnHover Yomitan Awareness', () => {
     // 3. Simulate mouse leaving overlay but entering Yomitan popup
     await act(() => {
       // First mousemove on window to simulate moving towards Yomitan
-      window.dispatchEvent(new MouseEvent('mousemove', {
-        clientX: 150,
-        clientY: 150,
-        bubbles: true
-      }))
+      window.dispatchEvent(
+        new MouseEvent('mousemove', {
+          clientX: 150,
+          clientY: 150,
+          bubbles: true
+        })
+      )
       // Then mouseleave on overlay
-      overlayEl.dispatchEvent(new MouseEvent('mouseleave', {
-        clientX: 150,
-        clientY: 150,
-        bubbles: true
-      }))
+      overlayEl.dispatchEvent(
+        new MouseEvent('mouseleave', {
+          clientX: 150,
+          clientY: 150,
+          bubbles: true
+        })
+      )
     })
 
     // Should NOT resume playback
@@ -147,10 +150,12 @@ describe('usePauseOnHover Yomitan Awareness', () => {
 
     // 4. Simulate mouse leaving Yomitan popup
     await act(() => {
-      window.dispatchEvent(new MouseEvent('mousemove', {
-        clientX: 50,
-        clientY: 50
-      }))
+      window.dispatchEvent(
+        new MouseEvent('mousemove', {
+          clientX: 50,
+          clientY: 50
+        })
+      )
     })
 
     // Now it should resume

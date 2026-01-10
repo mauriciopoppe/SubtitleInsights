@@ -9,12 +9,12 @@ describe('Config', () => {
       storage: {
         local: {
           get: vi.fn(),
-          set: vi.fn(),
+          set: vi.fn()
         },
         onChanged: {
-          addListener: vi.fn(),
-        },
-      },
+          addListener: vi.fn()
+        }
+      }
     })
   })
 
@@ -51,9 +51,6 @@ describe('Config', () => {
 
     await Config.update({ overlayFontSize: 36 })
 
-    expect(mockSet).toHaveBeenCalledWith(
-      { si_overlay_font_size: 36 },
-      expect.any(Function)
-    )
+    expect(mockSet).toHaveBeenCalledWith({ si_overlay_font_size: 36 }, expect.any(Function))
   })
 })

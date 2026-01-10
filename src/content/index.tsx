@@ -96,9 +96,7 @@ chrome.runtime.onMessage.addListener(message => {
     // Race condition fix: If subtitles arrive before 'yt-navigate-finish' or 'init' runs,
     // we must reset the store NOW to prepare for the new video.
     if (currentVideoId && currentVideoId !== lastVideoId) {
-      contentLogger(
-        `New video detected via subtitles message (${lastVideoId} -> ${currentVideoId}). Clearing store.`
-      )
+      contentLogger(`New video detected via subtitles message (${lastVideoId} -> ${currentVideoId}). Clearing store.`)
       store.clear()
       aiInsights.resetSession()
       lastVideoId = currentVideoId

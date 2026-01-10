@@ -50,7 +50,9 @@ p {
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
   text-decoration: none;
   display: inline-block;
 }

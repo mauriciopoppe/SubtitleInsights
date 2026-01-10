@@ -82,7 +82,7 @@ export function SidebarApp() {
       } catch (err) {
         storeLogger('ERROR: Failed to parse SRT file', err)
         alert('Failed to parse SRT file.')
-      } 
+      }
     }
     reader.readAsText(file)
   }

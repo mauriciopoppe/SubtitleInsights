@@ -65,9 +65,7 @@ export class AIInsights {
       const isSourceSupported = SUPPORTED_LANGUAGES.includes(profile.sourceLanguage)
 
       if (!isSourceSupported) {
-        store.setWarning(
-          `Source language "${profile.sourceLanguage}" not supported by Insights. Falling back to "en".`
-        )
+        store.setWarning(`Source language "${profile.sourceLanguage}" not supported by Insights. Falling back to "en".`)
       }
 
       const sourceLangForModel = isSourceSupported ? profile.sourceLanguage : 'en'
