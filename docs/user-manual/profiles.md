@@ -2,6 +2,14 @@
 
 Profiles allow for the customization of how the AI interacts with different languages and learning styles.
 
+::: raw
+
+<video controls loop muted playsinline>
+  <source src="../public/multi-lingual-support_optimized.mp4" type="video/mp4">
+</video>
+
+:::
+
 ## Managing Profiles
 
 The Profile Manager is accessible through the **Detailed Settings** link in the extension's popup menu.

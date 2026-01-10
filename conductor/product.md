@@ -36,7 +36,7 @@ To maintain a high-end feel when using the bright accent yellow on the dark back
 
 2.  **In-Page Overlay**
     - Displays the current subtitle segment directly over the video player.
-    - **Pause on Hover:** Automatically pauses the video when the user hovers over the overlay near the end of a segment, allowing time to read and process the information.
+    - **Pause on Hover:** Automatically pauses the video when the user hovers over the overlay near the end of a segment, allowing time to read and process the information. It is aware of Yomitan popups, keeping the video paused while the user interacts with the dictionary.
     - **Overlay Controls (Proximity):** Controls appear only when the mouse is near the top-left area to avoid distraction.
       - **Replay Segment:** Instantly replay the current segment to listen again.
       - **Scroll Sync:** Button to sync the sidebar view to the current active segment.

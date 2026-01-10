@@ -38,6 +38,7 @@ When enabled, hovering over the overlay near the end of a subtitle segment will 
 
 - **Learning Impact:** This provides extra time to digest complex sentences or check the translation without the pressure of the video continuing to play.
 - **Recommended Workflow:** A common and effective workflow is to listen to the dialogue first, attempt to read along with the original text, and then use the paused time to review the translation and insights if needed. Once ready, simply press the **Space bar** to resume playback and continue the video, or move the mouse away from the overlay to resume playback.
+- **Dictionary Integration:** The pause is maintained even if you move your mouse to a Yomitan definition popup to look up a word.
 
 ### Scroll to Segment
 
