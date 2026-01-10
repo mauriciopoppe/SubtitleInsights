@@ -199,7 +199,6 @@ hero:
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   line-height: 1.4;
-  font-family: cursive, sans-serif;
 }
 
 .pricing-annotation {
