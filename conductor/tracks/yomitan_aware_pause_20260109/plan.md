@@ -10,7 +10,7 @@ Integrate Yomitan detection into `usePauseOnHover` to prevent premature playback
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Implementation & Hook Refactoring' (Protocol in workflow.md)
 
 ## Phase 2: Verification & Polish
-- [ ] Task: Verify that the video stays paused when moving from the subtitle overlay to a Yomitan popup.
-- [ ] Task: Verify that the video resumes correctly when the mouse leaves both areas.
-- [ ] Task: Ensure the global mousemove listener is correctly cleaned up to avoid memory leaks.
+- [x] Task: Verify that the video stays paused when moving from the subtitle overlay to a Yomitan popup.
+- [x] Task: Verify that the video resumes correctly when the mouse leaves both areas.
+- [x] Task: Ensure the global mousemove listener is correctly cleaned up to avoid memory leaks.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Verification & Polish' (Protocol in workflow.md)
