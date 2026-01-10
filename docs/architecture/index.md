@@ -6,7 +6,7 @@ Subtitle Insights is built with a specific set of principles that prioritize foc
 
 ### 1. Be Great at One Thing
 
-The primary goal is providing deep insights from subtitles. Features like vocabulary mining or spaced repetition (SRS) are left to specialized tools like **Yomitan** and **Anki**. By focusing on real-time analysis, the extension remains lightweight and does one job exceptionally well.
+The primary goal is providing deep insights from subtitles. Features like vocabulary mining or spaced repetition (SRS) are left to specialized tools like **Yomitan** and **Anki**. By focusing on real-time analysis, the extension remains lightweight and does one job well.
 
 ### 2. Embedded & Integrated UI
 

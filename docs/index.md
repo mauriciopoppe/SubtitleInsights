@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Subtitle Insights
-  text: Smart AI insights and translations for video subtitles
-  tagline: "Subtitle data, clarified. Transform your language learning experience with <strong style='color: var(--vp-c-brand-1)'>free, local, and privacy-first AI</strong>."
+  text: Deep insights and translations for video subtitles
+  tagline: "Subtitle data, clarified. Transform your language learning experience with <strong style='color: var(--vp-c-brand-1)'>free, local, and privacy-first Chrome Built-in AI</strong>."
   image:
     src: /logo.svg
     alt: Subtitle Insights Logo
@@ -76,7 +76,7 @@ hero:
 
 <FeatureRow
   title="Subtitle data, clarified."
-  description="Subtitle Insights transforms your favorite videos into interactive lessons. Get real-time translations and grammatical breakdowns without leaving the player."
+  description="Subtitle Insights transforms your favorite videos into interactive lessons. Get real-time translations and breakdowns without leaving the player."
   videoSrc="./intro_web.mp4"
   sourceLink="https://www.youtube.com/@cijapanese"
   sourceName="Comprehensible Japanese"
@@ -89,9 +89,9 @@ hero:
 <div class="waveform-separator"></div>
 
 <FeatureRow
-  title="Experience the AI-Powered Overlay"
-  description="The overlay appears exactly when you need it, providing instant context for the current subtitle segment. Hover to pause, click to replay segments."
-  videoSrc="./overlay.mp4"
+  title="Interactive Insights Overlay"
+  description="The overlay provides instant context for every subtitle segment. Enable 'Pause on Hover' to stop the video automatically at the end of a line for deep analysis and shadowing, or move through segments effortlessly using keyboard shortcuts."
+  videoSrc="./overlay_controls.mp4"
   sourceLink="https://www.youtube.com/@cijapanese"
   sourceName="Comprehensible Japanese"
 />
@@ -110,7 +110,7 @@ hero:
 
 <FeatureRow
   title="Customize for Any Language"
-  description="Subtitle Insights is designed to be language-agnostic. Easily create new language profiles, configure source/target languages, and customize the AI system prompt to focus on grammar, vocabulary, or cultural nuances."
+  description="Subtitle Insights is designed to be language-agnostic. Easily create new language profiles, configure source/target languages, and customize the system prompt to focus on grammar, vocabulary, or cultural nuances."
   videoSrc="./multi-lingual-support_optimized.mp4"
   sourceLink="https://www.youtube.com/@Frenchinmotion"
   sourceName="French in Motion"
@@ -122,7 +122,7 @@ hero:
   <div class="pricing-container">
     <div class="pricing-annotation-wrapper">
       <div class="pricing-annotation">
-        Translation & Insights run on your device thanks to Chrome Bult-in AI
+        Translation & Insights run on your device thanks to Chrome's Built-in AI
       </div>
       <svg class="arrow-svg" viewBox="0 0 100 50" width="80" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M10,10 C30,40 70,0 90,30 l-10,-5 M90,30 l-5,-10" />
@@ -136,8 +136,8 @@ hero:
       </div>
       <ul class="pricing-features">
         <li>✅ Unlimited Translations</li>
-        <li>✅ Unlimited AI Insights</li>
-        <li>✅ Privacy-First (Local AI)</li>
+        <li>✅ Unlimited Insights</li>
+        <li>✅ Privacy-First (Local AI Models)</li>
         <li>✅ No API Keys Required</li>
         <li>✅ No Account Needed</li>
       </ul>

@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Subtitle data, clarified.</strong><br>
-  Transform your language learning experience with free, local, and privacy-first AI.
+  Transform your language learning experience with free, local, and privacy-first Chrome Built-in AI.
 </p>
 
 <p align="center">
@@ -47,7 +47,7 @@ Subtitle Insights bridges the gap between passive watching and active learning o
 
 ## Features
 
-### Experience the AI-Powered Overlay
+### Experience the Interactive Insights Overlay
 
 The overlay appears exactly when you need it, providing instant context for the current subtitle segment. Hover to pause, click to replay segments.
 
@@ -61,7 +61,7 @@ https://github.com/user-attachments/assets/72438bae-6cc9-4764-a633-908d549cde7e
 
 ---
 
-## Powered by Chrome Built-in AI
+## Powered by Chrome's Built-in AI
 
 Learning journeys should be private and accessible. Subtitle Insights leverages **Chrome's built-in AI APIs**, including the **Prompt API (Gemini Nano)** and **Translation API**.
 
