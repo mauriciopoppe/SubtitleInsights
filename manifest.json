@@ -32,6 +32,9 @@
     },
     "replay_segment": {
       "description": "Replay segment"
+    },
+    "toggle_extension": {
+      "description": "Toggle Extension"
     }
   },
   "options_ui": {

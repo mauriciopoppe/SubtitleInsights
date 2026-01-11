@@ -78,6 +78,15 @@ chrome.runtime.onMessage.addListener(message => {
 
 chrome.commands.onCommand.addListener(async command => {
   bgLogger('Received command:', command)
+
+  if (command === 'toggle_extension') {
+    const config = await Config.get()
+    const newState = !config.isEnabled
+    await Config.update({ isEnabled: newState })
+    bgLogger(`Extension toggled via shortcut: ${newState ? 'Enabled' : 'Disabled'}`)
+    return
+  }
+
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
   if (tab?.id) {
