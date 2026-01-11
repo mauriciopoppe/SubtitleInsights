@@ -20,7 +20,20 @@ You must enable several experimental flags to allow local AI processing:
 
 ## 2. Install the Extension
 
-Since Subtitle Insights is in active development, you must install it in developer mode:
+The easiest way to install Subtitle Insights is by downloading a pre-built version from the releases page.
+
+### Option A: Install from GitHub Releases (Recommended)
+
+1. Navigate to the [Releases](https://github.com/mauriciopoppe/SubtitleInsights/releases) page on GitHub.
+2. Download the `subtitle-insights.zip` file from the latest release.
+3. Extract the ZIP file to a folder on your computer.
+4. Open Chrome and go to `chrome://extensions`.
+5. Enable **Developer mode** using the toggle in the top right corner.
+6. Click **Load unpacked** and select the folder where you extracted the extension.
+
+### Option B: Build from Source
+
+If you prefer to build the extension yourself or want to try the latest experimental features:
 
 1. Download or clone the repository from GitHub.
 2. Build the extension:
@@ -29,7 +42,7 @@ Since Subtitle Insights is in active development, you must install it in develop
    npm run build
    ```
 3. Open `chrome://extensions`.
-4. Enable **Developer mode** (top right toggle).
+4. Enable **Developer mode**.
 5. Click **Load unpacked** and select the `dist/` directory from the project folder.
 
 ## 3. Configuration & Verification
