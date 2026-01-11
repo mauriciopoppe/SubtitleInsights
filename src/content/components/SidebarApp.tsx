@@ -4,6 +4,7 @@ import { SidebarList } from './SidebarList'
 import { useSubtitleStore } from '../hooks/useSubtitleStore'
 import { useConfig } from '../hooks/useConfig'
 import { store, storeLogger } from '../store'
+import { videoController } from '../VideoController'
 
 export function SidebarApp() {
   const { segments, isUploadActive, uploadFilename } = useSubtitleStore()
@@ -22,14 +23,7 @@ export function SidebarApp() {
   // Handle initial auto-scroll when segments arrive
   useEffect(() => {
     if (segments.length > 0 && !hasInitiallyScrolledRef.current) {
-      const video = document.querySelector('video')
-      const timeMs = video ? video.currentTime * 1000 : 0
-
-      // Find active segment or nearest upcoming one
-      let targetIndex = segments.findIndex(s => timeMs >= s.start && timeMs <= s.end)
-      if (targetIndex === -1) {
-        targetIndex = segments.findIndex(s => s.start > timeMs)
-      }
+      const targetIndex = videoController.targetSegmentIndex.value
 
       if (targetIndex !== -1) {
         // We need to wait a tick for the items to actually be in the DOM
@@ -44,7 +38,9 @@ export function SidebarApp() {
             const listHeight = listContainer.clientHeight
 
             const scrollTop = itemTop - listHeight / 2 + itemHeight / 2
-            listContainer.scrollTo({ top: scrollTop, behavior: 'auto' })
+            if (typeof listContainer.scrollTo === 'function') {
+              listContainer.scrollTo({ top: scrollTop, behavior: 'auto' })
+            }
 
             hasInitiallyScrolledRef.current = true
           }
@@ -55,15 +51,18 @@ export function SidebarApp() {
 
   const handleSync = () => {
     const listContainer = document.querySelector('.si-sidebar-list') as HTMLElement
-    const activeItem = document.querySelector('.si-sidebar-item.active') as HTMLElement
+    const targetIndex = videoController.targetSegmentIndex.value
+    const item = document.querySelector(`.si-sidebar-item[data-index="${targetIndex}"]`) as HTMLElement
 
-    if (listContainer && activeItem) {
-      const itemTop = activeItem.offsetTop
-      const itemHeight = activeItem.offsetHeight
+    if (listContainer && item) {
+      const itemTop = item.offsetTop
+      const itemHeight = item.offsetHeight
       const listHeight = listContainer.clientHeight
 
       const scrollTop = itemTop - listHeight / 2 + itemHeight / 2
-      listContainer.scrollTo({ top: scrollTop, behavior: 'smooth' })
+      if (typeof listContainer.scrollTo === 'function') {
+        listContainer.scrollTo({ top: scrollTop, behavior: 'smooth' })
+      }
     }
   }
 
