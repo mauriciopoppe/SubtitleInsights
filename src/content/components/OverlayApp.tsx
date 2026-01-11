@@ -144,6 +144,7 @@ export function OverlayApp() {
 
       {activeSegment && !systemMessage && (
         <Fragment>
+          {/* 1em is explicitly used because stremio has a default 1rem setting for all elements. */}
           {config.isOriginalVisibleInOverlay && (
             <div className="si-original">
               {activeSegment.segmentedData ? (
@@ -159,9 +160,7 @@ export function OverlayApp() {
           )}
 
           {config.isTranslationVisibleInOverlay && (
-            <div className="si-translation" style={{ fontSize: '0.8em' }}>
-              {activeSegment.translation || ''}
-            </div>
+            <div className="si-translation">{activeSegment.translation || ''}</div>
           )}
 
           {activeSegment.insights && config.isInsightsVisibleInOverlay && (

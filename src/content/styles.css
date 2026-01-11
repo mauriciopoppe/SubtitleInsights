@@ -88,8 +88,13 @@
   margin-bottom: 4px;
 }
 
+/* 1em is explicitly used because stremio has a default 1rem setting for all elements. */
+.si-original {
+  font-size: 1em;
+}
+
 .si-translation {
-  font-size: 16px;
+  font-size: 0.75em;
   color: #aaa;
   margin-top: 4px;
 }
