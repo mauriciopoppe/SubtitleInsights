@@ -9,6 +9,7 @@ Subtitle Insights supports native browser shortcuts for seamless navigation. To 
 | **Next Segment**     | Jump to the beginning of the _next_ subtitle segment.     | **Preserves State:** If paused, stays paused. If playing, keeps playing. |
 | **Previous Segment** | Jump to the beginning of the _previous_ subtitle segment. | **Preserves State:** If paused, stays paused. If playing, keeps playing. |
 | **Replay Segment**   | Jump to the beginning of the _current_ subtitle segment.  | **Force Play:** Always resumes playback, even if currently paused.       |
+| **Toggle Extension** | Globally enable or disable the extension.                 | **Disables UI:** Hides Overlay and Sidebar immediately.                  |
 
 ## How to Configure
 
@@ -37,6 +38,7 @@ For an efficient learning experience, we suggest mappings that minimize hand mov
 | **Previous Segment** | `Ctrl + J`        |
 | **Next Segment**     | `Ctrl + L`        |
 | **Replay Segment**   | `Ctrl + R`        |
+| **Toggle Extension** | `Cmd + Shift + S` |
 
 Using these mappings allows you to navigate the video flow almost entirely from your keyboard, using `J` and `L` for backward/forward navigation (mirroring standard YouTube behavior) while holding `Ctrl`.
 
