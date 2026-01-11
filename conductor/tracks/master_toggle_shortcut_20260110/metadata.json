@@ -1,0 +1,8 @@
+{
+  "track_id": "master_toggle_shortcut_20260110",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-10T11:40:00Z",
+  "updated_at": "2026-01-10T11:40:00Z",
+  "description": "Add a keyboard shortcut to toggle the extension globally (Enabled/Disabled) without a default mapping."
+}

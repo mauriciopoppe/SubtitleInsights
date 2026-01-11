@@ -36,7 +36,7 @@ Subtitle Insights bridges the gap between passive watching and active learning o
 
 | Feature                      | Description                                                                                                                          |
 | :--------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| **🔒 Private, Local AI**     | All translations and insights are processed on-device using [Chrome's built-in AI](https://developer.chrome.com/docs/ai/built-in).                    |
+| **🔒 Private, Local AI**     | All translations and insights are processed on-device using [Chrome's built-in AI](https://developer.chrome.com/docs/ai/built-in).   |
 | **🧠 Automated Insights**    | Beyond word lookups. Gemini Nano analyzes entire sentences to explain complex grammar and cultural nuances.                          |
 | **⏯️ Smart Controls**        | Interactive controls appear only when needed. Hover to pause, replay segments instantly, and focus on learning without distractions. |
 | **🎬 Integrated Experience** | Designed to blend perfectly with YouTube and Stremio Web. Feels like a native feature, not an added layer.                           |

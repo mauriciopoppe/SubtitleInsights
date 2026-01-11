@@ -67,3 +67,8 @@ _No active tracks at the moment._
 
 ---
 
+
+---
+
+## [x] Track: Master Toggle Keyboard Shortcut
+*Link: [./conductor/tracks/master_toggle_shortcut_20260110/](./conductor/tracks/master_toggle_shortcut_20260110/)*

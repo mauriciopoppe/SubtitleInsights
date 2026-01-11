@@ -58,8 +58,8 @@ To maintain a high-end feel when using the bright accent yellow on the dark back
 
 5.  **Keyboard Shortcuts**
     - **Native Integration:** Uses `chrome.commands` for low-latency, browser-level interaction.
-    - **Navigation:** Configurable shortcuts for Next Segment, Previous Segment, and Replay Segment.
-    - **State Aware:** Shortcuts are automatically disabled when the extension is toggled OFF.
+    - **Navigation & Control:** Configurable shortcuts for Next Segment, Previous Segment, Replay Segment, and a **Master Toggle** to enable/disable the extension.
+    - **State Aware:** Shortcuts are automatically disabled when the extension is toggled OFF (except for the Master Toggle itself).
     - **Playback Control:** Intelligently preserves playing/paused state during navigation, while forcing playback for Replays.
 
 6.  **Language Profiles**
