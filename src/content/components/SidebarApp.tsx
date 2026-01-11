@@ -49,7 +49,7 @@ export function SidebarApp() {
     }
   }, [segments])
 
-  const handleSync = () => {
+  const handleScrollToCurrent = () => {
     const listContainer = document.querySelector('.si-sidebar-list') as HTMLElement
     const targetIndex = videoController.targetSegmentIndex.value
     const item = document.querySelector(`.si-sidebar-item[data-index="${targetIndex}"]`) as HTMLElement
@@ -112,7 +112,7 @@ export function SidebarApp() {
     <div id="si-sidebar" style={{ display: 'flex' }} onWheel={handleWheel}>
       <input type="file" accept=".srt" style={{ display: 'none' }} ref={fileInputRef} onChange={handleFileChange} />
       <SidebarHeader
-        onSync={handleSync}
+        onScrollToCurrent={handleScrollToCurrent}
         onUpload={handleUploadClick}
         isUploadActive={isUploadActive}
         uploadFilename={uploadFilename}
