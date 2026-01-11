@@ -30,5 +30,4 @@ If your uploaded subtitles are out of sync with the audio, you can use the [Adju
 
 ## Known Limitations
 
-- **Desktop Only:** Like all Chrome extension features, this requires a desktop browser.
-- **Subtitle Capture:** Subtitles must be selected through the Stremio interface for the extension to capture them. If they are hardcoded into the video (burned-in), the extension cannot "read" them.
+- The extension will only inject into the `<video>` controls once, if you move to different pages inside `web.stremio.com` you might not see the extension controls. The workaround is to be in the video you want to watch and then refresh the page.
