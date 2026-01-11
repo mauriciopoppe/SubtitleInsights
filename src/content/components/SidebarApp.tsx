@@ -34,9 +34,18 @@ export function SidebarApp() {
       if (targetIndex !== -1) {
         // We need to wait a tick for the items to actually be in the DOM
         setTimeout(() => {
-          const item = document.querySelector(`.si-sidebar-item[data-index="${targetIndex}"]`)
-          if (item && typeof item.scrollIntoView === 'function') {
-            item.scrollIntoView({ behavior: 'auto', block: 'center' })
+          const listContainer = document.querySelector('.si-sidebar-list') as HTMLElement
+          const item = document.querySelector(`.si-sidebar-item[data-index="${targetIndex}"]`) as HTMLElement
+
+          if (listContainer && item) {
+            // Calculate position to center the item
+            const itemTop = item.offsetTop
+            const itemHeight = item.offsetHeight
+            const listHeight = listContainer.clientHeight
+
+            const scrollTop = itemTop - listHeight / 2 + itemHeight / 2
+            listContainer.scrollTo({ top: scrollTop, behavior: 'auto' })
+
             hasInitiallyScrolledRef.current = true
           }
         }, 0)
@@ -45,9 +54,16 @@ export function SidebarApp() {
   }, [segments])
 
   const handleSync = () => {
-    const activeItem = document.querySelector('.si-sidebar-item.active')
-    if (activeItem) {
-      activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    const listContainer = document.querySelector('.si-sidebar-list') as HTMLElement
+    const activeItem = document.querySelector('.si-sidebar-item.active') as HTMLElement
+
+    if (listContainer && activeItem) {
+      const itemTop = activeItem.offsetTop
+      const itemHeight = activeItem.offsetHeight
+      const listHeight = listContainer.clientHeight
+
+      const scrollTop = itemTop - listHeight / 2 + itemHeight / 2
+      listContainer.scrollTo({ top: scrollTop, behavior: 'smooth' })
     }
   }
 
