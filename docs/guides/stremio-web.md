@@ -2,6 +2,14 @@
 
 Subtitle Insights supports `web.stremio.com`, allowing you to apply AI analysis to your favorite movies and shows.
 
+::: raw
+
+<video controls loop muted playsinline>
+  <source src="/stremio.mp4" type="video/mp4">
+</video>
+
+:::
+
 ## Integration Details
 
 - **Supported Domains:** Only `web.stremio.com` is supported. If you are using `app.strem.io`, you must change the URL in your browser's address bar to `web.stremio.com` for the extension to activate.
