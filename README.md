@@ -43,24 +43,6 @@ Subtitle Insights bridges the gap between passive watching and active learning o
 | **📁 Flexible Subtitles**    | Automatically capture YouTube captions or upload your own .srt files. Use the manual sync tool to align timing perfectly.            |
 | **💰 100% Free**             | No subscriptions, no API keys, no hidden costs. Leveraging the power of your own hardware via Chrome.                                |
 
----
-
-## Features
-
-### Experience the Interactive Insights Overlay
-
-The overlay appears exactly when you need it, providing instant context for the current subtitle segment. Hover to pause, click to replay segments.
-
-https://github.com/user-attachments/assets/d4adc043-8f8c-40d6-bf4b-23417f12df04
-
-### Stay in Sync with the Smart Sidebar
-
-Navigate the entire video transcript effortlessly. The sidebar stays perfectly synchronized with playback, allowing for quick reference of the current segment within the larger context.
-
-https://github.com/user-attachments/assets/72438bae-6cc9-4764-a633-908d549cde7e
-
----
-
 ## Powered by Chrome's Built-in AI
 
 Learning journeys should be private and accessible. Subtitle Insights leverages **Chrome's built-in AI APIs**, including the **Prompt API (Gemini Nano)** and **Translation API**.
@@ -69,11 +51,9 @@ Learning journeys should be private and accessible. Subtitle Insights leverages 
 - **Local Execution:** No subtitle data is ever sent to a server.
 - **Offline Capable:** Once models are downloaded by Chrome, insights work even without an internet connection.
 
----
-
 ## Documentation
 
-For full documentation, guides, and installation instructions, please visit our [Documentation Site](https://mauriciopoppe.github.io/SubtitleInsights/).
+For full documentation, guides, and installation instructions, please visit the [Documentation Site](https://mauriciopoppe.github.io/SubtitleInsights/).
 
 ## License
 
