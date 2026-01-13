@@ -9,8 +9,8 @@ When watching on **YouTube**, the extension automatically intercepts subtitle tr
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="./subtitles_automatic_capture.webm" type="video/webm">
-  <source src="./subtitles_automatic_capture.mp4" type="video/mp4">
+  <source src="../public/subtitles_automatic_capture.webm" type="video/webm">
+  <source src="../public/subtitles_automatic_capture.mp4" type="video/mp4">
 </video>
 
 :::
@@ -18,6 +18,14 @@ When watching on **YouTube**, the extension automatically intercepts subtitle tr
 ## Manual Upload (YouTube & Stremio)
 
 For videos without native captions or when using custom translation files, subtitles can be uploaded manually. This is the primary way to use the extension on **Stremio**, but it also works on YouTube.
+
+::: raw
+
+<video controls loop muted playsinline>
+  <source src="../public/stremio.mp4" type="video/mp4">
+</video>
+
+:::
 
 1. Open the extension menu in the video control bar.
 2. Select **Upload Subtitles**.

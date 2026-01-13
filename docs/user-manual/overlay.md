@@ -5,29 +5,20 @@ The in-page overlay is the heart of the Subtitle Insights experience, providing 
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="./overlay.webm" type="video/webm">
-  <source src="./overlay.mp4" type="video/mp4">
+  <source src="../public/overlay.webm" type="video/webm">
+  <source src="../public/overlay.mp4" type="video/mp4">
 </video>
 <p align="center">Source: <a href="https://www.youtube.com/watch?v=Oeo-18ik6Hs">Comprehensible Japanese</a></p>
 
 :::
 
 ## In-Page Overlay
-
-The overlay displays the current subtitle segment, its AI-generated translation, and insights directly on top of the video player.
-
-- **Customizable Visibility:** Every component of the overlay—the original text, the translation, and the insights—can be disabled individually through the extension's toggle settings. This allows for a completely tailored experience, whether you want a full analysis or just a simple translation.
-- **Visual Feedback:** Shows the original language alongside AI-powered translations and insights.
-
-## Proximity Controls
-
-To keep the viewing experience clean, interactive controls only appear when the mouse is near the top-left area of the overlay. These tools are designed to streamline the learning process:
-
+...
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="./overlay_controls.webm" type="video/webm">
-  <source src="./overlay_controls.mp4" type="video/mp4">
+  <source src="../public/overlay_controls.webm" type="video/webm">
+  <source src="../public/overlay_controls.mp4" type="video/mp4">
 </video>
 
 :::
