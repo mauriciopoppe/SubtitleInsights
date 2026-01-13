@@ -2,11 +2,15 @@
 
 The sidebar provides a comprehensive view of the entire video transcript, allowing for easy review of past segments and a look at what's coming next.
 
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../sidebar.webm" type="video/webm">
-  <source src="../sidebar.mp4" type="video/mp4">
+  <source :src="withBase('/sidebar.webm')" type="video/webm">
+  <source :src="withBase('/sidebar.mp4')" type="video/mp4">
 </video>
 <p align="center">Source: <a href="https://www.youtube.com/watch?v=sQKFxqlkPZI">Comprehensible Japanese</a></p>
 

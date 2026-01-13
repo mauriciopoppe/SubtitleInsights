@@ -2,10 +2,14 @@
 
 Subtitle Insights supports `web.stremio.com`, allowing you to apply AI analysis to your favorite movies and shows.
 
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../stremio.mp4" type="video/mp4">
+  <source :src="withBase('/stremio.mp4')" type="video/mp4">
 </video>
 
 :::

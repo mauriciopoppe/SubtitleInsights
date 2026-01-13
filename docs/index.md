@@ -77,7 +77,7 @@ hero:
 <FeatureRow
   title="Subtitle data, clarified."
   description="Subtitle Insights transforms your favorite videos into interactive lessons. Get real-time translations and breakdowns without leaving the player."
-  videoSrc="./intro_web.mp4"
+  videoSrc="/intro_web.mp4"
   sourceLink="https://www.youtube.com/@cijapanese"
   sourceName="Comprehensible Japanese"
 />
@@ -91,7 +91,7 @@ hero:
 <FeatureRow
   title="Interactive Insights Overlay"
   description="The overlay provides instant context for every subtitle segment. Enable 'Pause on Hover' to stop the video automatically at the end of a line for deep analysis and shadowing, or move through segments effortlessly using keyboard shortcuts."
-  videoSrc="./overlay_controls.mp4"
+  videoSrc="/overlay_controls.mp4"
   sourceLink="https://www.youtube.com/@cijapanese"
   sourceName="Comprehensible Japanese"
 />
@@ -101,7 +101,7 @@ hero:
 <FeatureRow
   title="Stay in Sync with the Smart Sidebar"
   description="Navigate the entire video transcript effortlessly. The sidebar stays perfectly synchronized with playback, allowing for quick reference of the current segment within the larger context."
-  videoSrc="./sidebar.mp4"
+  videoSrc="/sidebar.mp4"
   sourceLink="https://www.youtube.com/@cijapanese"
   sourceName="Comprehensible Japanese"
 />
@@ -111,7 +111,7 @@ hero:
 <FeatureRow
   title="Customize for Any Language"
   description="Subtitle Insights is designed to be language-agnostic. Easily create new language profiles, configure source/target languages, and customize the system prompt to focus on grammar, vocabulary, or cultural nuances."
-  videoSrc="./multi-lingual-support_optimized.mp4"
+  videoSrc="/multi-lingual-support_optimized.mp4"
   sourceLink="https://www.youtube.com/@Frenchinmotion"
   sourceName="French in Motion"
 />

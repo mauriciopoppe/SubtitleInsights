@@ -2,6 +2,10 @@
 
 Subtitle Insights provides a flexible way to manage subtitles, ensuring the extension works whether using native captions or external files.
 
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 ## Automatic Capture (YouTube)
 
 When watching on **YouTube**, the extension automatically intercepts subtitle tracks as they are loaded by the player. If Closed Captions (CC) are enabled, the text is captured and processed immediately for translations and insights. If the subtitle track is changed through the native YouTube settings, the extension will automatically re-initialize and begin processing the new track.
@@ -9,8 +13,8 @@ When watching on **YouTube**, the extension automatically intercepts subtitle tr
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../subtitles_automatic_capture.webm" type="video/webm">
-  <source src="../subtitles_automatic_capture.mp4" type="video/mp4">
+  <source :src="withBase('/subtitles_automatic_capture.webm')" type="video/webm">
+  <source :src="withBase('/subtitles_automatic_capture.mp4')" type="video/mp4">
 </video>
 
 :::
@@ -22,7 +26,7 @@ For videos without native captions or when using custom translation files, subti
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../stremio.mp4" type="video/mp4">
+  <source :src="withBase('/stremio.mp4')" type="video/mp4">
 </video>
 
 :::

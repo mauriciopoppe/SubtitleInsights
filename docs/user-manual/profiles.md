@@ -2,10 +2,14 @@
 
 Profiles allow for the customization of how the AI interacts with different languages and learning styles.
 
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../public/multi-lingual-support_optimized.mp4" type="video/mp4">
+  <source :src="withBase('/multi-lingual-support_optimized.mp4')" type="video/mp4">
 </video>
 
 :::

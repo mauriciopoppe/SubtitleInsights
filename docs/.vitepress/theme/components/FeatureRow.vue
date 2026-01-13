@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { withBase } from 'vitepress'
+
 defineProps<{
   title: string
   description: string
@@ -16,7 +18,7 @@ defineProps<{
     </div>
     <div class="media-content">
       <video controls autoplay loop muted playsinline class="video">
-        <source :src="videoSrc" type="video/mp4" />
+        <source :src="withBase(videoSrc)" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <p v-if="sourceLink" class="source-attribution">

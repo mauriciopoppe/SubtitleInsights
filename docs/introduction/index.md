@@ -2,12 +2,17 @@
 
 Subtitle Insights turns YouTube and Stremio videos into an interactive language learning playground. It uses the latest AI models built right into the Chrome browser to provide real-time translations and deep grammatical insights, all while keeping data private and on the device.
 
-::: raw
-<video controls loop muted playsinline>
+<script setup>
+import { withBase } from 'vitepress'
+</script>
 
-  <source src="/intro_web.mp4" type="video/mp4">
+::: raw
+
+<video controls loop muted playsinline>
+  <source :src="withBase('/intro_web.mp4')" type="video/mp4">
 </video>
 <p align="center">Source: <a href="https://www.youtube.com/@cijapanese">Comprehensible Japanese</a></p>
+
 :::
 
 ## Core Value Proposition

@@ -2,11 +2,15 @@
 
 The in-page overlay is the heart of the Subtitle Insights experience, providing real-time information without forcing you to look away from the video.
 
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../overlay.webm" type="video/webm">
-  <source src="../overlay.mp4" type="video/mp4">
+  <source :src="withBase('/overlay.webm')" type="video/webm">
+  <source :src="withBase('/overlay.mp4')" type="video/mp4">
 </video>
 <p align="center">Source: <a href="https://www.youtube.com/watch?v=Oeo-18ik6Hs">Comprehensible Japanese</a></p>
 
@@ -18,8 +22,8 @@ The in-page overlay is the heart of the Subtitle Insights experience, providing 
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../overlay_controls.webm" type="video/webm">
-  <source src="../overlay_controls.mp4" type="video/mp4">
+  <source :src="withBase('/overlay_controls.webm')" type="video/webm">
+  <source :src="withBase('/overlay_controls.mp4')" type="video/mp4">
 </video>
 
 :::
