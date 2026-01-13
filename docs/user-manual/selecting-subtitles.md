@@ -9,8 +9,8 @@ When watching on **YouTube**, the extension automatically intercepts subtitle tr
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../public/subtitles_automatic_capture.webm" type="video/webm">
-  <source src="../public/subtitles_automatic_capture.mp4" type="video/mp4">
+  <source src="../subtitles_automatic_capture.webm" type="video/webm">
+  <source src="../subtitles_automatic_capture.mp4" type="video/mp4">
 </video>
 
 :::
@@ -22,7 +22,7 @@ For videos without native captions or when using custom translation files, subti
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../public/stremio.mp4" type="video/mp4">
+  <source src="../stremio.mp4" type="video/mp4">
 </video>
 
 :::

@@ -5,7 +5,7 @@ Subtitle Insights supports `web.stremio.com`, allowing you to apply AI analysis 
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="./stremio.mp4" type="video/mp4">
+  <source src="../stremio.mp4" type="video/mp4">
 </video>
 
 :::

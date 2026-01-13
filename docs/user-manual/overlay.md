@@ -5,20 +5,21 @@ The in-page overlay is the heart of the Subtitle Insights experience, providing 
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../public/overlay.webm" type="video/webm">
-  <source src="../public/overlay.mp4" type="video/mp4">
+  <source src="../overlay.webm" type="video/webm">
+  <source src="../overlay.mp4" type="video/mp4">
 </video>
 <p align="center">Source: <a href="https://www.youtube.com/watch?v=Oeo-18ik6Hs">Comprehensible Japanese</a></p>
 
 :::
 
 ## In-Page Overlay
+
 ...
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../public/overlay_controls.webm" type="video/webm">
-  <source src="../public/overlay_controls.mp4" type="video/mp4">
+  <source src="../overlay_controls.webm" type="video/webm">
+  <source src="../overlay_controls.mp4" type="video/mp4">
 </video>
 
 :::

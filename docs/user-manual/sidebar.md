@@ -5,8 +5,8 @@ The sidebar provides a comprehensive view of the entire video transcript, allowi
 ::: raw
 
 <video controls loop muted playsinline>
-  <source src="../public/sidebar.webm" type="video/webm">
-  <source src="../public/sidebar.mp4" type="video/mp4">
+  <source src="../sidebar.webm" type="video/webm">
+  <source src="../sidebar.mp4" type="video/mp4">
 </video>
 <p align="center">Source: <a href="https://www.youtube.com/watch?v=sQKFxqlkPZI">Comprehensible Japanese</a></p>
 
