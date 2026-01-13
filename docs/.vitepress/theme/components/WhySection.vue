@@ -73,6 +73,8 @@ const features = [
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
+  line-height: 1.3;
+  padding-bottom: 0.2em;
   background: -webkit-linear-gradient(120deg, var(--vp-c-brand-1) 30%, var(--vp-c-accent-1));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

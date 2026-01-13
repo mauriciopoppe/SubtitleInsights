@@ -53,6 +53,7 @@ defineProps<{
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.2;
+  padding-bottom: 0.1em;
   border: none;
 }
 
