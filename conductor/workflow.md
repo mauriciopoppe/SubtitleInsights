@@ -84,16 +84,15 @@ All tasks follow a high-velocity lifecycle:
     - Stage all changes. If no changes occurred in this step, proceed with an empty commit.
     - Perform the commit with a clear and concise message (e.g., `conductor(checkpoint): Checkpoint end of Phase X`).
 
-5.  **Get and Record Phase Checkpoint SHA:**
+5.  **Tag Phase Checkpoint with Git Notes:**
     - **Step 5.1: Get Commit Hash:** Obtain the hash of the _just-created checkpoint commit_ (`git log -1 --format="%H"`).
-    - **Step 5.2: Update Plan:** Read `plan.md`, find the heading for the completed phase, and append the first 7 characters of the commit hash in the format `[checkpoint: <sha>]`.
-    - **Step 5.3: Write Plan:** Write the updated content back to `plan.md`.
+    - **Step 5.2: Add Git Note:** Add a structured note to the commit using `git notes add`.
+      ```bash
+      git notes add -m '{"phase": "Phase X", "status": "completed"}' <commit-hash>
+      ```
+    - **Step 5.3: Verify Note:** Verify the note was added with `git notes show <commit-hash>`.
 
-6.  **Commit Plan Update:**
-    - **Action:** Stage the modified `plan.md` file.
-    - **Action:** Commit this change with a descriptive message following the format `conductor(plan): Mark phase '<PHASE NAME>' as complete`.
-
-7.  **Announce Completion:** Inform the user that the phase is complete and the checkpoint has been created.
+6.  **Announce Completion:** Inform the user that the phase is complete and the checkpoint has been created and tagged.
 
 ### Quality Gates
 
