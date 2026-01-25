@@ -320,4 +320,10 @@ if (detectPlatform() === 'stremio') {
   // Stremio might need a different trigger or just run once and handle internal navigation
   // For now, let's just call run()
 }
+
+window.addEventListener('beforeunload', () => {
+  aiInsights.destroy()
+  contentLogger('Cleaned up AI sessions on page unload.')
+})
+
 run()
