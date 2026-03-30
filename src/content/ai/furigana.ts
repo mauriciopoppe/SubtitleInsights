@@ -133,14 +133,14 @@ Output: {"text": " 彼[かれ]は 学校[がっこう]へ 行[い]きました�
       // Standard Anki Furigana parsing logic:
       // A space (optional) followed by Kanji/Kana and then its reading in brackets: " ?[Kanji/Kana]+[reading]"
       // Everything else is just text.
-      const regex = / ?([\u3040-\u30FF\u4E00-\u9FAF]+)\[([^\]]+)\]|([^\u3040-\u30FF\u4E00-\u9FAF\[]+)|([\u3040-\u30FF\u4E00-\u9FAF]+)/gu
+      const regex = / ?([\u3040-\u30FF\u4E00-\u9FAF]+)\[([^\]]+)\]|([^\u3040-\u30FF\u4E00-\u9FAF[]+)|([\u3040-\u30FF\u4E00-\u9FAF]+)/gu
       let match
 
       while ((match = regex.exec(ankiText)) !== null) {
         if (match[1] && match[2]) {
           // Kanji/Kana word with [Reading]
-          let word = match[1]
-          let reading = this.toHiragana(match[2])
+          const word = match[1]
+          const reading = this.toHiragana(match[2])
 
           // If the AI gave a reading for a word that contains both Kanji and Kana (e.g. 皆さん[みなさん]),
           // we should ideally only apply the reading to the Kanji part.
