@@ -46,13 +46,16 @@ The extension's session state (which tracks toggle preferences and configuration
 
 ## Language Specific Decisions
 
-### Japanese: No Furigana or Spaces
+### Japanese: Automated Furigana (Chrome AI)
 
-A conscious decision was made to exclude Furigana and artificial spaces between Japanese words.
+The extension automatically provides Furigana (readings) for Kanji when the source language is Japanese, powered by the Chrome Prompt API.
 
-- **The Rationale:** While Furigana can be a helpful crutch, excluding it encourages the learner to associate the sound directly with the Kanji.
-- **Forced Listening:** This choice forces a stronger connection between the audio and the visual text.
-- **Synergy:** For learners who still need help with specific readings, specialized tools like Yomitan can be used to provide that information on demand.
+- **AI-Powered:** Uses on-device AI to perform context-aware morphological analysis.
+- **Hiragana Only:** All readings are normalized to Hiragana for consistency.
+- **Kanji Focused:** To minimize visual clutter and API usage, Furigana is only shown for words containing Kanji.
+- **Natural Spacing:** No artificial spaces are added between Japanese words, preserving the natural flow of the language.
+- **Efficient Processing:** A sliding window ensures that Furigana is generated for segments near the current playback position.
+- **Synergy:** For deeper linguistic analysis or vocabulary mining, specialized tools like **Yomitan** remain the recommended choice.
 
 ## Contributions
 

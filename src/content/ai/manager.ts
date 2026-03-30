@@ -1,5 +1,6 @@
 import { translatorService } from './translator'
 import { aiInsights } from './insights'
+import { furiganaService } from './furigana'
 import { isComplexSentence } from './utils'
 import { Config } from '../config'
 import { store } from '../store'
@@ -42,6 +43,14 @@ export class AIManager {
     if (grammarAvailability === 'available') {
       await aiInsights.initialize()
       aiLogger('AI Insights initialized.')
+    }
+
+    // Furigana Setup
+    const furiganaAvailability = await furiganaService.checkAvailability()
+    aiLogger('AI Furigana availability:', furiganaAvailability)
+    if (furiganaAvailability === 'available') {
+      await furiganaService.initialize()
+      aiLogger('AI Furigana initialized.')
     }
 
     // Setup subscription to segment changes
@@ -131,6 +140,7 @@ export class AIManager {
     const insightsTasks: number[] = []
 
     const { isGrammarEnabled } = await Config.get()
+    const sourceLang = store.sourceLanguage
 
     // Determine what needs processing in the current window
     for (let i = startIndex; i < Math.min(startIndex + this.translateBuffer, allSegments.length); i++) {
@@ -141,11 +151,9 @@ export class AIManager {
       const inInsightsRange = i < startIndex + this.insightsBuffer
       const needsInsights =
         !this.pendingInsightsIndices.has(i) &&
-        isGrammarEnabled &&
-        aiInsights.isReady() &&
-        !seg.insights &&
-        isComplexSentence(seg.text) &&
-        inInsightsRange
+        inInsightsRange &&
+        ((isGrammarEnabled && aiInsights.isReady() && !seg.insights && isComplexSentence(seg.text)) ||
+          (sourceLang?.startsWith('ja') && furiganaService.isReady() && !seg.segmentedData))
 
       if (needsTranslation) translationTasks.push(i)
       if (needsInsights) insightsTasks.push(i)
@@ -166,7 +174,7 @@ export class AIManager {
   private async processTranslations(indices: number[]) {
     this.isTranslationProcessing = true
     try {
-      await Promise.all(indices.map(idx => this.executeTask(idx, true, false)))
+      await Promise.all(indices.map(idx => this.executeTask(idx, true, false, false)))
     } finally {
       this.isTranslationProcessing = false
     }
@@ -181,7 +189,8 @@ export class AIManager {
         // If a jump occurred, pendingInsightsIndices would have been cleared,
         // so we should skip the remaining tasks from the old queue.
         if (this.pendingInsightsIndices.has(idx)) {
-          await this.executeTask(idx, false, true)
+          // Both grammar and furigana share the same 'insights' serial queue
+          await this.executeTask(idx, false, true, true)
         }
       }
     } finally {
@@ -189,13 +198,13 @@ export class AIManager {
     }
   }
 
-  private async executeTask(index: number, translate: boolean, insights: boolean) {
+  private async executeTask(index: number, translate: boolean, insights: boolean, furigana: boolean) {
     const allSegments = store.getAllSegments()
     const segment = allSegments[index]
     if (!segment) return
 
     if (translate) this.pendingTranslationIndices.add(index)
-    if (insights) this.pendingInsightsIndices.add(index)
+    if (insights || furigana) this.pendingInsightsIndices.add(index)
 
     try {
       const withTimeout = (promise: Promise<any>, ms: number) => {
@@ -214,19 +223,52 @@ export class AIManager {
         }
       }
 
-      if (insights) {
-        try {
-          const analysis = await withTimeout(aiInsights.explainGrammar(segment.text), 10000)
-          store.updateSegmentInsights(index, analysis)
-        } catch (e) {
-          aiLogger(`ERROR: Insights explanation failed for ${index}:`, e)
+      // Insights & Furigana block
+      if (insights || furigana) {
+        const { isGrammarEnabled } = await Config.get()
+        const sourceLang = store.sourceLanguage
+
+        let getGrammar = false
+        let getFurigana = false
+
+        if (insights && isGrammarEnabled && aiInsights.isReady() && !segment.insights && isComplexSentence(segment.text)) {
+          getGrammar = true
+        }
+
+        if (furigana && sourceLang?.startsWith('ja') && furiganaService.isReady() && !segment.segmentedData) {
+          getFurigana = true
+        }
+
+        if (getGrammar || getFurigana) {
+          const results = await Promise.all([
+            getGrammar
+              ? withTimeout(aiInsights.explainGrammar(segment.text), 10000).catch(e => {
+                  aiLogger(`ERROR: Insights explanation failed for ${index}:`, e)
+                  return undefined
+                })
+              : Promise.resolve(undefined),
+            getFurigana
+              ? (async () => {
+                  // Optimization: Pre-check for Kanji presence
+                  if (!/[\u4E00-\u9FAF]/.test(segment.text)) {
+                    return [[{ word: segment.text }]]
+                  }
+                  return withTimeout(furiganaService.generateFurigana(segment.text), 15000).catch(e => {
+                    aiLogger(`ERROR: Furigana generation failed for ${index}:`, e)
+                    return undefined
+                  })
+                })()
+              : Promise.resolve(undefined)
+          ])
+
+          const [grammarResult, furiganaResult] = results
+          if (grammarResult !== undefined || furiganaResult !== undefined) {
+            store.updateSegmentInsights(index, grammarResult, furiganaResult)
+          }
         }
       }
     } catch (error) {
       aiLogger(`ERROR: Execution error for segment ${index}`, error)
-    } finally {
-      // We don't remove from pendingIndices here to prevent re-processing the same index
-      // until the video changes or a jump occurs.
     }
   }
 }

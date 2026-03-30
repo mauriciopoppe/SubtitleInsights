@@ -188,11 +188,12 @@ export class SubtitleStore {
     }
   }
 
-  updateSegmentInsights(index: number, insights: string) {
+  updateSegmentInsights(index: number, insights?: string, segmentedData?: AISegment[][]) {
     if (this.segments[index]) {
       this.segments[index] = {
         ...this.segments[index],
-        insights
+        insights: insights !== undefined ? insights : this.segments[index].insights,
+        segmentedData: segmentedData !== undefined ? segmentedData : this.segments[index].segmentedData
       }
       // Force array reference change for reactivity
       this.segments = [...this.segments]
