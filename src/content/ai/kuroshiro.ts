@@ -1,6 +1,6 @@
-// @ts-ignore
+// @ts-expect-error - kuroshiro has no types
 import Kuroshiro from "kuroshiro";
-// @ts-ignore
+// @ts-expect-error - kuroshiro-analyzer-kuromoji has no types
 import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
 import { aiLogger } from '../logger';
 
@@ -13,8 +13,13 @@ class KuroshiroService {
     constructor() {
         // Kuroshiro might need .default depending on how Vite bundles it
         this.kuroshiro = new (Kuroshiro.default || Kuroshiro)();
+        
+        const dictPath = typeof chrome !== 'undefined' && chrome.runtime 
+            ? chrome.runtime.getURL("dict")
+            : "dict";
+
         this.analyzer = new (KuromojiAnalyzer.default || KuromojiAnalyzer)({
-            dictPath: chrome.runtime.getURL("dict")
+            dictPath
         });
     }
 

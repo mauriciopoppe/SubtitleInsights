@@ -10,6 +10,7 @@ export interface AppConfig {
   isTranslationVisibleInSidebar: boolean
   isOriginalVisibleInOverlay: boolean
   isDebugMode: boolean
+  verbosity: number
   overlayFontSize: number
 }
 
@@ -26,6 +27,7 @@ export class Config {
     isTranslationVisibleInSidebar: 'si_is_translation_in_sidebar',
     isOriginalVisibleInOverlay: 'si_original_in_overlay',
     isDebugMode: 'si_is_debug_mode',
+    verbosity: 'si_verbosity',
     overlayFontSize: 'si_overlay_font_size'
   }
 
@@ -41,6 +43,7 @@ export class Config {
     isTranslationVisibleInSidebar: true,
     isOriginalVisibleInOverlay: true,
     isDebugMode: false,
+    verbosity: 0,
     overlayFontSize: 24
   }
 

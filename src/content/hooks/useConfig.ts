@@ -13,6 +13,7 @@ const DEFAULT_CONFIG: AppConfig = {
   isTranslationVisibleInSidebar: true,
   isOriginalVisibleInOverlay: true,
   isDebugMode: false,
+  verbosity: 0,
   overlayFontSize: 24
 }
 
