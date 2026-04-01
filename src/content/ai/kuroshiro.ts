@@ -14,8 +14,8 @@ class KuroshiroService {
         this.kuroshiro = new (Kuroshiro.default || Kuroshiro)();
         
         const dictPath = typeof chrome !== 'undefined' && chrome.runtime 
-            ? chrome.runtime.getURL("dict")
-            : "dict";
+            ? chrome.runtime.getURL("dict/")
+            : "dict/";
 
         this.analyzer = new (KuromojiAnalyzer.default || KuromojiAnalyzer)({
             dictPath
