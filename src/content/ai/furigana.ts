@@ -4,8 +4,7 @@ import { kuroshiroService } from './kuroshiro'
 
 export class JapaneseFuriganaService {
   async checkAvailability(): Promise<Availability> {
-    // Kuroshiro is considered available if the script is loaded.
-    // In a real browser, we might want to check if dictionary files are accessible.
+    // Kuroshiro is considered available as it's a bundled library.
     return 'available'
   }
 

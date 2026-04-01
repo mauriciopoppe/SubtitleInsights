@@ -46,16 +46,16 @@ The extension's session state (which tracks toggle preferences and configuration
 
 ## Language Specific Decisions
 
-### Japanese: Automated Furigana (Chrome AI)
+### Japanese: Automated Furigana (Library-based)
 
-The extension automatically provides Furigana (readings) for Kanji when the source language is Japanese, powered by the Chrome Prompt API.
+The extension automatically provides Furigana (readings) for Kanji when the source language is Japanese, powered by the **Kuroshiro** library and **Kuromoji** morphological analyzer.
 
-- **AI-Powered:** Uses on-device AI to perform context-aware morphological analysis.
+- **Deterministic:** Uses a specialized library instead of AI for consistent and accurate readings.
 - **Hiragana Only:** All readings are normalized to Hiragana for consistency.
-- **Kanji Focused:** To minimize visual clutter and API usage, Furigana is only shown for words containing Kanji.
-- **Natural Spacing:** No artificial spaces are added between Japanese words, preserving the natural flow of the language.
-- **Efficient Processing:** A sliding window ensures that Furigana is generated for segments near the current playback position.
-- **Synergy:** For deeper linguistic analysis or vocabulary mining, specialized tools like **Yomitan** remain the recommended choice.
+- **Kanji Focused:** Furigana is only shown for words containing Kanji, keeping the UI clean.
+- **Natural Spacing:** No artificial spaces are added between Japanese words.
+- **Local Processing:** All analysis happens on-device for maximum privacy and performance.
+
 
 ## Contributions
 

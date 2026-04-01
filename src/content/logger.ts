@@ -1,43 +1,23 @@
 import debug from 'debug'
-import { Config } from './config'
 
 let currentVerbosity = 0
 
-// Initialize verbosity from config if available (fails in tests where chrome is not defined)
-if (typeof chrome !== 'undefined' && chrome.storage) {
-  Config.get()
-    .then(config => {
-      if (config) {
-        currentVerbosity = config.verbosity
-      }
-    })
-    .catch(() => {
-      // Ignore errors in environments where config might not be available
-    })
-
-  // Subscribe to config changes
-  Config.subscribe(config => {
-    if (config) {
-      currentVerbosity = config.verbosity
-    }
-  })
-}
-
 interface LeveledLogger {
-  (formatter: any, ...args: any[]): void
-  V: (level: number) => { info: (formatter: any, ...args: any[]) => void }
+  (formatter: string | object, ...args: unknown[]): void
+  V: (level: number) => { info: (formatter: string | object, ...args: unknown[]) => void }
 }
 
 const createLogger = (namespace: string): LeveledLogger => {
   const d = debug(namespace)
-  const logger = (formatter: any, ...args: any[]) => {
+  const logger = (formatter: string | object, ...args: unknown[]) => {
+    // Default to logging if no verbosity check is used
     if (currentVerbosity >= 0) {
       d(formatter, ...args)
     }
   }
 
   logger.V = (level: number) => ({
-    info: (formatter: any, ...args: any[]) => {
+    info: (formatter: string | object, ...args: unknown[]) => {
       if (currentVerbosity >= level) {
         d(formatter, ...args)
       }
@@ -53,9 +33,27 @@ export const bgLogger = createLogger('si:bg')
 export const videoLogger = createLogger('si:video')
 export const storeLogger = createLogger('si:store')
 
+/**
+ * Updates the current verbosity level.
+ */
+export const setVerbosity = (level: number) => {
+  currentVerbosity = level
+}
+
+/**
+ * Initializes the logger with values from Config.
+ * This is separate to avoid circular dependencies.
+ */
+export const initLogger = (config: { verbosity: number; isDebugMode: boolean }) => {
+  setVerbosity(config.verbosity)
+  if (config.isDebugMode) {
+    enableDebug()
+  } else {
+    disableDebug()
+  }
+}
+
 // Enable logging if the flag is set in localStorage (for content scripts)
-// Note: In Chrome extensions, content scripts have their own localStorage.
-// We will also provide a way to enable this via the settings UI.
 export const enableDebug = (namespaces = 'si:*') => {
   debug.enable(namespaces)
 }

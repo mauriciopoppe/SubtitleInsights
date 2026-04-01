@@ -3,19 +3,6 @@ const KuromojiAnalyzer = require("kuroshiro-analyzer-kuromoji");
 
 const kuroshiro = new Kuroshiro();
 
-// Helper to check for Kanji
-function hasKanji(text) {
-    return /[\u4E00-\u9FAF]/.test(text);
-}
-
-// Helper to convert Katakana to Hiragana
-function toHiragana(text) {
-    return text.replace(/[\u30a1-\u30f6]/g, match => {
-        const code = match.charCodeAt(0) - 0x60;
-        return String.fromCharCode(code);
-    });
-}
-
 async function run() {
     console.log("Initializing Kuroshiro with Kuromoji...");
     await kuroshiro.init(new KuromojiAnalyzer({

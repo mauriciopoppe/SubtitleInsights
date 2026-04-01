@@ -1,3 +1,4 @@
+import './polyfills'
 import { render } from 'preact'
 import { App } from './components/App'
 import { aiInsights } from './ai/insights'
@@ -5,7 +6,7 @@ import { translationManager } from './ai/manager'
 import { store, SubtitleStore } from './store'
 import { Config } from './config'
 import { videoController } from './VideoController'
-import { enableDebug, disableDebug, contentLogger } from './logger'
+import { contentLogger, initLogger } from './logger'
 import './styles.css'
 import { Platform } from './types'
 
@@ -13,20 +14,14 @@ contentLogger('Content script injected.')
 
 // Initialize logging
 Config.get().then(config => {
-  if (config.isDebugMode) {
-    enableDebug()
-  } else {
-    disableDebug()
-  }
+  initLogger(config)
 })
 
 // Subscribe to logging changes
 Config.subscribe(config => {
+  initLogger(config)
   if (config.isDebugMode) {
-    enableDebug()
     contentLogger('Debug logging enabled')
-  } else {
-    disableDebug()
   }
 })
 

@@ -1,24 +1,16 @@
 import { Config } from '../content/config'
-import { enableDebug, disableDebug, bgLogger } from '../content/logger'
+import { bgLogger, initLogger } from '../content/logger'
 
 bgLogger('Background script loading...', new Date().toISOString())
 
 // Initialize logging
 Config.get().then(config => {
-  if (config.isDebugMode) {
-    enableDebug()
-  } else {
-    disableDebug()
-  }
+  initLogger(config)
 })
 
 // Subscribe to logging changes
 Config.subscribe(config => {
-  if (config.isDebugMode) {
-    enableDebug()
-  } else {
-    disableDebug()
-  }
+  initLogger(config)
 })
 
 if (typeof chrome !== 'undefined' && chrome.webRequest) {

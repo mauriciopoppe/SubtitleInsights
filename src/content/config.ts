@@ -68,6 +68,7 @@ export class Config {
   }
 
   static async get(): Promise<AppConfig> {
+    this.init()
     return new Promise(resolve => {
       const keys = Object.values(this.KEYS)
       chrome.storage.local.get(keys, result => {

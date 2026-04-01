@@ -18,6 +18,15 @@ Powered by **Gemini Nano** (via the [Chrome Prompt API](https://developer.chrome
 - **Completely Customizable:** Insights are fully personalized through [Profiles](/user-manual/profiles). Users can configure the system prompt to match their specific learning level, whether that means detailed grammatical breakdowns for beginners or high-level cultural context for advanced learners.
 - **Beyond Literal Translation:** Explains idiomatic expressions and nuances that a simple translation might overlook.
 
+## Automated Furigana (Japanese)
+
+For Japanese learners, the extension automatically provides Hiragana readings (Furigana) above Kanji characters.
+
+- **Deterministic Accuracy:** Powered by a specialized morphological analyzer (**Kuromoji**) to ensure high accuracy and consistency.
+- **Kanji-Only Focus:** To keep the display clean, readings are only shown for Kanji characters. Hiragana and Katakana words remain untouched.
+- **Natural Flow:** No artificial spaces are added, maintaining the natural look and feel of Japanese text.
+- **Privacy First:** Just like our AI features, all Furigana processing happens entirely on your device.
+
 ::: tip Note: Language Support
 
 <div style="display: flex; gap: 20px; align-items: center;">
