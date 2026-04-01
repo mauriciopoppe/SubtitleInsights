@@ -8,6 +8,9 @@ _No active tracks at the moment._
 
 ## Future Ideas & Pending
 
+- [ ] **Track: Replace AI Furigana with Kuromoji**
+  *Link: [./conductor/tracks/kuromoji_furigana_20260329/](./conductor/tracks/kuromoji_furigana_20260329/)*
+
 - [ ] **Chrome Side Panel Migration** (Cancelled)
   _Link: [./conductor/archive/chrome_side_panel_migration_20251231/](./conductor/archive/chrome_side_panel_migration_20251231/)_
 - [ ] **Automated Language Detection for Subtitles** (Cancelled)
