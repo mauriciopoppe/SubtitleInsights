@@ -40,5 +40,11 @@
   "options_ui": {
     "page": "src/settings/index.html",
     "open_in_tab": true
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["dict/*.dat.gz"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

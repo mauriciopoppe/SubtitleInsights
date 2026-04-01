@@ -37,6 +37,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.51.0",
     "vite": "^7.3.0",
+    "vite-plugin-static-copy": "^4.0.0",
     "vitepress": "^1.6.4",
     "vitest": "^4.0.16"
   },
@@ -44,6 +45,8 @@
     "@preact/signals": "^2.5.1",
     "@types/dom-chromium-ai": "^0.0.13",
     "debug": "^4.4.3",
+    "kuroshiro": "^1.2.0",
+    "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "preact": "^10.28.1",
     "snarkdown": "^2.0.0"
   }
