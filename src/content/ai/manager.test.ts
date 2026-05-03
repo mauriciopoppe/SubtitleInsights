@@ -4,6 +4,7 @@ import { Config } from '../config'
 import { store } from '../store'
 import { translatorService } from './translator'
 import { aiInsights } from './insights'
+import { furiganaService } from './furigana'
 
 // Mock dependencies
 vi.mock('../config', () => ({
@@ -35,7 +36,8 @@ vi.mock('./translator', () => ({
     checkAvailability: vi.fn(),
     initialize: vi.fn(),
     isReady: vi.fn(),
-    translate: vi.fn()
+    translate: vi.fn(),
+    destroy: vi.fn()
   }
 }))
 
@@ -44,7 +46,20 @@ vi.mock('./insights', () => ({
     checkAvailability: vi.fn(),
     initialize: vi.fn(),
     isReady: vi.fn(),
-    explainGrammar: vi.fn()
+    explainGrammar: vi.fn(),
+    resetSession: vi.fn(),
+    destroy: vi.fn()
+  }
+}))
+
+vi.mock('./furigana', () => ({
+  furiganaService: {
+    checkAvailability: vi.fn(),
+    initialize: vi.fn(),
+    isReady: vi.fn(),
+    generateFurigana: vi.fn(),
+    resetSession: vi.fn(),
+    destroy: vi.fn()
   }
 }))
 
@@ -54,6 +69,22 @@ describe('AIManager', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     manager = new AIManager()
+  })
+
+  it('should perform a hard reset on reset()', async () => {
+    vi.mocked(translatorService.checkAvailability).mockResolvedValue('available')
+    vi.mocked(aiInsights.checkAvailability).mockResolvedValue('available')
+    vi.mocked(furiganaService.checkAvailability).mockResolvedValue('available')
+
+    await manager.reset()
+
+    expect(aiInsights.destroy).toHaveBeenCalled()
+    expect(translatorService.destroy).toHaveBeenCalled()
+    expect(furiganaService.destroy).toHaveBeenCalled()
+    
+    expect(aiInsights.initialize).toHaveBeenCalled()
+    expect(translatorService.initialize).toHaveBeenCalled()
+    expect(furiganaService.initialize).toHaveBeenCalled()
   })
 
   it('should not trigger prefetch if isEnabled is false', async () => {

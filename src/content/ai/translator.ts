@@ -66,6 +66,14 @@ export class MyTranslator {
     }
   }
 
+  async destroy() {
+    if (this.translator) {
+      // Chrome's Translator API doesn't have an explicit destroy,
+      // but nulling it allows GC and we can recreate it.
+      this.translator = null
+    }
+  }
+
   isReady(): boolean {
     return this.translator !== null
   }

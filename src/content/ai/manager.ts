@@ -23,15 +23,22 @@ export class AIManager {
   private lastTriggerIndex = -1
   private unsubscribe: (() => void) | null = null
 
-  reset() {
-    aiLogger.V(2).info('Resetting AIManager queues.')
+  async reset() {
+    aiLogger.V(2).info('Hard resetting AIManager.')
     this.pendingTranslationIndices.clear()
     this.pendingInsightsIndices.clear()
     this.pendingRubyIndices.clear()
     this.lastTriggerIndex = -1
+    
+    await Promise.all([
+      aiInsights.destroy(),
+      translatorService.destroy(),
+      furiganaService.destroy()
+    ])
+    await this.initializeAIServices()
   }
 
-  async initializeAIServices() {
+  private async initializeAIServices() {
     // Translator Setup
     const translationAvailability = await translatorService.checkAvailability()
     aiLogger.V(1).info('AI Translation availability:', translationAvailability)

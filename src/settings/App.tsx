@@ -60,6 +60,10 @@ export function App() {
               <div className="settings-item-title">Auto-select Profile</div>
               <div className="settings-item-description">
                 Automatically switch the active profile based on the subtitle language.
+                <br />
+                <span style={{ fontSize: '0.85em', opacity: 0.8 }}>
+                  Note: If switching between many languages in one session, a page refresh may be needed to ensure full AI re-initialization.
+                </span>
               </div>
             </div>
             <div
