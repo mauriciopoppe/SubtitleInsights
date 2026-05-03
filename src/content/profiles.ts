@@ -41,12 +41,12 @@ export class ProfileManager {
   private static ACTIVE_PROFILE_KEY = 'si_active_profile_id'
 
   static async getProfiles(): Promise<Profile[]> {
-    const result = await chrome.storage.local.get(this.STORAGE_KEY)
+    const result = await chrome.storage.sync.get(this.STORAGE_KEY)
     return (result[this.STORAGE_KEY] as Profile[]) || []
   }
 
   static async getActiveProfileId(): Promise<string | null> {
-    const result = await chrome.storage.local.get(this.ACTIVE_PROFILE_KEY)
+    const result = await chrome.storage.sync.get(this.ACTIVE_PROFILE_KEY)
     return (result[this.ACTIVE_PROFILE_KEY] as string) || null
   }
 
@@ -73,13 +73,13 @@ export class ProfileManager {
       profiles.push(profile)
     }
 
-    await chrome.storage.local.set({ [this.STORAGE_KEY]: profiles })
+    await chrome.storage.sync.set({ [this.STORAGE_KEY]: profiles })
   }
 
   static async deleteProfile(id: string): Promise<void> {
     let profiles = await this.getProfiles()
     profiles = profiles.filter(p => p.id !== id)
-    await chrome.storage.local.set({ [this.STORAGE_KEY]: profiles })
+    await chrome.storage.sync.set({ [this.STORAGE_KEY]: profiles })
 
     // If we deleted the active profile, reset active to the first available
     const activeId = await this.getActiveProfileId()
@@ -96,7 +96,7 @@ export class ProfileManager {
   }
 
   static async setActiveProfile(id: string): Promise<void> {
-    await chrome.storage.local.set({ [this.ACTIVE_PROFILE_KEY]: id })
+    await chrome.storage.sync.set({ [this.ACTIVE_PROFILE_KEY]: id })
   }
 
   static async autoSelectProfileByLanguage(languageCode: string): Promise<boolean> {

@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Subtitle Insights",
-  "version": "0.1.2",
+  "version": "0.2.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArEABp1c30I60C09c9yEDCLaS0LyLyemm/m1q80lT86P0C4ykEgKjv3nDWYJQ+SYM38pD8SX/OsnLrZAtCxiWWAL72suyH569P7/TPYKImTin3z/SMkoKPblT36gGmzGayoetfCGNKM13yNLWdBmRdeLRRjKE1tN26cTmQK5TlgtjFTBwmvPpBkLfOPNx78Z44O04/sAc6PBqobAEBubn7Refa2/3liK7nWT/LjN4ozytiXTMxBLKR/AIMiIpL9m90glguuCk1K/QX3l/C+guEsVnKoRBcvWydlJx0Mn5cRW8+aqMGGVms/QcRmNo1kzAGubs+6JpGGOwZ+/vKSHJmwIDAQAB",
   "description": "Smart AI insights and translations for YouTube subtitles",
   "icons": {
     "16": "public/icon16.png",

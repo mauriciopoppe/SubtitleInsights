@@ -4,10 +4,10 @@ import { Config } from './config'
 describe('Config', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    // Mock chrome.storage.local
+    // Mock chrome.storage.sync
     vi.stubGlobal('chrome', {
       storage: {
-        local: {
+        sync: {
           get: vi.fn(),
           set: vi.fn()
         },
@@ -19,7 +19,7 @@ describe('Config', () => {
   })
 
   it('should return default values when storage is empty', async () => {
-    const mockGet = vi.mocked(chrome.storage.local.get)
+    const mockGet = vi.mocked(chrome.storage.sync.get)
     mockGet.mockImplementation((_keys, callback) => {
       callback({})
     })
@@ -30,7 +30,7 @@ describe('Config', () => {
   })
 
   it('should return values from storage', async () => {
-    const mockGet = vi.mocked(chrome.storage.local.get)
+    const mockGet = vi.mocked(chrome.storage.sync.get)
     mockGet.mockImplementation((_keys, callback) => {
       callback({
         si_overlay_font_size: 32,
@@ -44,7 +44,7 @@ describe('Config', () => {
   })
 
   it('should update storage with partial config', async () => {
-    const mockSet = vi.mocked(chrome.storage.local.set)
+    const mockSet = vi.mocked(chrome.storage.sync.set)
     mockSet.mockImplementation((_data, callback) => {
       callback()
     })

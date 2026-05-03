@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ProfileManager, DEFAULT_JAPANESE_PROFILE, Profile } from './profiles'
 
-// Mock chrome.storage.local
+// Mock chrome.storage.sync
 const mockStorage: Record<string, any> = {}
 vi.stubGlobal('chrome', {
   storage: {
-    local: {
+    sync: {
       get: vi.fn().mockImplementation((keys: string[] | string) => {
         const result: Record<string, any> = {}
         if (typeof keys === 'string') {

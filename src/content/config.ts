@@ -61,7 +61,7 @@ export class Config {
     this._initialized = true
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName !== 'local') return
+      if (areaName !== 'sync') return
 
       // Check if any of our keys changed
       const relevantChange = Object.values(this.KEYS).some(key => changes[key])
@@ -77,7 +77,7 @@ export class Config {
     this.init()
     return new Promise(resolve => {
       const keys = Object.values(this.KEYS)
-      chrome.storage.local.get(keys, result => {
+      chrome.storage.sync.get(keys, result => {
         const config: any = {}
         // Map storage keys back to AppConfig keys
         for (const [configKey, storageKey] of Object.entries(this.KEYS)) {
@@ -97,7 +97,7 @@ export class Config {
       }
     }
     return new Promise(resolve => {
-      chrome.storage.local.set(storageUpdate, () => resolve())
+      chrome.storage.sync.set(storageUpdate, () => resolve())
     })
   }
 
