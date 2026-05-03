@@ -53,7 +53,19 @@ export function App() {
       {!editingProfile && (
         <div className="settings-section developer-section" id="developer">
           <div className="developer-header">
-            <h2>Developer Settings</h2>
+            <h2>General Settings</h2>
+          </div>
+          <div className="settings-item">
+            <div className="settings-item-info">
+              <div className="settings-item-title">Auto-select Profile</div>
+              <div className="settings-item-description">
+                Automatically switch the active profile based on the subtitle language.
+              </div>
+            </div>
+            <div
+              className={`si-toggle-switch ${config?.autoSelectProfile ? 'enabled' : ''}`}
+              onClick={() => Config.update({ autoSelectProfile: !config?.autoSelectProfile })}
+            />
           </div>
           <div className="settings-item">
             <div className="settings-item-info">

@@ -99,6 +99,25 @@ export class ProfileManager {
     await chrome.storage.local.set({ [this.ACTIVE_PROFILE_KEY]: id })
   }
 
+  static async autoSelectProfileByLanguage(languageCode: string): Promise<boolean> {
+    const profiles = await this.getProfiles()
+    const baseLang = languageCode.split('-')[0].toLowerCase()
+
+    // Try exact match first, then base language match
+    const matchingProfile =
+      profiles.find(p => p.sourceLanguage.toLowerCase() === languageCode.toLowerCase()) ||
+      profiles.find(p => p.sourceLanguage.toLowerCase() === baseLang)
+
+    if (matchingProfile) {
+      const activeId = await this.getActiveProfileId()
+      if (activeId !== matchingProfile.id) {
+        await this.setActiveProfile(matchingProfile.id)
+        return true
+      }
+    }
+    return false
+  }
+
   static async initializeDefaults(): Promise<void> {
     const profiles = await this.getProfiles()
     if (profiles.length === 0) {
