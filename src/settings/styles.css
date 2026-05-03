@@ -285,15 +285,12 @@ small {
 .developer-section {
   margin-top: 32px;
   text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
 .developer-header {
   margin-bottom: 24px;
-}
-
-.developer-section {
-  display: flex;
-  flex-direction: column;
 }
 
 .settings-item {
