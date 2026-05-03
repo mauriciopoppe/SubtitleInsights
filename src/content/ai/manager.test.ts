@@ -1,110 +1,110 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AIManager } from './manager'
 import { Config } from '../config'
-import { store } from '../store'
-import { translatorService } from './translator'
-import { aiInsights } from './insights'
-import { furiganaService } from './furigana'
 
-// Mock dependencies
+// Mock dependencies that are still global (like Config)
 vi.mock('../config', () => ({
   Config: {
     get: vi.fn()
   }
 }))
 
-vi.mock('../store', () => ({
-  store: {
-    getAllSegments: vi.fn(),
-    setAIStatus: vi.fn(),
-    updateSegmentTranslation: vi.fn(),
-    updateSegmentInsights: vi.fn(),
-    addChangeListener: vi.fn()
-  }
-}))
-
-vi.mock('../VideoController', () => ({
-  videoController: {
-    targetSegmentIndex: {
-      subscribe: vi.fn()
-    }
-  }
-}))
-
-vi.mock('./translator', () => ({
-  translatorService: {
-    checkAvailability: vi.fn(),
-    initialize: vi.fn(),
-    isReady: vi.fn(),
-    translate: vi.fn(),
-    destroy: vi.fn()
-  }
-}))
-
-vi.mock('./insights', () => ({
-  aiInsights: {
-    checkAvailability: vi.fn(),
-    initialize: vi.fn(),
-    isReady: vi.fn(),
-    explainGrammar: vi.fn(),
-    resetSession: vi.fn(),
-    destroy: vi.fn()
-  }
-}))
-
-vi.mock('./furigana', () => ({
-  furiganaService: {
-    checkAvailability: vi.fn(),
-    initialize: vi.fn(),
-    isReady: vi.fn(),
-    generateFurigana: vi.fn(),
-    resetSession: vi.fn(),
-    destroy: vi.fn()
-  }
-}))
-
 describe('AIManager', () => {
   let manager: AIManager
+  let mockTranslator: any
+  let mockInsights: any
+  let mockFurigana: any
+  let mockStore: any
+  let mockVideoController: any
 
   beforeEach(() => {
     vi.clearAllMocks()
-    manager = new AIManager()
+
+    mockTranslator = {
+      checkAvailability: vi.fn(),
+      initialize: vi.fn(),
+      isReady: vi.fn(),
+      translate: vi.fn(),
+      destroy: vi.fn()
+    }
+
+    mockInsights = {
+      checkAvailability: vi.fn(),
+      initialize: vi.fn(),
+      isReady: vi.fn(),
+      explainGrammar: vi.fn(),
+      resetSession: vi.fn(),
+      destroy: vi.fn()
+    }
+
+    mockFurigana = {
+      checkAvailability: vi.fn(),
+      initialize: vi.fn(),
+      isReady: vi.fn(),
+      generateFurigana: vi.fn(),
+      resetSession: vi.fn(),
+      destroy: vi.fn()
+    }
+
+    mockStore = {
+      getAllSegments: vi.fn(),
+      setAIStatus: vi.fn(),
+      setSystemMessage: vi.fn(),
+      updateSegmentTranslation: vi.fn(),
+      updateSegmentInsights: vi.fn(),
+      addChangeListener: vi.fn(),
+      sourceLanguage: 'en'
+    }
+
+    mockVideoController = {
+      targetSegmentIndex: {
+        subscribe: vi.fn()
+      }
+    }
+
+    manager = new AIManager(
+      mockTranslator,
+      mockInsights,
+      mockFurigana,
+      mockStore,
+      mockVideoController
+    )
   })
 
   it('should perform a hard reset on reset()', async () => {
-    vi.mocked(translatorService.checkAvailability).mockResolvedValue('available')
-    vi.mocked(aiInsights.checkAvailability).mockResolvedValue('available')
-    vi.mocked(furiganaService.checkAvailability).mockResolvedValue('available')
+    mockTranslator.checkAvailability.mockResolvedValue('available')
+    mockInsights.checkAvailability.mockResolvedValue('available')
+    mockFurigana.checkAvailability.mockResolvedValue('available')
 
     await manager.reset()
 
-    expect(aiInsights.destroy).toHaveBeenCalled()
-    expect(translatorService.destroy).toHaveBeenCalled()
-    expect(furiganaService.destroy).toHaveBeenCalled()
+    expect(mockInsights.destroy).toHaveBeenCalled()
+    expect(mockTranslator.destroy).toHaveBeenCalled()
+    expect(mockFurigana.destroy).toHaveBeenCalled()
     
-    expect(aiInsights.initialize).toHaveBeenCalled()
-    expect(translatorService.initialize).toHaveBeenCalled()
-    expect(furiganaService.initialize).toHaveBeenCalled()
+    expect(mockInsights.initialize).toHaveBeenCalled()
+    expect(mockTranslator.initialize).toHaveBeenCalled()
+    expect(mockFurigana.initialize).toHaveBeenCalled()
   })
 
   it('should not trigger prefetch if isEnabled is false', async () => {
     vi.mocked(Config.get).mockResolvedValue({ isEnabled: false } as any)
-    vi.mocked(store.getAllSegments).mockReturnValue([{ start: 0, end: 1000, text: 'Hello' }])
-    vi.mocked(translatorService.isReady).mockReturnValue(true)
+    mockStore.getAllSegments.mockReturnValue([{ start: 0, end: 1000, text: 'Hello' }])
+    mockTranslator.isReady.mockReturnValue(true)
 
     // Using private method for testing or we could trigger the signal
     await (manager as any).handleSegmentChange(0)
 
-    expect(translatorService.translate).not.toHaveBeenCalled()
+    expect(mockTranslator.translate).not.toHaveBeenCalled()
   })
 
   it('should trigger prefetch if isEnabled is true', async () => {
     vi.mocked(Config.get).mockResolvedValue({ isEnabled: true, isGrammarEnabled: true } as any)
-    vi.mocked(store.getAllSegments).mockReturnValue([
+    mockStore.getAllSegments.mockReturnValue([
       { start: 0, end: 1000, text: 'This is a complex sentence that should trigger insights.' }
     ])
-    vi.mocked(translatorService.isReady).mockReturnValue(true)
-    vi.mocked(aiInsights.isReady).mockReturnValue(true)
+    mockTranslator.isReady.mockReturnValue(true)
+    mockInsights.isReady.mockReturnValue(true)
 
     // Complex sentence detection mock
     vi.mock('./utils', () => ({
@@ -113,6 +113,6 @@ describe('AIManager', () => {
 
     await (manager as any).handleSegmentChange(0)
 
-    expect(translatorService.translate).toHaveBeenCalled()
+    expect(mockTranslator.translate).toHaveBeenCalled()
   })
 })

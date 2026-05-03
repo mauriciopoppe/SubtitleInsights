@@ -1,10 +1,10 @@
-import { translatorService } from './translator'
-import { aiInsights } from './insights'
-import { furiganaService } from './furigana'
+import { MyTranslator, translatorService } from './translator'
+import { AIInsights, aiInsights } from './insights'
+import { JapaneseFuriganaService, furiganaService } from './furigana'
 import { isComplexSentence } from './utils'
 import { Config } from '../config'
-import { store } from '../store'
-import { videoController } from '../VideoController'
+import { SubtitleStore, store } from '../store'
+import { VideoController, videoController } from '../VideoController'
 import { aiLogger } from '../logger'
 
 export class AIManager {
@@ -23,6 +23,14 @@ export class AIManager {
   private lastTriggerIndex = -1
   private unsubscribe: (() => void) | null = null
 
+  constructor(
+    private translatorService: MyTranslator,
+    private aiInsights: AIInsights,
+    private furiganaService: JapaneseFuriganaService,
+    private store: SubtitleStore,
+    private videoController: VideoController
+  ) {}
+
   async reset() {
     aiLogger.V(2).info('Hard resetting AIManager.')
     this.pendingTranslationIndices.clear()
@@ -31,71 +39,71 @@ export class AIManager {
     this.lastTriggerIndex = -1
     
     await Promise.all([
-      aiInsights.destroy(),
-      translatorService.destroy(),
-      furiganaService.destroy()
+      this.aiInsights.destroy(),
+      this.translatorService.destroy(),
+      this.furiganaService.destroy()
     ])
     await this.initializeAIServices()
   }
 
   private async initializeAIServices() {
     // Translator Setup
-    const translationAvailability = await translatorService.checkAvailability()
+    const translationAvailability = await this.translatorService.checkAvailability()
     aiLogger.V(1).info('AI Translation availability:', translationAvailability)
 
     if (translationAvailability === 'available') {
-      store.setAIStatus('ready', 'AI Translator Ready')
-      await translatorService.initialize()
+      this.store.setAIStatus('ready', 'AI Translator Ready')
+      await this.translatorService.initialize()
       aiLogger.V(1).info('AI Translator initialized.')
     } else if (translationAvailability === 'downloadable') {
       this.initiateDownloadFlow()
     }
 
     // AI Insights Setup
-    const grammarAvailability = await aiInsights.checkAvailability()
+    const grammarAvailability = await this.aiInsights.checkAvailability()
     aiLogger.V(1).info('AI Insights availability:', grammarAvailability)
     if (grammarAvailability === 'available') {
-      await aiInsights.initialize()
+      await this.aiInsights.initialize()
       aiLogger.V(1).info('AI Insights initialized.')
     }
 
     // Furigana Setup
-    const furiganaAvailability = await furiganaService.checkAvailability()
+    const furiganaAvailability = await this.furiganaService.checkAvailability()
     aiLogger.V(1).info('AI Furigana availability:', furiganaAvailability)
     if (furiganaAvailability === 'available') {
-      await furiganaService.initialize()
+      await this.furiganaService.initialize()
       aiLogger.V(1).info('AI Furigana initialized.')
     }
 
     // Setup subscription to segment changes
     if (!this.unsubscribe) {
-      this.unsubscribe = videoController.targetSegmentIndex.subscribe(index => {
+      this.unsubscribe = this.videoController.targetSegmentIndex.subscribe(index => {
         this.handleSegmentChange(index)
       })
     }
   }
 
   private initiateDownloadFlow() {
-    store.setAIStatus('none')
+    this.store.setAIStatus('none')
     aiLogger.V(1).info('AI models need download.')
 
     const initDownload = async () => {
-      store.setAIStatus('downloading', 'Downloading AI models...')
-      store.setSystemMessage('Downloading AI models...')
-      const success = await translatorService.initialize((loaded, total) => {
+      this.store.setAIStatus('downloading', 'Downloading AI models...')
+      this.store.setSystemMessage('Downloading AI models...')
+      const success = await this.translatorService.initialize((loaded, total) => {
         const percent = Math.round((loaded / total) * 100)
-        store.setAIStatus('downloading', `Downloading AI models: ${percent}%`)
-        store.setSystemMessage(`Downloading AI models: ${percent}%`)
+        this.store.setAIStatus('downloading', `Downloading AI models: ${percent}%`)
+        this.store.setSystemMessage(`Downloading AI models: ${percent}%`)
         aiLogger.V(2).info(`AI Download progress: ${percent}%`)
       })
 
       if (success) {
-        store.setAIStatus('ready', 'AI Translator Ready')
-        store.setSystemMessage(null)
+        this.store.setAIStatus('ready', 'AI Translator Ready')
+        this.store.setSystemMessage(null)
         aiLogger.V(1).info('AI Translator initialized after download.')
       } else {
-        store.setAIStatus('error', 'AI Initialization Failed')
-        store.setSystemMessage('AI Translation Failed to initialize')
+        this.store.setAIStatus('error', 'AI Initialization Failed')
+        this.store.setSystemMessage('AI Translation Failed to initialize')
       }
     }
 
@@ -148,13 +156,13 @@ export class AIManager {
   private async triggerPrefetch(startIndex: number) {
     if (this.isTranslationProcessing && this.isInsightsProcessing && this.isRubyProcessing) return
 
-    const allSegments = store.getAllSegments()
+    const allSegments = this.store.getAllSegments()
     const translationTasks: number[] = []
     const insightsTasks: number[] = []
     const rubyTasks: number[] = []
 
     const { isGrammarEnabled } = await Config.get()
-    const sourceLang = store.sourceLanguage
+    const sourceLang = this.store.sourceLanguage
 
     const maxBuffer = Math.max(this.translateBuffer, this.insightsBuffer, this.rubyBuffer)
 
@@ -164,7 +172,7 @@ export class AIManager {
 
       // Translation
       if (i < startIndex + this.translateBuffer) {
-        if (!this.pendingTranslationIndices.has(i) && translatorService.isReady() && !seg.translation) {
+        if (!this.pendingTranslationIndices.has(i) && this.translatorService.isReady() && !seg.translation) {
           translationTasks.push(i)
         }
       }
@@ -174,7 +182,7 @@ export class AIManager {
         if (
           !this.pendingInsightsIndices.has(i) &&
           isGrammarEnabled &&
-          aiInsights.isReady() &&
+          this.aiInsights.isReady() &&
           !seg.insights &&
           isComplexSentence(seg.text)
         ) {
@@ -187,7 +195,7 @@ export class AIManager {
         if (
           !this.pendingRubyIndices.has(i) &&
           sourceLang?.startsWith('ja') &&
-          furiganaService.isReady() &&
+          this.furiganaService.isReady() &&
           !seg.segmentedData
         ) {
           rubyTasks.push(i)
@@ -253,39 +261,39 @@ export class AIManager {
   }
 
   private async executeTranslationTask(index: number) {
-    const allSegments = store.getAllSegments()
+    const allSegments = this.store.getAllSegments()
     const segment = allSegments[index]
     if (!segment) return
 
     this.pendingTranslationIndices.add(index)
 
     try {
-      const translation = await this.withTimeout(translatorService.translate(segment.text), 10000)
+      const translation = await this.withTimeout(this.translatorService.translate(segment.text), 10000)
       aiLogger.V(2).info(`Translation completed for ${index}`)
-      store.updateSegmentTranslation(index, translation)
+      this.store.updateSegmentTranslation(index, translation)
     } catch (e) {
       aiLogger(`ERROR: Translation failed for ${index}:`, e)
     }
   }
 
   private async executeInsightsTask(index: number) {
-    const allSegments = store.getAllSegments()
+    const allSegments = this.store.getAllSegments()
     const segment = allSegments[index]
     if (!segment) return
 
     this.pendingInsightsIndices.add(index)
 
     try {
-      const analysis = await this.withTimeout(aiInsights.explainGrammar(segment.text), 10000)
+      const analysis = await this.withTimeout(this.aiInsights.explainGrammar(segment.text), 10000)
       aiLogger.V(2).info(`Insights completed for ${index}`)
-      store.updateSegmentInsights(index, analysis, undefined)
+      this.store.updateSegmentInsights(index, analysis, undefined)
     } catch (e) {
       aiLogger(`ERROR: Insights explanation failed for ${index}:`, e)
     }
   }
 
   private async executeRubyTask(index: number) {
-    const allSegments = store.getAllSegments()
+    const allSegments = this.store.getAllSegments()
     const segment = allSegments[index]
     if (!segment) return
 
@@ -294,17 +302,23 @@ export class AIManager {
     try {
       if (!/[\u4E00-\u9FAF]/.test(segment.text)) {
         aiLogger.V(2).info(`Skipping Furigana for ${index} (no Kanji)`)
-        store.updateSegmentInsights(index, undefined, [[{ word: segment.text }]])
+        this.store.updateSegmentInsights(index, undefined, [[{ word: segment.text }]])
         return
       }
 
-      const data = await this.withTimeout(furiganaService.generateFurigana(segment.text), 15000)
+      const data = await this.withTimeout(this.furiganaService.generateFurigana(segment.text), 15000)
       aiLogger.V(2).info(`Furigana completed for ${index}`)
-      store.updateSegmentInsights(index, undefined, data)
+      this.store.updateSegmentInsights(index, undefined, data)
     } catch (e) {
       aiLogger(`ERROR: Furigana generation failed for ${index}:`, e)
     }
   }
 }
 
-export const translationManager = new AIManager()
+export const translationManager = new AIManager(
+  translatorService,
+  aiInsights,
+  furiganaService,
+  store,
+  videoController
+)
