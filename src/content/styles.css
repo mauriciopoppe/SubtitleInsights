@@ -596,3 +596,50 @@ body.si-platform-stremio.si-sidebar-active #si-sidebar-root {
   border-radius: 0;
   border: none;
 }
+
+/* Number Control for Settings */
+.si-number-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+}
+
+.si-number-btns-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.si-number-btn-small {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  font-size: 10px;
+  line-height: 1;
+  transition: background-color 0.2s;
+}
+
+.si-number-btn-small:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.si-number-btn-small:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.si-number-value {
+  min-width: 12px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+}
