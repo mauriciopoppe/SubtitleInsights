@@ -1,3 +1,5 @@
+import { contentLogger } from './logger'
+
 export interface Profile {
   id: string
   name: string
@@ -102,6 +104,7 @@ export class ProfileManager {
   static async autoSelectProfileByLanguage(languageCode: string): Promise<boolean> {
     const profiles = await this.getProfiles()
     const baseLang = languageCode.split('-')[0].toLowerCase()
+    contentLogger(`Auto-selecting profile for language: ${languageCode} (base: ${baseLang})`)
 
     // Try exact match first, then base language match
     const matchingProfile =
@@ -111,9 +114,14 @@ export class ProfileManager {
     if (matchingProfile) {
       const activeId = await this.getActiveProfileId()
       if (activeId !== matchingProfile.id) {
+        contentLogger(`Found matching profile: ${matchingProfile.name} (${matchingProfile.id}). Switching...`)
         await this.setActiveProfile(matchingProfile.id)
         return true
+      } else {
+        contentLogger(`Profile "${matchingProfile.name}" is already active. No change needed.`)
       }
+    } else {
+      contentLogger(`No profile found matching language "${languageCode}" or "${baseLang}".`)
     }
     return false
   }

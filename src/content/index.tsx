@@ -123,7 +123,9 @@ const handleSubtitlesCaptured = async (message: SubtitleCapturedMessage) => {
   if (message.language && config.autoSelectProfile) {
     const changed = await ProfileManager.autoSelectProfileByLanguage(message.language)
     if (changed) {
-      contentLogger('Profile changed via auto-select, re-initializing AI insights session')
+      const activeProfile = await ProfileManager.getActiveProfile()
+      contentLogger(`Profile automatically changed to "${activeProfile.name}" (${activeProfile.id}) for language "${message.language}"`)
+      contentLogger('Re-initializing AI insights session with new profile')
       await aiInsights.destroy()
       await aiInsights.initialize()
     }
