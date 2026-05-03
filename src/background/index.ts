@@ -68,6 +68,10 @@ chrome.runtime.onMessage.addListener(message => {
   }
 })
 
+chrome.action.onClicked.addListener(() => {
+  chrome.runtime.openOptionsPage()
+})
+
 chrome.commands.onCommand.addListener(async command => {
   bgLogger('Received command:', command)
 
