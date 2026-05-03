@@ -75,7 +75,6 @@ export class AIInsights {
         sourceLanguage: sourceLangForModel
       })
 
-      const params = await window.LanguageModel.params()
       const options: LanguageModelCreateOptions = {
         initialPrompts: [
           {
@@ -89,9 +88,7 @@ export class AIInsights {
             languages: [profile.targetLanguage, sourceLangForModel]
           }
         ],
-        expectedOutputs: [{ type: 'text', languages: [profile.targetLanguage] }],
-        temperature: 0.2,
-        topK: params.defaultTopK || undefined
+        expectedOutputs: [{ type: 'text', languages: [profile.targetLanguage] }]
       }
 
       this.rootSession = await window.LanguageModel.create(options)

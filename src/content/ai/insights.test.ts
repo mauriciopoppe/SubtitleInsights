@@ -27,7 +27,6 @@ describe('AIInsights', () => {
 
     // Mock global LanguageModel using Vitest helper
     vi.stubGlobal('LanguageModel', {
-      params: vi.fn().mockResolvedValue({ defaultTopK: 3 }),
       create: vi.fn().mockResolvedValue(mockRootSession),
       availability: vi.fn().mockResolvedValue('available')
     })
