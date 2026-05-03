@@ -30,7 +30,7 @@ export class AIInsights {
         }
         if (!isSourceSupported) {
           store.setWarning(
-            `Source language "${profile.sourceLanguage}" not supported by Insights. Falling back to "en" for analysis.`
+            `Source language "${profile.sourceLanguage}" may have limited support. Falling back to "en" for model initialization.`
           )
         }
 
@@ -65,7 +65,9 @@ export class AIInsights {
       const isSourceSupported = SUPPORTED_LANGUAGES.includes(profile.sourceLanguage)
 
       if (!isSourceSupported) {
-        store.setWarning(`Source language "${profile.sourceLanguage}" not supported by Insights. Falling back to "en".`)
+        store.setWarning(
+          `Source language "${profile.sourceLanguage}" may have limited support. Falling back to "en" for model initialization.`
+        )
       }
 
       const sourceLangForModel = isSourceSupported ? profile.sourceLanguage : 'en'

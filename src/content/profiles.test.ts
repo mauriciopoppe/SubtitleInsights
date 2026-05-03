@@ -84,4 +84,31 @@ describe('ProfileManager', () => {
     const active = await ProfileManager.getActiveProfile()
     expect(active.id).toBe(DEFAULT_JAPANESE_PROFILE.id)
   })
+
+  it('should auto-select profile by language', async () => {
+    await ProfileManager.initializeDefaults()
+    const frProfile: Profile = {
+      id: 'fr-profile',
+      name: 'French',
+      sourceLanguage: 'fr',
+      targetLanguage: 'en',
+      systemPrompt: 'French Prompt'
+    }
+    await ProfileManager.saveProfile(frProfile)
+
+    // Current active is default-ja
+    expect(await ProfileManager.getActiveProfileId()).toBe(DEFAULT_JAPANESE_PROFILE.id)
+
+    // Auto-select French
+    await ProfileManager.autoSelectProfileByLanguage('fr')
+    expect(await ProfileManager.getActiveProfileId()).toBe('fr-profile')
+
+    // Auto-select Japanese (back to default)
+    await ProfileManager.autoSelectProfileByLanguage('ja')
+    expect(await ProfileManager.getActiveProfileId()).toBe(DEFAULT_JAPANESE_PROFILE.id)
+
+    // Auto-select Spanish (no profile, should stay Japanese)
+    await ProfileManager.autoSelectProfileByLanguage('es')
+    expect(await ProfileManager.getActiveProfileId()).toBe(DEFAULT_JAPANESE_PROFILE.id)
+  })
 })

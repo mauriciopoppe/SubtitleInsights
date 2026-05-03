@@ -104,7 +104,9 @@ describe('AIInsights', () => {
     const success = await insights.initialize()
     expect(success).toBe(true)
     expect(store.setWarning).toHaveBeenCalledWith(
-      expect.stringContaining('Source language "fr" not supported by Insights. Falling back to "en".')
+      expect.stringContaining(
+        'Source language "fr" may have limited support. Falling back to "en" for model initialization.'
+      )
     )
     expect(vi.mocked(window.LanguageModel.create)).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -145,7 +147,9 @@ describe('AIInsights', () => {
     const availability = await insights.checkAvailability()
     expect(availability).toBe('available')
     expect(store.setWarning).toHaveBeenCalledWith(
-      expect.stringContaining('Source language "fr" not supported by Insights. Falling back to "en" for analysis.')
+      expect.stringContaining(
+        'Source language "fr" may have limited support. Falling back to "en" for model initialization.'
+      )
     )
     expect(vi.mocked(window.LanguageModel.availability)).toHaveBeenCalledWith(
       expect.objectContaining({
