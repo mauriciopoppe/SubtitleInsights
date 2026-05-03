@@ -81,6 +81,28 @@ export function App({
     return () => observer.disconnect()
   }, [secondaryInner, sidebarContainer, platform])
 
+  // Layout Logic: Toggle Position (MutationObserver - YouTube)
+  useEffect(() => {
+    if (platform !== 'youtube' || !toggleContainer) return
+
+    const rightControls = document.querySelector('.ytp-right-controls')
+    if (!rightControls) return
+
+    const observer = new MutationObserver(() => {
+      if (!rightControls.contains(toggleContainer)) {
+        const subtitlesBtn = document.querySelector('.ytp-subtitles-button')
+        if (subtitlesBtn && subtitlesBtn.parentNode) {
+          subtitlesBtn.parentNode.insertBefore(toggleContainer, subtitlesBtn)
+        } else {
+          rightControls.prepend(toggleContainer)
+        }
+      }
+    })
+
+    observer.observe(rightControls, { childList: true })
+    return () => observer.disconnect()
+  }, [toggleContainer, platform])
+
   // Layout Logic: Stremio Resizing
   useEffect(() => {
     if (platform !== 'stremio') return

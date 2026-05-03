@@ -91,7 +91,16 @@ const initYouTube = async () => {
 
   // Check if UI already exists and is connected
   const existingRoot = document.getElementById('si-root')
-  if (existingRoot && existingRoot.isConnected) {
+  const existingToggle = document.getElementById('si-toggle-root')
+  const existingSidebar = document.getElementById('si-sidebar-root')
+  const existingOverlay = document.getElementById('si-overlay-root')
+
+  if (
+    existingRoot?.isConnected &&
+    existingToggle?.isConnected &&
+    existingSidebar?.isConnected &&
+    existingOverlay?.isConnected
+  ) {
     contentLogger('UI exists and is valid. Skipping re-init.')
     return
   }
@@ -156,7 +165,16 @@ const initYouTube = async () => {
 const initStremio = async () => {
   // Check if UI already exists and is connected
   const existingRoot = document.getElementById('si-root')
-  if (existingRoot && existingRoot.isConnected) {
+  const existingToggle = document.getElementById('si-toggle-root')
+  const existingSidebar = document.getElementById('si-sidebar-root')
+  const existingOverlay = document.getElementById('si-overlay-root')
+
+  if (
+    existingRoot?.isConnected &&
+    existingToggle?.isConnected &&
+    existingSidebar?.isConnected &&
+    existingOverlay?.isConnected
+  ) {
     contentLogger('UI exists and is valid. Skipping re-init.')
     return
   }
@@ -247,22 +265,11 @@ const init = async () => {
   isInitializing = false
 }
 
-const run = () => {
-  const platform = detectPlatform()
-  if (platform === 'youtube') {
-    if (window.location.pathname.startsWith('/watch')) {
-      init()
-    }
-  } else if (platform === 'stremio') {
-    init()
-  }
-}
-
-window.addEventListener('yt-navigate-finish', run)
+window.addEventListener('yt-navigate-finish', init)
 // For Stremio or other SPAs that don't use yt-navigate-finish
 if (detectPlatform() === 'stremio') {
   // Stremio might need a different trigger or just run once and handle internal navigation
-  // For now, let's just call run()
+  // For now, let's just call init()
 }
 
 window.addEventListener('beforeunload', () => {
@@ -270,4 +277,4 @@ window.addEventListener('beforeunload', () => {
   contentLogger('Cleaned up AI sessions on page unload.')
 })
 
-run()
+init()
