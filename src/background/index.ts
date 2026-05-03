@@ -23,7 +23,10 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
 
         const urlObj = new URL(url)
         const lang = urlObj.searchParams.get('lang')
+        const tlang = urlObj.searchParams.get('tlang')
         const videoId = urlObj.searchParams.get('v')
+
+        const detectedLanguage = tlang || lang
 
         try {
           // We add a param to avoid intercepting our own fetch
@@ -37,7 +40,7 @@ if (typeof chrome !== 'undefined' && chrome.webRequest) {
               {
                 type: 'SI_SUBTITLES_CAPTURED',
                 payload: data,
-                language: lang,
+                language: detectedLanguage,
                 videoId
               },
               () => {

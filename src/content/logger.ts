@@ -7,8 +7,18 @@ interface LeveledLogger {
   V: (level: number) => { info: (formatter: string | object, ...args: unknown[]) => void }
 }
 
+const NAMESPACE_COLORS: Record<string, string> = {
+  'si:ai': '#00bcd4', // Cyan
+  'si:content': '#8bc34a', // Lime
+  'si:bg': '#ff9800', // Orange
+  'si:video': '#e91e63', // Pink
+  'si:store': '#9c27b0' // Purple
+}
+
 const createLogger = (namespace: string): LeveledLogger => {
   const d = debug(namespace)
+  d.color = NAMESPACE_COLORS[namespace] || '#fff'
+
   const logger = (formatter: string | object, ...args: unknown[]) => {
     // Default to logging if no verbosity check is used
     if (currentVerbosity >= 0) {
