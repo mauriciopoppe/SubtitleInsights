@@ -38,12 +38,22 @@ export class AIManager {
     this.pendingRubyIndices.clear()
     this.lastTriggerIndex = -1
     
-    await Promise.all([
-      this.aiInsights.destroy(),
-      this.translatorService.destroy(),
-      this.furiganaService.destroy()
-    ])
-    await this.initializeAIServices()
+    try {
+      await Promise.all([
+        this.aiInsights.destroy().catch(e => aiLogger('ERROR: Failed to destroy AI Insights:', e)),
+        this.translatorService.destroy().catch(e => aiLogger('ERROR: Failed to destroy AI Translator:', e)),
+        this.furiganaService.destroy().catch(e => aiLogger('ERROR: Failed to destroy AI Furigana:', e))
+      ])
+    } catch (e) {
+      aiLogger('ERROR: Unexpected error during AI service destruction:', e)
+    }
+
+    try {
+      await this.initializeAIServices()
+    } catch (e) {
+      aiLogger('ERROR: Failed to initialize AI services during reset:', e)
+      throw e // Re-throw to inform caller (handleSubtitlesCaptured)
+    }
   }
 
   private async initializeAIServices() {

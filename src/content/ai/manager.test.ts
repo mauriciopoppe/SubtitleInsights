@@ -21,29 +21,29 @@ describe('AIManager', () => {
     vi.clearAllMocks()
 
     mockTranslator = {
-      checkAvailability: vi.fn(),
-      initialize: vi.fn(),
-      isReady: vi.fn(),
-      translate: vi.fn(),
-      destroy: vi.fn()
+      checkAvailability: vi.fn().mockResolvedValue('available'),
+      initialize: vi.fn().mockResolvedValue(true),
+      isReady: vi.fn().mockReturnValue(true),
+      translate: vi.fn().mockResolvedValue('translation'),
+      destroy: vi.fn().mockResolvedValue(undefined)
     }
 
     mockInsights = {
-      checkAvailability: vi.fn(),
-      initialize: vi.fn(),
-      isReady: vi.fn(),
-      explainGrammar: vi.fn(),
-      resetSession: vi.fn(),
-      destroy: vi.fn()
+      checkAvailability: vi.fn().mockResolvedValue('available'),
+      initialize: vi.fn().mockResolvedValue(true),
+      isReady: vi.fn().mockReturnValue(true),
+      explainGrammar: vi.fn().mockResolvedValue('explanation'),
+      resetSession: vi.fn().mockResolvedValue(undefined),
+      destroy: vi.fn().mockResolvedValue(undefined)
     }
 
     mockFurigana = {
-      checkAvailability: vi.fn(),
-      initialize: vi.fn(),
-      isReady: vi.fn(),
-      generateFurigana: vi.fn(),
-      resetSession: vi.fn(),
-      destroy: vi.fn()
+      checkAvailability: vi.fn().mockResolvedValue('available'),
+      initialize: vi.fn().mockResolvedValue(true),
+      isReady: vi.fn().mockReturnValue(true),
+      generateFurigana: vi.fn().mockResolvedValue([]),
+      resetSession: vi.fn().mockResolvedValue(undefined),
+      destroy: vi.fn().mockResolvedValue(undefined)
     }
 
     mockStore = {
