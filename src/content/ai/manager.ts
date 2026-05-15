@@ -278,7 +278,7 @@ export class AIManager {
     this.pendingTranslationIndices.add(index)
 
     try {
-      const translation = await this.withTimeout(this.translatorService.translate(segment.text), 10000)
+      const translation = await this.withTimeout(this.translatorService.translate(segment.text), 15000)
       aiLogger.V(2).info(`Translation completed for ${index}`)
       this.store.updateSegmentTranslation(index, translation)
     } catch (e) {
@@ -294,7 +294,7 @@ export class AIManager {
     this.pendingInsightsIndices.add(index)
 
     try {
-      const analysis = await this.withTimeout(this.aiInsights.explainGrammar(segment.text), 10000)
+      const analysis = await this.withTimeout(this.aiInsights.explainGrammar(segment.text), 20000)
       aiLogger.V(2).info(`Insights completed for ${index}`)
       this.store.updateSegmentInsights(index, analysis, undefined)
     } catch (e) {

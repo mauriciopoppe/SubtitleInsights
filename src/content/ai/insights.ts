@@ -138,35 +138,30 @@ export class AIInsights {
   }
 
   async explainGrammar(text: string): Promise<string> {
-    if (!this.workingSession) {
+    if (!this.rootSession) {
       throw new Error('Language Model session not initialized')
     }
 
-    const { inputUsage, inputQuota } = this.workingSession
-    const quotaLimit = 0.5
-    if (inputUsage / inputQuota > quotaLimit) {
-      // Reset if usage exceeds 50%
-      aiLogger(
-        `AIInsights: Input usage is ${inputUsage}/${inputQuota} at around ${quotaLimit * 100}%. Resetting session.`
-      )
-      await this.resetSession()
-      if (!this.workingSession) {
-        throw new Error('Language Model session failed to reset')
-      }
-    }
+    // Baseline Clone pattern:
+    // 1. Clone a fresh session from the root (system prompt only)
+    // 2. Execute the prompt
+    // 3. Destroy the working session immediately to free resources
+    const workingSession = await this.rootSession.clone()
 
     try {
-      const rawResponse = await this.workingSession.prompt(`Sentence: ${text}`)
+      const rawResponse = await workingSession.prompt(`Sentence: ${text}`)
       const processedResponse = trimThinkingProcess(rawResponse, text)
       return processedResponse
     } catch (error) {
       aiLogger('ERROR: Error explaining grammar:', error)
       throw error
+    } finally {
+      workingSession.destroy()
     }
   }
 
   isReady(): boolean {
-    return this.workingSession !== null
+    return this.rootSession !== null
   }
 }
 
